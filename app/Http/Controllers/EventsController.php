@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use App\FailedJob;
 class EventsController extends Controller
 {
+    public function __construct() {
+        $this->middleware('verified');
+    }
+
     /**
      * Display a listing of the resource.
      *
