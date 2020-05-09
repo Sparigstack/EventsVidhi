@@ -25,3 +25,8 @@ Route::get('events/{eventid}', 'EventsController@show');
 Auth::routes(['verify' => true]);
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+///All routes for Organizer panel will be here.
+Route::get('org/events', 'org\EventsController@index');
+Route::get('org/events/new', 'org\EventsController@create');
+Route::get('org/events/{eventid}', 'org\EventsController@show');
