@@ -5,6 +5,8 @@ namespace App\Http\Controllers\org;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Event;
+use App\Category;
+use App\City;
 use Illuminate\Support\Facades\Auth;
 
 class EventsController extends Controller
@@ -33,7 +35,9 @@ class EventsController extends Controller
      */
     public function create()
     {
-        return view('org/createEvent');
+        $categories = Category::all();
+        $cities = City::all();
+        return view('org/createEvent', compact('categories','cities'));
     }
 
     /**
@@ -44,7 +48,8 @@ class EventsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        var_dump($request);
+        return;
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\FailedJob;
+
 class EventsController extends Controller
 {
     public function __construct() {
@@ -28,7 +29,8 @@ class EventsController extends Controller
      */
     public function create()
     {
-        //
+         
+         //return view('createEvent');
     }
 
     /**
