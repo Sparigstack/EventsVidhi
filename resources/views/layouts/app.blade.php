@@ -11,6 +11,12 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    <!-- Custom Theme Scripts -->
+    <script src="{{ asset('assets/js/jquery.min.js') }}" defer></script>
+    <script src="{{ asset('assets/js/popper.min.js') }}" defer></script>
+    <script src="{{ asset('assets/js/bootstrap.min.js') }}" defer></script>
+    <script src="{{ asset('assets/js/sidebar-menu.js') }}" defer></script>
+    <script src="{{ asset('assets/js/app-script.js') }}" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -18,8 +24,15 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <!-- Custom Theme Styles -->
+    <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/icons.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('assets/css/app-style.css') }}" rel="stylesheet">
 </head>
 <body>
+<!-- start loader -->
+<!-- <div id="pageloader-overlay" class="visible incoming"><div class="loader-wrapper-outer"><div class="loader-wrapper-inner" ><div class="loader"></div></div></div></div> -->
+   <!-- end loader -->
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">

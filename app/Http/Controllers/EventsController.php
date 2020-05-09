@@ -17,7 +17,6 @@ class EventsController extends Controller
      */
     public function index()
     {
-
         $events = FailedJob::all();
         return view('events', compact('events'));
     }
