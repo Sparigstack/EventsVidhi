@@ -37,4 +37,10 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    
+    ///each user may have multiple events - field - user_id
+    ///returns array of object
+    public function events() {
+        return $this->hasMany('App\Event');
+    }
 }

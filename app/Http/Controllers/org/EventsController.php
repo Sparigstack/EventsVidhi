@@ -4,6 +4,8 @@ namespace App\Http\Controllers\org;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Event;
+use Illuminate\Support\Facades\Auth;
 
 class EventsController extends Controller
 {
@@ -19,7 +21,9 @@ class EventsController extends Controller
      */
     public function index()
     {
-        return view('org/events');
+        $user = Auth::user();
+        $user->user_events;
+        return view('org/events', compact('user'));
     }
 
     /**
