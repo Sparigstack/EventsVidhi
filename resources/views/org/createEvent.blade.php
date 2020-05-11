@@ -37,7 +37,7 @@
 
                         <div class="form-group col-12">
                             <div class="icheck-material-primary">
-                                <input type="checkbox" id="IsOnline" name="IsOnline" onclick="IsOnlineEvent();">
+                                <input type="checkbox" id="IsOnline" name="IsOnline" onclick="IsOnlineEvent(this);">
                                 <label for="IsOnline">Is this event Online event?</label>
                             </div>
                         </div>
