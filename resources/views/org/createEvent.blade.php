@@ -102,22 +102,18 @@
                         </div>
 
                         <div class="form-group col-lg-6">
-                            <label for="EventBannerImage">Banner Image</label>
+                            <label for="EventBannerImage">Banner Image (optional)</label>
                             <input type="file" id="EventBannerImage" name="EventBannerImage" class="form-control" onchange="document.getElementById('bannerImage').src = window.URL.createObjectURL(this.files[0]);document.getElementById('bannerImage').classList.remove('d-none');">
                             <small class="text-danger">{{ $errors->first('EventBannerImage') }}</small>
                             <img id="bannerImage" class="d-none mt-2 imageRadius w-100" alt="your image" width="100" height="100" />
-                            <div class="form-control-position w-25 mt-3 pt-3">
-                                (optional)
-                            </div>
+                            
                         </div>
                         <div class="form-group col-lg-6">
-                            <label for="EventThumbnailImage">Thumbnail Image</label>
+                            <label for="EventThumbnailImage">Thumbnail Image (optional)</label>
                             <input type="file" id="EventThumbnailImage" name="EventThumbnailImage" class="form-control" onchange="document.getElementById('thumbnailImage').src = window.URL.createObjectURL(this.files[0]);document.getElementById('thumbnailImage').classList.remove('d-none');">
                             <small class="text-danger">{{ $errors->first('EventThumbnailImage') }}</small>
                             <img id="thumbnailImage" class="d-none m-2 imageRadius" alt="your image" width="100" height="100" />
-                            <div class="form-control-position w-25 mt-3 pt-3">
-                                (optional)
-                            </div>
+                            
                         </div>
 
                         <!-- <div class="form-group col-lg-6">
