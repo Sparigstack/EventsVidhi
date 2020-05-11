@@ -51,8 +51,8 @@ class EventsController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-        'EventBannerImage' => 'required|image|mimes:jpeg,bmp,png,jpg,gif,spg|dimensions:max_width=468,max_height=200',
-        'EventImage' => 'required|image|mimes:jpeg,bmp,png,jpg|dimensions:max_width=1280,max_height=720',
+        'EventBannerImage' => 'required|image|mimes:jpeg,bmp,png,jpg,gif,spg|dimensions:max_width=1000,max_height=300',
+        'EventThumbnailImage' => 'required|image|mimes:jpeg,bmp,png,jpg|max:1024|dimensions:max_width=500,max_height=500',
         ]);
 
         //banner image
@@ -65,11 +65,11 @@ class EventsController extends Controller
         $fileBanner->move($destinationPathForBanner,$fileBanner->getClientOriginalName());
         
         // thumbnail image
-        $file = $request->file('EventImage');
-        // $file = $request->EventImage;
+        $file = $request->file('EventThumbnailImage');
+        // $file = $request->EventThumbnailImage;
         $imageName = "";
-        if ($request->hasFile('EventImage')) {
-            $imageName = $request->file('EventImage')->getClientOriginalName();
+        if ($request->hasFile('EventThumbnailImage')) {
+            $imageName = $request->file('EventThumbnailImage')->getClientOriginalName();
         }
         $destinationPath = storage_path('app/public/uploads');
         $file->move($destinationPath,$file->getClientOriginalName());
@@ -93,7 +93,7 @@ class EventsController extends Controller
         }
         $events->is_paid = '0';
         $events->save();
-        // var_dump($events); return;
+        return redirect('org/events');
     }
 
     /**

@@ -12,9 +12,9 @@
                     <div class="alert alert-success">
                         {{ session('status') }}
                     </div>
-                @endif
+                    @endif
                     <form class="row" method="post" action="{{url('org/events/store')}}" enctype="multipart/form-data">
-                        {{ csrf_field() }} 
+                        {{ csrf_field() }}
                         <div class="form-group col-lg-6">
                             <label for="title">Title</label>
                             <input type="text" class="form-control" id="title" name="title" placeholder="Enter Event Title">
@@ -35,6 +35,13 @@
                             <textarea id="Description" name="Description" class="form-control" title="Description" placeholder="Description" autocomplete="off" rows="4"></textarea>
                         </div>
 
+                        <div class="form-group col-12">
+                            <div class="icheck-material-primary">
+                                <input type="checkbox" id="IsOnline" name="IsOnline" onclick="IsOnlineEvent();">
+                                <label for="IsOnline">Is this event Online event?</label>
+                            </div>
+                        </div>
+
 
                         <div class="form-group col-lg-6">
                             <label for="Address">Address</label>
@@ -52,41 +59,77 @@
                             </select>
                         </div>
 
-                        <div class="form-group col-lg-6">
-                            <label for="EventDateTime">Event Date & Time</label>
-                            <input type="datetime-local" id="EventDateTime" name="EventDateTime" class="form-control">
+                        <div class="form-group col-lg-2">
+                            <label for="EventDateTime">Event Date</label>
+                            <input type="date" id="EventDateTime" name="EventDateTime" class="form-control">
                             <!-- datetime-local -->
                         </div>
-                        <div class="form-group col-lg-6"></div>
+                        <div class="form-group col-lg-2">
+                            <label for="StartTime">Start Time</label>
+                            <select autocomplete="off" name="StartTime" id="StartTime" class=" custom-select">
+                                <option value="0">Start Time</option>
+                                <?
+                                for ($hours = 0; $hours < 24; $hours++) // the interval for hours is '1'
+                                    for ($mins = 0; $mins < 60; $mins += 30) // the interval for mins is '30'
+                                        echo '<option>' . str_pad($hours, 2, '0', STR_PAD_LEFT) . ':'
+                                            . str_pad($mins, 2, '0', STR_PAD_LEFT) . '</option>';
+                                ?>
+
+                            </select>
+                        </div>
+                        <div class="form-group col-lg-2">
+                            <label for="EndTime">End Time</label>
+                            <select autocomplete="off" name="EndTime" id="EndTime" class=" custom-select">
+                                <option value="0">End Time</option>
+
+
+                            </select>
+                        </div>
+
+                        <div class="form-group col-3 mt-2">
+                            <label for="BlankLabel"></label>
+                            <div class="icheck-material-primary">
+                                <input type="checkbox" id="IsPublic" name="IsPublic">
+                                <label for="IsPublic"> Is this Public Event?</label>
+                            </div>
+                        </div>
+                        <div class="form-group col-3 mt-2">
+                            <label for="BlankLabel"></label>
+                            <div class="icheck-material-primary">
+                                <input type="checkbox" id="IsPaid" name="IsPaid">
+                                <label for="IsPaid">Is this Paid Event?</label>
+                            </div>
+                        </div>
 
                         <div class="form-group col-lg-6">
                             <label for="EventBannerImage">Banner Image</label>
                             <input type="file" id="EventBannerImage" name="EventBannerImage" class="form-control" onchange="document.getElementById('bannerImage').src = window.URL.createObjectURL(this.files[0]);document.getElementById('bannerImage').classList.remove('d-none');">
                             <small class="text-danger">{{ $errors->first('EventBannerImage') }}</small>
-                            <img id="bannerImage" class="d-none m-2 imageRadius" alt="your image" width="100" height="100" />
+                            <img id="bannerImage" class="d-none mt-2 imageRadius w-100" alt="your image" width="100" height="100" />
+                            <div class="form-control-position w-25 mt-3 pt-3">
+                                (optional)
+                            </div>
                         </div>
                         <div class="form-group col-lg-6">
-                            <label for="EventImage">Thumbnail Image</label>
-                            <input type="file" id="EventImage" name="EventImage" class="form-control" onchange="document.getElementById('thumbnailImage').src = window.URL.createObjectURL(this.files[0]);document.getElementById('thumbnailImage').classList.remove('d-none');">
-                            <small class="text-danger">{{ $errors->first('EventImage') }}</small>
+                            <label for="EventThumbnailImage">Thumbnail Image</label>
+                            <input type="file" id="EventThumbnailImage" name="EventThumbnailImage" class="form-control" onchange="document.getElementById('thumbnailImage').src = window.URL.createObjectURL(this.files[0]);document.getElementById('thumbnailImage').classList.remove('d-none');">
+                            <small class="text-danger">{{ $errors->first('EventThumbnailImage') }}</small>
                             <img id="thumbnailImage" class="d-none m-2 imageRadius" alt="your image" width="100" height="100" />
+                            <div class="form-control-position w-25 mt-3 pt-3">
+                                (optional)
+                            </div>
                         </div>
-                        
+
                         <!-- <div class="form-group col-lg-6">
                             <label for="input-5">Durations</label>
                             <input type="time" id="" class="form-control">
                         </div> -->
-                        <div class="form-group col-12">
-                            <div class="icheck-material-primary">
-                                <input type="checkbox" id="IsPublic" name="IsPublic">
-                                <label for="IsPublic">Public</label>
-                            </div>
-                        </div>
+
 
 
 
                         <div class="form-group col-lg-12">
-                            <button type="submit" class="btn btn-primary px-5 pull-right"> ADD</button>
+                            <button type="submit" class="btn btn-primary px-5 pull-right"> Save Event</button>
                         </div>
                     </form>
                 </div>
