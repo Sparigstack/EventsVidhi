@@ -19,6 +19,8 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <!-- custom styles -->
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <!-- simplebar CSS-->
     <link href="{{ asset('assets/plugins/simplebar/css/simplebar.css') }}" rel="stylesheet">
     <!-- Bootstrap core CSS-->
@@ -164,6 +166,7 @@
     <script src="{{ asset('assets/js/jquery.loading-indicator.js') }}"></script>
     <script src="{{ asset('assets/js/app-script.js') }}"></script>
     <script src="{{ asset('assets/plugins/jquery-knob/jquery.knob.js') }}"></script>
+    <script src="{{asset('/js/customScript.js')}}" type="text/javascript"></script>
     <!-- <script src="{{ asset('assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
     <script>
       $('#default-datepicker').datepicker({

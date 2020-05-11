@@ -8,7 +8,13 @@
                 <div class="card-body">
                     <div class="card-title">Add Event</div>
                     <hr>
-                    <form class="row" method="post" action="{{url('org/events/store')}}">
+                    @if (session('status'))
+                    <div class="alert alert-success">
+                        {{ session('status') }}
+                    </div>
+                @endif
+                    <form class="row" method="post" action="{{url('org/events/store')}}" enctype="multipart/form-data">
+                        {{ csrf_field() }} 
                         <div class="form-group col-lg-6">
                             <label for="title">Title</label>
                             <input type="text" class="form-control" id="title" name="title" placeholder="Enter Event Title">
@@ -49,15 +55,31 @@
                         <div class="form-group col-lg-6">
                             <label for="EventDateTime">Event Date & Time</label>
                             <input type="datetime-local" id="EventDateTime" name="EventDateTime" class="form-control">
+                            <!-- datetime-local -->
                         </div>
+                        <div class="form-group col-lg-6"></div>
+
+                        <div class="form-group col-lg-6">
+                            <label for="EventBannerImage">Banner Image</label>
+                            <input type="file" id="EventBannerImage" name="EventBannerImage" class="form-control" onchange="document.getElementById('bannerImage').src = window.URL.createObjectURL(this.files[0]);document.getElementById('bannerImage').classList.remove('d-none');">
+                            <small class="text-danger">{{ $errors->first('EventBannerImage') }}</small>
+                            <img id="bannerImage" class="d-none m-2 imageRadius" alt="your image" width="100" height="100" />
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label for="EventImage">Thumbnail Image</label>
+                            <input type="file" id="EventImage" name="EventImage" class="form-control" onchange="document.getElementById('thumbnailImage').src = window.URL.createObjectURL(this.files[0]);document.getElementById('thumbnailImage').classList.remove('d-none');">
+                            <small class="text-danger">{{ $errors->first('EventImage') }}</small>
+                            <img id="thumbnailImage" class="d-none m-2 imageRadius" alt="your image" width="100" height="100" />
+                        </div>
+                        
                         <!-- <div class="form-group col-lg-6">
                             <label for="input-5">Durations</label>
                             <input type="time" id="" class="form-control">
                         </div> -->
                         <div class="form-group col-12">
                             <div class="icheck-material-primary">
-                                <input type="checkbox" id="IsOnline" name="IsOnline">
-                                <label for="IsOnline">Public</label>
+                                <input type="checkbox" id="IsPublic" name="IsPublic">
+                                <label for="IsPublic">Public</label>
                             </div>
                         </div>
 
@@ -72,4 +94,8 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('script')
+<script src="{{asset('/js/customScript.js')}}" type="text/javascript"></script>
 @endsection

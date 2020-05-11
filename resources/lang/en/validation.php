@@ -130,8 +130,11 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+        'EventBannerImage' => [
+            'dimensions' => 'The image dimensions must be less than 468px width & 200px height',
+        ],
+        'EventImage' => [
+            'dimensions' => 'The image dimensions must be less than 1280px width & 720px height',
         ],
     ],
 

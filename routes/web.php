@@ -30,4 +30,4 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('org/events', 'org\EventsController@index');
 Route::get('org/events/new', 'org\EventsController@create');
 Route::get('org/events/{eventid}', 'org\EventsController@show');
-// Route::post('org/events/store', 'org\EventsController@store');
+Route::post('org/events/store', 'org\EventsController@store');
