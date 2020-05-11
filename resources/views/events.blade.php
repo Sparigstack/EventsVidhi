@@ -81,12 +81,12 @@
 
             <div class="content">
                 <?php foreach ($events as $event){ ?>
-                <div class="m-b-md">                    
+                <div class="m-b-md">
                     <a href="{{url('events/'.$event->id)}}" ><?php echo $event->connection; ?> </a>
                 </div>
                 <?php } ?>
 
-                
+
             </div>
         </div>
     </body>

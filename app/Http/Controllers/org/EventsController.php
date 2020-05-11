@@ -11,11 +11,11 @@ use Illuminate\Support\Facades\Auth;
 
 class EventsController extends Controller
 {
-    
+
     public function __construct() {
         $this->middleware('verified');
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -24,7 +24,6 @@ class EventsController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $user->user_events;
         return view('org/events', compact('user'));
     }
 
