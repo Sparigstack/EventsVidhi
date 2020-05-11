@@ -5201,6 +5201,7 @@ File: app-style
   -moz-osx-font-smoothing: grayscale;
 }
 /* makes the font 33% larger relative to the icon container */
+
 .fa-lg {
   font-size: 1.33333333em;
   line-height: 0.75em;
@@ -12790,15 +12791,3 @@ File: app-style
 .flag-icon-un.flag-icon-squared {
   background-image: url(../flags/1x1/un.svg);
 }
-
-
-
-
-
-
-
-
-
-
-
-
