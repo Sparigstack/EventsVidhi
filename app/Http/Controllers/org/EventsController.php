@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Event;
 use App\Category;
 use App\City;
+use DateTime;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\UploadedFile;
 use File;
@@ -15,7 +16,8 @@ use Illuminate\Support\Facades\Validator;
 class EventsController extends Controller
 {
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('verified');
     }
 
@@ -39,7 +41,7 @@ class EventsController extends Controller
     {
         $categories = Category::all();
         $cities = City::all();
-        return view('org/createEvent', compact('categories','cities'));
+        return view('org/createEvent', compact('categories', 'cities'));
     }
 
     /**
@@ -51,8 +53,8 @@ class EventsController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-        'EventBannerImage' => 'image|mimes:jpeg,bmp,png,jpg,gif,spg|dimensions:max_width=468,max_height=200',
-        'EventThumbnailImage' => 'image|mimes:jpeg,bmp,png,jpg|dimensions:max_width=1280,max_height=720',
+            'EventBannerImage' => 'image|mimes:jpeg,bmp,png,jpg,gif,spg|dimensions:max_width=468,max_height=200',
+            'EventThumbnailImage' => 'image|mimes:jpeg,bmp,png,jpg|dimensions:max_width=1280,max_height=720',
         ]);
 
         //banner image
@@ -61,9 +63,9 @@ class EventsController extends Controller
         if ($request->hasFile('EventBannerImage')) {
             $imageNameBanner = $request->file('EventBannerImage')->getClientOriginalName();
             $destinationPathForBanner = storage_path('app/public/uploads/bannerImages');
-            $fileBanner->move($destinationPathForBanner,$fileBanner->getClientOriginalName());
+            $fileBanner->move($destinationPathForBanner, $fileBanner->getClientOriginalName());
         }
-        
+
         // thumbnail image
         $file = $request->file('EventThumbnailImage');
         // $file = $request->EventImage;
@@ -71,7 +73,7 @@ class EventsController extends Controller
         if ($request->hasFile('EventThumbnailImage')) {
             $imageName = $request->file('EventThumbnailImage')->getClientOriginalName();
             $destinationPath = storage_path('app/public/uploads');
-            $file->move($destinationPath,$file->getClientOriginalName());
+            $file->move($destinationPath, $file->getClientOriginalName());
         }
 
         $user = Auth::user();
@@ -82,19 +84,19 @@ class EventsController extends Controller
         $events->user_id = $user->id;
         $events->city_id = $request->city;
         $events->address = $request->Address;
-        $events->date_time = $request->EventDateTime;
+        $currentDateTime = $request->EventDateTime;
+        $newDateTime = new DateTime($currentDateTime);
+        $events->date_time = $newDateTime;
         $events->thumbnail = $imageName;
         $events->banner = $imageNameBanner;
         if (isset($request->IsPublic)) {
             $events->is_public = '1';
-        }
-        else{
+        } else {
             $events->is_public = '0';
         }
         if (isset($request->IsPaid)) {
             $events->is_paid = '1';
-        }
-        else{
+        } else {
             $events->is_paid = '0';
         }
         $events->save();
@@ -109,10 +111,10 @@ class EventsController extends Controller
      */
     public function show($id)
     {
-        $event =Event::findOrFail($id);
+        $event = Event::findOrFail($id);
         $categories = Category::all();
         $cities = City::all();
-        return view('org/createEvent', compact('categories','cities','event'));
+        return view('org/createEvent', compact('categories', 'cities', 'event'));
     }
 
     /**
@@ -126,57 +128,60 @@ class EventsController extends Controller
         $this->validate($request, [
             'EventBannerImage' => 'image|mimes:jpeg,bmp,png,jpg,gif,spg|dimensions:max_width=468,max_height=200',
             'EventThumbnailImage' => 'image|mimes:jpeg,bmp,png,jpg|dimensions:max_width=1280,max_height=720',
-            ]);
-    
-            //banner image
-            $fileBanner = $request->file('EventBannerImage');
-            $imageNameBanner = "";
-            if ($request->hasFile('EventBannerImage')) {
-                $imageNameBanner = $request->file('EventBannerImage')->getClientOriginalName();
-                $destinationPathForBanner = storage_path('app/public/uploads/bannerImages');
-                $fileBanner->move($destinationPathForBanner,$fileBanner->getClientOriginalName());
-            }
-            
-            // thumbnail image
-            $file = $request->file('EventThumbnailImage');
-            // $file = $request->EventImage;
-            $imageName = "";
-            if ($request->hasFile('EventThumbnailImage')) {
-                $imageName = $request->file('EventThumbnailImage')->getClientOriginalName();
-                $destinationPath = storage_path('app/public/uploads');
-                $file->move($destinationPath,$file->getClientOriginalName());
-            }
-    
-            $user = Auth::user();
-            $events = Event::findOrFail($id);
-            $events->title = $request->title;
-            $events->description = $request->Description;
-            $events->category_id = $request->category;
-            $events->user_id = $user->id;
-            $events->city_id = $request->city;
-            $events->address = $request->Address;
-            $events->date_time = $request->EventDateTime;
-            $events->thumbnail = $imageName;
-            $events->banner = $imageNameBanner;
-            if (isset($request->IsPublic)) {
-                $events->is_public = '1';
-            }
-            else{
-                $events->is_public = '0';
-            }
-            if (isset($request->IsPaid)) {
-                $events->is_paid = '1';
-            }
-            else{
-                $events->is_paid = '0';
-            }
-            if (isset($request->IsOnline)) {
-                $events->is_online = '1';
-            }
-            else{
-                $events->is_online = '0';
-            }
-            $events->save();
+        ]);
+
+        //banner image
+        $fileBanner = $request->file('EventBannerImage');
+        $imageNameBanner = "";
+        if ($request->hasFile('EventBannerImage')) {
+            $imageNameBanner = $request->file('EventBannerImage')->getClientOriginalName();
+            $destinationPathForBanner = storage_path('app/public/uploads/bannerImages');
+            $fileBanner->move($destinationPathForBanner, $fileBanner->getClientOriginalName());
+        }
+
+        // thumbnail image
+        $file = $request->file('EventThumbnailImage');
+        // $file = $request->EventImage;
+        $imageName = "";
+        if ($request->hasFile('EventThumbnailImage')) {
+            $imageName = $request->file('EventThumbnailImage')->getClientOriginalName();
+            $destinationPath = storage_path('app/public/uploads');
+            $file->move($destinationPath, $file->getClientOriginalName());
+        }
+
+        $user = Auth::user();
+        $events = Event::findOrFail($id);
+        $events->title = $request->title;
+        $events->description = $request->Description;
+        $events->category_id = $request->category;
+        $events->user_id = $user->id;
+        $events->city_id = $request->city;
+        $events->address = $request->Address;
+
+        $currentDateTime = $request->EventDateTime;
+        $newDateTime = new DateTime($currentDateTime);
+        $events->date_time = $newDateTime;
+
+        $events->thumbnail = $imageName;
+        $events->banner = $imageNameBanner;
+        if (isset($request->IsPublic)) {
+            $events->is_public = '1';
+        } else {
+            $events->is_public = '0';
+        }
+        if (isset($request->IsPaid)) {
+            $events->is_paid = '1';
+        } else {
+            $events->is_paid = '0';
+        }
+        if (isset($request->IsOnline)) {
+            $events->is_online = '1';
+        } else {
+            $events->is_online = '0';
+        }
+        $events->save();
+
+        return redirect('org/events');
     }
 
     /**
