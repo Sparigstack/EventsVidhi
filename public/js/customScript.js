@@ -23,6 +23,7 @@ function findParent(element) {
 
 function IsOnlineEvent(element){
     if($(element).is(":checked")){
+        $('#Address').attr('value', '');
         $('#Address').attr('readonly',true);
         $('#city').attr('disabled',true);
     }else{

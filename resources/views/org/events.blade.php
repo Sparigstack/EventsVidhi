@@ -9,7 +9,7 @@
                 <div class="card">
                     <div class="card-header"><i class="fa fa-table"></i> Upcoming Events</div>
                     <div class="card-body">
-                        <div class="table-responsive" id ="default-datatable_wrapper">
+                        <div class="table-responsive" id="default-datatable_wrapper">
                             <table id="default-datatable" class="table table-bordered">
                                 <thead>
                                     <tr>
@@ -19,7 +19,7 @@
                                         <th>Location</th>
                                         <th>Action</th>
                                     </tr>
-                                </thead>    
+                                </thead>
                                 <tbody>
                                     <?php foreach ($user->events as $event) { 
                                         if($event->date_time >= date('Y-m-d',strtotime(now()))){ ?>
@@ -37,7 +37,7 @@
                                                 }
                                                 ?></td>
                                             <td>
-                                                <i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-edit"></i> 
+                                                <i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-edit" onclick="window.location='{{ url("org/events/$event->id") }}'"></i>
                                                 <a onclick="deleteEvent(this);" db-delete-id="{{$event->id}}"><i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-trash"></i></a> 
                                             </td>
                                         </tr>
@@ -60,8 +60,22 @@
             </div>
         </div>
 
-    </div>    
+    </div>
 </div>
 
 @endsection
 
+<<<<<<< HEAD
+=======
+@section('script')
+<script>
+    $(document).ready(function() {
+        //Default data table
+        $('#default-datatable').DataTable({
+            ordering: false
+        });
+    });
+</script>
+
+@endsection
+>>>>>>> 55c34f621b0a96a29b3ddc452497f424dd3e193f
