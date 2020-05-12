@@ -104,7 +104,10 @@ class EventsController extends Controller
      */
     public function show($id)
     {
-        //
+        $event =Event::findOrFail($id);
+        $categories = Category::all();
+        $cities = City::all();
+        return view('org/createEvent', compact('categories','cities','event'));
     }
 
     /**

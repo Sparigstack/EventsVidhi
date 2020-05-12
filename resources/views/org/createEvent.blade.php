@@ -6,25 +6,56 @@
         <div class="col-lg-11" style="margin: auto">
             <div class="card">
                 <div class="card-body">
-                    <div class="card-title">Add Event</div>
+                
+                <?php 
+                    $CardTitle="Add Event";
+                    $title="";
+                    $categoryID=0;
+                    $desription="";
+                    $address="";
+                    $cityID=0;
+                    $EventDate="";
+                    $IsPublic="";
+                    $IsPublic="";
+                    $IsOnline="";
+                    $IsSelected="cutu";
+
+                    
+                    if(!empty($event)){
+                        $CardTitle="Edit Event";
+                        $title=$event->title;
+                        $desription=$event->description;
+                        $address =$event->address;
+                        $EventDate=$event->date_time;
+                        $categoryID=$event->category_id;
+                        $cityID=$event->city_id;                    }
+                    
+                    ?>
+                    <div class="card-title">{{$CardTitle}}</div>
                     <hr>
                     @if (session('status'))
                     <div class="alert alert-success">
                         {{ session('status') }}
                     </div>
                     @endif
+
+
                     <form class="row" method="post" action="{{url('org/events/store')}}" enctype="multipart/form-data">
                         {{ csrf_field() }}
                         <div class="form-group col-lg-6">
                             <label for="title">Title</label>
-                            <input type="text" class="form-control" id="title" name="title" placeholder="Enter Event Title">
+                            <input type="text" class="form-control" id="title" name="title" value="{{$title}}" placeholder="Enter Event Title">
                         </div>
                         <div class="form-group col-lg-6">
                             <label for="selectionCategory">Category</label>
                             <select autocomplete="off" name="category" id="category" class=" custom-select">
                                 <option value="0">Select Category</option>
-                                <?php foreach ($categories as $category) { ?>
-                                    <option value="{{$category->id}}"><?php echo $category->name; ?> </option>
+                                <?php foreach ($categories as $category) {
+                                   
+                                    if($category->id == $categoryID){ 
+                                        $IsSelected="selected";
+                                    } ?>
+                                    <option value="{{$category->id}}" {{$IsSelected}}><?php echo $category->name; ?> </option>
                                 <?php } ?>
 
                             </select>
@@ -32,7 +63,7 @@
 
                         <div class="form-group col-lg-12">
                             <label for="Description">Description</label>
-                            <textarea id="Description" name="Description" class="form-control" title="Description" placeholder="Description" autocomplete="off" rows="4"></textarea>
+                            <textarea id="Description" name="Description"  class="form-control" title="Description" placeholder="Description" autocomplete="off" rows="4">{{$desription}}</textarea>
                         </div>
 
                         <div class="form-group col-12">
@@ -45,15 +76,20 @@
 
                         <div class="form-group col-lg-6">
                             <label for="Address">Address</label>
-                            <input type="text" id="Address" name="Address" class="form-control" title="Address" placeholder="Address" autocomplete="off" rows="0">
+                            <input type="text" id="Address" name="Address" value="{{$address}}" class="form-control" title="Address" placeholder="Address" autocomplete="off" rows="0">
                         </div>
 
                         <div class="form-group col-lg-6">
                             <label for="selectionCategory">City</label>
                             <select autocomplete="off" name="city" id="city" class=" custom-select">
                                 <option value="0">Select City</option>
-                                <?php foreach ($cities as $city) { ?>
-                                    <option value="{{$city->id}}"><?php echo $city->name; ?> </option>
+                                <?php foreach ($cities as $city) { 
+                                    $IsSelected="";
+                                    if($city->id == $cityID){ 
+                                        $IsSelected="selected";
+                                    } ?>
+                                    
+                                    <option value="{{$city->id}}" {{$IsSelected}}><?php echo $city->name; ?> </option>
                                 <?php } ?>
 
                             </select>

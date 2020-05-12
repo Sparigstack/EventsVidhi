@@ -34,7 +34,7 @@
                                                     echo $event->address . ', ' . $event->city->name;
                                                 }
                                                 ?></td>
-                                            <td><i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-edit"></i> <i  style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-trash"></i> </td>
+                                            <td><i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-edit" onclick="window.location='{{ url("org/events/$event->id") }}'"></i> <i  style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-trash"></i> </td>
                                         </tr>
 <?php } ?>
 
