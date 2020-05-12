@@ -64,18 +64,3 @@
 </div>
 
 @endsection
-
-<<<<<<< HEAD
-=======
-@section('script')
-<script>
-    $(document).ready(function() {
-        //Default data table
-        $('#default-datatable').DataTable({
-            ordering: false
-        });
-    });
-</script>
-
-@endsection
->>>>>>> 55c34f621b0a96a29b3ddc452497f424dd3e193f
