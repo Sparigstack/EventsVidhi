@@ -3,7 +3,7 @@
 @section('content')
 <div class="container-fluid">
     <div class="row">
-        <div class="col-lg-11" style="margin: auto">
+        <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
                     <div class="card-title">Add Event</div>
@@ -106,14 +106,26 @@
                             <input type="file" id="EventBannerImage" name="EventBannerImage" class="form-control" onchange="document.getElementById('bannerImage').src = window.URL.createObjectURL(this.files[0]);document.getElementById('bannerImage').classList.remove('d-none');">
                             <small class="text-danger">{{ $errors->first('EventBannerImage') }}</small>
                             <img id="bannerImage" class="d-none mt-2 imageRadius w-100" alt="your image" width="100" height="100" />
+<<<<<<< HEAD
+<!--                            <div class="form-control-position w-25 mt-3 pt-3">
+                                (optional)
+                            </div>-->
+=======
                             
+>>>>>>> 55fdfb1b3419d01d5d2ff2c7dad2927e3faa8c20
                         </div>
                         <div class="form-group col-lg-6">
                             <label for="EventThumbnailImage">Thumbnail Image (optional)</label>
                             <input type="file" id="EventThumbnailImage" name="EventThumbnailImage" class="form-control" onchange="document.getElementById('thumbnailImage').src = window.URL.createObjectURL(this.files[0]);document.getElementById('thumbnailImage').classList.remove('d-none');">
                             <small class="text-danger">{{ $errors->first('EventThumbnailImage') }}</small>
                             <img id="thumbnailImage" class="d-none m-2 imageRadius" alt="your image" width="100" height="100" />
+<<<<<<< HEAD
+<!--                            <div class="form-control-position w-25 mt-3 pt-3">
+                                (optional)
+                            </div>-->
+=======
                             
+>>>>>>> 55fdfb1b3419d01d5d2ff2c7dad2927e3faa8c20
                         </div>
 
                         <!-- <div class="form-group col-lg-6">
