@@ -9,7 +9,7 @@
                 <div class="card">
                     <div class="card-header"><i class="fa fa-table"></i> Upcoming Events</div>
                     <div class="card-body">
-                        <div class="table-responsive">
+                        <div class="table-responsive" id="default-datatable_wrapper">
                             <table id="default-datatable" class="table table-bordered">
                                 <thead>
                                     <tr>
@@ -34,9 +34,9 @@
                                                     echo $event->address . ', ' . $event->city->name;
                                                 }
                                                 ?></td>
-                                            <td><i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-edit" onclick="window.location='{{ url("org/events/$event->id") }}'"></i> <i  style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-trash"></i> </td>
+                                            <td><i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-edit" onclick="window.location='{{ url("org/events/$event->id") }}'"></i> <i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-trash"></i> </td>
                                         </tr>
-<?php } ?>
+                                    <?php } ?>
 
                                 <tfoot>
                                     <tr>
@@ -54,7 +54,19 @@
             </div>
         </div>
 
-    </div>    
+    </div>
 </div>
+
+@endsection
+
+@section('script')
+<script>
+    $(document).ready(function() {
+        //Default data table
+        $('#default-datatable').DataTable({
+            ordering: false
+        });
+    });
+</script>
 
 @endsection
