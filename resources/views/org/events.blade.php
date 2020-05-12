@@ -21,24 +21,30 @@
                                     </tr>
                                 </thead>    
                                 <tbody>
-                                    <?php foreach ($user->events as $event) { ?>
-                                        <tr>
-
+                                    <?php foreach ($user->events as $event) { 
+                                        if($event->date_time >= date('Y-m-d',strtotime(now()))){ ?>
+                                        <tr class="parent">
+                                            <input class="csrf-token" type="hidden" value="{{ csrf_token() }}">
+                                    <input type="hidden"  class="deleteEvent" value="{{url('deleteEvent')}}">
                                             <td>{{$event->title}} </td>
                                             <td>{{$event->category->name}}</td>
                                             <td>{{$event->date_time}}</td>
                                             <td><?php
                                                 if ($event->is_online) {
-                                                    echo "online";
+                                                    echo "Online";
                                                 } else {
                                                     echo $event->address . ', ' . $event->city->name;
                                                 }
                                                 ?></td>
-                                            <td><i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-edit"></i> <i  style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-trash"></i> </td>
+                                            <td>
+                                                <i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-edit"></i> 
+                                                <a onclick="deleteEvent(this);" db-delete-id="{{$event->id}}"><i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-trash"></i></a> 
+                                            </td>
                                         </tr>
-<?php } ?>
+                                    <?php } } ?>
+                                </tbody>
 
-                                <tfoot>
+                                <thead>
                                     <tr>
                                         <th>Title</th>
                                         <th>Category</th>
@@ -46,10 +52,10 @@
                                         <th>Location</th>
                                         <th>Action</th>
                                     </tr>
-                                </tfoot>
+                                </thead>
                             </table>
                         </div>
-                    </div>
+                    </div>  
                 </div>
             </div>
         </div>
@@ -59,15 +65,3 @@
 
 @endsection
 
-@section('script')
-<script>
-    $(document).ready(function () {
-                                        //Default data table
-                                        $('#default-datatable').DataTable({
-                                            ordering: false
-                                        });
-                                    });
-
-</script>
-
-@endsection

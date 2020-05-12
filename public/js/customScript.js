@@ -1,6 +1,26 @@
 $(document).ready(function () {
    setEventDateAndTime();
+   var table = $('#default-datatable').DataTable({
+   		columnDefs: [
+            { orderable: false, targets: 4 },
+        ]
+    });
+
   });
+
+function findParent(element) {
+    var parentElement = $(element).parent();
+    if ($(parentElement).hasClass("parent"))
+        return parentElement;
+    else {
+        for (var i = 0; i < 12; i++) {
+            parentElement = $(parentElement).parent();
+            if ($(parentElement).hasClass("parent"))
+                return parentElement;
+        }
+    }
+}
+
 function IsOnlineEvent(element){
     if($(element).is(":checked")){
         $('#Address').attr('readonly',true);
@@ -10,6 +30,7 @@ function IsOnlineEvent(element){
         $('#city').attr('disabled',false);
     }
 }
+
 function setEventDateAndTime(){
 	$('.date').each(function () {
 var defaultdate;
@@ -48,4 +69,23 @@ scrollInput: false
 });
 });
 
+}
+
+function deleteEvent(element) {
+    var confirmDelete = confirm("Are you sure you want to delete this event?");
+    if (!confirmDelete)
+        return;
+    var parent = findParent(element);
+    var eventDeleteId = $(element).attr('db-delete-id');
+    var CSRF_TOKEN = $('.csrf-token').val();
+    var urlString = $('.deleteEvent').val();
+    $.ajax({
+        url: urlString,
+        type: 'post',
+        data: {_token: CSRF_TOKEN, eventDeleteId: eventDeleteId},
+        success: function (response) {
+        	// console.log(response);
+            location.reload();
+        }
+    });
 }
