@@ -9,7 +9,7 @@
                 <div class="card">
                     <div class="card-header"><i class="fa fa-table"></i> Upcoming Events</div>
                     <div class="card-body">
-                        <div class="table-responsive">
+                        <div class="table-responsive" id ="default-datatable_wrapper">
                             <table id="default-datatable" class="table table-bordered">
                                 <thead>
                                     <tr>
@@ -19,7 +19,7 @@
                                         <th>Location</th>
                                         <th>Action</th>
                                     </tr>
-                                </thead>
+                                </thead>    
                                 <tbody>
                                     <?php foreach ($user->events as $event) { ?>
                                         <tr>
@@ -56,5 +56,18 @@
 
     </div>    
 </div>
+
+@endsection
+
+@section('script')
+<script>
+    $(document).ready(function () {
+                                        //Default data table
+                                        $('#default-datatable').DataTable({
+                                            ordering: false
+                                        });
+                                    });
+
+</script>
 
 @endsection

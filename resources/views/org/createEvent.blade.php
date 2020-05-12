@@ -3,10 +3,10 @@
 @section('content')
 <div class="container-fluid">
     <div class="row">
-        <div class="col-lg-11" style="margin: auto">
+        <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
-                    <div class="card-title">Add Event</div>
+                    <div class="card-title"><h5>Add New Event</h5></div>
                     <hr>
                     @if (session('status'))
                     <div class="alert alert-success">
@@ -15,6 +15,9 @@
                     @endif
                     <form class="row" method="post" action="{{url('org/events/store')}}" enctype="multipart/form-data">
                         {{ csrf_field() }}
+                        <div class="basicDetails col-lg-12">
+                            <h5> Basic Details </h5>
+                        </div>
                         <div class="form-group col-lg-6">
                             <label for="title">Title</label>
                             <input type="text" class="form-control" id="title" name="title" placeholder="Enter Event Title">
@@ -33,6 +36,10 @@
                         <div class="form-group col-lg-12">
                             <label for="Description">Description</label>
                             <textarea id="Description" name="Description" class="form-control" title="Description" placeholder="Description" autocomplete="off" rows="4"></textarea>
+                        </div>
+
+                        <div class="locationDetails col-lg-12 mt-3">
+                            <h5> Location Details </h5>
                         </div>
 
                         <div class="form-group col-12">
@@ -59,12 +66,23 @@
                             </select>
                         </div>
 
-                        <div class="form-group col-lg-2">
+                        <div class="eventSchedule col-lg-12 mt-3">
+                            <h5> Event Schedule </h5>
+                        </div>
+
+                        <div class="form-group col-lg-4">
+                            <!-- col-lg-2 -->
                             <label for="EventDateTime">Event Date</label>
-                            <input type="date" id="EventDateTime" name="EventDateTime" class="form-control">
+                            <!-- <input type="date" id="EventDateTime" name="EventDateTime" class="form-control"> -->
+                            <div class='input-group' id='EventDateTime'>
+                                <input type='text' class="form-control date" name="EventDateTime" id="EventDateTime"/>
+                                <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
                             <!-- datetime-local -->
                         </div>
-                        <div class="form-group col-lg-2">
+                        <!-- <div class="form-group col-lg-2">
                             <label for="StartTime">Start Time</label>
                             <select autocomplete="off" name="StartTime" id="StartTime" class=" custom-select">
                                 <option value="0">Start Time</option>
@@ -84,7 +102,7 @@
 
 
                             </select>
-                        </div>
+                        </div> -->
 
                         <div class="form-group col-3 mt-2">
                             <label for="BlankLabel"></label>
@@ -99,6 +117,10 @@
                                 <input type="checkbox" id="IsPaid" name="IsPaid">
                                 <label for="IsPaid">Is this Paid Event?</label>
                             </div>
+                        </div>
+
+                        <div class="additionalDetails col-lg-12  mt-3">
+                            <h5> Additional Details </h5>
                         </div>
 
                         <div class="form-group col-lg-6">

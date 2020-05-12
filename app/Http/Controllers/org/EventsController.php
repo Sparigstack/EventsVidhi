@@ -60,9 +60,9 @@ class EventsController extends Controller
         $imageNameBanner = "";
         if ($request->hasFile('EventBannerImage')) {
             $imageNameBanner = $request->file('EventBannerImage')->getClientOriginalName();
+            $destinationPathForBanner = storage_path('app/public/uploads/bannerImages');
+            $fileBanner->move($destinationPathForBanner,$fileBanner->getClientOriginalName());
         }
-        $destinationPathForBanner = storage_path('app/public/uploads/bannerImages');
-        $fileBanner->move($destinationPathForBanner,$fileBanner->getClientOriginalName());
         
         // thumbnail image
         $file = $request->file('EventImage');
@@ -70,9 +70,9 @@ class EventsController extends Controller
         $imageName = "";
         if ($request->hasFile('EventImage')) {
             $imageName = $request->file('EventImage')->getClientOriginalName();
+            $destinationPath = storage_path('app/public/uploads');
+            $file->move($destinationPath,$file->getClientOriginalName());
         }
-        $destinationPath = storage_path('app/public/uploads');
-        $file->move($destinationPath,$file->getClientOriginalName());
 
         $user = Auth::user();
         $events = new Event;
@@ -91,7 +91,12 @@ class EventsController extends Controller
         else{
             $events->is_public = '0';
         }
-        $events->is_paid = '0';
+        if (isset($request->IsPaid)) {
+            $events->is_paid = '1';
+        }
+        else{
+            $events->is_paid = '0';
+        }
         $events->save();
         // var_dump($events); return;
     }

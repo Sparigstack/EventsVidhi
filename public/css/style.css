@@ -2,3 +2,9 @@
 	border-radius: 8px;
 	max-height: 90px;
 }
+.customButtons .simpleButton{
+	display: none;
+}
+.xdsoft_datetimepicker .xdsoft_datepicker.active+.xdsoft_timepicker{
+	margin-top: 30px !important;
+}
