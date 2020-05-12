@@ -1,31 +1,31 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+        <!-- CSRF Token -->
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Vidhi Events') }}</title>
+        <title>{{ config('app.name', 'Vidhi Events') }}</title>
 
-    <!-- Scripts -->
-    <!-- <script src="{{ asset('js/app.js') }}" defer></script> -->
+        <!-- Scripts -->
+        <!-- <script src="{{ asset('js/app.js') }}" defer></script> -->
 
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+        <!-- Fonts -->
+        <link rel="dns-prefetch" href="//fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
-    <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <!-- custom styles -->
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
-    <!-- simplebar CSS-->
-    <link href="{{ asset('assets/plugins/simplebar/css/simplebar.css') }}" rel="stylesheet">
-    <!-- Bootstrap core CSS-->
-    <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet">
-    <!--animate CSS-->
+        <!-- Styles -->
+        <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+        <!-- custom styles -->
+        <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+        <!-- simplebar CSS-->
+        <link href="{{ asset('assets/plugins/simplebar/css/simplebar.css') }}" rel="stylesheet">
+        <!-- Bootstrap core CSS-->
+        <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet">
+        <!--animate CSS-->
     <li nk href="{{ asset('assets/css/animate.css') }}" rel="stylesheet" type="text/css">
         <!--Icons CSS-->
         <link href="{{ asset('assets/css/icons.css') }}" rel="stylesheet" type="text/css">
@@ -33,11 +33,11 @@
         <link href="{{ asset('assets/css/sidebar-menu.css') }}" rel="stylesheet">
         <!--Custom Style-->
         <link href="{{ asset('assets/css/app-style.css') }}" rel="stylesheet">
-         <!--Bootstrap date picker-->
-         <link href="{{ asset('assets/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
+        <!--Bootstrap date picker-->
+        <link href="{{ asset('assets/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
 
 
-</head>
+    </head>
 
 <body>
     <div id="pageloader-overlay" class="visible incoming" style="display: none;">
@@ -144,12 +144,16 @@
                             <li class="dropdown-divider"></li> -->
                             <li class="dropdown-item"><i class="icon-settings mr-2"></i> Profile</li>
                             <li class="dropdown-divider"></li>
-                            <li class="dropdown-item"><a class style="color:inherit" href="{{ route('logout') }}" ><i class="icon-power mr-2"></i> Logout</a></li>
+                            <li class="dropdown-item"><a class style="color:inherit" href="{{ route('logout') }}" onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();" ><i class="icon-power mr-2"></i> Logout</a></li>
                         </ul>
                     </li>
                 </ul>
             </nav>
-        </header>
+        </header>   
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+            @csrf
+        </form>
         <div class="clearfix"></div>
         <div class="content-wrapper">
             @yield('content')
