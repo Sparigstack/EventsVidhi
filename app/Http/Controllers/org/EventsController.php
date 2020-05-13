@@ -52,7 +52,7 @@ class EventsController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
+        $validate = $this->validate($request, [
             'EventBannerImage' => 'image|mimes:jpeg,bmp,png,jpg,gif,spg|dimensions:max_width=468,max_height=200',
             'EventThumbnailImage' => 'image|mimes:jpeg,bmp,png,jpg|dimensions:max_width=1280,max_height=720',
             'title' => 'required',

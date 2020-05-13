@@ -62,7 +62,7 @@
                         </div>
                         <div class="form-group col-lg-6">
                             <label for="title">Title</label>
-                            <input type="text" class="form-control" id="title" value="{{$title}}" name="title" placeholder="Enter Event Title" required>
+                            <input type="text" class="form-control" id="title" value="{{ old('title') }}" name="title" placeholder="Enter Event Title" required>
                             <small class="text-danger">{{ $errors->first('title') }}</small>
                         </div>
                         <div class="form-group col-lg-6">
@@ -74,7 +74,7 @@
                                         $IsSelected = "selected";
                                     }
                                 ?>
-                                    <option value="{{$category->id}}" {{$IsSelected}}><?php echo $category->name; ?> </option>
+                                    <option value="{{old('category',$category->id)}}" {{$IsSelected}}><?php echo $category->name; ?> </option>
                                 <?php } ?>
 
                             </select>
@@ -83,7 +83,7 @@
 
                         <div class="form-group col-lg-12">
                             <label for="Description">Description</label>
-                            <textarea id="Description" name="Description" class="form-control" title="Description" placeholder="Description" autocomplete="off" rows="4" required>{{$desription}}</textarea>
+                            <textarea id="Description" name="Description" class="form-control" title="Description" placeholder="Description" autocomplete="off" rows="4">{{  old('Description', $desription) }}</textarea>
                             <small class="text-danger">{{ $errors->first('Description') }}</small>
                         </div>
 
@@ -93,20 +93,20 @@
 
                         <div class="form-group col-12">
                             <div class="icheck-material-primary">
-                                <input type="checkbox" id="IsOnline" name="IsOnline" {{$IsOnline}} onclick="IsOnlineEvent(this);">
-                                <label for="IsOnline">Is this event Online event?</label>
+                                <input type="checkbox" id="IsOnline" name="IsOnline" {{$IsOnline}} value="{{ old('IsOnline') }} " onclick="IsOnlineEvent(this);">
+                                <label for="IsOnline">Is this event online?</label>
                             </div>
                         </div>
 
 
                         <div class="form-group col-lg-6">
                             <label for="Address">Address</label>
-                            <input type="text" id="Address" name="Address" {{$readonly}} value="{{$address}}" class="form-control" title="Address" placeholder="Address" autocomplete="off" rows="0">
+                            <input type="text" id="Address" name="Address" {{$readonly}} class="form-control" title="Address" placeholder="Address" autocomplete="off" rows="0" value="{{  old('Address', $address) }}">
                         </div>
 
                         <div class="form-group col-lg-6">
                             <label for="selectionCategory">City</label>
-                            <select autocomplete="off" name="city" id="city" class=" custom-select" {{$disabled}}>
+                            <select autocomplete="off" value="{{ old('city') }}" name="city" id="city" class=" custom-select"  {{$disabled}}>
                                 <option value="0">Select City</option>
                                 <?php foreach ($cities as $city) {
                                     $IsSelected = "";
@@ -129,7 +129,7 @@
                             <label for="EventDateTime">Event Date</label>
                             <!-- <input type="date" id="EventDateTime" name="EventDateTime" class="form-control"> -->
                             <div class='input-group' id='EventDateTime'>
-                                <input type='text' value="{{$EventDate}}" class="form-control date" name="EventDateTime" id="EventDateTime" required />
+                                <input type='text' value="{{  old('EventDateTime', $EventDate) }}" class="form-control date" name="EventDateTime" id="EventDateTime" required />
                                 <!-- <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </span> -->
