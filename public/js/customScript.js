@@ -6,6 +6,38 @@ $(document).ready(function () {
         ]
     });
 
+    $('#EventDateTime').change(function(time) {
+        var dateRi=$(this).val();
+        
+
+        var defaultdate;
+var defaulttime;
+var hours;
+var minutes;
+var ampm;
+defaultdate = new Date($(this).val());
+defaultdate.setHours(defaultdate.getHours() + 1);
+        hours = defaultdate.getHours() > 12 ? (defaultdate.getHours() - 12).toString() : defaultdate.getHours().toString();
+hours = hours.length == 1 ? "0" + hours : hours;
+minutes = defaultdate.getMinutes().toString();
+minutes = minutes.length == 1 ? "0" + minutes : minutes;
+ampm = defaultdate.getHours() > 11 ? "PM" : "AM";
+defaulttime = hours + ":" + minutes + " " + ampm;
+$("#EventEndDateTime").val(defaultdate.getMonth()+1+"/"+defaultdate.getDate()+"/"+defaultdate.getFullYear()+" "+defaulttime);
+
+
+
+
+
+
+
+    // var later = new datetimepicker(dateRi);
+    // later.setHours(later.getHours() + 1);
+    // later.parse("mm/dd/yy, h:MM:ss TT");
+
+    // $('#EventEndDateTime').val(later);
+  });
+
   });
 
 function findParent(element) {
@@ -23,10 +55,13 @@ function findParent(element) {
 
 function IsOnlineEvent(element){
     if($(element).is(":checked")){
-        $('#Address').attr('value', '');
+        $('#Address').val('');
         $('#Address').attr('readonly',true);
         $('#city').attr('disabled',true);
+        $('#EventUrl').removeClass('d-none');
     }else{
+        $('#EventUrl').val('');
+        $('#EventUrl').addClass('d-none');
         $('#Address').removeAttr ('readonly',false);
         $('#city').attr('disabled',false);
     }

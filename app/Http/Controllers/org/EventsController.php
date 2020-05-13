@@ -52,7 +52,16 @@ class EventsController extends Controller
      */
     public function store(Request $request)
     {
-        $validate = $this->validate($request, [
+        // $validate = $this->validate($request, [
+        //     'EventBannerImage' => 'image|mimes:jpeg,bmp,png,jpg,gif,spg|dimensions:max_width=468,max_height=200',
+        //     'EventThumbnailImage' => 'image|mimes:jpeg,bmp,png,jpg|dimensions:max_width=1280,max_height=720',
+        //     'title' => 'required',
+        //     'category' => 'required',
+        //     'Description' => 'required',
+        //     'EventDateTime' => 'required',
+        // ]);
+
+        $validator = Validator::make($request->all(), [
             'EventBannerImage' => 'image|mimes:jpeg,bmp,png,jpg,gif,spg|dimensions:max_width=468,max_height=200',
             'EventThumbnailImage' => 'image|mimes:jpeg,bmp,png,jpg|dimensions:max_width=1280,max_height=720',
             'title' => 'required',
@@ -60,6 +69,12 @@ class EventsController extends Controller
             'Description' => 'required',
             'EventDateTime' => 'required',
         ]);
+        
+        if ($validator->fails()) {
+            return redirect('org/events/new')
+                        ->withErrors($validator)
+                        ->withInput();
+        }
 
         //banner image
         $fileBanner = $request->file('EventBannerImage');
@@ -88,6 +103,7 @@ class EventsController extends Controller
         $events->user_id = $user->id;
         if (isset($request->IsOnline)) {
             $events->is_online = '1';
+            $events->online_event_url = $request->EventUrl;
         } else {
             $events->city_id = $request->city;
             $events->address = $request->Address;
@@ -95,9 +111,14 @@ class EventsController extends Controller
         }
         // $events->city_id = $request->city;
         // $events->address = $request->Address;
-        $currentDateTime = $request->EventDateTime;
-        $newDateTime = new DateTime($currentDateTime);
-        $events->date_time = $newDateTime;
+        $StartDateTime = $request->EventDateTime;
+        //$StarteDateTi = new DateTime($StartDateTime);
+        $events->date_time = new DateTime($StartDateTime);;
+
+        $EndDateTime = $request->EventEndDateTime;
+        //$newDateTime = new DateTime($EndDateTime);
+        $events->end_date_time = new DateTime($EndDateTime);;
+
         $events->thumbnail = $imageName;
         $events->banner = $imageNameBanner;
         if (isset($request->IsPublic)) {
@@ -111,7 +132,7 @@ class EventsController extends Controller
             $events->is_paid = '0';
         }
         $events->save();
-        // var_dump($events); return;
+        return redirect('org/events');
     }
 
     /**
@@ -173,9 +194,13 @@ class EventsController extends Controller
         // $events->city_id = $request->city;
         // $events->address = $request->Address;
 
-        $currentDateTime = $request->EventDateTime;
-        $newDateTime = new DateTime($currentDateTime);
-        $events->date_time = $newDateTime;
+        $StartDateTime = $request->EventDateTime;
+        //$StarteDateTi = new DateTime($StartDateTime);
+        $events->date_time = new DateTime($StartDateTime);;
+
+        $EndDateTime = $request->EventEndDateTime;
+        //$newDateTime = new DateTime($EndDateTime);
+        $events->end_date_time = new DateTime($EndDateTime);;
 
         $events->thumbnail = $imageName;
         $events->banner = $imageNameBanner;
@@ -191,11 +216,15 @@ class EventsController extends Controller
         }
         if (isset($request->IsOnline)) {
             $events->is_online = '1';
+            $events->city_id = null;
+            $events->address = "";
+            $events->online_event_url = $request->EventUrl;
         } else {
             $events->is_online = '0';
             $events->city_id = $request->city;
             $events->address = $request->Address;
         }
+        
         $events->save();
 
         return redirect('org/events');
