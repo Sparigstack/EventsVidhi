@@ -62,11 +62,12 @@
                         </div>
                         <div class="form-group col-lg-6">
                             <label for="title">Title</label>
-                            <input type="text" class="form-control" id="title" value="{{$title}}" name="title" placeholder="Enter Event Title">
+                            <input type="text" class="form-control" id="title" value="{{$title}}" name="title" placeholder="Enter Event Title" required>
+                            <small class="text-danger">{{ $errors->first('title') }}</small>
                         </div>
                         <div class="form-group col-lg-6">
                             <label for="selectionCategory">Category</label>
-                            <select autocomplete="off" name="category" id="category" class=" custom-select">
+                            <select autocomplete="off" name="category" id="category" class=" custom-select" required>
                                 <option value="0">Select Category</option>
                                 <?php foreach ($categories as $category) {
                                     if ($category->id == $categoryID) {
@@ -77,11 +78,13 @@
                                 <?php } ?>
 
                             </select>
+                            <small class="text-danger">{{ $errors->first('category') }}</small>
                         </div>
 
                         <div class="form-group col-lg-12">
                             <label for="Description">Description</label>
-                            <textarea id="Description" name="Description" class="form-control" title="Description" placeholder="Description" autocomplete="off" rows="4">{{$desription}}</textarea>
+                            <textarea id="Description" name="Description" class="form-control" title="Description" placeholder="Description" autocomplete="off" rows="4" required>{{$desription}}</textarea>
+                            <small class="text-danger">{{ $errors->first('Description') }}</small>
                         </div>
 
                         <div class="locationDetails col-lg-12 mt-3">
@@ -126,11 +129,12 @@
                             <label for="EventDateTime">Event Date</label>
                             <!-- <input type="date" id="EventDateTime" name="EventDateTime" class="form-control"> -->
                             <div class='input-group' id='EventDateTime'>
-                                <input type='text' value="{{$EventDate}}" class="form-control date" name="EventDateTime" id="EventDateTime" />
-                                <span class="input-group-addon">
+                                <input type='text' value="{{$EventDate}}" class="form-control date" name="EventDateTime" id="EventDateTime" required />
+                                <!-- <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
-                                </span>
+                                </span> -->
                             </div>
+                            <small class="text-danger">{{ $errors->first('EventDateTime') }}</small>
                             <!-- datetime-local -->
                         </div>
                         <!-- <div class="form-group col-lg-2">

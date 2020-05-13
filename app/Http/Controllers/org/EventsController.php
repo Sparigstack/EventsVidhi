@@ -55,6 +55,10 @@ class EventsController extends Controller
         $this->validate($request, [
             'EventBannerImage' => 'image|mimes:jpeg,bmp,png,jpg,gif,spg|dimensions:max_width=468,max_height=200',
             'EventThumbnailImage' => 'image|mimes:jpeg,bmp,png,jpg|dimensions:max_width=1280,max_height=720',
+            'title' => 'required',
+            'category' => 'required',
+            'Description' => 'required',
+            'EventDateTime' => 'required',
         ]);
 
         //banner image
@@ -82,8 +86,15 @@ class EventsController extends Controller
         $events->description = $request->Description;
         $events->category_id = $request->category;
         $events->user_id = $user->id;
-        $events->city_id = $request->city;
-        $events->address = $request->Address;
+        if (isset($request->IsOnline)) {
+            $events->is_online = '1';
+        } else {
+            $events->city_id = $request->city;
+            $events->address = $request->Address;
+            $events->is_online = '0';
+        }
+        // $events->city_id = $request->city;
+        // $events->address = $request->Address;
         $currentDateTime = $request->EventDateTime;
         $newDateTime = new DateTime($currentDateTime);
         $events->date_time = $newDateTime;
@@ -128,6 +139,10 @@ class EventsController extends Controller
         $this->validate($request, [
             'EventBannerImage' => 'image|mimes:jpeg,bmp,png,jpg,gif,spg|dimensions:max_width=468,max_height=200',
             'EventThumbnailImage' => 'image|mimes:jpeg,bmp,png,jpg|dimensions:max_width=1280,max_height=720',
+            'title' => 'required',
+            'category' => 'required',
+            'Description' => 'required',
+            'EventDateTime' => 'required',
         ]);
 
         //banner image
@@ -155,8 +170,8 @@ class EventsController extends Controller
         $events->description = $request->Description;
         $events->category_id = $request->category;
         $events->user_id = $user->id;
-        $events->city_id = $request->city;
-        $events->address = $request->Address;
+        // $events->city_id = $request->city;
+        // $events->address = $request->Address;
 
         $currentDateTime = $request->EventDateTime;
         $newDateTime = new DateTime($currentDateTime);
@@ -178,6 +193,8 @@ class EventsController extends Controller
             $events->is_online = '1';
         } else {
             $events->is_online = '0';
+            $events->city_id = $request->city;
+            $events->address = $request->Address;
         }
         $events->save();
 
