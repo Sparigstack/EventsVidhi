@@ -17,9 +17,11 @@
     $IsSelected = "";
     $disabled = "";
     $readonly = "";
-    $EventUrl="";
-    $HiddenEventUrl="d-none";
+    $EventUrl = "";
+    $HiddenEventUrl = "d-none";
     $ActionCall = url('org/events/store');
+    $MultSelectTags = "";
+    $checkCount = "no";
 
     if (!empty($event)) {
         $ActionCall = url('org/events/edit/' . $event->id);
@@ -39,8 +41,8 @@
             $IsOnline = "checked";
             $disabled = "disabled='true'";
             $readonly = "readonly='true'";
-            $HiddenEventUrl="";
-            $EventUrl=$event->online_event_url;;
+            $HiddenEventUrl = "";
+            $EventUrl = $event->online_event_url;;
         }
         if ($event->is_paid) {
             $IsPaid = "checked";
@@ -61,7 +63,8 @@
                         {{ session('status') }}
                     </div>
                     @endif
-                    <form class="row" method="post" action="{{$ActionCall}}" enctype="multipart/form-data">
+                    <form class="row" ID="EventSaveForm" name="EventSaveForm" onsubmit="return ValidateEventForm(this)" method="post" action="{{$ActionCall}}" enctype="multipart/form-data">
+                        <!-- <input type="text" value="{{$ActionCall}}"> -->
                         {{ csrf_field() }}
                         <div class="basicDetails col-lg-12">
                             <h5> Basic Details </h5>
@@ -71,20 +74,35 @@
                             <input type="text" class="form-control" id="title" value="{{ old('title',$title) }}" name="title" placeholder="Enter Event Title" required>
                             <small class="text-danger">{{ $errors->first('title') }}</small>
                         </div>
-                        <div class="form-group col-lg-6">
-                            <label for="selectionCategory">Category</label>
-                            <select autocomplete="off" name="category" id="category" class=" custom-select" required>
-                                <option value>Select Category</option>
-                                <?php foreach ($categories as $category) {
-                                    if ($category->id == $categoryID) {
-                                        $IsSelected = "selected";
-                                    }
-                                ?>
-                                    <option value="{{old('category',$category->id)}}" {{$IsSelected}}  @if (old('category') == $category->id) selected="selected" @endif ><?php echo $category->name; ?> </option>
-                                <?php } ?>
 
+
+                        <div class="form-group col-lg-6">
+                            <label>Select Categories</label>
+                            <select class="form-control multiple-select" multiple="multiple" name="category" id="category" required>
+                                <?php foreach ($categories as $category) {
+                                    if (!empty($event)) {
+                                        foreach ($event->eventCategory as $EventCategory) {
+
+                                            if ($category->id == $EventCategory->category_id) {
+                                                $IsSelected = "selected";
+                                                if ($checkCount == "no") {
+                                                    $MultSelectTags .= strval($category->id);
+                                                } else {
+                                                    $MultSelectTags .= "," . $category->id;
+                                                }
+                                                $checkCount = "yes";
+                                            } else {
+                                                $IsSelected = "";
+                                            }
+                                        }
+                                    }
+
+                                ?>
+                                    <option value="{{old('category',$category->id)}}" {{$IsSelected}} @if (old('category')==$category->id) selected="selected" @endif ><?php echo $category->name; ?> </option>
+                                <?php } ?>
                             </select>
                             <small class="text-danger">{{ $errors->first('category') }}</small>
+                            <textarea id="HiddenCategoyID" name="HiddenCategoyID" required class="form-controld d-none" title="HiddenCategoyID" placeholder="HiddenCategoyID" autocomplete="off" rows="4">{{$MultSelectTags}}</textarea>
                         </div>
 
                         <div class="form-group col-lg-12">
@@ -99,7 +117,7 @@
 
                         <div class="form-group col-3">
                             <div class="icheck-material-primary">
-                                <input type="checkbox" id="IsOnline" name="IsOnline" {{$IsOnline}}  onclick="IsOnlineEvent(this);">
+                                <input type="checkbox" id="IsOnline" name="IsOnline" {{$IsOnline}}  @if( is_array(old('IsOnline')) && in_array(1, old('IsOnline'))) checked @endif onclick="IsOnlineEvent(this);">
                                 <label for="IsOnline">Is this event online?</label>
                             </div>
                         </div>
@@ -124,7 +142,7 @@
                                         $IsSelected = "selected";
                                     }
                                 ?>
-                                    <option value="{{$city->id}}" {{$IsSelected}}  @if (old('city') == $city->id) selected="selected" @endif  ><?php echo $city->name; ?> </option>
+                                    <option value="{{$city->id}}" {{$IsSelected}} @if (old('city')==$city->id) selected="selected" @endif ><?php echo $city->name; ?> </option>
                                 <?php } ?>
 
                             </select>
@@ -138,16 +156,16 @@
                             <label for="EventDateTime">Event Start Date & Time</label>
                             <div class='input-group' id=''>
                                 <input type='text' value="{{  old('EventDateTime', $EventDate) }}" class="form-control date" autocomplete="off" name="EventDateTime" id="EventDateTime" required />
-                              
+
                             </div>
                             <small class="text-danger">{{ $errors->first('EventDateTime') }}</small>
                         </div>
-                        
+
                         <div class="form-group col-lg-3">
                             <label for="EventDateTime">Event End Date & Time</label>
                             <div class='input-group' id=''>
                                 <input type='text' value="{{  old('EventEndDateTime', $EventEndDate) }}" class="form-control date" autocomplete="off" name="EventEndDateTime" id="EventEndDateTime" required />
-                              
+
                             </div>
                             <small class="text-danger">{{ $errors->first('EventEndDateTime') }}</small>
                         </div>
@@ -174,16 +192,18 @@
                         <div class="form-group col-lg-6">
                             <label for="EventBannerImage">Banner Image (optional)</label>
                             <p style="font-size: .7pc;">Image size must be less than or eqaul to 1MB and Dimension should be 468 &#10005; 200</p>
-                            <input type="file" id="EventBannerImage" name="EventBannerImage" class="form-control" onchange="document.getElementById('bannerImage').src = window.URL.createObjectURL(this.files[0]);document.getElementById('bannerImage').classList.remove('d-none');">
+                            <input type="file" accept="image/*" id="EventBannerImage" name="EventBannerImage" class="form-control files" onchange="document.getElementById('bannerImage').src = window.URL.createObjectURL(this.files[0]);document.getElementById('bannerImage').classList.remove('d-none');">
                             <small class="text-danger">{{ $errors->first('EventBannerImage') }}</small>
+                            <div class="text-danger d-none SizeError" id='SizeErrorBannerImage'>Image size must be less than or eqaul to 1MB</div>
                             <img id="bannerImage" class="d-none mt-2 imageRadius w-100" alt="your image" width="100" height="100" />
 
                         </div>
                         <div class="form-group col-lg-6">
                             <label for="EventThumbnailImage">Thumbnail Image (optional)</label>
                             <p style="font-size: .7pc;">Image size must be less than or eqaul to 1MB and Dimension should be 1280 &#10005; 720</p>
-                            <input type="file" id="EventThumbnailImage" name="EventThumbnailImage" class="form-control" onchange="document.getElementById('thumbnailImage').src = window.URL.createObjectURL(this.files[0]);document.getElementById('thumbnailImage').classList.remove('d-none');">
+                            <input type="file" accept="image/*" id="EventThumbnailImage" name="EventThumbnailImage" class="form-control files" onchange="document.getElementById('thumbnailImage').src = window.URL.createObjectURL(this.files[0]);document.getElementById('thumbnailImage').classList.remove('d-none');">
                             <small class="text-danger">{{ $errors->first('EventThumbnailImage') }}</small>
+                            <div class="text-danger d-none SizeError" id='SizeErrorBannerImage'>Image size must be less than or eqaul to 1MB</div>
                             <img id="thumbnailImage" class="d-none m-2 imageRadius" alt="your image" width="100" height="100" />
 
                         </div>
@@ -197,7 +217,7 @@
 
 
                         <div class="form-group col-lg-12">
-                            <button type="submit" class="btn btn-primary px-5 pull-right"> Save Event</button>
+                            <button type="submit" id="Submit" class="btn btn-primary px-5 pull-right"> Save Event</button>
                         </div>
                     </form>
                 </div>

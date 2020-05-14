@@ -1,49 +1,53 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        <!-- CSRF Token -->
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Vidhi Events') }}</title>
+    <title>{{ config('app.name', 'Vidhi Events') }}</title>
 
-        <!-- Scripts -->
-        <!-- <script src="{{ asset('js/app.js') }}" defer></script> -->
+    <!-- Scripts -->
+    <!-- <script src="{{ asset('js/app.js') }}" defer></script> -->
 
-        <!-- Fonts -->
-        <link rel="dns-prefetch" href="//fonts.gstatic.com">
-        <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <!-- Fonts -->
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
-        <!-- datetimepicker -->
-        <link href="{{ asset('assets/plugins/datetimepicker-master/jquery.datetimepicker.css') }}" rel="stylesheet">
-        <!-- Styles -->
-        <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-        <!-- custom styles -->
-        <link href="{{ asset('css/style.css') }}" rel="stylesheet">
-        <!-- simplebar CSS-->
-        <link href="{{ asset('assets/plugins/simplebar/css/simplebar.css') }}" rel="stylesheet">
-        <!-- Bootstrap core CSS-->
-        <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet">
-        <!--animate CSS-->
-    <li nk href="{{ asset('assets/css/animate.css') }}" rel="stylesheet" type="text/css">
-        <!--Icons CSS-->
-        <link href="{{ asset('assets/css/icons.css') }}" rel="stylesheet" type="text/css">
-        <!--Sidebar CSS-->
-        <link href="{{ asset('assets/css/sidebar-menu.css') }}" rel="stylesheet">
-        <!--Custom Style-->
-        <link href="{{ asset('assets/css/app-style.css') }}" rel="stylesheet">
-        <!--Bootstrap date picker-->
-        <link href="{{ asset('assets/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
+    <!-- datetimepicker -->
+    <link href="{{ asset('assets/plugins/datetimepicker-master/jquery.datetimepicker.css') }}" rel="stylesheet">
+    <!-- Styles -->
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <!-- custom styles -->
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <!-- simplebar CSS-->
+    <link href="{{ asset('assets/plugins/simplebar/css/simplebar.css') }}" rel="stylesheet">
+    <!-- Bootstrap core CSS-->
+    <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet">
+    <!--animate CSS-->
+    <link href="{{ asset('assets/css/animate.css') }}" rel="stylesheet" type="text/css">
+    <!--Icons CSS-->
+    <link href="{{ asset('assets/css/icons.css') }}" rel="stylesheet" type="text/css">
+    <!--Sidebar CSS-->
+    <link href="{{ asset('assets/css/sidebar-menu.css') }}" rel="stylesheet">
+    <!--Custom Style-->
+    <link href="{{ asset('assets/css/app-style.css') }}" rel="stylesheet">
+    <!--Bootstrap date picker-->
+    <link href="{{ asset('assets/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
 
-        <!-- Data Tables -->
-        <link href="{{ asset('assets/plugins/bootstrap-datatable/css/buttons.bootstrap4.min.css') }}" rel="stylesheet">
-        <link href="{{ asset('assets/plugins/bootstrap-datatable/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+    <!-- Data Tables -->
+    <link href="{{ asset('assets/plugins/bootstrap-datatable/css/buttons.bootstrap4.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/plugins/bootstrap-datatable/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+    <!--multi select-->
+    <link href="{{ asset('assets/plugins/jquery-multi-select/multi-select.css') }}" rel="stylesheet" type="text/css">
+    <!--Select Plugins-->
+    <link href="{{ asset('assets/plugins/select2/css/select2.min.css') }}" rel="stylesheet" />
 
 
-    </head>
+</head>
 
 <body>
     <div id="pageloader-overlay" class="visible incoming" style="display: none;">
@@ -151,12 +155,12 @@
                             <li class="dropdown-item"><i class="icon-settings mr-2"></i> Profile</li>
                             <li class="dropdown-divider"></li>
                             <li class="dropdown-item"><a class style="color:inherit" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();" ><i class="icon-power mr-2"></i> Logout</a></li>
+                                                     document.getElementById('logout-form').submit();"><i class="icon-power mr-2"></i> Logout</a></li>
                         </ul>
                     </li>
                 </ul>
             </nav>
-        </header>   
+        </header>
         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
             @csrf
         </form>
@@ -173,7 +177,7 @@
     <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/simplebar/js/simplebar.js') }}"></script>
     <script src="{{ asset('assets/js/sidebar-menu.js') }}"></script>
-    <script src="{{ asset('assets/js/jquery.loading-indicator.js') }}"></script>
+    <!-- <script src="{{ asset('assets/js/jquery.loading-indicator.js') }}"></script> -->
     <script src="{{ asset('assets/js/app-script.js') }}"></script>
     <script src="{{ asset('assets/plugins/jquery-knob/jquery.knob.js') }}"></script>
     <script src="{{asset('/js/customScript.js')}}" type="text/javascript"></script>
@@ -188,30 +192,92 @@
     <script src="{{ asset('assets/plugins/bootstrap-datatable/js/jszip.min.js') }}"></script>
     <script src="{{asset('assets/plugins/bootstrap-datatable/js/pdfmake.min.js')}}"></script>
     <script src="{{asset('assets/plugins/bootstrap-datatable/js/vfs_fonts.js')}}"></script>
-
-
     <!-- datetimepicker -->
     <script src="{{ asset('assets/plugins/datetimepicker-master/jquery.datetimepicker.js') }}"></script>
-    <!-- <script src="{{ asset('assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+    <!--Multi Select Js-->
+    <script src="{{ asset('assets/plugins/jquery-multi-select/jquery.multi-select.js') }}"></script>
+    <script src="{{ asset('assets/plugins/jquery-multi-select/jquery.quicksearch.js') }}"></script>
+    <!--Select Plugins Js-->
+    <script src="{{ asset('assets/plugins/select2/js/select2.min.js') }}"></script>
     <script>
-      $('#default-datepicker').datepicker({
-        todayHighlight: true,
-        format: 'mm/dd/yyyy',
-        startDate: '-3d'
-      });
-      $('#autoclose-datepicker').datepicker({
-        autoclose: true,
-        todayHighlight: true
-      });
+        $(document).ready(function() {
+            $('.single-select').select2();
 
-      $('#inline-datepicker').datepicker({
-         todayHighlight: true
-      });
+            $('.multiple-select').select2();
+            var MultiSlectCounter=0;
+            $('.multiple-select').on('select2:select', function(e) {
+                console.log(e.params.data.id);
+                if(MultiSlectCounter==0){
+                    $('#HiddenCategoyID').append(e.params.data.id);
+                }else{
+                    $('#HiddenCategoyID').append(","+e.params.data.id);
+                }
+                
+                MultiSlectCounter+=1;
+            });
+            $('.multiple-select').on('select2:unselecting', function(e) {
+                console.log(e.params.args.data.id);
+                var str = $('#HiddenCategoyID').val();
+                var res = str.replace(e.params.args.data.id, "");
+                $('#HiddenCategoyID').empty();
+                $('#HiddenCategoyID').append(res);
+            });
 
-      $('#dateragne-picker .input-daterange').datepicker({
-       });
 
-    </script> -->
+            //multiselect start
+
+            $('#my_multi_select1').multiSelect();
+            $('#my_multi_select2').multiSelect({
+                selectableOptgroup: true
+            });
+
+            $('#my_multi_select3').multiSelect({
+                selectableHeader: "<input type='text' class='form-control search-input' autocomplete='off' placeholder='search...'>",
+                selectionHeader: "<input type='text' class='form-control search-input' autocomplete='off' placeholder='search...'>",
+                afterInit: function(ms) {
+                    var that = this,
+                        $selectableSearch = that.$selectableUl.prev(),
+                        $selectionSearch = that.$selectionUl.prev(),
+                        selectableSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selectable:not(.ms-selected)',
+                        selectionSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selection.ms-selected';
+
+                    that.qs1 = $selectableSearch.quicksearch(selectableSearchString)
+                        .on('keydown', function(e) {
+                            if (e.which === 40) {
+                                that.$selectableUl.focus();
+                                return false;
+                            }
+                        });
+
+                    that.qs2 = $selectionSearch.quicksearch(selectionSearchString)
+                        .on('keydown', function(e) {
+                            if (e.which == 40) {
+                                that.$selectionUl.focus();
+                                return false;
+                            }
+                        });
+                },
+                afterSelect: function() {
+                    this.qs1.cache();
+                    this.qs2.cache();
+                },
+                afterDeselect: function() {
+                    this.qs1.cache();
+                    this.qs2.cache();
+                }
+            });
+
+            $('.custom-header').multiSelect({
+                selectableHeader: "<div class='custom-header'>Selectable items</div>",
+                selectionHeader: "<div class='custom-header'>Selection items</div>",
+                selectableFooter: "<div class='custom-header'>Selectable footer</div>",
+                selectionFooter: "<div class='custom-header'>Selection footer</div>"
+            });
+
+
+        });
+    </script>
+
 
 </body>
 

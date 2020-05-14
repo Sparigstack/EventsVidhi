@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Event;
 use App\Category;
 use App\City;
+use App\EventCategory;
 use DateTime;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\UploadedFile;
@@ -60,7 +61,8 @@ class EventsController extends Controller
         //     'Description' => 'required',
         //     'EventDateTime' => 'required',
         // ]);
-
+         
+        
         $validator = Validator::make($request->all(), [
             'EventBannerImage' => 'image|mimes:jpeg,bmp,png,jpg,gif,spg|dimensions:max_width=468,max_height=200',
             'EventThumbnailImage' => 'image|mimes:jpeg,bmp,png,jpg|dimensions:max_width=1280,max_height=720',
@@ -69,11 +71,11 @@ class EventsController extends Controller
             'Description' => 'required',
             'EventDateTime' => 'required',
         ]);
-        
+
         if ($validator->fails()) {
             return redirect('org/events/new')
-                        ->withErrors($validator)
-                        ->withInput();
+                ->withErrors($validator)
+                ->withInput();
         }
 
         //banner image
@@ -132,6 +134,16 @@ class EventsController extends Controller
             $events->is_paid = '0';
         }
         $events->save();
+
+        $string = $request->HiddenCategoyID;
+        $EventCategorieIds = preg_split("/\,/", $string);
+        
+        foreach($EventCategorieIds as $categoryID){
+            $eventCategory = new EventCategory;
+            $eventCategory->event_id=$events->id;
+            $eventCategory->category_id=number_format($categoryID);
+            $eventCategory->save();
+        }
         return redirect('org/events');
     }
 
@@ -224,7 +236,16 @@ class EventsController extends Controller
             $events->city_id = $request->city;
             $events->address = $request->Address;
         }
-        
+        $string = $request->HiddenCategoyID;
+        $EventCategorieIds = preg_split("/\,/", $string);
+        EventCategory::where('event_id',$events->id)->delete();
+        foreach($EventCategorieIds as $categoryID){
+            $eventCategory = new EventCategory;
+            $eventCategory->event_id=$events->id;
+            $eventCategory->category_id=number_format($categoryID);
+            $eventCategory->save();
+        }
+
         $events->save();
 
         return redirect('org/events');
