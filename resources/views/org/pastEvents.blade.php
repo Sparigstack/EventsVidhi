@@ -8,7 +8,7 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header addNewEventButton">
-                       <i class="fa fa-table pt-3"></i> Upcoming Events
+                       <i class="fa fa-table pt-3"></i> Past Events
                         <button id="" class="btn m-1 pull-right" style="border:1px solid transparent;"><a href="{{url("org/events/new")}}">Add New Event</a></button>
                     </div>
                     <div class="card-body">
@@ -40,8 +40,8 @@
                                                 }
                                                 ?></td>
                                             <td>
-                                                <i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-edit" onclick="window.location='{{ url("org/events/$event->id") }}'"></i>
-                                                <a onclick="deleteEvent(this);" db-delete-id="{{$event->id}}"><i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-trash"></i></a> 
+                                                <!-- <a onclick="deleteEvent(this);" db-delete-id="{{$event->id}}"><i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-trash"></i></a> -->
+                                                <a><i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-eye"></i></a> 
                                             </td>
                                         </tr>
                                     <?php }  ?>

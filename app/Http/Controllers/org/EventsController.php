@@ -4,6 +4,7 @@ namespace App\Http\Controllers\org;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use DB;
 use App\Event;
 use App\Category;
 use App\City;
@@ -29,8 +30,19 @@ class EventsController extends Controller
      */
     public function index()
     {
+        // $event->date_time >= date('Y-m-d',strtotime(now()))
         $user = Auth::user();
-        return view('org/events', compact('user'));
+        $events = Event::where('user_id',$user->id)->where('date_time','>=',date('Y-m-d',strtotime(now())))
+            ->get();
+        return view('org/events', compact('events'));
+    }
+
+    public function pastEvents()
+    {
+        $user = Auth::user();
+        $events = Event::where('user_id',$user->id)->where('date_time','<=',date('Y-m-d',strtotime(now())))
+            ->get();
+        return view('org/pastEvents', compact('events'));
     }
 
     /**
