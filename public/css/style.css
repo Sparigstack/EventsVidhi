@@ -8,3 +8,9 @@
 .xdsoft_datetimepicker .xdsoft_datepicker.active+.xdsoft_timepicker{
 	margin-top: 30px !important;
 }
+.addNewEventButton button{
+	background: #80808021 !important;
+}
+.addNewEventButton button a{
+	color:black !important;
+}
