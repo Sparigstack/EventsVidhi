@@ -13,11 +13,9 @@ use Illuminate\Http\UploadedFile;
 use File;
 use Illuminate\Support\Facades\Validator;
 
-class EventsController extends Controller
-{
+class EventsController extends Controller {
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->middleware('verified');
     }
 
@@ -26,8 +24,7 @@ class EventsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index() {
         $user = Auth::user();
         return view('org/events', compact('user'));
     }
@@ -37,8 +34,7 @@ class EventsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
         $categories = Category::all();
         $cities = City::all();
         return view('org/createEvent', compact('categories', 'cities'));
@@ -50,9 +46,8 @@ class EventsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        $this->validate($request, [
+    public function store(Request $request) {
+        $validator = $this->validate($request, [
             'EventBannerImage' => 'image|mimes:jpeg,bmp,png,jpg,gif,spg|dimensions:max_width=468,max_height=200',
             'EventThumbnailImage' => 'image|mimes:jpeg,bmp,png,jpg|dimensions:max_width=1280,max_height=720',
             'title' => 'required',
@@ -60,6 +55,12 @@ class EventsController extends Controller
             'Description' => 'required',
             'EventDateTime' => 'required',
         ]);
+
+
+
+//        if ($validator->fails()) {
+//            return \Redirect::back()->withInput()->withErrors($validator);
+//        }
 
         //banner image
         $fileBanner = $request->file('EventBannerImage');
@@ -120,8 +121,7 @@ class EventsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id) {
         $event = Event::findOrFail($id);
         $categories = Category::all();
         $cities = City::all();
@@ -134,8 +134,7 @@ class EventsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request, $id)
-    {
+    public function edit(Request $request, $id) {
         $this->validate($request, [
             'EventBannerImage' => 'image|mimes:jpeg,bmp,png,jpg,gif,spg|dimensions:max_width=468,max_height=200',
             'EventThumbnailImage' => 'image|mimes:jpeg,bmp,png,jpg|dimensions:max_width=1280,max_height=720',
@@ -208,8 +207,7 @@ class EventsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id) {
         //
     }
 
@@ -219,9 +217,9 @@ class EventsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request)
-    {
+    public function destroy(Request $request) {
         //
         $event = Event::find($request->eventDeleteId)->delete();
     }
+
 }
