@@ -28,6 +28,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 ///All routes for Organizer panel will be here.
 Route::get('org/events', 'org\EventsController@index');
+Route::get('org/pastEvents', 'org\EventsController@pastEvents');
 Route::get('org/events/new', 'org\EventsController@create');
 Route::get('org/events/{eventid}', 'org\EventsController@show');
 Route::post('org/events/store', 'org\EventsController@store');

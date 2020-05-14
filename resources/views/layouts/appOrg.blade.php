@@ -85,7 +85,9 @@
                                 <i class="zmdi zmdi-view-dashboard"></i> <span>Events</span><i class="fa fa-angle-left pull-right"></i>
                             </a>
                             <ul class="sidebar-submenu in">
-                                <li class="active"><a href="{{ url('org/events/new') }}" class="active"><i class="zmdi zmdi-long-arrow-right"></i> Add Event</a></li>
+                                <li class="active"><a href="{{ url('org/events') }}" class="active"><i class="zmdi zmdi-long-arrow-right"></i> Upcoming Events</a></li>
+                                <li class="active"><a href="{{ url('org/events/new') }}" class="active"><i class="zmdi zmdi-long-arrow-right"></i> Add New Event</a></li>
+                                <li class="active"><a href="{{ url('org/pastEvents') }}" class="active"><i class="zmdi zmdi-long-arrow-right"></i> Past Events</a></li>
                             </ul>
                         </li>
                         <li>
