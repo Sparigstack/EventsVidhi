@@ -81,7 +81,7 @@
                     <ul class="sidebar-menu do-nicescrol in">
                         <li class="sidebar-header">MAIN NAVIGATION</li>
                         <li class="active">
-                            <a href="javaScript:void();" class="waves-effect">
+                            <a href="{{ url('org/events') }}" class="waves-effect">
                                 <i class="zmdi zmdi-view-dashboard"></i> <span>Events</span><i class="fa fa-angle-left pull-right"></i>
                             </a>
                             <ul class="sidebar-submenu in">
