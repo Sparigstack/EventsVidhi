@@ -4,18 +4,35 @@ namespace App\Http\Controllers\org;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
-class VideosController extends Controller
-{
+class VideosController extends Controller {
+
+    public function __construct() {
+        $this->middleware('verified');
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index() {
         //
-        return view('org/videos');
+        $url = 'https://s3.' . env('AWS_DEFAULT_REGION') . '.amazonaws.com/' . env('AWS_BUCKET') . '/';
+       $images = [];
+       $files = Storage::disk('s3')->files('images');
+           foreach ($files as $file) {
+               $images[] = [
+                   'name' => str_replace('images/', '', $file),
+                   'src' => $url . $file
+               ];
+           }
+           var_dump($images);
+           return;
+       return view('org/videos', compact('images'));
+       
+        //return view('org/videos');
     }
 
     /**
@@ -23,8 +40,7 @@ class VideosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
         //
         return view('org/createVideo');
     }
@@ -35,10 +51,24 @@ class VideosController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        request()->file('VideoFile')->store('demo-folder','s3');
-        return back();
+    public function store(Request $request) {
+        
+//        request()->file('VideoFile')->store('demofolder','local');
+//        return back();
+//        $this->validate($request, [
+//            'image' => 'required|image|max:2048'
+//        ]);
+        //return 'validation passed';
+        if ($request->hasFile('VideoFile')) {
+            $file = $request->file('VideoFile');
+            $name = time() . $file->getClientOriginalName();
+            $filePath = 'images/' . $name;
+            Storage::disk('s3')->put($filePath, file_get_contents($file));
+        }
+        else{
+            return 'from else';
+        }
+        return back()->withSuccess('Image uploaded successfully');
     }
 
     /**
@@ -47,8 +77,7 @@ class VideosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id) {
         //
     }
 
@@ -58,8 +87,7 @@ class VideosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
+    public function edit($id) {
         //
     }
 
@@ -70,8 +98,7 @@ class VideosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id) {
         //
     }
 
@@ -81,8 +108,8 @@ class VideosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
         //
     }
+
 }
