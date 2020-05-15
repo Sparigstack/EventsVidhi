@@ -27,4 +27,8 @@ class Event extends Model
     public function city() {
         return $this->belongsTo('App\City');
     }
+
+    public function eventCategory() {
+        return $this->hasMany('App\EventCategory');
+    }
 }
