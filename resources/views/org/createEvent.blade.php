@@ -9,6 +9,7 @@
     $desription = "";
     $address = "";
     $cityID = 0;
+    $timezoneId = 0;
     $EventDate = "";
     $EventEndDate = "";
     $IsPublic = "";
@@ -33,6 +34,7 @@
         $EventEndDate = $event->end_date_time;
         $categoryID = $event->category_id;
         $cityID = $event->city_id;
+        $timezoneId = $event->timezone_id;
 
         if ($event->is_public) {
             $IsPublic = "checked";
@@ -52,7 +54,7 @@
     ?>
     <h5 class="mb-3">{{$CardTitle}}</h5>
     <div class="row">
-        <div class="card">
+        <div class="card w-100">
             <div class="card-body">
                 <ul class="nav nav-tabs nav-tabs-info nav-justified">
                     <li class="nav-item">
@@ -135,11 +137,11 @@
                 <div class="col-lg-6">
                 <div class="card">
                     <div class="card-body">
-                        <div class="locationDetails col-lg-12 mt-3">
+                        <div class="locationDetails col-lg-12 mt-3 pt-2">
                             <h5> Location Details </h5>
                         </div>
 
-                        <div class="form-group col-12 mt-3">
+                        <div class="form-group col-12 mt-4">
                             <div class="icheck-material-primary">
                                 <input type="checkbox" id="IsOnline" name="IsOnline" {{$IsOnline}}  @if( is_array(old('IsOnline')) && in_array(1, old('IsOnline'))) checked @endif onclick="IsOnlineEvent(this);">
                                 <label for="IsOnline">Is this event online?</label>
@@ -199,22 +201,24 @@
                             <small class="text-danger">{{ $errors->first('EventEndDateTime') }}</small>
                         </div>
 
-                        <div class="row col-lg-12">
-                        <div class="form-group col-lg-6">
-                            <label for="BlankLabel"></label>
-                            <div class="icheck-material-primary">
-                                <input type="checkbox" id="IsPublic" name="IsPublic" {{$IsPublic}}>
-                                <label for="IsPublic"> Is this Public Event?</label>
-                            </div>
+                        <div class="form-group col-lg-12">
+                            <label for="cityTimezone mb-0">Timezone</label>
+                            <select autocomplete="off" value="{{ old('cityTimezone') }}" name="cityTimezone" id="cityTimezone" class=" custom-select">
+                                <option value="0">Select Timezone</option>
+                                <?php 
+                                foreach ($cityTimeZones as $timeZones) {
+                                    $IsSelected = "";
+                                    if ($timeZones->id == $timezoneId) {
+                                        $IsSelected = "selected";
+                                    }
+                                ?>
+                                    <option value="{{$timeZones->id}}" {{$IsSelected}} @if (old('cityTimezone')==$timeZones->id) selected="selected" @endif ><?php echo $timeZones->name; ?> </option>
+                                <?php } ?>
+
+                            </select>
                         </div>
-                        <div class="form-group col-lg-6">
-                            <label for="BlankLabel"></label>
-                            <div class="icheck-material-primary">
-                                <input type="checkbox" id="IsPaid" name="IsPaid" {{$IsPaid}}>
-                                <label for="IsPaid">Is this Paid Event?</label>
-                            </div>
-                        </div>
-                    </div>
+
+                        
                         </div>
                     </div>
                 </div>
@@ -246,6 +250,22 @@
                             <div class="text-danger d-none SizeError" id='SizeErrorBannerImage'>Image size must be less than or eqaul to 1MB</div>
                             <img id="thumbnailImage" class="d-none m-2 imageRadius" alt="your image" width="100" height="100" />
                         </div>
+                        <div class="row col-lg-12">
+                        <div class="form-group col-lg-3">
+                            <label for="BlankLabel"></label>
+                            <div class="icheck-material-primary">
+                                <input type="checkbox" id="IsPublic" name="IsPublic" {{$IsPublic}}>
+                                <label for="IsPublic"> Is this Public Event?</label>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-3">
+                            <label for="BlankLabel"></label>
+                            <div class="icheck-material-primary">
+                                <input type="checkbox" id="IsPaid" name="IsPaid" {{$IsPaid}}>
+                                <label for="IsPaid">Is this Paid Event?</label>
+                            </div>
+                        </div>
+                    </div>
                         </div>
                     </div>
                 </div>

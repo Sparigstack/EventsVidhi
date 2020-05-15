@@ -8,6 +8,7 @@ use DB;
 use App\Event;
 use App\Category;
 use App\City;
+use App\Timezone;
 use App\EventCategory;
 use DateTime;
 use Illuminate\Support\Facades\Auth;
@@ -54,7 +55,8 @@ class EventsController extends Controller
     {
         $categories = Category::all();
         $cities = City::all();
-        return view('org/createEvent', compact('categories', 'cities'));
+        $cityTimeZones = Timezone::all();
+        return view('org/createEvent', compact('categories', 'cities', 'cityTimeZones'));
     }
 
     /**
@@ -127,11 +129,12 @@ class EventsController extends Controller
         // $events->address = $request->Address;
         $StartDateTime = $request->EventDateTime;
         //$StarteDateTi = new DateTime($StartDateTime);
-        $events->date_time = new DateTime($StartDateTime);;
+        $events->date_time = new DateTime($StartDateTime);
 
         $EndDateTime = $request->EventEndDateTime;
         //$newDateTime = new DateTime($EndDateTime);
-        $events->end_date_time = new DateTime($EndDateTime);;
+        $events->end_date_time = new DateTime($EndDateTime);
+        $events->timezone_id = $request->cityTimezone;
 
         $events->thumbnail = $imageName;
         $events->banner = $imageNameBanner;
@@ -170,7 +173,8 @@ class EventsController extends Controller
         $event = Event::findOrFail($id);
         $categories = Category::all();
         $cities = City::all();
-        return view('org/createEvent', compact('categories', 'cities', 'event'));
+        $cityTimeZones = Timezone::all();
+        return view('org/createEvent', compact('categories', 'cities', 'event','cityTimeZones'));
     }
 
     /**
@@ -224,7 +228,8 @@ class EventsController extends Controller
 
         $EndDateTime = $request->EventEndDateTime;
         //$newDateTime = new DateTime($EndDateTime);
-        $events->end_date_time = new DateTime($EndDateTime);;
+        $events->end_date_time = new DateTime($EndDateTime);
+        $events->timezone_id = $request->cityTimezone;
 
         $events->thumbnail = $imageName;
         $events->banner = $imageNameBanner;
