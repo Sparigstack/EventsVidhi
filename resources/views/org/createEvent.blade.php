@@ -251,7 +251,10 @@
                 </div>
             </div>
         </div>
-    
+    <div class="form-group col-lg-12">
+        <button type="submit" id="Submit" class="btn btn-primary px-5 pull-right"> Save Event</button>
+    </div>
+    </form>
 
                         <!-- <div class="form-group col-lg-6">
                             <label for="input-5">Durations</label>
@@ -269,10 +272,6 @@
     </div>
     </div>
     </div>
-    <div class="form-group col-lg-12">
-        <button type="submit" id="Submit" class="btn btn-primary px-5 pull-right"> Save Event</button>
-    </div>
-</form>
 </div>
 @endsection
 
