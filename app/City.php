@@ -8,9 +8,9 @@ class City extends Model
 {
     protected $table="cities";
     
-    ///each user may have multiple events - field - user_id
+    ///each user may have multiple events - field - city_id
     ///returns array of object
-    // public function events() {
-    //     return $this->hasMany('App\Event');
-    // }
+     public function events() {
+         return $this->hasMany('App\Event');
+     }
 }

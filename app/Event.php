@@ -27,6 +27,12 @@ class Event extends Model
     public function city() {
         return $this->belongsTo('App\City');
     }
+    
+    ///each event belongs to some timezone, field - timezone_id
+    ///returns single object
+    public function timezone() {
+        return $this->belongsTo('App\Timezone');
+    }
 
     public function eventCategory() {
         return $this->hasMany('App\EventCategory');
