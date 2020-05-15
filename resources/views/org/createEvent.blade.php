@@ -1,7 +1,7 @@
 @extends('layouts.appOrg')
 
 @section('content')
-<div class="container-fluid">
+<div class="container-fluid mt-3 createEventContainer">
     <?php
     $CardTitle = "Add New Event";
     $title = "";
@@ -50,14 +50,30 @@
     }
 
     ?>
+    <h5 class="mb-3">{{$CardTitle}}</h5>
     <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
-                <div class="card-body">
-                    <div class="card-title">
-                        <h5>{{$CardTitle}}</h5>
-                    </div>
-                    <hr>
+        <div class="card">
+            <div class="card-body">
+                <ul class="nav nav-tabs nav-tabs-info nav-justified">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#tabe-13"><span class="hidden-xs">Details</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#tabe-14"><span class="hidden-xs">Participants</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#tabe-15"><span class="hidden-xs">Promote</span></a>
+                    </li>
+                </ul>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                            <div class="card-title">
+                            <!-- <h5>{{$CardTitle}}</h5> -->
+                            </div>
+                            <!-- <hr> -->
                     @if (session('status'))
                     <div class="alert alert-success">
                         {{ session('status') }}
@@ -110,29 +126,37 @@
                             <textarea id="Description" name="Description" required class="form-control" title="Description" placeholder="Description" autocomplete="off" rows="4">{{ old('Description', $desription) }}</textarea>
                             <small class="text-danger">{{ $errors->first('Description') }}</small>
                         </div>
+                    </div>
+                </div>
+        </div>
+    </div>
 
+            <div class="row">
+                <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
                         <div class="locationDetails col-lg-12 mt-3">
                             <h5> Location Details </h5>
                         </div>
 
-                        <div class="form-group col-3">
+                        <div class="form-group col-12 mt-3">
                             <div class="icheck-material-primary">
                                 <input type="checkbox" id="IsOnline" name="IsOnline" {{$IsOnline}}  @if( is_array(old('IsOnline')) && in_array(1, old('IsOnline'))) checked @endif onclick="IsOnlineEvent(this);">
                                 <label for="IsOnline">Is this event online?</label>
                             </div>
                         </div>
-                        <div class="form-group col-lg-9">
+                        <div class="form-group col-lg-12">
 
                             <input type="text" id="EventUrl" value="{{  old('EventUrl', $EventUrl) }}" name="EventUrl" class="form-control {{$HiddenEventUrl}}" title="Event Url" placeholder="Event Website Url" autocomplete="off" rows="0" value="">
                         </div>
 
 
-                        <div class="form-group col-lg-6">
+                        <div class="form-group col-lg-12">
                             <label for="Address">Address</label>
                             <input type="text" id="Address" name="Address" {{$readonly}} class="form-control" title="Address" placeholder="Address" autocomplete="off" rows="0" value="{{  old('Address', $address) }}">
                         </div>
 
-                        <div class="form-group col-lg-6">
+                        <div class="form-group col-lg-12">
                             <label for="selectionCategory">City</label>
                             <select autocomplete="off" value="{{ old('city') }}" name="city" id="city" class=" custom-select" {{$disabled}}>
                                 <option value="0">Select City</option>
@@ -147,12 +171,17 @@
 
                             </select>
                         </div>
-
+                    </div>
+                    </div>
+                </div>
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="card-body">
                         <div class="eventSchedule col-lg-12 mt-3">
                             <h5> Event Schedule </h5>
                         </div>
 
-                        <div class="form-group col-lg-3">
+                        <div class="form-group col-lg-12">
                             <label for="EventDateTime">Event Start Date & Time</label>
                             <div class='input-group' id=''>
                                 <input type='text' value="{{  old('EventDateTime', $EventDate) }}" class="form-control date" autocomplete="off" name="EventDateTime" id="EventDateTime" required />
@@ -161,7 +190,7 @@
                             <small class="text-danger">{{ $errors->first('EventDateTime') }}</small>
                         </div>
 
-                        <div class="form-group col-lg-3">
+                        <div class="form-group col-lg-12">
                             <label for="EventDateTime">Event End Date & Time</label>
                             <div class='input-group' id=''>
                                 <input type='text' value="{{  old('EventEndDateTime', $EventEndDate) }}" class="form-control date" autocomplete="off" name="EventEndDateTime" id="EventEndDateTime" required />
@@ -170,25 +199,36 @@
                             <small class="text-danger">{{ $errors->first('EventEndDateTime') }}</small>
                         </div>
 
-                        <div class="form-group col-3 mt-2">
+                        <div class="row col-lg-12">
+                        <div class="form-group col-lg-6">
                             <label for="BlankLabel"></label>
                             <div class="icheck-material-primary">
                                 <input type="checkbox" id="IsPublic" name="IsPublic" {{$IsPublic}}>
                                 <label for="IsPublic"> Is this Public Event?</label>
                             </div>
                         </div>
-                        <div class="form-group col-3 mt-2">
+                        <div class="form-group col-lg-6">
                             <label for="BlankLabel"></label>
                             <div class="icheck-material-primary">
                                 <input type="checkbox" id="IsPaid" name="IsPaid" {{$IsPaid}}>
                                 <label for="IsPaid">Is this Paid Event?</label>
                             </div>
                         </div>
+                    </div>
+                        </div>
+                    </div>
+                </div>
+                    </div>
 
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
                         <div class="additionalDetails col-lg-12  mt-3">
                             <h5> Additional Details </h5>
                         </div>
 
+                        <div class="col-lg-12 row">
                         <div class="form-group col-lg-6">
                             <label for="EventBannerImage">Banner Image (optional)</label>
                             <p style="font-size: .7pc;">Image size must be less than or eqaul to 1MB and Dimension should be 468 &#10005; 200</p>
@@ -205,24 +245,32 @@
                             <small class="text-danger">{{ $errors->first('EventThumbnailImage') }}</small>
                             <div class="text-danger d-none SizeError" id='SizeErrorBannerImage'>Image size must be less than or eqaul to 1MB</div>
                             <img id="thumbnailImage" class="d-none m-2 imageRadius" alt="your image" width="100" height="100" />
-
                         </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <div class="form-group col-lg-12">
+        <button type="submit" id="Submit" class="btn btn-primary px-5 pull-right"> Save Event</button>
+    </div>
+    </form>
 
                         <!-- <div class="form-group col-lg-6">
                             <label for="input-5">Durations</label>
                             <input type="time" id="" class="form-control">
                         </div> -->
 
-
-
-
-                        <div class="form-group col-lg-12">
+                        <!-- <div class="form-group col-lg-12">
                             <button type="submit" id="Submit" class="btn btn-primary px-5 pull-right"> Save Event</button>
                         </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+                    </form> -->
+                <!-- </div> -->
+            <!-- </div> -->
+        <!-- </div> -->
+    <!-- </div> -->
+    </div>
+    </div>
     </div>
 </div>
 @endsection

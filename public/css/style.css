@@ -14,3 +14,7 @@
 .addNewEventButton button a{
 	color:black !important;
 }
+.createEventContainer{
+	padding-right: 25px !important;
+    padding-left: 25px !important;
+}
