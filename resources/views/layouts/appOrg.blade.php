@@ -103,7 +103,15 @@
                                 <i class="zmdi zmdi-grid"></i> <span>Followers</span>
                             </a>
                         </li>
-
+                        <li>
+                            <a href="{{url('org/videos')}}" class="waves-effect">
+                                <i class="fa fa-file-video-o"></i> <span>Videos</span><i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="sidebar-submenu in">
+                                <li class="active"><a href="{{ url('org/videos/new') }}" class="active"><i class="zmdi zmdi-long-arrow-right"></i> Add New Video</a></li>
+                                
+                            </ul>
+                        </li>
 
 
                     </ul>
@@ -153,7 +161,7 @@
                             <li class="dropdown-item"><i class="icon-settings mr-2"></i> Profile</li>
                             <li class="dropdown-divider"></li>
                             <li class="dropdown-item"><a class style="color:inherit" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();" ><i class="icon-power mr-2"></i> Logout</a></li>
+                                    document.getElementById('logout-form').submit();" ><i class="icon-power mr-2"></i> Logout</a></li>
                         </ul>
                     </li>
                 </ul>
