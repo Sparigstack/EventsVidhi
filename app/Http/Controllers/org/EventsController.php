@@ -10,11 +10,13 @@ use App\Category;
 use App\City;
 use App\Timezone;
 use App\EventCategory;
+use App\EventType;
 use DateTime;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\UploadedFile;
 use File;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 
 class EventsController extends Controller
 {
@@ -56,7 +58,8 @@ class EventsController extends Controller
         $categories = Category::all();
         $cities = City::all();
         $cityTimeZones = Timezone::all();
-        return view('org/createEvent', compact('categories', 'cities', 'cityTimeZones'));
+        $eventTypes=EventType::all();
+        return view('org/createEvent', compact('categories', 'cities', 'cityTimeZones','eventTypes'));
     }
 
     /**
@@ -93,22 +96,39 @@ class EventsController extends Controller
         }
 
         //banner image
-        $fileBanner = $request->file('EventBannerImage');
-        $imageNameBanner = "";
+        // $fileBanner = $request->file('EventBannerImage');
+        $bannerUrl = "";
         if ($request->hasFile('EventBannerImage')) {
-            $imageNameBanner = $request->file('EventBannerImage')->getClientOriginalName();
-            $destinationPathForBanner = storage_path('app/public/uploads/bannerImages');
-            $fileBanner->move($destinationPathForBanner, $fileBanner->getClientOriginalName());
+            // $imageNameBanner = $request->file('EventBannerImage')->getClientOriginalName();
+            // $destinationPathForBanner = storage_path('app/public/uploads/bannerImages');
+            // $fileBanner->move($destinationPathForBanner, $fileBanner->getClientOriginalName());
+
+            $file = $request->file('EventBannerImage');
+            $name = time() . $file->getClientOriginalName();
+            $userId = Auth::id();
+            $filePath = 'org_'.$userId.'/' . $name;
+           
+            Storage::disk('s3')->put($filePath, file_get_contents($file),'public');
+            $bannerUrl = $filePath;
         }
 
         // thumbnail image
-        $file = $request->file('EventThumbnailImage');
+        //$file = $request->file('EventThumbnailImage');
         // $file = $request->EventImage;
-        $imageName = "";
+        $thumbNailUrl = "";
         if ($request->hasFile('EventThumbnailImage')) {
-            $imageName = $request->file('EventThumbnailImage')->getClientOriginalName();
-            $destinationPath = storage_path('app/public/uploads');
-            $file->move($destinationPath, $file->getClientOriginalName());
+            // $imageName = $request->file('EventThumbnailImage')->getClientOriginalName();
+            // $destinationPath = storage_path('app/public/uploads');
+            // $file->move($destinationPath, $file->getClientOriginalName());
+
+            $thumbnailfile = $request->file('EventThumbnailImage');
+            $thumbnailName = time() . $thumbnailfile->getClientOriginalName();
+            $userId = Auth::id();
+            $thumbnailfilePath = 'org_'.$userId.'/Thumbnail/' . $thumbnailName;
+           
+            Storage::disk('s3')->put($thumbnailfilePath, file_get_contents($thumbnailfile),'public');
+            // $thumbNailUrl = Storage::url($thumbnailfilePath); --to get full url of file in amazon s3
+            $thumbNailUrl =$thumbnailfilePath;
         }
 
         $user = Auth::user();
@@ -116,6 +136,7 @@ class EventsController extends Controller
         $events->title = $request->title;
         $events->description = $request->Description;
         $events->category_id = $request->category;
+        $events->event_type_id=$request->eventType;
         $events->user_id = $user->id;
         if (isset($request->IsOnline)) {
             $events->is_online = '1';
@@ -136,8 +157,8 @@ class EventsController extends Controller
         $events->end_date_time = new DateTime($EndDateTime);
         $events->timezone_id = $request->cityTimezone;
 
-        $events->thumbnail = $imageName;
-        $events->banner = $imageNameBanner;
+        $events->thumbnail = $thumbNailUrl;
+        $events->banner = $bannerUrl;
         if (isset($request->IsPublic)) {
             $events->is_public = '1';
         } else {
@@ -174,7 +195,8 @@ class EventsController extends Controller
         $categories = Category::all();
         $cities = City::all();
         $cityTimeZones = Timezone::all();
-        return view('org/createEvent', compact('categories', 'cities', 'event','cityTimeZones'));
+        $eventTypes=EventType::all();
+        return view('org/createEvent', compact('categories', 'cities', 'event','cityTimeZones','eventTypes'));
     }
 
     /**
@@ -185,39 +207,51 @@ class EventsController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        $this->validate($request, [
-            'EventBannerImage' => 'image|mimes:jpeg,bmp,png,jpg,gif,spg|dimensions:max_width=468,max_height=200',
-            'EventThumbnailImage' => 'image|mimes:jpeg,bmp,png,jpg|dimensions:max_width=1280,max_height=720',
-            'title' => 'required',
-            'category' => 'required',
-            'Description' => 'required',
-            'EventDateTime' => 'required',
-        ]);
-
-        //banner image
-        $fileBanner = $request->file('EventBannerImage');
-        $imageNameBanner = "";
-        if ($request->hasFile('EventBannerImage')) {
-            $imageNameBanner = $request->file('EventBannerImage')->getClientOriginalName();
-            $destinationPathForBanner = storage_path('app/public/uploads/bannerImages');
-            $fileBanner->move($destinationPathForBanner, $fileBanner->getClientOriginalName());
-        }
-
-        // thumbnail image
-        $file = $request->file('EventThumbnailImage');
-        // $file = $request->EventImage;
-        $imageName = "";
-        if ($request->hasFile('EventThumbnailImage')) {
-            $imageName = $request->file('EventThumbnailImage')->getClientOriginalName();
-            $destinationPath = storage_path('app/public/uploads');
-            $file->move($destinationPath, $file->getClientOriginalName());
-        }
+        // $this->validate($request, [
+        //     'EventBannerImage' => 'image|mimes:jpeg,bmp,png,jpg,gif,spg|dimensions:max_width=468,max_height=200',
+        //     'EventThumbnailImage' => 'image|mimes:jpeg,bmp,png,jpg|dimensions:max_width=1280,max_height=720',
+        //     'title' => 'required',
+        //     'category' => 'required',
+        //     'Description' => 'required',
+        //     'EventDateTime' => 'required',
+        // ]);
 
         $user = Auth::user();
         $events = Event::findOrFail($id);
+        //banner image
+        $bannerUrl = "";
+        if ($request->hasFile('EventBannerImage')) {
+            $file = $request->file('EventBannerImage');
+            $name = time() . $file->getClientOriginalName();
+            $userId = Auth::id();
+            $filePath = 'org_'.$userId.'/' . $name;
+           
+            Storage::disk('s3')->put($filePath, file_get_contents($file),'public');
+            $bannerUrl = $filePath;
+            if(!empty($events->banner)){
+                Storage::disk('s3')->delete($events->banner);
+            }
+            
+        }
+        $thumbNailUrl = "";
+        if ($request->hasFile('EventThumbnailImage')) {
+            $thumbnailfile = $request->file('EventThumbnailImage');
+            $thumbnailName = time() . $thumbnailfile->getClientOriginalName();
+            $userId = Auth::id();
+            $thumbnailfilePath = 'org_'.$userId.'/Thumbnail/' . $thumbnailName;
+           
+            Storage::disk('s3')->put($thumbnailfilePath, file_get_contents($thumbnailfile),'public');
+            $thumbNailUrl = $thumbnailfilePath;
+            if(!empty($events->thumbnail)){
+                Storage::disk('s3')->delete($events->thumbnail);
+            }
+        }
+
+        
         $events->title = $request->title;
         $events->description = $request->Description;
         $events->category_id = $request->category;
+        $events->event_type_id=$request->eventType;
         $events->user_id = $user->id;
         // $events->city_id = $request->city;
         // $events->address = $request->Address;
@@ -231,8 +265,8 @@ class EventsController extends Controller
         $events->end_date_time = new DateTime($EndDateTime);
         $events->timezone_id = $request->cityTimezone;
 
-        $events->thumbnail = $imageName;
-        $events->banner = $imageNameBanner;
+        $events->thumbnail = $thumbNailUrl;
+        $events->banner = $bannerUrl;
         if (isset($request->IsPublic)) {
             $events->is_public = '1';
         } else {

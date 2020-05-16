@@ -135,6 +135,8 @@ function ValidateEventForm(element){
     
     
 }
+
+
 // function SaveNewEvent(element) {
 //     var URL=$('.URL').val();
 //     ob = new Object();

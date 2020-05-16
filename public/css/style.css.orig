@@ -1,0 +1,57 @@
+.imageRadius{
+	border-radius: 8px;
+	max-height: 90px;
+}
+.customButtons .simpleButton{
+	display: none;
+}
+.xdsoft_datetimepicker .xdsoft_datepicker.active+.xdsoft_timepicker{
+	margin-top: 30px !important;
+}
+.addNewEventButton button{
+	background: #80808021 !important;
+}
+.addNewEventButton button a{
+	color:black !important;
+}
+.createEventContainer{
+	padding-right: 25px !important;
+    padding-left: 25px !important;
+}
+<<<<<<< HEAD
+.dragFileForm{
+    position: relative;
+    min-height: 600px;
+}
+.dragFileContainer{
+  border: 4px dashed darkgray;
+  /*position: absolute;*/
+  width: 100%;
+}
+.dragFileContainer p{
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  line-height: 170px;  
+}
+.dragFileContainer input{
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 60%;
+  outline: none;
+  opacity: 0;
+}
+.dragFileForm .btn.btn-primary{
+    position: absolute;right: 0;bottom: 0;
+}
+/*.dragFileContainer button:hover{
+  background: #149174;
+	color: #0C5645;
+}
+.dragFileContainer button:active{
+  border:0;
+}*/
+=======
+>>>>>>> 68b2ad070fdd715c34219e2ae558ab526690c87f

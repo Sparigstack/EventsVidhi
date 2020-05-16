@@ -113,7 +113,7 @@
                             </a>
                             <ul class="sidebar-submenu in">
                                 <li class="active"><a href="{{ url('org/videos/new') }}" class="active"><i class="zmdi zmdi-long-arrow-right"></i> Add New Video</a></li>
-                                
+
                             </ul>
                         </li>
 
@@ -170,13 +170,13 @@
                     </li>
                 </ul>
             </nav>
-        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-            @csrf
-        </form>
-        <div class="clearfix"></div>
-        <div class="content-wrapper">
-            @yield('content')
-        </div>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                @csrf
+            </form>
+            <div class="clearfix"></div>
+            <div class="content-wrapper">
+                @yield('content')
+            </div>
     </div>
 
 
@@ -211,17 +211,20 @@
         $(document).ready(function() {
             $('.single-select').select2();
 
-            $('.multiple-select').select2();
-            var MultiSlectCounter=0;
+            $('.multiple-select').select2({
+                placeholder: "Select categories",
+                allowClear: true
+            });
+            var MultiSlectCounter = 0;
             $('.multiple-select').on('select2:select', function(e) {
                 console.log(e.params.data.id);
-                if(MultiSlectCounter==0){
+                if (MultiSlectCounter == 0) {
                     $('#HiddenCategoyID').append(e.params.data.id);
-                }else{
-                    $('#HiddenCategoyID').append(","+e.params.data.id);
+                } else {
+                    $('#HiddenCategoyID').append("," + e.params.data.id);
                 }
-                
-                MultiSlectCounter+=1;
+
+                MultiSlectCounter += 1;
             });
             $('.multiple-select').on('select2:unselecting', function(e) {
                 console.log(e.params.args.data.id);

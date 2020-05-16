@@ -5,7 +5,6 @@ namespace App\Http\Controllers\org;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Auth;
 
 class VideosController extends Controller {
 
@@ -64,11 +63,8 @@ class VideosController extends Controller {
         if ($request->hasFile('VideoFile')) {
             $file = $request->file('VideoFile');
             $name = time() . $file->getClientOriginalName();
-            $userId = Auth::id();
-            $filePath = 'org_'.$userId.'/' . $name;
-//            $eveId = 5;
-//            $filePath = 'org_'.$userId.'/eve_'.$eveId.'/' . $name;
-            $savedFile = Storage::disk('s3')->put($filePath, file_get_contents($file));
+            $filePath = 'images/' . $name;
+            Storage::disk('s3')->put($filePath, file_get_contents($file));
         }
         else{
             return 'from else';
