@@ -5,6 +5,7 @@ namespace App\Http\Controllers\org;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class VideosController extends Controller {
 
