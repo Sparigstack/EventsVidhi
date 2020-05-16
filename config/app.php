@@ -13,7 +13,8 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Vidhi Events'),
+    //'name' => env('APP_NAME', 'PanelHive - Event Management System'),
+    'name' => 'PanelHive - Event Management System',
 
     /*
     |--------------------------------------------------------------------------
