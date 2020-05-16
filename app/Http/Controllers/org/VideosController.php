@@ -41,9 +41,10 @@ class VideosController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function create() {
-        //
-        return view('org/createVideo');
+    public function create() {       
+        $user = Auth::user();
+        $events = $user->events->sortBy('created_at');
+        return view('org/createVideo', compact('events'));
     }
 
     /**

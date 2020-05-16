@@ -285,7 +285,7 @@
 
         });
     </script>
-
+@yield('script')
 
 </body>
 
