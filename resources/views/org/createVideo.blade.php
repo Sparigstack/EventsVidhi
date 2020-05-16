@@ -22,18 +22,27 @@
 
                     <form class="dragFileForm" action="{{$ActionCall}}" method="POST">
                         <div class='form-group'>
-                            <label for='input-title'>Video Title</label>
-                            <input type="text" class="form-control" id="input-title" placeholder="Enter Video Title">
+                            <label for='input_title'>Video Title</label>
+                            <input type="text" class="form-control" id="input_title" name='input_title' placeholder="Enter Video Title">
                         </div>
                         <div class='form-group'>
-                            <label for='input-url'>Video URL</label>
-                            <input type="text" class="form-control" id="input-url" placeholder="Enter Video URL">
+                            <label for='input_url'>Video URL</label><span style="font-size: 11px;font-weight: 600;">&nbsp;&nbsp;(YouTube or Vimeo url)</span>
+                            <input type="text" class="form-control" id="input_url" name="input_url" placeholder="Enter Video URL">
                         </div>
-                        <div class='parent' style='position: absolute;width: 100%;'>
-                            <div class='form-group'>
-                                <label for='input-vidfile'>Upload Video</label>
+
+                        <div class="form-group">
+                                <label for="BlankLabel"></label>
+                                <div class="icheck-material-primary">
+                                    <input onclick="UploadVideoBox(this)" type="checkbox" id="IsUploadVideo" name="IsUploadVideo">
+                                    <label for="IsUploadVideo">Or upload video</label>
+                                </div>
+                            </div>
+
+                        <div class='parent' style='width: 100%;'>
+                            <div class='form-group  d-none uploadVideoBox'>
+                                <label for='input_vidfile'>Upload Video</label>
                                 <div class='dragFileContainer'>
-                                    <input id='input-vidfile' type="file" multiple>
+                                    <input id='input_vidfile' name='input_vidfile' type="file" multiple>
                                     <p>Drag your video file here or click in this area.</p>
                                 </div>
                             </div>
@@ -44,18 +53,18 @@
                                     <label for="IsLinkedEvent"> Do you want to link this video with any Event?</label>
                                 </div>
                             </div>
-                            <div id='linkEvent' class="form-group display-none">
-                                <label for="cityTimezone mb-0">Link To Event</label>
-                                <select autocomplete="off" value="" name="cityTimezone" id="cityTimezone" class=" custom-select">
+                            <div id='linkEvent' class="form-group EventSelectionBox d-none">
+                                <label for="EventToLink mb-0">Link To Event</label>
+                                <select autocomplete="off" value="" name="EventToLink" id="EventToLink" class=" custom-select">
                                     <option value="">Select Event To Link</option>
                                     <?php
                                     foreach ($events as $event) {
-//                                        $IsSelected = "";
-//                                        if ($event->id == $eventId) {
-//                                            $IsSelected = "selected";
-//                                        }
-                                        ?>
-                                        <option value="{{$event->id}}" ><?php echo $event->title; ?> </option>
+                                        //                                        $IsSelected = "";
+                                        //                                        if ($event->id == $eventId) {
+                                        //                                            $IsSelected = "selected";
+                                        //                                        }
+                                    ?>
+                                        <option value="{{$event->id}}"><?php echo $event->title; ?> </option>
                                     <?php } ?>
 
                                 </select>
@@ -180,8 +189,8 @@
 @section('script')
 <script src="{{asset('/js/customScript.js')}}" type="text/javascript"></script>
 <script>
-    $(document).ready(function () {
-        $('.dragFileForm input').change(function () {
+    $(document).ready(function() {
+        $('.dragFileForm input').change(function() {
             $('.dragFileForm p').text(this.files.length + " file(s) selected");
         });
     });

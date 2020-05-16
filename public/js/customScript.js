@@ -131,11 +131,21 @@ function deleteEvent(element) {
         }
     });
 }
-function ValidateEventForm(element){
-    
-    
+function UploadVideoBox(element){
+   if(!$(element).is(':checked')){
+    $('.uploadVideoBox').addClass('d-none');
+   }else{
+    $('.uploadVideoBox').removeClass('d-none');
+   }
 }
+function showHideLinkEvent(element){
+    if($(element).is(':checked')){
+        $('.EventSelectionBox').removeClass('d-none');
+    }else{
+        $('.EventSelectionBox').addClass('d-none');
+    }
 
+}
 
 // function SaveNewEvent(element) {
 //     var URL=$('.URL').val();
