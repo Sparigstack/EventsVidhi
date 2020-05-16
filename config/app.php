@@ -52,7 +52,7 @@ return [
     | your application so that it is used when running Artisan tasks.
     |
     */
-
+    'Aws_Url'=>'https://panelhiveus.s3.us-west-1.amazonaws.com/',
     'url' => env('APP_URL', 'http://localhost'),
 
     'asset_url' => env('ASSET_URL', null),

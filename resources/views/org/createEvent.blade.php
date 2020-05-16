@@ -28,6 +28,7 @@
     $ThumbNailHidden="d-none";
     $BannerUrl="";
     $BannerHidden="d-none";
+    $AwsUrl="https://panelhiveus.s3.us-west-1.amazonaws.com/";
 
 
     if (!empty($event)) {
@@ -59,11 +60,11 @@
             $eventTypeID = $event->event_type_id;
         }
         if (!empty($event->thumbnail)) {
-            $ThumnailUrl = $event->thumbnail;
+            $ThumnailUrl = $AwsUrl.$event->thumbnail;
             $ThumbNailHidden="";
         }
         if (!empty($event->banner)) {
-            $BannerUrl = $event->banner;
+            $BannerUrl = $AwsUrl.$event->banner;
             $BannerHidden="";
         }
         
@@ -162,7 +163,7 @@
                                             } ?>
                                         </select>
                                         <small class="text-danger">{{ $errors->first('category') }}</small>
-                                        <textarea id="HiddenCategoyID" name="HiddenCategoyID" required class="form-controld d-none" title="HiddenCategoyID" placeholder="HiddenCategoyID" autocomplete="off" rows="4">{{$MultSelectTags}}</textarea>
+                                        <textarea id="HiddenCategoyID" name="HiddenCategoyID" required class="form-controld d-none" title="HiddenCategoyID" placeholder="HiddenCategoyID" autocomplete="off" rows="4">{{ old('HiddenCategoyID', $MultSelectTags) }} </textarea>
                                     </div>
 
                                     <div class="form-group col-lg-12">
@@ -185,7 +186,7 @@
 
                                 <div class="form-group col-12 mt-4">
                                     <div class="icheck-material-primary">
-                                        <input type="checkbox" id="IsOnline" name="IsOnline" {{$IsOnline}} @if( is_array(old('IsOnline')) && in_array(1, old('IsOnline'))) checked @endif onclick="IsOnlineEvent(this);">
+                                        <input type="checkbox" id="IsOnline" name="IsOnline" {{$IsOnline}} @if(old('IsOnline')) checked @endif onclick="IsOnlineEvent(this);">
                                         <label for="IsOnline">Is this event online?</label>
                                     </div>
                                 </div>
@@ -296,14 +297,14 @@
                                         <div class="form-group col-lg-3">
                                             <label for="BlankLabel"></label>
                                             <div class="icheck-material-primary">
-                                                <input type="checkbox" id="IsPublic" name="IsPublic" {{$IsPublic}}>
+                                                <input type="checkbox" id="IsPublic" name="IsPublic" {{$IsPublic}}  @if(old('IsPublic')) checked @endif  > 
                                                 <label for="IsPublic"> Is this Public Event?</label>
                                             </div>
                                         </div>
                                         <div class="form-group col-lg-3">
                                             <label for="BlankLabel"></label>
                                             <div class="icheck-material-primary">
-                                                <input type="checkbox" id="IsPaid" name="IsPaid" {{$IsPaid}}>
+                                                <input type="checkbox" id="IsPaid" name="IsPaid" {{$IsPaid}}  @if(old('IsPaid')) checked @endif >
                                                 <label for="IsPaid">Is this Paid Event?</label>
                                             </div>
                                         </div>

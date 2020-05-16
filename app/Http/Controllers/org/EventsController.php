@@ -109,7 +109,7 @@ class EventsController extends Controller
             $filePath = 'org_'.$userId.'/' . $name;
            
             Storage::disk('s3')->put($filePath, file_get_contents($file),'public');
-            $bannerUrl = Storage::url($filePath);
+            $bannerUrl = $filePath;
         }
 
         // thumbnail image
@@ -127,7 +127,8 @@ class EventsController extends Controller
             $thumbnailfilePath = 'org_'.$userId.'/Thumbnail/' . $thumbnailName;
            
             Storage::disk('s3')->put($thumbnailfilePath, file_get_contents($thumbnailfile),'public');
-            $thumbNailUrl = Storage::url($thumbnailfilePath);
+            // $thumbNailUrl = Storage::url($thumbnailfilePath); --to get full url of file in amazon s3
+            $thumbNailUrl =$thumbnailfilePath;
         }
 
         $user = Auth::user();
@@ -206,15 +207,17 @@ class EventsController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        $this->validate($request, [
-            'EventBannerImage' => 'image|mimes:jpeg,bmp,png,jpg,gif,spg|dimensions:max_width=468,max_height=200',
-            'EventThumbnailImage' => 'image|mimes:jpeg,bmp,png,jpg|dimensions:max_width=1280,max_height=720',
-            'title' => 'required',
-            'category' => 'required',
-            'Description' => 'required',
-            'EventDateTime' => 'required',
-        ]);
+        // $this->validate($request, [
+        //     'EventBannerImage' => 'image|mimes:jpeg,bmp,png,jpg,gif,spg|dimensions:max_width=468,max_height=200',
+        //     'EventThumbnailImage' => 'image|mimes:jpeg,bmp,png,jpg|dimensions:max_width=1280,max_height=720',
+        //     'title' => 'required',
+        //     'category' => 'required',
+        //     'Description' => 'required',
+        //     'EventDateTime' => 'required',
+        // ]);
 
+        $user = Auth::user();
+        $events = Event::findOrFail($id);
         //banner image
         $bannerUrl = "";
         if ($request->hasFile('EventBannerImage')) {
@@ -224,7 +227,11 @@ class EventsController extends Controller
             $filePath = 'org_'.$userId.'/' . $name;
            
             Storage::disk('s3')->put($filePath, file_get_contents($file),'public');
-            $bannerUrl = Storage::url($filePath);
+            $bannerUrl = $filePath;
+            if(!empty($events->banner)){
+                Storage::disk('s3')->delete($events->banner);
+            }
+            
         }
         $thumbNailUrl = "";
         if ($request->hasFile('EventThumbnailImage')) {
@@ -234,11 +241,13 @@ class EventsController extends Controller
             $thumbnailfilePath = 'org_'.$userId.'/Thumbnail/' . $thumbnailName;
            
             Storage::disk('s3')->put($thumbnailfilePath, file_get_contents($thumbnailfile),'public');
-            $thumbNailUrl = Storage::url($thumbnailfilePath);
+            $thumbNailUrl = $thumbnailfilePath;
+            if(!empty($events->thumbnail)){
+                Storage::disk('s3')->delete($events->thumbnail);
+            }
         }
 
-        $user = Auth::user();
-        $events = Event::findOrFail($id);
+        
         $events->title = $request->title;
         $events->description = $request->Description;
         $events->category_id = $request->category;
