@@ -55,11 +55,12 @@ class EventsController extends Controller
      */
     public function create()
     {
+        $isVideoSelected = false;
         $categories = Category::all();
         $cities = City::all();
         $cityTimeZones = Timezone::all();
         $eventTypes=EventType::all();
-        return view('org/createEvent', compact('categories', 'cities', 'cityTimeZones','eventTypes'));
+        return view('org/createEvent', compact('categories', 'cities', 'cityTimeZones','eventTypes','isVideoSelected'));
     }
 
     /**
@@ -191,12 +192,24 @@ class EventsController extends Controller
      */
     public function show($id)
     {
+        $isVideoSelected = false;
+        $ids = explode(',', $id);
+        $count=0;
+        foreach ($ids as $selectedId) {
+            if($count == 0){
+                    $selectedId = $id;
+            }else{
+                $isVideoSelected = true;
+            }
+            $count++;        
+        }
+
         $event = Event::findOrFail($id);
         $categories = Category::all();
         $cities = City::all();
         $cityTimeZones = Timezone::all();
         $eventTypes=EventType::all();
-        return view('org/createEvent', compact('categories', 'cities', 'event','cityTimeZones','eventTypes'));
+        return view('org/createEvent', compact('categories', 'cities', 'event','cityTimeZones','eventTypes','isVideoSelected'));
     }
 
     /**

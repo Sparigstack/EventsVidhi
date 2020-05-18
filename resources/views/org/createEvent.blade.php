@@ -76,11 +76,21 @@
         <div class="card w-100">
             <div class="card-body">
                 <ul class="nav nav-tabs nav-tabs-info nav-justified">
+                    <?php
+                        $activeClass = "";
+                        $activeClassLink = "";
+                        if($isVideoSelected==true){
+                            $activeClass = "active";
+                        }
+                        else{
+                            $activeClassLink = "active";
+                        }
+                     ?>
                     <li class="nav-item">
-                        <a class="nav-link active" data-toggle="tab" href="#tabe-13"><span class="hidden-xs">Details</span></a>
+                        <a class="nav-link {{$activeClassLink}}" data-toggle="tab" href="#tabe-13"><span class="hidden-xs">Details</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#tabe-14"><span class="hidden-xs">Videos</span></a>
+                        <a class="nav-link {{$activeClass}}" data-toggle="tab" href="#tabe-14"><span class="hidden-xs">Videos</span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" data-toggle="tab" href="#tabe-15"><span class="hidden-xs">Participants</span></a>
@@ -91,7 +101,16 @@
                 </ul>
 
                 <div class="tab-content">
-                <div id="tabe-13"  class="row tab-pane active show">
+                    <?php
+                        $activeShow = "";
+                        $activeShowLink = "";
+                        if($isVideoSelected==true){
+                            $activeShow = "active show";
+                        }else{
+                            $activeShowLink = "active show";
+                        }
+                     ?>
+                <div id="tabe-13"  class="row tab-pane {{$activeShowLink}}">
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="card">
@@ -322,7 +341,7 @@
 
                 </div>
 
-                    <div class="videos row tab-pane" id="tabe-14">
+                    <div class="videos row tab-pane {{$activeShow}}" id="tabe-14">
                         <div class="col-lg-12">
                         <div class="card">
                         <div class="card-body row">
