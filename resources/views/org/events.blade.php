@@ -89,7 +89,9 @@
                                         <a onclick="window.location ='{{ url("org/events/$event->id") }}'" db-delete-id="{{$event->id}}"><i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-file-video-o"></i></a> 
                                     </td>
                                     </tr>
-                                <?php } ?>
+                                <?php 
+                            // } 
+                                ?>
                                 </tbody>
 
                                 <thead>
