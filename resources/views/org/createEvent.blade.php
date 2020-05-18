@@ -115,7 +115,7 @@
                                     <div class="form-group col-lg-6">
                                         <label for="EventSelection">Event Type</label>
                                         <select autocomplete="off" value="{{ old('eventType') }}" name="eventType" id="eventType" class=" custom-select">
-                                            <option value>Select Event</option>
+                                            <option value>Select Event Type</option>
                                             <?php foreach ($eventTypes as $eventType) {
                                                 $IsSelected = "";
                                                 if (!empty($event)) {
