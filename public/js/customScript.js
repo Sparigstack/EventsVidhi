@@ -6,6 +6,12 @@ $(document).ready(function () {
         ]
     });
 
+    var videosTable = $('#default-datatable-videos').DataTable({
+        columnDefs: [
+            { orderable: false, targets: 3 },
+        ]
+    });
+
     $('#EventDateTime').change(function (time) {
         var dateRi = $(this).val();
         var defaultdate;
@@ -145,6 +151,17 @@ function showHideLinkEvent(element){
         $('.EventSelectionBox').addClass('d-none');
     }
 
+}
+function uploadVideo(element){
+    if ($(element).attr('id') == 'videoButton') {
+      $('.uploadVideo').removeClass('d-none');
+      $('.uploadPodcastVideo').addClass('d-none');
+   }
+   else if ($(element).attr('id') == 'podcastVideoButton') {
+       $('.uploadPodcastVideo').removeClass('d-none');
+       $('.uploadVideo').addClass('d-none');
+   }
+    // $('.uploadVideo').removeClass('d-none');
 }
 
 // function SaveNewEvent(element) {

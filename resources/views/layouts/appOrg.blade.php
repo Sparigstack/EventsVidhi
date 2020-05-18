@@ -113,6 +113,7 @@
                                 </a>
                                 <ul class="sidebar-submenu in">
                                     <li class=""><a href="{{ url('org/videos/new') }}" class=""><i class="zmdi zmdi-long-arrow-right"></i> Add New Video</a></li>
+                                    <li class=""><a href="{{ url('org/videos') }}" class=""><i class="zmdi zmdi-long-arrow-right"></i> All Videos</a></li>
 
                                 </ul>
                             </li>

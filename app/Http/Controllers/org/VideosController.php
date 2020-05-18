@@ -24,18 +24,22 @@ class VideosController extends Controller
     public function index()
     {
         //
-        $url = 'https://s3.' . env('AWS_DEFAULT_REGION') . '.amazonaws.com/' . env('AWS_BUCKET') . '/';
-        $images = [];
-        $files = Storage::disk('s3')->files('images');
-        foreach ($files as $file) {
-            $images[] = [
-                'name' => str_replace('images/', '', $file),
-                'src' => $url . $file
-            ];
-        }
-        var_dump($images);
-        return;
-        return view('org/videos', compact('images'));
+        // $url = 'https://s3.' . env('AWS_DEFAULT_REGION') . '.amazonaws.com/' . env('AWS_BUCKET') . '/';
+        // $images = [];
+        // $files = Storage::disk('s3')->files('images');
+        // foreach ($files as $file) {
+        //     $images[] = [
+        //         'name' => str_replace('images/', '', $file),
+        //         'src' => $url . $file
+        //     ];
+        // }
+        $user = Auth::user();
+        $videos = Video::where('user_id',$user->id)->get();
+        var_dump($videos->events->id); 
+        // var_dump($images);
+        // return;
+        // return view('org/videos', compact('images','videos'));
+        return view('org/videos', compact('videos'));
 
         //return view('org/videos');
     }

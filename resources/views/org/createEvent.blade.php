@@ -80,13 +80,18 @@
                         <a class="nav-link active" data-toggle="tab" href="#tabe-13"><span class="hidden-xs">Details</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#tabe-14"><span class="hidden-xs">Participants</span></a>
+                        <a class="nav-link" data-toggle="tab" href="#tabe-14"><span class="hidden-xs">Videos</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#tabe-15"><span class="hidden-xs">Promote</span></a>
+                        <a class="nav-link" data-toggle="tab" href="#tabe-15"><span class="hidden-xs">Participants</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#tabe-16"><span class="hidden-xs">Promote</span></a>
                     </li>
                 </ul>
 
+                <div class="tab-content">
+                <div id="tabe-13"  class="row tab-pane active show">
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="card">
@@ -314,10 +319,48 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group col-lg-12">
+
+                </div>
+
+                    <div class="videos row tab-pane" id="tabe-14">
+                        <div class="col-lg-12">
+                        <div class="card">
+                        <div class="card-body row">
+                        <div class="col-lg-2"></div>
+                        <div class="col-lg-8">
+                            <div class='parent' style='width: 100%;'>
+                            <div class='form-group  d-none uploadVideo'>
+                                <div class='dragFileContainer'>
+                                    <input id='video_file' name='video_file' type="file" multiple>
+                                    <p>Drag your video file here or click in this area.</p>
+                                </div>
+                            </div>
+                            <div class='form-group  d-none uploadPodcastVideo'>
+                                <div class='dragFileContainer'>
+                                    <input id='podcast_video_file' name='podcast_video_file' type="file" multiple>
+                                    <p>Drag your podcast video file here or click in this area.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                        <button type="button" id="videoButton" class="btn btn-primary m-1" onclick="uploadVideo(this);">Upload Video</button>
+                        <button type="button" id="podcastVideoButton" class="btn btn-primary m-1" onclick="uploadVideo(this);">Upload Podcast Video</button>
+                        </div>
+                        
+                        </div>
+                        <div class="col-lg-2"></div>
+                        </div>
+                    </div>
+                    </div>
+                    </div>
+
+                    <div class="form-group col-lg-12">
                     <button type="submit" id="Submit" class="btn btn-primary px-5 pull-right"> Save Event</button>
                 </div>
                 </form>
+
+                </div>
 
                 <!-- <div class="form-group col-lg-6">
                             <label for="input-5">Durations</label>
