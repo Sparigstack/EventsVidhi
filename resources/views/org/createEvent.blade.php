@@ -90,7 +90,7 @@
                         <a class="nav-link {{$activeClassLink}}" data-toggle="tab" href="#tabe-13"><span class="hidden-xs">Details</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{$activeClass}}" data-toggle="tab" href="#tabe-14"><span class="hidden-xs">Videos</span></a>
+                        <a class="nav-link {{$activeClass}}" data-toggle="tab" href="#tabe-14"><span class="hidden-xs">Media</span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" data-toggle="tab" href="#tabe-15"><span class="hidden-xs">Participants</span></a>
@@ -339,16 +339,42 @@
                     </div>
                 </div>
 
+                <div class="form-group col-lg-12">
+                    <button type="submit" id="Submit" class="btn btn-primary px-5 pull-right"> Save Event</button>
+                </div>
+                </form>
+
                 </div>
 
-                    <div class="videos row tab-pane {{$activeShow}}" id="tabe-14">
+
+                    <div class="parent videos row tab-pane {{$activeShow}}" id="tabe-14">
+                        {{ csrf_field() }}
+                        <input class="csrf-token" type="hidden" value="{{ csrf_token() }}">
+                        <input type="hidden"  class="addEventVideos" value="{{url('org/events/videos/store')}}">
+                        
                         <div class="col-lg-12">
                         <div class="card">
                         <div class="card-body row">
                         <div class="col-lg-2"></div>
                         <div class="col-lg-8">
+                            <div class='form-group d-none videoTitle'>
+                            <label for='input_title'>Video Title</label>
+                            <input type="text" class="form-control" id="input_title" name='input_title' value="{{  old('input_title') }}" placeholder="Enter Video Title" required>
+                        </div>
+                        <div class='form-group d-none videoUrl'>
+                            <label for='input_url'>Video URL</label><span style="font-size: 11px;font-weight: 600;">&nbsp;&nbsp;(YouTube or Vimeo url)</span>
+                            <input type="text" class="form-control" id="input_url" name="input_url"  value="{{  old('input_url') }}" placeholder="Enter Video URL" required>
+                        </div>
+                        <div class="form-group d-none videoUploadBox">
+                                <label for="BlankLabel"></label>
+                                <div class="icheck-material-primary">
+                                    <input onclick="UploadVideoBox()" type="checkbox" id="IsUploadVideo" name="IsUploadVideo" @if(old('IsUploadVideo')) checked @endif>
+                                    <label for="IsUploadVideo">Or upload video</label>
+                                </div>
+                            </div>
+
                             <div class='parent' style='width: 100%;'>
-                            <div class='form-group  d-none uploadVideo'>
+                            <div class='form-group  d-none uploadVideoBox'>
                                 <div class='dragFileContainer'>
                                     <input id='video_file' name='video_file' type="file" multiple>
                                     <p>Drag your video file here or click in this area.</p>
@@ -372,12 +398,12 @@
                         </div>
                     </div>
                     </div>
+                        <div class="col-lg-12">
+                    <button onclick="addEventVideos(this);" class="btn btn-primary px-5 pull-right"> Save Video</button>
+                </div>
                     </div>
 
-                    <div class="form-group col-lg-12">
-                    <button type="submit" id="Submit" class="btn btn-primary px-5 pull-right"> Save Event</button>
-                </div>
-                </form>
+                    
 
                 </div>
 
