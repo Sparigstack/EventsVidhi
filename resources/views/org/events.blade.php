@@ -30,6 +30,24 @@
                                         <tr class="parent">
                                     <input class="csrf-token" type="hidden" value="{{ csrf_token() }}">
                                     <input type="hidden"  class="deleteEvent" value="{{url('deleteEvent')}}">
+                                            <td>{{$event->title}} </td>
+                                            <td>{{$event->category->name}}</td>
+                                            <td>{{$event->date_time}}</td>
+                                            <td><?php
+                                                if ($event->is_online) {
+                                                    echo "Online";
+                                                } else {
+                                                    echo $event->address . ', ' . $event->city->name;
+                                                }
+                                                ?></td>
+                                            <td>
+                                                <i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-edit" onclick="window.location='{{ url("org/events/$event->id") }}'"></i>
+                                                <a onclick="deleteEvent(this);" db-delete-id="{{$event->id}}"><i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-trash"></i></a> 
+                                                <a onclick="window.location='{{ url("org/events/$event->id,1") }}'"><i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-file-video-o"></i></a> 
+                                            </td>
+                                        </tr>
+                                    <?php }  ?>
+
                                     <td><?php
                                         $logoUrl = $AwsUrl . 'no-image-logo.jpg';
                                         if (!empty($event->thumbnail)) {

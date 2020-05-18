@@ -36,7 +36,7 @@ class VideosController extends Controller
         // }
         $user = Auth::user();
         $videos = Video::where('user_id',$user->id)->get();
-        var_dump($videos->events->id); 
+        // var_dump($videos->events->title); 
         // var_dump($images);
         // return;
         // return view('org/videos', compact('images','videos'));

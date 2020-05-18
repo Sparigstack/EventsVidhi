@@ -42,8 +42,8 @@
                                                 ?>
                                             <!-- </td> -->
                                             <td>
-                                                <i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-edit" onclick=""></i>
-                                                <a onclick="deleteEvent(this);" db-delete-id=""><i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-trash"></i></a> 
+                                                <i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-edit" onclick="window.location='{{ url("org/videos/$video->id") }}'"></i>
+                                                <a onclick="deleteVideo(this);" db-delete-id="{{$video->id}}"><i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-trash"></i></a> 
                                             </td>
                                         </tr>
                                     <?php }  ?>
