@@ -1,6 +1,7 @@
 .imageRadius{
 	border-radius: 8px;
-	max-height: 90px;
+  max-height: 180px;
+  min-height: 180px;
 }
 .customButtons .simpleButton{
 	display: none;
@@ -42,6 +43,17 @@
   height: 30%;
   outline: none;
   opacity: 0;
+}
+.dragFileContainer #EventBannerImage{
+  width: 94%;
+  height: 75%;
+}
+.dragFileContainer #EventThumbnailImage{
+  width: 94%;
+  height: 75%;
+}
+#thumbnailImage{
+  width: 40%;
 }
 .secondary{
   padding: 4px !important;

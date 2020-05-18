@@ -39,13 +39,13 @@ $(document).ready(function () {
             var sizeMB = sizeKB / 1024;
             console.log(f.naturalWidth);
             if (sizeMB > 1) {
-                $(this).parent().find('.SizeError').removeClass('d-none');
-                $(this).parent().find('.SizeError').addClass('Invalid');
+                $(this).parent().parent().find('.SizeError').removeClass('d-none');
+                $(this).parent().parent().find('.SizeError').addClass('Invalid');
                 $('#Submit').attr('disabled', true);
                 return false;
             } 
-            if($(this).parent().find('.SizeError').hasClass('Invalid')){
-                $(this).parent().find('.SizeError').addClass('d-none');
+            if($(this).parent().parent().find('.SizeError').hasClass('Invalid')){
+                $(this).parent().parent().find('.SizeError').addClass('d-none');
                 $('#Submit').attr('disabled', false);
             }
         }
@@ -67,14 +67,18 @@ function findParent(element) {
 
 function IsOnlineEvent(element) {
     if ($(element).is(":checked")) {
-        $('#Address').val('');
-        $('#Address').attr('readonly', true);
+        $('#Address1').val('');
+        $('#Address1').attr('readonly', true);
+        $('#Address2').attr('readonly', true);
+        $('#PostalCode').attr('readonly', true);
         $('#city').attr('disabled', true);
         $('#EventUrl').removeClass('d-none');
     } else {
         $('#EventUrl').val('');
         $('#EventUrl').addClass('d-none');
-        $('#Address').removeAttr('readonly', false);
+        $('#Address1').removeAttr('readonly', false);
+        $('#Address2').removeAttr('readonly', false);
+        $('#PostalCode').removeAttr('readonly', false);
         $('#city').attr('disabled', false);
     }
 }
@@ -169,7 +173,24 @@ function uploadVideo(element){
    }
     // $('.uploadVideo').removeClass('d-none');
 }
-
+function UpdateEventStatus(element){
+    var URL=$('.PostUrl').val();
+    $id=$(element).attr('data-id');
+    $status=$(element).attr('status');
+    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr("content");
+    
+    $.ajax({
+        url: URL,
+        type: "post",
+        data: {_token: CSRF_TOKEN, 'id':$id,'status':$status},
+        success: function (response) {
+            console.log(response);
+        },
+        error: function (response) {
+           console.log(response);
+        }
+    });
+}
 // function SaveNewEvent(element) {
 //     var URL=$('.URL').val();
 //     ob = new Object();

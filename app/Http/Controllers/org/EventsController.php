@@ -79,8 +79,12 @@ class EventsController extends Controller
         //     'Description' => 'required',
         //     'EventDateTime' => 'required',
         // ]);
+        // if ($request->IsPublic==true) {
+        //    return '1';
+        // } else {
+        //     return '3';
+        // }
          
-        
         $validator = Validator::make($request->all(), [
             'EventBannerImage' => 'image|mimes:jpeg,bmp,png,jpg,gif,spg|dimensions:max_width=468,max_height=200',
             'EventThumbnailImage' => 'image|mimes:jpeg,bmp,png,jpg|dimensions:max_width=1280,max_height=720',
@@ -144,7 +148,9 @@ class EventsController extends Controller
             $events->online_event_url = $request->EventUrl;
         } else {
             $events->city_id = $request->city;
-            $events->address = $request->Address;
+            $events->address = $request->Address1;
+            $events->address_line2 = $request->Address2;
+            $events->postal_code = $request->PostalCode;
             $events->is_online = '0';
         }
         // $events->city_id = $request->city;
@@ -170,6 +176,25 @@ class EventsController extends Controller
         } else {
             $events->is_paid = '0';
         }
+
+        if (isset($request->IsPublish)) {
+            $events->is_live = '1';
+        } else {
+            $events->is_live = '0';
+        }
+        
+        if ($request->IsPublic==true) {
+            $events->is_public = '1';
+        } else {
+            $events->is_public = '0';
+        }
+
+        if ($request->IsFree==false) {
+            $events->is_paid = '0';
+        } else {
+            $events->is_paid = '1';
+        }
+
         $events->save();
 
         $string = $request->HiddenCategoyID;
@@ -300,6 +325,25 @@ class EventsController extends Controller
             $events->city_id = $request->city;
             $events->address = $request->Address;
         }
+
+        if (isset($request->IsPublish)) {
+            $events->is_live = '1';
+        } else {
+            $events->is_live = '0';
+        }
+        
+        if ($request->IsPublic==true) {
+            $events->is_public = '1';
+        } else {
+            $events->is_public = '0';
+        }
+
+        if ($request->IsFree==false) {
+            $events->is_paid = '0';
+        } else {
+            $events->is_paid = '1';
+        }
+
         $string = $request->HiddenCategoyID;
         $EventCategorieIds = preg_split("/\,/", $string);
         EventCategory::where('event_id',$events->id)->delete();
@@ -324,7 +368,7 @@ class EventsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return $request;
     }
 
     /**

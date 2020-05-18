@@ -38,3 +38,4 @@ Route::post('org/events/edit/{id}', 'org\EventsController@edit');
 Route::get('org/videos', 'org\VideosController@index');
 Route::get('org/videos/new', 'org\VideosController@create');
 Route::post('org/videos/store', 'org\VideosController@store');
+Route::post('org/videos/update', 'org\VideosController@update');
