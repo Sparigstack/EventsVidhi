@@ -119,6 +119,16 @@
                             </li>
                             <li>
                                 <a href="{{url('org/videos')}}" class="waves-effect">
+                                    <i class="fa fa-file-video-o"></i> <span>Podcasts</span><i class="fa fa-angle-left pull-right"></i>
+                                </a>
+                                <ul class="sidebar-submenu in">
+                                    <li class=""><a href="{{ url('org/podcasts/new') }}" class=""><i class="zmdi zmdi-long-arrow-right"></i> Add New Podcast</a></li>
+                                    <li class=""><a href="{{ url('org/podcasts') }}" class=""><i class="zmdi zmdi-long-arrow-right"></i> All Podcasts</a></li>
+
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="{{url('org/videos')}}" class="waves-effect">
                                     <i class="zmdi zmdi-format-list-bulleted"></i> <span>Forms</span><i class="fa fa-angle-left pull-right"></i>
                                 </a>
                                 <ul class="sidebar-submenu in">

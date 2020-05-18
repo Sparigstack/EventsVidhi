@@ -72,9 +72,9 @@
                             <label for="user-checkbox">I Agree With Terms &amp; Conditions</label>
                         </div>
                     </div>
-
-                    <button type="submit" class="btn btn-primary btn-block waves-effect waves-light">Sign Up</button>
-
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-block waves-effect waves-light">Sign Up</button></div>
+                    <p>Sign up for free account, you can create and showcase your events, manage customer data and use upto 3 gb space for your videos and podcasts.</p>
 
             </form>
         </div>
