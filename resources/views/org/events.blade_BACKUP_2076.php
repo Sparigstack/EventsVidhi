@@ -73,11 +73,14 @@
                                     </td>
                                     
                                     </tr>
+<<<<<<< HEAD
                                 <?php 
                             // } 
                                 ?>
+=======
                                 <?php } ?>
 
+>>>>>>> 3b3ec250ef6c3ff73839321467d01cee5adf23b4
                                 </tbody>
 
                                 <thead>
