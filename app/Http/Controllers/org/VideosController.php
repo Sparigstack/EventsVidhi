@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use App\Video;
+use Illuminate\Support\Facades\Validator;
 
 class VideosController extends Controller
 {
@@ -60,32 +61,45 @@ class VideosController extends Controller
      */
     public function store(Request $request)
     {
+        $validator=null ;
+        if (isset($request->IsUploadVideo)){
+            $validator = Validator::make($request->all(), [
+                'input_title' => 'required',
+                'input_vidfile'=>'required|mimes:mov,mp4,wmv,flv,avi'
+            ]);
+        }else{
+            $validator = Validator::make($request->all(), [
+                'input_title' => 'required',
+                'input_url' => 'required',
+            ]);
+        }
 
-        //        request()->file('VideoFile')->store('demofolder','local');
-        //        return back();
-        //        $this->validate($request, [
-        //            'image' => 'required|image|max:2048'
-        //        ]);
-        //return 'validation passed';
+        if ($validator->fails()) {
+            return redirect('org/videos/new')
+                ->withErrors($validator)
+                ->withInput();
+        }
         $video = new Video;
-        $video = $request->input_title;
-        $UrlToSave="";
+        $video->title = $request->input_title;
+        $userId = Auth::id();
+        $video->user_id = $userId;
+        $UrlToSave = "";
         if (isset($request->IsUploadVideo)) {
             if ($request->hasFile('input_vidfile')) {
                 $file = $request->file('input_vidfile');
                 $name = time() . $file->getClientOriginalName();
                 $userId = Auth::id();
-                $filePath = 'org_'.$userId.'/Video/'. $name;
+                $filePath = 'org_' . $userId . '/Video/' . $name;
                 Storage::disk('s3')->put($filePath, file_get_contents($file));
-                $UrlToSave=$filePath;
+                $UrlToSave = $filePath;
             }
         } else {
-            $UrlToSave= $request->$request->input_url;
+            $UrlToSave = $request->input_url;
         }
         if (isset($request->IsLinkedEvent)) {
-            $video->event_id = $request->$request->EventToLinks;
+            $video->event_id = $request->EventToLink;
         }
-        
+
         $video->url = $UrlToSave;
         $video->save();
 

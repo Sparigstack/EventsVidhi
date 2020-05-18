@@ -20,20 +20,21 @@
                     </div>
                     @endif
 
-                    <form class="dragFileForm" action="{{$ActionCall}}" method="POST">
+                    <form class="dragFileForm" action="{{$ActionCall}}" method="POST" enctype="multipart/form-data">
+                    {{ csrf_field() }}
                         <div class='form-group'>
                             <label for='input_title'>Video Title</label>
-                            <input type="text" class="form-control" id="input_title" name='input_title' placeholder="Enter Video Title">
+                            <input type="text" class="form-control" id="input_title" name='input_title' value="{{  old('input_title') }}" placeholder="Enter Video Title" required>
                         </div>
                         <div class='form-group'>
                             <label for='input_url'>Video URL</label><span style="font-size: 11px;font-weight: 600;">&nbsp;&nbsp;(YouTube or Vimeo url)</span>
-                            <input type="text" class="form-control" id="input_url" name="input_url" placeholder="Enter Video URL">
+                            <input type="text" class="form-control" id="input_url" name="input_url"  value="{{  old('input_url') }}" placeholder="Enter Video URL" required>
                         </div>
 
                         <div class="form-group">
                                 <label for="BlankLabel"></label>
                                 <div class="icheck-material-primary">
-                                    <input onclick="UploadVideoBox(this)" type="checkbox" id="IsUploadVideo" name="IsUploadVideo">
+                                    <input onclick="UploadVideoBox()" type="checkbox" id="IsUploadVideo" name="IsUploadVideo" @if(old('IsUploadVideo')) checked @endif>
                                     <label for="IsUploadVideo">Or upload video</label>
                                 </div>
                             </div>
@@ -42,14 +43,15 @@
                             <div class='form-group  d-none uploadVideoBox'>
                                 <label for='input_vidfile'>Upload Video</label>
                                 <div class='dragFileContainer'>
-                                    <input id='input_vidfile' name='input_vidfile' type="file" multiple>
+                                    <input type="file" id='input_vidfile' name='input_vidfile' multiple value="{{  old('input_vidfile') }}" >
                                     <p>Drag your video file here or click in this area.</p>
                                 </div>
+                                <small class="text-danger">{{ $errors->first('input_vidfile') }}</small>
                             </div>
                             <div class="form-group">
                                 <label for="BlankLabel"></label>
                                 <div class="icheck-material-primary">
-                                    <input onchange='showHideLinkEvent(this);' type="checkbox" id="IsLinkedEvent" name="IsLinkedEvent">
+                                    <input onchange='showHideLinkEvent(this);' type="checkbox" id="IsLinkedEvent" name="IsLinkedEvent" @if(old('IsLinkedEvent')) checked @endif>
                                     <label for="IsLinkedEvent"> Do you want to link this video with any Event?</label>
                                 </div>
                             </div>
@@ -64,7 +66,7 @@
                                         //                                            $IsSelected = "selected";
                                         //                                        }
                                     ?>
-                                        <option value="{{$event->id}}"><?php echo $event->title; ?> </option>
+                                        <option value="{{$event->id}}"  @if (old('EventToLink')==$event->id) selected="selected" @endif ><?php echo $event->title; ?> </option>
                                     <?php } ?>
 
                                 </select>
@@ -193,6 +195,8 @@
         $('.dragFileForm input').change(function() {
             $('.dragFileForm p').text(this.files.length + " file(s) selected");
         });
+        UploadVideoBox();
+        showHideLinkEvent();
     });
 </script>
 @endsection

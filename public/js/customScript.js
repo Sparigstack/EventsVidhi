@@ -5,7 +5,7 @@ $(document).ready(function () {
             { orderable: false, targets: 4 },
         ]
     });
-
+   
     $('#EventDateTime').change(function (time) {
         var dateRi = $(this).val();
         var defaultdate;
@@ -131,15 +131,21 @@ function deleteEvent(element) {
         }
     });
 }
-function UploadVideoBox(element){
-   if(!$(element).is(':checked')){
+function UploadVideoBox(){
+   if(!$('#IsUploadVideo').is(':checked')){
+    $('#input_url').attr('readonly', false);
+    $("#input_url").prop('required',true);
+    $("#input_vidfile").prop('required',false);
     $('.uploadVideoBox').addClass('d-none');
    }else{
     $('.uploadVideoBox').removeClass('d-none');
+    $('#input_url').attr('readonly', true);
+    $("#input_url").prop('required',false);
+    $("#input_vidfile").prop('required',true);
    }
 }
-function showHideLinkEvent(element){
-    if($(element).is(':checked')){
+function showHideLinkEvent(){
+    if($('#IsLinkedEvent').is(':checked')){
         $('.EventSelectionBox').removeClass('d-none');
     }else{
         $('.EventSelectionBox').addClass('d-none');
