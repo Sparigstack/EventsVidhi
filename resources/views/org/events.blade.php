@@ -64,13 +64,7 @@
                                     ?>
                                     <td class="max-w-table-date">{{$dateStr}}</td>
                                     <td>{{$event->category->name}}</td>
-    <!--                                    <td><?php
-//                                        if ($event->is_online) {
-//                                            echo "Online";
-//                                        } else {
-//                                            echo $event->address . ', ' . $event->city->name;
-//                                        }
-                                    ?></td>-->
+    
                                     <td>
                                         <i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-edit" onclick="window.location ='{{ url("org/events/$event->id") }}'"></i>
                                         <a onclick="deleteEvent(this);" db-delete-id="{{$event->id}}"><i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-trash"></i></a> 
