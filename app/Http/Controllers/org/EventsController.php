@@ -8,6 +8,8 @@ use DB;
 use App\Event;
 use App\Category;
 use App\City;
+use App\Country;
+use App\State;
 use App\Timezone;
 use App\EventCategory;
 use App\EventType;
@@ -58,9 +60,11 @@ class EventsController extends Controller
         $isVideoSelected = false;
         $categories = Category::all();
         $cities = City::all();
+        $countries = Country::all();
+        $states = State::all();
         $cityTimeZones = Timezone::all();
         $eventTypes=EventType::all();
-        return view('org/createEvent', compact('categories', 'cities', 'cityTimeZones','eventTypes','isVideoSelected'));
+        return view('org/createEvent', compact('categories', 'cities', 'cityTimeZones','eventTypes','isVideoSelected', 'countries','states'));
     }
 
     /**
@@ -221,7 +225,9 @@ class EventsController extends Controller
         $cities = City::all();
         $cityTimeZones = Timezone::all();
         $eventTypes=EventType::all();
-        return view('org/createEvent', compact('categories', 'cities', 'event','cityTimeZones','eventTypes','isVideoSelected'));
+        $countries = Country::all();
+        $states = State::all();
+        return view('org/createEvent', compact('categories', 'cities', 'event','cityTimeZones','eventTypes','isVideoSelected', 'countries', 'states'));
     }
 
     public function storeVideo(Request $request)
@@ -366,5 +372,32 @@ class EventsController extends Controller
     {
         //
         $event = Event::find($request->eventDeleteId)->delete();
+    }
+
+    public function UpdateEventStatus(Request $request)
+    {
+        $id = $request->id;
+        $events = Event::findOrFail($id);
+        if($request->status=='1'){
+            $events->is_live = 2;
+        }
+        if($request->status=='2'){
+            $events->is_live = 1;
+        }
+        if($request->status=='3'){
+            $events->is_live = 3;
+        }
+        
+        $events->save();
+    }
+
+    public function getState(Request $request){
+        return $request->countryId;
+        $state = State::where('country_id',$request->countryId)->get();
+    }
+
+    public function getCity(Request $request){
+        return $request->cityId;
+        $city = City::where('state_id',$request->cityId)->get();
     }
 }

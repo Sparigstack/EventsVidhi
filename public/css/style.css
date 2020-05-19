@@ -10,10 +10,11 @@
 	margin-top: 30px !important;
 }
 .addNewEventButton button{
-	background: #80808021 !important;
+	/*background: #80808021 !important;*/
 }
 .addNewEventButton button a{
-	color:black !important;
+	/*color:black !important;*/
+  color:white !important;
 }
 .createEventContainer{
 	padding-right: 25px !important;

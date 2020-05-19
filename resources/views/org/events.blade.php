@@ -10,7 +10,7 @@
                 <div class="card">
                     <div class="card-header addNewEventButton">
                         <i class="fa fa-table pt-3"></i> Upcoming Events
-                        <button id="" class="btn m-1 pull-right" style="border:1px solid transparent;"><a href="{{url("org/events/new")}}">Add New Event</a></button>
+                        <button id="" class="btn m-1 pull-right btn-primary" style=""><a href="{{url("org/events/new")}}">Add New Event</a></button>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive" id="default-datatable_wrapper">
@@ -70,8 +70,8 @@
                                                
                                                 <?php 
                                                 if($event->is_live!=0){ ?>
-                                                    <button type="button" onclick="UpdateEventStatus(this);" data-id="{{$event->id}}" status={{$event->is_live}} class="btn btn-outline-primary waves-effect waves-light secondary"> Pause </button>
-                                                    <button type="button"  class="btn btn-outline-warning waves-effect waves-light secondary"> Cancel </button>
+                                                    <button type="button" onclick="UpdateEventStatus(this);" data-id="{{$event->id}}" status={{$event->is_live}} class="btn btn-outline-primary waves-effect waves-light secondary pauseButton"> Pause </button>
+                                                    <button type="button" onclick="UpdateEventStatus(this);" data-id="{{$event->id}}" status='3'  class="btn btn-outline-warning waves-effect waves-light secondary cancelButton"> Cancel </button>
                                                 <?php }?>
                                                 
 

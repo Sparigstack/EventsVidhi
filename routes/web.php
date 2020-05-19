@@ -35,8 +35,13 @@ Route::post('org/events/store', 'org\EventsController@store');
 Route::post('deleteEvent', 'org\EventsController@destroy');
 Route::post('org/events/edit/{id}', 'org\EventsController@edit');
 Route::post('org/events/videos/store', 'org\EventsController@storeVideo');
+Route::post('org/events/update', 'org\EventsController@UpdateEventStatus');
+
 
 Route::get('org/videos', 'org\VideosController@index');
 Route::get('org/videos/new', 'org\VideosController@create');
 Route::post('org/videos/store', 'org\VideosController@store');
 Route::post('org/videos/update', 'org\VideosController@update');
+
+Route::post('getState', 'org\EventsController@getState');
+Route::post('getCity', 'org\EventsController@getCity');

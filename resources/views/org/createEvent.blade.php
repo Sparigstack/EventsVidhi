@@ -11,6 +11,8 @@
     $address2 = "";
     $PostalCode = "";
     $cityID = 0;
+    $countryId = 0;
+    $stateId = 0;
     $timezoneId = 0;
     $EventDate = "";
     $EventEndDate = "";
@@ -45,6 +47,8 @@
         $EventEndDate = $event->end_date_time;
         $categoryID = $event->category_id;
         $cityID = $event->city_id;
+        // $countryId = $event->country_id;
+        // $stateId = $event->state_id;
         $timezoneId = $event->timezone_id;
         if (!empty($event->address_line2)) {
             $address2 = $event->address_line2;
@@ -123,7 +127,7 @@
                                     </div>
 
                                     <div class="col-lg-12 row mt-2">
-                                        <div class="form-group col-lg-6">
+                                        <div class="form-group col-lg-12">
                                             <label for="EventBannerImage">Banner Image (optional)</label>
                                             <p style="font-size: .7pc;">Image size must be less than or eqaul to 1MB and Dimension should be 468 &#10005; 200</p>
                                             <!-- <input type="file" accept="image/*" id="EventBannerImage" name="EventBannerImage" class="form-control files" onchange="document.getElementById('bannerImage').src = window.URL.createObjectURL(this.files[0]);document.getElementById('bannerImage').classList.remove('d-none');"> -->
@@ -142,6 +146,10 @@
 
 
                                         </div>
+                                        
+                                    </div>
+
+                                    <div class="form-group col-lg-12 row">
                                         <div class="form-group col-lg-6">
                                             <label for="EventThumbnailImage">Thumbnail Image (optional)</label>
                                             <p style="font-size: .7pc;">Image size must be less than or eqaul to 1MB and Dimension should be 1280 &#10005; 720</p>
@@ -161,16 +169,13 @@
                                             <div class="text-danger d-none SizeError" id='SizeErrorBannerImage'>Image size must be less than or eqaul to 1MB</div>
 
                                         </div>
-                                    </div>
 
-                                    <div class="form-group col-lg-12">
-                                        <label for="title">Title</label>
+
+                                        <div class="form-group col-lg-6">
+                                            <label for="title">Title</label>
                                         <input type="text" class="form-control" id="title" value="{{ old('title',$title) }}" name="title" placeholder="Enter Event Title" required>
                                         <small class="text-danger">{{ $errors->first('title') }}</small>
-                                    </div>
-
-                                    <div class="form-group col-lg-6">
-                                        <label for="EventSelection">Event Type</label>
+                                        <label for="EventSelection" class="mt-4 pt-2">Event Type</label>
                                         <select autocomplete="off" value="{{ old('eventType') }}" name="eventType" id="eventType" class=" custom-select">
                                             <option value>Select Event Type</option>
                                             <?php foreach ($eventTypes as $eventType) {
@@ -185,10 +190,8 @@
                                             <?php } ?>
 
                                         </select>
-                                    </div>
 
-                                    <div class="form-group col-lg-6">
-                                        <label>Select Categories</label>
+                                        <label class="mt-4 pt-2">Select Categories</label>
                                         <select class="form-control multiple-select" multiple="multiple" name="category" id="category" required>
                                             <?php if (!empty($event)) {
                                                 $IsSelected = "";
@@ -222,6 +225,10 @@
                                         <small class="text-danger">{{ $errors->first('category') }}</small>
                                         <textarea id="HiddenCategoyID" name="HiddenCategoyID" required class="form-controld d-none" title="HiddenCategoyID" placeholder="HiddenCategoyID" autocomplete="off" rows="4">{{ old('HiddenCategoyID', $MultSelectTags) }} </textarea>
                                     </div>
+                                    </div>
+
+
+                                    
 
                                     <div class="form-group col-lg-12">
                                         <label for="Description">Description</label>
@@ -247,17 +254,39 @@
                                                     <input type="text" id="EventUrl" value="{{  old('EventUrl', $EventUrl) }}" name="EventUrl" class="form-control {{$HiddenEventUrl}}" title="Event Url" placeholder="Online Event Url" autocomplete="off" rows="0" value="">
                                                 </div>
 
-
                                                 <div class="form-group col-lg-12">
-                                                    <label for="Address1">Address Line 1</label>
-                                                    <input type="text" id="Address1" name="Address1" {{$readonly}} class="form-control" title="Address Line 1" placeholder="Address Line 1" autocomplete="off" rows="0" value="{{  old('Address1', $address) }}">
+                                                    <input type="hidden" class="getState" value="{{url('getState')}}">
+                                                    <label for="selectionCategory">Country</label>
+                                                    <select autocomplete="off" value="{{ old('country') }}" name="country" id="country" class=" custom-select" {{$disabled}} onchange="getState(this);">
+                                                        <option value="0">Select Country</option>
+                                                        <?php foreach ($countries as $country) {
+                                                            $IsSelected = "";
+                                                            if ($country->id == $countryId) {
+                                                                $IsSelected = "selected";
+                                                            }
+                                                        ?>
+                                                            <option value="{{$country->id}}" {{$IsSelected}} @if (old('country')==$country->id) selected="selected" @endif ><?php echo $country->name; ?> </option>
+                                                        <?php } ?>
+
+                                                    </select>
                                                 </div>
 
                                                 <div class="form-group col-lg-12">
-                                                    <label for="Address2">Address Line 2</label>
-                                                    <input type="text" id="Address2" name="Address2" {{$readonly}} class="form-control" title="Address Line 2" placeholder="Address Line 2" autocomplete="off" rows="0" value="{{  old('Address2', $address2) }}">
-                                                </div>
+                                                    <input type="hidden" class="getCity" value="{{url('getCity')}}">
+                                                    <label for="selectionCategory">State</label>
+                                                    <select autocomplete="off" value="{{ old('state') }}" name="state" id="state" class=" custom-select" {{$disabled}} onchange="getCity(this);">
+                                                        <option value="0">Select State</option>
+                                                        <?php foreach ($states as $state) {
+                                                            $IsSelected = "";
+                                                            if ($state->id == $stateId) {
+                                                                $IsSelected = "selected";
+                                                            }
+                                                        ?>
+                                                            <option value="{{$state->id}}" {{$IsSelected}} @if (old('state')==$state->id) selected="selected" @endif ><?php echo $state->name; ?> </option>
+                                                        <?php } ?>
 
+                                                    </select>
+                                                </div>
 
                                                 <div class="form-group col-lg-12">
                                                     <label for="selectionCategory">City</label>
@@ -274,6 +303,18 @@
 
                                                     </select>
                                                 </div>
+
+
+                                                <div class="form-group col-lg-12">
+                                                    <label for="Address1">Address Line 1</label>
+                                                    <input type="text" id="Address1" name="Address1" {{$readonly}} class="form-control" title="Address Line 1" placeholder="Address Line 1" autocomplete="off" rows="0" value="{{  old('Address1', $address) }}">
+                                                </div>
+
+                                                <div class="form-group col-lg-12">
+                                                    <label for="Address2">Address Line 2</label>
+                                                    <input type="text" id="Address2" name="Address2" {{$readonly}} class="form-control" title="Address Line 2" placeholder="Address Line 2" autocomplete="off" rows="0" value="{{  old('Address2', $address2) }}">
+                                                </div>
+
 
                                                 <div class="form-group col-lg-12">
                                                     <label for="PostalCode">Postal code</label>
