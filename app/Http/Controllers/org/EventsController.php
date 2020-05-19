@@ -71,7 +71,6 @@ class EventsController extends Controller
      */
     public function store(Request $request)
     {
-     
         // return $request->Address2;
         $validator = Validator::make($request->all(), [
             'EventBannerImage' => 'image|mimes:jpeg,bmp,png,jpg,gif,spg|dimensions:max_width=468,max_height=200',
@@ -171,13 +170,13 @@ class EventsController extends Controller
             $events->is_live = '0';
         }
         
-        if ($request->IsPublic==true) {
+        if ($request->IsPublic=="true") {
             $events->is_public = '1';
         } else {
             $events->is_public = '0';
         }
 
-        if ($request->IsFree==false) {
+        if ($request->IsFree=="false") {
             $events->is_paid = '0';
         } else {
             $events->is_paid = '1';
@@ -239,7 +238,7 @@ class EventsController extends Controller
      */
     public function edit(Request $request, $id)
     {
-
+        
         $user = Auth::user();
         $events = Event::findOrFail($id);
         //banner image
@@ -318,13 +317,13 @@ class EventsController extends Controller
             $events->is_live = '0';
         }
         
-        if ($request->IsPublic==true) {
+        if ($request->IsPublic=="true") {
             $events->is_public = '1';
         } else {
             $events->is_public = '0';
         }
 
-        if ($request->IsFree==false) {
+        if ($request->IsFree=="true") {
             $events->is_paid = '0';
         } else {
             $events->is_paid = '1';

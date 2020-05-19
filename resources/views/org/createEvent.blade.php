@@ -370,7 +370,7 @@
                                                     <label for="BlankLabel">Is this event free or paid?</label><br>
                                                     <div class="icheck-material-primary icheck-inline">
                                                         <input type="radio" id="ItIsFree" value="true" name="IsFree" <?php if (!empty($event)) {
-                                                                                                                            if ($event->is_piad == 0) {
+                                                                                                                            if ($event->is_paid == 0) {
                                                                                                                                 echo "checked";
                                                                                                                             }
                                                                                                                         } else {
@@ -380,7 +380,7 @@
                                                     </div>
                                                     <div class="icheck-material-primary icheck-inline">
                                                         <input type="radio" id="ItIsPaid" value="false" name="IsFree" <?php if (!empty($event)) {
-                                                                                                                            if ($event->is_public == 1) {
+                                                                                                                            if ($event->is_paid == 1) {
                                                                                                                                 echo "checked";
                                                                                                                             }
                                                                                                                         } ?>>
