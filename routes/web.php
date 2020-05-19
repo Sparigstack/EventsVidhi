@@ -34,6 +34,7 @@ Route::get('org/events/{eventid}', 'org\EventsController@show');
 Route::post('org/events/store', 'org\EventsController@store');
 Route::post('deleteEvent', 'org\EventsController@destroy');
 Route::post('org/events/edit/{id}', 'org\EventsController@edit');
+Route::post('org/events/videos/store', 'org\EventsController@storeVideo');
 
 Route::get('org/videos', 'org\VideosController@index');
 Route::get('org/videos/new', 'org\VideosController@create');

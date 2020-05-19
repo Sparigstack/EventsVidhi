@@ -32,7 +32,9 @@
     $BannerHidden = "d-none";
     $AwsUrl = "https://panelhiveus.s3.us-west-1.amazonaws.com/";
     $IsLive="";
-
+    $activeClass="active";
+    $activeShow="show";
+    
     if (!empty($event)) {
         $ActionCall = url('org/events/edit/' . $event->id);
         $CardTitle = "Edit Event";
@@ -90,6 +92,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" data-toggle="tab" href="#tabe-14"><span class="hidden-xs">Participants</span></a>
+                        <a class="nav-link {{$activeClass}}" data-toggle="tab" href="#tabe-14"><span class="hidden-xs">Media</span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" data-toggle="tab" href="#tabe-15"><span class="hidden-xs">Promote</span></a>
@@ -470,6 +473,83 @@
                     <button type="submit" id="Submit" class="btn btn-primary px-5 pull-right"> Save Event</button>
                 </div>
                 </form>
+
+                </div>
+
+
+                    <div class="parent videos row tab-pane {{$activeShow}}" id="tabe-14">
+                        {{ csrf_field() }}
+                        <input class="csrf-token" type="hidden" value="{{ csrf_token() }}">
+                        <input type="hidden"  class="addEventVideos" value="{{url('org/events/videos/store')}}">
+                        
+                        <div class="col-lg-12">
+                        <div class="card">
+                        <div class="card-body row">
+                        <div class="col-lg-2"></div>
+                        <div class="col-lg-8">
+                            <div class='form-group d-none videoTitle'>
+                            <label for='input_title'>Video Title</label>
+                            <input type="text" class="form-control" id="input_title" name='input_title' value="{{  old('input_title') }}" placeholder="Enter Video Title" required>
+                        </div>
+                        <div class='form-group d-none videoUrl'>
+                            <label for='input_url'>Video URL</label><span style="font-size: 11px;font-weight: 600;">&nbsp;&nbsp;(YouTube or Vimeo url)</span>
+                            <input type="text" class="form-control" id="input_url" name="input_url"  value="{{  old('input_url') }}" placeholder="Enter Video URL" required>
+                        </div>
+                        <div class="form-group d-none videoUploadBox">
+                                <label for="BlankLabel"></label>
+                                <div class="icheck-material-primary">
+                                    <input onclick="UploadVideoBox()" type="checkbox" id="IsUploadVideo" name="IsUploadVideo" @if(old('IsUploadVideo')) checked @endif>
+                                    <label for="IsUploadVideo">Or upload video</label>
+                                </div>
+                            </div>
+
+                            <div class='parent' style='width: 100%;'>
+                            <div class='form-group  d-none uploadVideoBox'>
+                                <div class='dragFileContainer'>
+                                    <input id='video_file' name='video_file' type="file" multiple>
+                                    <p>Drag your video file here or click in this area.</p>
+                                </div>
+                            </div>
+                            <div class='form-group  d-none uploadPodcastVideo'>
+                                <div class='dragFileContainer'>
+                                    <input id='podcast_video_file' name='podcast_video_file' type="file" multiple>
+                                    <p>Drag your podcast video file here or click in this area.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                        <button type="button" id="videoButton" class="btn btn-primary m-1" onclick="uploadVideo(this);">Upload Video</button>
+                        <button type="button" id="podcastVideoButton" class="btn btn-primary m-1" onclick="uploadVideo(this);">Upload Podcast Video</button>
+                        </div>
+                        
+                        </div>
+                        <div class="col-lg-2"></div>
+                        </div>
+                    </div>
+                    </div>
+                        <div class="col-lg-12">
+                    <button onclick="addEventVideos(this);" class="btn btn-primary px-5 pull-right"> Save Video</button>
+                </div>
+                    </div>
+
+                    
+
+                </div>
+
+                <!-- <div class="form-group col-lg-6">
+                            <label for="input-5">Durations</label>
+                            <input type="time" id="" class="form-control">
+                        </div> -->
+
+                <!-- <div class="form-group col-lg-12">
+                            <button type="submit" id="Submit" class="btn btn-primary px-5 pull-right"> Save Event</button>
+                        </div>
+                    </form> -->
+                <!-- </div> -->
+                <!-- </div> -->
+                <!-- </div> -->
+                <!-- </div> -->
             </div>
         </div>
     </div>

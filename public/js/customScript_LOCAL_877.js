@@ -164,19 +164,10 @@ function showHideLinkEvent(){
 }
 function uploadVideo(element){
     if ($(element).attr('id') == 'videoButton') {
-      $('.videoTitle').removeClass('d-none');
-      $('.videoUrl').removeClass('d-none');
-      $('.videoUploadBox').removeClass('d-none'); 
-      $('#input_url').attr('readonly', false); 
-      $('#IsUploadVideo').prop('checked',false);
-      // $('.uploadVideo').removeClass('d-none');
+      $('.uploadVideo').removeClass('d-none');
       $('.uploadPodcastVideo').addClass('d-none');
    }
    else if ($(element).attr('id') == 'podcastVideoButton') {
-       $('.videoTitle').addClass('d-none');
-       $('.videoUrl').addClass('d-none');
-       $('.videoUploadBox').addClass('d-none');
-       $('.uploadVideoBox').addClass('d-none');
        $('.uploadPodcastVideo').removeClass('d-none');
        $('.uploadVideo').addClass('d-none');
    }
@@ -200,21 +191,6 @@ function UpdateEventStatus(element){
         }
     });
 }
-function addEventVideos(element) {
-    var parent = findParent(element);
-    var CSRF_TOKEN = $('.csrf-token').val();
-    var urlString = $('.addEventVideos').val();
-    
-    $.ajax({
-        url: urlString,
-        type: 'post',
-        data: { _token: CSRF_TOKEN},
-        success: function (response) {
-            console.log(response);
-        }
-    });
-}
-
 // function SaveNewEvent(element) {
 //     var URL=$('.URL').val();
 //     ob = new Object();

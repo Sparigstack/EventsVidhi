@@ -237,6 +237,12 @@ class EventsController extends Controller
         return view('org/createEvent', compact('categories', 'cities', 'event','cityTimeZones','eventTypes','isVideoSelected'));
     }
 
+    public function storeVideo(Request $request)
+    {
+        $MergeTool="test";
+        return 'mansi';
+    }
+
     /**
      * Show the form for editing the specified resource.
      *

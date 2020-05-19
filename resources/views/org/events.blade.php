@@ -66,7 +66,7 @@
                                             <td>{{$event->category->name}}</td>
                                             <td class="text-center p-1 align-middle" style="padding: 0 !important;">
                                                 <button  onclick="window.location ='{{ url("org/events/$event->id") }}'" type="button" class="btn btn-outline-success waves-effect waves-light secondary "> Edit </button>
-                                                <button  onclick="window.location ='{{ url("org/events/$event->id") }}'" type="button" class="btn btn-outline-danger waves-effect waves-light secondary"> Delete </button>
+                                                <button onclick="deleteEvent(this);" db-delete-id="{{$event->id}}"type="button" class="btn btn-outline-danger waves-effect waves-light secondary"> Delete </button>
                                                
                                                 <?php 
                                                 if($event->is_live!=0){ ?>
@@ -81,7 +81,18 @@
                                             </td>
 
                                         </tr>
-                                    <?php } ?>
+                                   
+                                    <!-- <td>
+                                        <i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-edit" onclick="window.location ='{{ url("org/events/$event->id") }}'"></i>
+                                        <a onclick="deleteEvent(this);" db-delete-id="{{$event->id}}"><i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-trash"></i></a> 
+                                        <a onclick="window.location ='{{ url("org/events/$event->id") }}'" db-delete-id="{{$event->id}}"><i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-file-video-o"></i></a> 
+                                    </td> -->
+                                    
+                                    </tr>
+                                <?php 
+                            } 
+                                ?>
+                               
 
                                 </tbody>
 
