@@ -30,10 +30,10 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('org/events', 'org\EventsController@index')->name('orgEvents');
 Route::get('org/pastEvents', 'org\EventsController@pastEvents');
 Route::get('org/events/new', 'org\EventsController@create')->name('newEvent');;
-Route::get('org/events/{eventid}', 'org\EventsController@show');
+Route::get('org/events/{eventid}/{tabe?}', 'org\EventsController@edit');
 Route::post('org/events/store', 'org\EventsController@store');
 Route::post('deleteEvent', 'org\EventsController@destroy');
-Route::post('org/events/edit/{id}', 'org\EventsController@edit');
+Route::post('org/events/edit/{id}', 'org\EventsController@update');
 Route::post('org/events/videos/store', 'org\EventsController@storeVideo');
 Route::post('org/events/update', 'org\EventsController@UpdateEventStatus');
 

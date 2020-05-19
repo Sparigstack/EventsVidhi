@@ -240,7 +240,10 @@ function getState(element){
         type: 'post',
         data: { _token: CSRF_TOKEN, countryId : countryId},
         success: function (response) {
-            console.log(response);
+            $('#state').attr('disabled', false);
+            $('#state').empty();
+            $('#state').append(response);
+            // console.log(response);
         }
     });
 }
@@ -255,7 +258,9 @@ function getCity(element){
         type: 'post',
         data: { _token: CSRF_TOKEN, cityId : cityId},
         success: function (response) {
-            console.log(response);
+            $('#city').attr('disabled', false);
+            $('#city').empty();
+            $('#city').append(response);
         }
     });
 }

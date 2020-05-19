@@ -30,6 +30,17 @@
   /*position: absolute;*/
   width: 100%;
 }
+.thumbNailContainer{
+  width: 40%;
+}
+.thumbNailContainer p{
+  text-align: center !important;
+  height: 170px !important;
+  align-items: center !important;
+  cursor: pointer !important;
+  line-height: unset!important;
+    display: flex;
+}
 .dragFileContainer p{
   width: 100%;
   height: 100%;
@@ -50,11 +61,11 @@
   height: 75%;
 }
 .dragFileContainer #EventThumbnailImage{
-  width: 94%;
-  height: 75%;
+  width: 38%;
+  height: 70%
 }
 #thumbnailImage{
-  width: 40%;
+  width: 100%;
 }
 .secondary{
   padding: 4px !important;

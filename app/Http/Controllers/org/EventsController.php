@@ -61,10 +61,11 @@ class EventsController extends Controller
         $categories = Category::all();
         $cities = City::all();
         $countries = Country::all();
-        $states = State::all();
+        // $states = State::all();
         $cityTimeZones = Timezone::all();
         $eventTypes=EventType::all();
-        return view('org/createEvent', compact('categories', 'cities', 'cityTimeZones','eventTypes','isVideoSelected', 'countries','states'));
+        $tabe=13;
+        return view('org/createEvent', compact('categories', 'cities', 'cityTimeZones','eventTypes','isVideoSelected', 'countries','tabe'));
     }
 
     /**
@@ -180,7 +181,7 @@ class EventsController extends Controller
             $events->is_public = '0';
         }
 
-        if ($request->IsFree=="false") {
+        if ($request->IsFree=="true") {
             $events->is_paid = '0';
         } else {
             $events->is_paid = '1';
@@ -197,7 +198,7 @@ class EventsController extends Controller
             $eventCategory->category_id=number_format($categoryID);
             $eventCategory->save();
         }
-        return redirect('org/events');
+        return redirect("org/events/".$events->id."/14");
     }
 
     /**
@@ -207,6 +208,23 @@ class EventsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
+    {
+       
+    }
+
+    public function storeVideo(Request $request)
+    {
+        $MergeTool="test";
+        return 'mansi';
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id,$tabe=13)
     {
         $isVideoSelected = false;
         $ids = explode(',', $id);
@@ -227,24 +245,19 @@ class EventsController extends Controller
         $eventTypes=EventType::all();
         $countries = Country::all();
         $states = State::all();
-        return view('org/createEvent', compact('categories', 'cities', 'event','cityTimeZones','eventTypes','isVideoSelected', 'countries', 'states'));
-    }
-
-    public function storeVideo(Request $request)
-    {
-        $MergeTool="test";
-        return 'mansi';
+        return view('org/createEvent', compact('categories', 'cities', 'event','cityTimeZones','eventTypes','isVideoSelected', 'countries', 'states','tabe'));
+        
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Update the specified resource in storage.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request, $id)
+    public function update(Request $request, $id)
     {
-        
         $user = Auth::user();
         $events = Event::findOrFail($id);
         //banner image
@@ -351,18 +364,6 @@ class EventsController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        return $request;
-    }
-
-    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
@@ -392,12 +393,23 @@ class EventsController extends Controller
     }
 
     public function getState(Request $request){
-        return $request->countryId;
-        $state = State::where('country_id',$request->countryId)->get();
+        
+        $states = State::where('country_id',$request->countryId)->get();
+        $stateOptions="<option>Select State</option>";
+        foreach($states as $state){
+            $stateOptions .="<option value='".$state->id."' >".$state->name."</option>";
+        }
+        return $stateOptions;
     }
 
     public function getCity(Request $request){
-        return $request->cityId;
-        $city = City::where('state_id',$request->cityId)->get();
+        
+        $citys = City::where('state_id',$request->cityId)->get();
+
+        $cityOptions="<option>Select City</option>";
+        foreach($citys as $city){
+            $cityOptions .="<option value='".$city->id."' >".$city->name."</option>";
+        }
+        return $cityOptions;
     }
 }
