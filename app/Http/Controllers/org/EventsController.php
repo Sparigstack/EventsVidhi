@@ -71,20 +71,8 @@ class EventsController extends Controller
      */
     public function store(Request $request)
     {
-        // $validate = $this->validate($request, [
-        //     'EventBannerImage' => 'image|mimes:jpeg,bmp,png,jpg,gif,spg|dimensions:max_width=468,max_height=200',
-        //     'EventThumbnailImage' => 'image|mimes:jpeg,bmp,png,jpg|dimensions:max_width=1280,max_height=720',
-        //     'title' => 'required',
-        //     'category' => 'required',
-        //     'Description' => 'required',
-        //     'EventDateTime' => 'required',
-        // ]);
-        // if ($request->IsPublic==true) {
-        //    return '1';
-        // } else {
-        //     return '3';
-        // }
-         
+     
+        // return $request->Address2;
         $validator = Validator::make($request->all(), [
             'EventBannerImage' => 'image|mimes:jpeg,bmp,png,jpg,gif,spg|dimensions:max_width=468,max_height=200',
             'EventThumbnailImage' => 'image|mimes:jpeg,bmp,png,jpg|dimensions:max_width=1280,max_height=720',
@@ -99,7 +87,7 @@ class EventsController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
-
+        
         //banner image
         // $fileBanner = $request->file('EventBannerImage');
         $bannerUrl = "";
@@ -166,16 +154,16 @@ class EventsController extends Controller
 
         $events->thumbnail = $thumbNailUrl;
         $events->banner = $bannerUrl;
-        if (isset($request->IsPublic)) {
-            $events->is_public = '1';
-        } else {
-            $events->is_public = '0';
-        }
-        if (isset($request->IsPaid)) {
-            $events->is_paid = '1';
-        } else {
-            $events->is_paid = '0';
-        }
+        // if (isset($request->IsPublic)) {
+        //     $events->is_public = '1';
+        // } else {
+        //     $events->is_public = '0';
+        // }
+        // if (isset($request->IsPaid)) {
+        //     $events->is_paid = '1';
+        // } else {
+        //     $events->is_paid = '0';
+        // }
 
         if (isset($request->IsPublish)) {
             $events->is_live = '1';
@@ -251,14 +239,6 @@ class EventsController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        // $this->validate($request, [
-        //     'EventBannerImage' => 'image|mimes:jpeg,bmp,png,jpg,gif,spg|dimensions:max_width=468,max_height=200',
-        //     'EventThumbnailImage' => 'image|mimes:jpeg,bmp,png,jpg|dimensions:max_width=1280,max_height=720',
-        //     'title' => 'required',
-        //     'category' => 'required',
-        //     'Description' => 'required',
-        //     'EventDateTime' => 'required',
-        // ]);
 
         $user = Auth::user();
         $events = Event::findOrFail($id);
@@ -311,16 +291,16 @@ class EventsController extends Controller
 
         $events->thumbnail = $thumbNailUrl;
         $events->banner = $bannerUrl;
-        if (isset($request->IsPublic)) {
-            $events->is_public = '1';
-        } else {
-            $events->is_public = '0';
-        }
-        if (isset($request->IsPaid)) {
-            $events->is_paid = '1';
-        } else {
-            $events->is_paid = '0';
-        }
+        // if (isset($request->IsPublic)) {
+        //     $events->is_public = '1';
+        // } else {
+        //     $events->is_public = '0';
+        // }
+        // if (isset($request->IsPaid)) {
+        //     $events->is_paid = '1';
+        // } else {
+        //     $events->is_paid = '0';
+        // }
         if (isset($request->IsOnline)) {
             $events->is_online = '1';
             $events->city_id = null;
