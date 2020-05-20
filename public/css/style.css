@@ -80,8 +80,9 @@
 .dragFileContainer button:active{
   border:0;
 }*/
-.max-w-table-date{
+.max-w-table-100{
     max-width: 100px!important;
     white-space: normal!important;
 }
+table .max-w-table-100 .btn{margin: 10px auto;min-width: 60px;}
 .greenFont{color:green;}

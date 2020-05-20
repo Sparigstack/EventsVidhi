@@ -78,8 +78,8 @@ class EventsController extends Controller
     {
         // return $request->Address2;
         $validator = Validator::make($request->all(), [
-            'EventBannerImage' => 'image|mimes:jpeg,bmp,png,jpg,gif,spg|dimensions:max_width=468,max_height=200',
-            'EventThumbnailImage' => 'image|mimes:jpeg,bmp,png,jpg|dimensions:max_width=1280,max_height=720',
+            'EventBannerImage' => 'image|mimes:jpeg,bmp,png,jpg,gif,spg|dimensions:max_width=845,max_height=445',
+            'EventThumbnailImage' => 'image|mimes:jpeg,bmp,png,jpg|dimensions:max_width=420,max_height=360',
             'title' => 'required',
             'category' => 'required',
             'Description' => 'required',

@@ -493,8 +493,8 @@
                                         </div>
 
                                         <div class="text-center">
-                                            <button type="button" id="videoButton" class="btn btn-primary m-1" onclick="uploadVideo(this);">Upload Video</button>
-                                            <button type="button" id="podcastVideoButton" class="btn btn-primary m-1" onclick="uploadVideo(this);">Upload Podcast Video</button>
+                                            <button type="button" id="videoButton" class="btn btn-primary m-1" onclick="uploadVideo(this);">Add Video</button>
+                                            <button type="button" id="podcastVideoButton" class="btn btn-primary m-1" onclick="uploadVideo(this);">Add Podcast</button>
                                         </div>
 
                                     </div>
