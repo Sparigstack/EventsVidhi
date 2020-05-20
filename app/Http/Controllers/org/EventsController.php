@@ -14,6 +14,7 @@ use App\Timezone;
 use App\EventCategory;
 use App\EventType;
 use App\Video;
+use App\Podcast;
 use DateTime;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\UploadedFile;
@@ -266,6 +267,59 @@ class EventsController extends Controller
         ]);
     }
 
+    public function storePodcast(Request $request)
+    {
+        // return $request;
+        // return response()->json([
+        //     'message'=>'coming here',
+        //     'mf'=>'hussain'
+        // ]);
+        $validator=null ;
+        if (isset($request->PodCastUpload)){
+            $validator = Validator::make($request->all(), [
+                'input_title' => 'required',
+                'podcast_video_file'=>'required|mimes:mp3,m4a,wma'
+            ]);
+        }else{
+            $validator = Validator::make($request->all(), [
+                'input_title' => 'required',
+                'input_url' => 'required',
+            ]);
+        }
+
+        $podcast = new Podcast;
+        $podcast->title = $request->input_title;
+        $userId = Auth::id();
+        $podcast->user_id = $userId;
+        $UrlToSave = "";
+        $FinalUrl = ""; 
+        if (isset($request->IsUploadPodCast)) {
+            if ($request->hasFile('podcast_video_file')) {
+                $file = $request->file('podcast_video_file');
+                $name = time() . $file->getClientOriginalName();
+                $userId = Auth::id();
+                $filePath = 'org_' . $userId . '/Podcast/' . $name;
+                Storage::disk('s3')->put($filePath, file_get_contents($file));
+                $UrlToSave = $filePath;
+                $FinalUrl = env('AWS_URL'); 
+                $FinalUrl .=$UrlToSave;
+            }
+        } else {
+            $UrlToSave = $request->input_url;
+            $FinalUrl=$UrlToSave;
+        }
+
+        $podcast->event_id = $request->EventToLink;
+
+        $podcast->url = $UrlToSave;
+        $podcast->save();
+        return response()->json([
+            'videoUrl'=>$FinalUrl,
+            'videoTitle'=>$podcast->title,
+            'videoID'=>$podcast->id
+        ]);
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -294,7 +348,8 @@ class EventsController extends Controller
         $countries = Country::all();
         $states = State::all();
         $videos= Video::where('event_id',$event->id)->get();
-        return view('org/createEvent', compact('categories', 'cities', 'event','cityTimeZones','eventTypes','IsNew', 'countries', 'states','tabe','videos'));
+        $podcasts= Podcast::where('event_id',$event->id)->get();
+        return view('org/createEvent', compact('categories', 'cities', 'event','cityTimeZones','eventTypes','IsNew', 'countries', 'states','tabe','videos','podcasts'));
         
     }
 
@@ -423,9 +478,14 @@ class EventsController extends Controller
         //
         $event = Event::find($request->eventDeleteId)->delete();
     }
-    public function destroyVideo($id)
+    public function destroyVideo($id,$Type)
     {
-        $event = Video::find($id)->delete();
+        if($Type=="podcast"){
+            $event = Podcast::find($id)->delete();
+        }else{
+            $event = Video::find($id)->delete();
+        }
+       
         return "success";
     }
 

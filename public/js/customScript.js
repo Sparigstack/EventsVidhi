@@ -35,23 +35,43 @@ $(document).ready(function () {
             processData: false,
             success: function (response) {
                 //var HtmlContent="<div>"+response.videoUrl+"</div> <div>"+response.videoTitle+"</div>";
-                var HtmlContent='<ul class="list-group parent list-group-flush mb-2"><li class="list-group-item"><div class="media align-items-center"><div class="media-body ml-3"><h6 class="mb-0">'+response.videoTitle+'</h6><small class="small-font">'+response.videoUrl+'</small></div><div data-id="'+response.videoID+'" onclick="RemoveSingleVideo(this);" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div></div></li>';
+                var HtmlContent='<ul class="list-group parent list-group-flush mb-2"><li class="list-group-item"><div class="media align-items-center"><div class="media-body ml-3"><h6 class="mb-0">'+response.videoTitle+'</h6><small class="small-font">'+response.videoUrl+'</small></div><div data-id="'+response.videoID+'" Type="video" onclick="RemoveSingleVideo(this);" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div></div></li>';
                 $('#UploadedVideos').append(HtmlContent);
                 $(CurentForm).find('#input_url').val('');
                 $(CurentForm).find('#input_title').val('');
                 $('.UploadVideoContainer').addClass('d-none');
-                // $(CurentForm).find('.RemoveVideo').removeClass('d-none');
-                // $(CurentForm).find('.uploadVideoBox').addClass('d-none');
-                // $(CurentForm).find('#videoSubmitButton').attr('disabled',true);
-                // $(CurentForm).parent().find('#SaveVideoAjax').prop('name','SubmittedForm');
-                // $(CurentForm).parent().find('#SaveVideoAjax').prop('id','SubmittedForm');
-                // var InputVideo=$(CurentForm).parent().find('#IsUploadVideo');
-                // $(InputVideo).prop('id','IsUploadVideoDisabled');
-                // $(InputVideo).parent('label').attr('for','IsUploadVideoDisabled');
-                // $('#videoButton').attr('onclick','VideoFormContent();');
-                // $('#SaveVideoAjax').unbind('submit').submit();
                 LoaderStop();
-                // console.log(response.message);
+            },
+            error: function (err) {
+                console.log(err);
+                LoaderStop();
+            }
+        });
+    });
+
+    $('#SavePodCastAjax').on('submit', function (event) {
+        LoaderStart();
+        event.preventDefault();
+        var CurentForm=$(this);
+        var urlString = $('.addPodCastVideos').val();
+        var formData = new FormData(this);
+        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr("content");
+        $.ajax({
+            url: urlString,
+            method: "POST",
+            data: new FormData(this),
+            dataType: 'JSON',
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function (response) {
+                //var HtmlContent="<div>"+response.videoUrl+"</div> <div>"+response.videoTitle+"</div>";
+                var HtmlContent='<ul class="list-group parent list-group-flush mb-2"><li class="list-group-item"><div class="media align-items-center"><div class="media-body ml-3"><h6 class="mb-0">'+response.videoTitle+'</h6><small class="small-font">'+response.videoUrl+'</small></div><div data-id="'+response.videoID+'" Type="podcast" onclick="RemoveSingleVideo(this);" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div></div></li>';
+                $('#UploadedVideos').append(HtmlContent);
+                $(CurentForm).find('#input_url').val('');
+                $(CurentForm).find('#input_title').val('');
+                $('.UploadPodCastContainer').addClass('d-none');
+                LoaderStop();
             },
             error: function (err) {
                 console.log(err);
@@ -197,17 +217,42 @@ function deleteEvent(element) {
 }
 function UploadVideoBox(element) {
     var field=$(element).parent().parent().parent();
-    if (!$(field).find('#IsUploadVideo').is(':checked')) {
+    if (!$(element).is(':checked')) {
         $(field).find('#input_url').attr('readonly', false);
         $(field).find("#input_url").prop('required', true);
-        $(field).find("#input_vidfile").prop('required', false);
-        $(field).find('.uploadVideoBox').addClass('d-none');
+        if($(element).hasClass('PodCastUpload')){
+            $(field).find("#podcast_video_file").prop('required', false);
+            $(field).find('.uploadPodcastVideo').addClass('d-none');
+        }else{
+            $(field).find("#input_vidfile").prop('required', false);
+            $(field).find('.uploadVideoBox').addClass('d-none');
+        }
+        
     } else {
-        $(field).find('.uploadVideoBox').removeClass('d-none');
         $(field).find('#input_url').attr('readonly', true);
         $(field).find("#input_url").prop('required', false);
-        $(field).find("#input_vidfile").prop('required', true);
+        if($(element).hasClass('PodCastUpload')){
+            $(field).find("#podcast_video_file").prop('required', true);
+            $(field).find('.uploadPodcastVideo').removeClass('d-none');
+        }else{
+            $(field).find("#input_vidfile").prop('required', true);
+            $(field).find('.uploadVideoBox').removeClass('d-none');
+        }
+        
     }
+}
+function UploadVideoBoxVideoCon() {
+    if(!$('#IsUploadVideo').is(':checked')){
+        $('#input_url').attr('readonly', false);
+        $("#input_url").prop('required',true);
+        $("#input_vidfile").prop('required',false);
+        $('.uploadVideoBox').addClass('d-none');
+       }else{
+        $('.uploadVideoBox').removeClass('d-none');
+        $('#input_url').attr('readonly', true);
+        $("#input_url").prop('required',false);
+        $("#input_vidfile").prop('required',true);
+       }
 }
 function deleteVideo(element) {
     var confirmDelete = confirm("Are you sure you want to delete this video?");
@@ -278,15 +323,16 @@ function uploadVideo(element) {
         //   $('#input_url').attr('readonly', false); 
         //   $('#IsUploadVideo').prop('checked',false);
 
-        $('.uploadPodcastVideo').addClass('d-none');
+        $('.UploadPodCastContainer').addClass('d-none');
     }
     else if ($(element).attr('id') == 'podcastVideoButton') {
-        $('.videoTitle').addClass('d-none');
-        $('.videoUrl').addClass('d-none');
-        $('.videoUploadBox').addClass('d-none');
-        $('.uploadVideoBox').addClass('d-none');
-        $('.uploadPodcastVideo').removeClass('d-none');
-        $('.uploadVideo').addClass('d-none');
+        $('.UploadPodCastContainer').removeClass('d-none');
+        // $('.videoUrl').addClass('d-none');
+        // $('.videoUploadBox').addClass('d-none');
+        // $('.uploadVideoBox').addClass('d-none');
+        // $('.uploadPodcastVideo').removeClass('d-none');
+        // $('.uploadVideo').addClass('d-none');
+        $('.UploadVideoContainer').addClass('d-none');
     }
     // $('.uploadVideo').removeClass('d-none');
 }
@@ -388,26 +434,20 @@ function LoaderStop() {
     $('#pageloader-overlay').css('display', 'none');
 }
 
-function VideoFormContent() {
-    var EventID=$('#EventToLink').val();
-    var CsrfToken=$('meta[name="csrf-token"]').attr("content");
-    var TokenInput='<input type="hidden" name="_token" value="'+CsrfToken+'">';
-    var HtmlContent = "<div class='col-lg-8 UploadVideoContainer parent m-auto pt-5'><form class='' ID='SaveVideoAjax' name='SaveVideoAjax' method='post' enctype='multipart/form-data'>"+TokenInput+"<input type='text' name='EventToLink' id='EventToLink' class='d-none' value='"+EventID+"'/><button  class='btn btn-primary d-none RemoveVideo' style='position: absolute;right: -132px;top:29px;'>Remove Video</button><div class='form-group  videoTitle'><label for='input_title'>Video Title</label><input type='text' class='form-control' id='input_title' name='input_title' value='' placeholder='Enter Video Title' required></div><div class='form-group videoUrl'><label for='input_url'>Video URL</label><span style='font-size: 11px;font-weight: 600;'>&nbsp;&nbsp;(YouTube or Vimeo url)</span><input type='text' class='form-control' id='input_url' name='input_url' value='' placeholder='Enter Video URL' required></div><div class='form-group videoUploadBox'><label for='BlankLabel'></label><div class='icheck-material-primary'><input onclick='UploadVideoBox(this)' type='checkbox' id='IsUploadVideo' name='IsUploadVideo' ><label for='IsUploadVideo'>Or upload video</label></div></div><div class='parent' style='width: 100%;'><div class='form-group  d-none uploadVideoBox'><div class='dragFileContainer'><input id='video_file' name='video_file' type='file' multiple><p>Drag your video file here or click in this area.</p></div></div><div class='form-group  d-none uploadPodcastVideo'><div class='dragFileContainer'><input id='podcast_video_file' name='podcast_video_file' type='file' multiple><p>Drag your podcast video file here or click in this area.</p></div></div></div><div class='col-lg-12'><button type='submit' data-id='' id='videoSubmitButton' class='btn btn-primary px-5 pull-right'> Save Video</button></div></form>";
-    $('.InsertVideoDiv').append(HtmlContent);
-}
 function RemoveSingleVideo(element){
     LoaderStart();
     var id=$(element).attr('data-id');
+    var type=$(element).attr('Type');
     var Field=findParent(element);
     var urlString = $('.RemoveEventVideos').val();
-    urlString +="/"+id;
+    urlString +="/"+id+"/"+type;
     var CSRF_TOKEN = $('.csrf-token').val();
     var countryId = $(element).val();
 
     $.ajax({
         url: urlString,
         type: 'post',
-        data: { _token: CSRF_TOKEN, id: id },
+        data: { _token: CSRF_TOKEN, id: id},
         success: function (response) {
             $(Field).remove();
             LoaderStop();

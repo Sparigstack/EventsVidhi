@@ -460,6 +460,7 @@
                             {{ csrf_field() }}
                             <input class="csrf-token" type="hidden" value="{{ csrf_token() }}">
                             <input type="hidden" class="addEventVideos" value="{{url('org/events/videos/store')}}">
+                            <input type="hidden" class="addPodCastVideos" value="{{url('org/events/podcast/store')}}">
                             <input type="hidden" class="RemoveEventVideos" value="{{url('org/events/deleteVideo')}}">
                             <div class="col-lg-12">
                                 <div class="card">
@@ -473,9 +474,20 @@
                                                         <li class="list-group-item"><div class="media align-items-center">
                                                             <div class="media-body ml-3"><h6 class="mb-0"><?php echo $video->title ?></h6>
                                                             <small class="small-font"><?php echo $video->url ?>'</small></div>
-                                                            <div data-id="<?php echo $video->id?>" onclick="RemoveSingleVideo(this);" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div>
+                                                            <div data-id="<?php echo $video->id?>" onclick="RemoveSingleVideo(this);" Type="video" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div>
                                                         </div></li></ul>
                                             <?php } ?>
+                                            <?php
+                                            foreach($podcasts as $podcast){?>
+                                                    
+                                                    <ul class="list-group parent list-group-flush mb-2">
+                                                        <li class="list-group-item"><div class="media align-items-center">
+                                                            <div class="media-body ml-3"><h6 class="mb-0"><?php echo $podcast->title ?></h6>
+                                                            <small class="small-font"><?php echo $podcast->url ?>'</small></div>
+                                                            <div data-id="<?php echo $podcast->id?>" onclick="RemoveSingleVideo(this);" Type="podcast" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div>
+                                                        </div></li></ul>
+                                            <?php } ?>
+
                                         </div>
                                         <div class="card p-4 col-lg-8 UploadVideoContainer parent d-none m-auto">
                                             <form class="" ID="SaveVideoAjax" name="SaveVideoAjax" method="post" enctype="multipart/form-data">
@@ -506,20 +518,49 @@
                                                             <p>Drag your video file here or click in this area.</p>
                                                         </div>
                                                     </div>
-                                                    <div class='form-group  d-none uploadPodcastVideo'>
-                                                        <div class='dragFileContainer'>
-                                                            <input id='podcast_video_file' name='podcast_video_file' type="file" multiple>
-                                                            <p>Drag your podcast video file here or click in this area.</p>
-                                                        </div>
-                                                    </div>
                                                 </div>
 
                                                 <div class="col-lg-12">
                                                     <button type="submit" id="videoSubmitButton" data-id="{{$event->id}}" class="btn btn-primary px-5 pull-right"> Save Video</button>
                                                 </div>
                                             </form>
+                                        </div>
+                                        <div class="card p-4 col-lg-8 UploadPodCastContainer parent d-none m-auto">
+                                            <form class="" ID="SavePodCastAjax" name="SavePodCastAjax" method="post" enctype="multipart/form-data">
+                                                <!-- <input type="text" value="{{$ActionCall}}"> -->
+                                                {{ csrf_field() }}
+                                                <input type="text" name="EventToLink" id="EventToLink" class="d-none" value="{{$event->id}}" />
+                                                <button class="btn btn-primary d-none RemoveVideo" style="position: absolute;right: -132px;top:29px;">Remove Video</button>
+                                                <div class='form-group  videoTitle'>
+                                                    <label for='input_title'>Podcast Title</label>
+                                                    <input type="text" class="form-control" id="input_title" name='input_title' value="{{  old('input_title') }}" placeholder="Enter Video Title" required>
+                                                </div>
+                                                <div class='form-group videoUrl'>
+                                                    <label for='input_url'>Podcast URL</label><span style="font-size: 11px;font-weight: 600;">&nbsp;&nbsp;(YouTube or Vimeo url)</span>
+                                                    <input type="text" class="form-control" id="input_url" name="input_url" value="{{  old('input_url') }}" placeholder="Enter Video URL" required>
+                                                </div>
+                                                <div class="form-group videoUploadBox">
+                                                    <label for="BlankLabel"></label>
+                                                    <div class="icheck-material-primary">
+                                                        <input onclick="UploadVideoBox(this)" type="checkbox" class="PodCastUpload" id="IsUploadPodCast" name="IsUploadPodCast" @if(old('IsUploadVideo')) checked @endif>
+                                                        <label for="IsUploadPodCast">Or upload podcast</label>
+                                                    </div>
+                                                </div>
 
+                                                <div class='parent' style='width: 100%;'>
+                                                    
+                                                    <div class='form-group  d-none uploadPodcastVideo'>
+                                                        <div class='dragFileContainer'>
+                                                            <input id='podcast_video_file' name='podcast_video_file' type="file" multiple>
+                                                            <p>Drag your podcast file here or click in this area.</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
 
+                                                <div class="col-lg-12">
+                                                    <button type="submit" id="videoSubmitButton" data-id="{{$event->id}}" class="btn btn-primary px-5 pull-right"> Save Podcast</button>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
 
@@ -549,20 +590,6 @@
 
 
     </div>
-
-    <!-- <div class="form-group col-lg-6">
-                            <label for="input-5">Durations</label>
-                            <input type="time" id="" class="form-control">
-                        </div> -->
-
-    <!-- <div class="form-group col-lg-12">
-                            <button type="submit" id="Submit" class="btn btn-primary px-5 pull-right"> Save Event</button>
-                        </div>
-                    </form> -->
-    <!-- </div> -->
-    <!-- </div> -->
-    <!-- </div> -->
-    <!-- </div> -->
 </div>
 </div>
 </div>
@@ -586,6 +613,9 @@
         });
 
         $('#video_file').change(function() {
+            $(this).parent().find('p').text(this.files.length + " file(s) selected");
+        });
+        $('#podcast_video_file').change(function() {
             $(this).parent().find('p').text(this.files.length + " file(s) selected");
         });
 

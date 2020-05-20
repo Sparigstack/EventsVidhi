@@ -60,7 +60,7 @@
                         <div class="form-group">
                                 <label for="BlankLabel"></label>
                                 <div class="icheck-material-primary">
-                                    <input onclick="UploadVideoBox()" type="checkbox" id="IsUploadVideo" name="IsUploadVideo" @if(old('IsUploadVideo')) checked @endif>
+                                    <input onclick="UploadVideoBoxVideoCon()" type="checkbox" id="IsUploadVideo" name="IsUploadVideo" @if(old('IsUploadVideo')) checked @endif>
                                     <label for="IsUploadVideo">Or upload video</label>
                                 </div>
                             </div>
@@ -228,7 +228,7 @@
         $('.dragFileForm input').change(function() {
             $('.dragFileForm p').text(this.files.length + " file(s) selected");
         });
-        UploadVideoBox();
+        UploadVideoBoxVideoCon();
         showHideLinkEvent();
     });
 </script>
