@@ -37,5 +37,8 @@ class Event extends Model
     public function eventCategory() {
         return $this->hasMany('App\EventCategory');
     }
+    public function Videos() {
+        return $this->hasMany('App\Video');
+    }
 
 }

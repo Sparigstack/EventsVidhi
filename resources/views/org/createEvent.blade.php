@@ -93,16 +93,16 @@
                 <ul class="nav nav-tabs nav-tabs-info nav-justified">
                     <li class="nav-item">
                         <a class="nav-link 
-                        <?php if($tabe==13){
-                        echo "active";
-                    }?>
+                        <?php if ($tabe == 0) {
+                            echo "active";
+                        } ?>
                         " data-toggle="tab" href="#tabe-13"><span class="hidden-xs">Details</span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link
-                        <?php if($tabe==14){
-                        echo "active";
-                    }?>
+                        <?php if ($tabe == 1) {
+                            echo "active";
+                        } ?>
                         " data-toggle="tab" href="#tabe-14"><span class="hidden-xs">Media</span></a>
                     </li>
                     <li class="nav-item">
@@ -115,10 +115,10 @@
 
                 <div class="tab-content">
                     <div class="row tab-pane 
-                    <?php 
-                    if($tabe==13){
+                    <?php
+                    if ($tabe == 0) {
                         echo "active";
-                    }?>
+                    } ?>
                     " id="tabe-13">
                         <div class="col-lg-12">
                             <div class="card">
@@ -296,16 +296,18 @@
 
                                                     <div class="form-group col-lg-12">
                                                         <label for="selectionCategory">City</label>
-                                                        <select autocomplete="off" value="{{ old('city') }}" name="city" id="city" disabled class=" custom-select" {{$disabled}}>
-                                                            <option value="0">Select City</option>
-                                                            <?php foreach ($cities as $city) {
-                                                                $IsSelected = "";
-                                                                if ($city->id == $cityID) {
-                                                                    $IsSelected = "selected";
-                                                                }
+                                                        <select autocomplete="off" value="{{ old('city') }}" name="city" id="city" disabled class="custom-select" {{$disabled}} onchange="ShowAddressFields(this);">
+                                                            <option>Select City</option>
+                                                            <?php if (!empty($event)) {
+                                                                foreach ($cities as $city) {
+                                                                    $IsSelected = "";
+                                                                    if ($city->id == $cityID) {
+                                                                        $IsSelected = "selected";
+                                                                    }
                                                             ?>
-                                                                <option value="{{$city->id}}" {{$IsSelected}} @if (old('city')==$city->id) selected="selected" @endif ><?php echo $city->name; ?> </option>
-                                                            <?php } ?>
+                                                                    <option value="{{$city->id}}" {{$IsSelected}} @if (old('city')==$city->id) selected="selected" @endif ><?php echo $city->name; ?> </option>
+                                                            <?php }
+                                                            } ?>
 
                                                         </select>
                                                     </div>
@@ -313,18 +315,18 @@
 
                                                     <div class="form-group col-lg-12">
                                                         <label for="Address1">Address Line 1</label>
-                                                        <input type="text" id="Address1" name="Address1" {{$readonly}} class="form-control" title="Address Line 1" placeholder="Address Line 1" autocomplete="off" rows="0" value="{{  old('Address1', $address) }}">
+                                                        <input type="text" id="Address1" disabled name="Address1" {{$readonly}} class="form-control" title="Address Line 1" placeholder="Address Line 1" autocomplete="off" rows="0" value="{{  old('Address1', $address) }}">
                                                     </div>
 
                                                     <div class="form-group col-lg-12">
                                                         <label for="Address2">Address Line 2</label>
-                                                        <input type="text" id="Address2" name="Address2" {{$readonly}} class="form-control" title="Address Line 2" placeholder="Address Line 2" autocomplete="off" rows="0" value="{{  old('Address2', $address2) }}">
+                                                        <input type="text" id="Address2" disabled name="Address2" {{$readonly}} class="form-control" title="Address Line 2" placeholder="Address Line 2" autocomplete="off" rows="0" value="{{  old('Address2', $address2) }}">
                                                     </div>
 
 
                                                     <div class="form-group col-lg-12">
                                                         <label for="PostalCode">Postal code</label>
-                                                        <input type="text" id="PostalCode" name="PostalCode" {{$readonly}} class="form-control" title="Postal Code" placeholder="Postal Code" autocomplete="off" rows="0" value="{{  old('PostalCode', $PostalCode) }}">
+                                                        <input type="text" id="PostalCode" disabled name="PostalCode" {{$readonly}} class="form-control" title="Postal Code" placeholder="Postal Code" autocomplete="off" rows="0" value="{{  old('PostalCode', $PostalCode) }}">
                                                     </div>
 
                                                 </div>
@@ -419,6 +421,8 @@
                                                                                                                                     if ($event->is_paid == 0) {
                                                                                                                                         echo "checked";
                                                                                                                                     }
+                                                                                                                                } else {
+                                                                                                                                    echo "checked";
                                                                                                                                 } ?>>
                                                                 <label for="ItIsFree">Free</label>
                                                             </div>
@@ -448,98 +452,125 @@
 
                     </div>
                     <div class="parent videos row tab-pane
-                    <?php if($tabe==14){
+                    <?php if ($tabe == 1) {
                         echo "active";
-                    }?>
+                    } ?>
                     " id="tabe-14">
-                        {{ csrf_field() }}
-                        <input class="csrf-token" type="hidden" value="{{ csrf_token() }}">
-                        <input type="hidden" class="addEventVideos" value="{{url('org/events/videos/store')}}">
-
-                        <div class="col-lg-12">
-                            <div class="card">
-                                <div class="card-body row">
-                                    <div class="col-lg-2"></div>
-                                    <div class="col-lg-8">
-                                        <div class='form-group d-none videoTitle'>
-                                            <label for='input_title'>Video Title</label>
-                                            <input type="text" class="form-control" id="input_title" name='input_title' value="{{  old('input_title') }}" placeholder="Enter Video Title" required>
+                        <?php if ($IsNew == false) { ?>
+                            {{ csrf_field() }}
+                            <input class="csrf-token" type="hidden" value="{{ csrf_token() }}">
+                            <input type="hidden" class="addEventVideos" value="{{url('org/events/videos/store')}}">
+                            <input type="hidden" class="RemoveEventVideos" value="{{url('org/events/deleteVideo')}}">
+                            <div class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-body row">
+                                       
+                                        <div id="UploadedVideos" class="col-lg-8 m-auto p-0">
+                                        <?php
+                                            foreach($videos as $video){?>
+                                                    
+                                                    <ul class="list-group parent list-group-flush mb-2">
+                                                        <li class="list-group-item"><div class="media align-items-center">
+                                                            <div class="media-body ml-3"><h6 class="mb-0"><?php echo $video->title ?></h6>
+                                                            <small class="small-font"><?php echo $video->url ?>'</small></div>
+                                                            <div data-id="<?php echo $video->id?>" onclick="RemoveSingleVideo(this);" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div>
+                                                        </div></li></ul>
+                                            <?php } ?>
                                         </div>
-                                        <div class='form-group d-none videoUrl'>
-                                            <label for='input_url'>Video URL</label><span style="font-size: 11px;font-weight: 600;">&nbsp;&nbsp;(YouTube or Vimeo url)</span>
-                                            <input type="text" class="form-control" id="input_url" name="input_url" value="{{  old('input_url') }}" placeholder="Enter Video URL" required>
-                                        </div>
-                                        <div class="form-group d-none videoUploadBox">
-                                            <label for="BlankLabel"></label>
-                                            <div class="icheck-material-primary">
-                                                <input onclick="UploadVideoBox()" type="checkbox" id="IsUploadVideo" name="IsUploadVideo" @if(old('IsUploadVideo')) checked @endif>
-                                                <label for="IsUploadVideo">Or upload video</label>
-                                            </div>
-                                        </div>
-
-                                        <div class='parent' style='width: 100%;'>
-                                            <div class='form-group  d-none uploadVideoBox'>
-                                                <div class='dragFileContainer'>
-                                                    <input id='video_file' name='video_file' type="file" multiple>
-                                                    <p>Drag your video file here or click in this area.</p>
+                                        <div class="card p-4 col-lg-8 UploadVideoContainer parent d-none m-auto">
+                                            <form class="" ID="SaveVideoAjax" name="SaveVideoAjax" method="post" enctype="multipart/form-data">
+                                                <!-- <input type="text" value="{{$ActionCall}}"> -->
+                                                {{ csrf_field() }}
+                                                <input type="text" name="EventToLink" id="EventToLink" class="d-none" value="{{$event->id}}" />
+                                                <button class="btn btn-primary d-none RemoveVideo" style="position: absolute;right: -132px;top:29px;">Remove Video</button>
+                                                <div class='form-group  videoTitle'>
+                                                    <label for='input_title'>Video Title</label>
+                                                    <input type="text" class="form-control" id="input_title" name='input_title' value="{{  old('input_title') }}" placeholder="Enter Video Title" required>
                                                 </div>
-                                            </div>
-                                            <div class='form-group  d-none uploadPodcastVideo'>
-                                                <div class='dragFileContainer'>
-                                                    <input id='podcast_video_file' name='podcast_video_file' type="file" multiple>
-                                                    <p>Drag your podcast video file here or click in this area.</p>
+                                                <div class='form-group videoUrl'>
+                                                    <label for='input_url'>Video URL</label><span style="font-size: 11px;font-weight: 600;">&nbsp;&nbsp;(YouTube or Vimeo url)</span>
+                                                    <input type="text" class="form-control" id="input_url" name="input_url" value="{{  old('input_url') }}" placeholder="Enter Video URL" required>
                                                 </div>
-                                            </div>
-                                        </div>
+                                                <div class="form-group videoUploadBox">
+                                                    <label for="BlankLabel"></label>
+                                                    <div class="icheck-material-primary">
+                                                        <input onclick="UploadVideoBox(this)" type="checkbox" id="IsUploadVideo" name="IsUploadVideo" @if(old('IsUploadVideo')) checked @endif>
+                                                        <label for="IsUploadVideo">Or upload video</label>
+                                                    </div>
+                                                </div>
 
-                                        <div class="text-center">
-                                            <button type="button" id="videoButton" class="btn btn-primary m-1" onclick="uploadVideo(this);">Add Video</button>
-                                            <button type="button" id="podcastVideoButton" class="btn btn-primary m-1" onclick="uploadVideo(this);">Add Podcast</button>
-                                        </div>
+                                                <div class='parent' style='width: 100%;'>
+                                                    <div class='form-group  d-none uploadVideoBox'>
+                                                        <div class='dragFileContainer'>
+                                                            <input id='video_file' name='video_file' type="file" multiple>
+                                                            <p>Drag your video file here or click in this area.</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class='form-group  d-none uploadPodcastVideo'>
+                                                        <div class='dragFileContainer'>
+                                                            <input id='podcast_video_file' name='podcast_video_file' type="file" multiple>
+                                                            <p>Drag your podcast video file here or click in this area.</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
 
+                                                <div class="col-lg-12">
+                                                    <button type="submit" id="videoSubmitButton" data-id="{{$event->id}}" class="btn btn-primary px-5 pull-right"> Save Video</button>
+                                                </div>
+                                            </form>
+
+
+                                        </div>
                                     </div>
-                                    <div class="col-lg-2"></div>
+
+                                    <div class="row w-100 mt-2 mb-4">
+                                        <div class="text-center col-lg-12">
+                                            <button type="button" id="videoButton" class="btn btn-outline-primary btn-round waves-effect waves-light m-1" onclick="uploadVideo(this);">Add Video</button>
+                                            <button type="button" id="podcastVideoButton" class="btn btn-outline-primary btn-round waves-effect waves-light m-1" onclick="uploadVideo(this);">Add Podcast</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <button onclick="addEventVideos(this);" class="btn btn-primary px-5 pull-right"> Save Video</button>
-                        </div>
                     </div>
+                <?php } else { ?>
+                    <div class="text-center m-4"><label class="">Please save basic details to add media</label></div>
+                <?php } ?>
+
                 </div>
-
-
-
             </div>
-
-
-
 
 
 
         </div>
 
-        <!-- <div class="form-group col-lg-6">
+
+
+
+
+
+    </div>
+
+    <!-- <div class="form-group col-lg-6">
                             <label for="input-5">Durations</label>
                             <input type="time" id="" class="form-control">
                         </div> -->
 
-        <!-- <div class="form-group col-lg-12">
+    <!-- <div class="form-group col-lg-12">
                             <button type="submit" id="Submit" class="btn btn-primary px-5 pull-right"> Save Event</button>
                         </div>
                     </form> -->
-        <!-- </div> -->
-        <!-- </div> -->
-        <!-- </div> -->
-        <!-- </div> -->
-    </div>
+    <!-- </div> -->
+    <!-- </div> -->
+    <!-- </div> -->
+    <!-- </div> -->
+</div>
 </div>
 </div>
 </div>
 @endsection
 
 @section('script')
-<script src="{{asset('/js/customScript.js')}}" type="text/javascript"></script>
+<!-- <script src="{{asset('/js/customScript.js')}}" type="text/javascript"></script> -->
 <script>
     $(document).ready(function() {
         $('#EventBannerImage').change(function() {
@@ -553,6 +584,20 @@
             document.getElementById('thumbnailImage').src = window.URL.createObjectURL(this.files[0]);
             document.getElementById('thumbnailImage').classList.remove('d-none');
         });
+
+        $('#video_file').change(function() {
+            $(this).parent().find('p').text(this.files.length + " file(s) selected");
+        });
+
+
     });
+
+    function VideoFormContent() {
+        var EventID = $('#EventToLink').val();
+        var CsrfToken = $('meta[name="csrf-token"]').attr("content");
+        var TokenInput = '<input type="hidden" name="_token" value="' + CsrfToken + '">';
+        var HtmlContent = "<div class='col-lg-8 UploadVideoContainer parent m-auto pt-5'><form class='' ID='SaveVideoAjax' name='SaveVideoAjax' method='post' enctype='multipart/form-data'>" + TokenInput + "<input type='text' name='EventToLink' id='EventToLink' class='d-none' value='" + EventID + "'/><button  class='btn btn-primary d-none RemoveVideo' style='position: absolute;right: -132px;top:29px;'>Remove Video</button><div class='form-group  videoTitle'><label for='input_title'>Video Title</label><input type='text' class='form-control' id='input_title' name='input_title' value='' placeholder='Enter Video Title' required></div><div class='form-group videoUrl'><label for='input_url'>Video URL</label><span style='font-size: 11px;font-weight: 600;'>&nbsp;&nbsp;(YouTube or Vimeo url)</span><input type='text' class='form-control' id='input_url' name='input_url' value='' placeholder='Enter Video URL' required></div><div class='form-group videoUploadBox'><label for='BlankLabel'></label><div class='icheck-material-primary'><input onclick='UploadVideoBox(this)' type='checkbox' id='IsUploadVideo' name='IsUploadVideo' ><label for='IsUploadVideo'>Or upload video</label></div></div><div class='parent' style='width: 100%;'><div class='form-group  d-none uploadVideoBox'><div class='dragFileContainer'><input id='video_file' name='video_file' type='file' multiple><p>Drag your video file here or click in this area.</p></div></div><div class='form-group  d-none uploadPodcastVideo'><div class='dragFileContainer'><input id='podcast_video_file' name='podcast_video_file' type='file' multiple><p>Drag your podcast video file here or click in this area.</p></div></div></div><div class='col-lg-12'><button type='submit' data-id='' id='videoSubmitButton' class='btn btn-primary px-5 pull-right'> Save Video</button></div></form>";
+        $('.InsertVideoDiv').append(HtmlContent);
+    }
 </script>
 @endsection

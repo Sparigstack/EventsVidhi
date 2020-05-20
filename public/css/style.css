@@ -67,6 +67,9 @@
 #thumbnailImage{
   width: 100%;
 }
+#pageloader-overlay.visible {
+  opacity: 0.5 !important;
+}
 .secondary{
   padding: 4px !important;
 }

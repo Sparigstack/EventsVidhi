@@ -13,6 +13,7 @@ use App\State;
 use App\Timezone;
 use App\EventCategory;
 use App\EventType;
+use App\Video;
 use DateTime;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\UploadedFile;
@@ -57,15 +58,15 @@ class EventsController extends Controller
      */
     public function create()
     {
-        $isVideoSelected = false;
+        $IsNew = true;
         $categories = Category::all();
         $cities = City::all();
         $countries = Country::all();
         // $states = State::all();
         $cityTimeZones = Timezone::all();
         $eventTypes=EventType::all();
-        $tabe=13;
-        return view('org/createEvent', compact('categories', 'cities', 'cityTimeZones','eventTypes','isVideoSelected', 'countries','tabe'));
+        $tabe=0;
+        return view('org/createEvent', compact('categories', 'cities', 'cityTimeZones','eventTypes','IsNew', 'countries','tabe'));
     }
 
     /**
@@ -198,7 +199,7 @@ class EventsController extends Controller
             $eventCategory->category_id=number_format($categoryID);
             $eventCategory->save();
         }
-        return redirect("org/events/".$events->id."/14");
+        return redirect("org/events/".$events->id."/1");
     }
 
     /**
@@ -214,8 +215,55 @@ class EventsController extends Controller
 
     public function storeVideo(Request $request)
     {
-        $MergeTool="test";
-        return 'mansi';
+        // return $request;
+        // return response()->json([
+        //     'message'=>'coming here',
+        //     'mf'=>'hussain'
+        // ]);
+        $validator=null ;
+        if (isset($request->IsUploadVideo)){
+            $validator = Validator::make($request->all(), [
+                'input_title' => 'required',
+                'input_vidfile'=>'required|mimes:mov,mp4,wmv,flv,avi'
+            ]);
+        }else{
+            $validator = Validator::make($request->all(), [
+                'input_title' => 'required',
+                'input_url' => 'required',
+            ]);
+        }
+
+        $video = new Video;
+        $video->title = $request->input_title;
+        $userId = Auth::id();
+        $video->user_id = $userId;
+        $UrlToSave = "";
+        $FinalUrl = ""; 
+        if (isset($request->IsUploadVideo)) {
+            if ($request->hasFile('video_file')) {
+                $file = $request->file('video_file');
+                $name = time() . $file->getClientOriginalName();
+                $userId = Auth::id();
+                $filePath = 'org_' . $userId . '/Video/' . $name;
+                Storage::disk('s3')->put($filePath, file_get_contents($file));
+                $UrlToSave = $filePath;
+                $FinalUrl = env('AWS_URL'); 
+                $FinalUrl .=$UrlToSave;
+            }
+        } else {
+            $UrlToSave = $request->input_url;
+            $FinalUrl=$UrlToSave;
+        }
+
+        $video->event_id = $request->EventToLink;
+
+        $video->url = $UrlToSave;
+        $video->save();
+        return response()->json([
+            'videoUrl'=>$FinalUrl,
+            'videoTitle'=>$video->title,
+            'videoID'=>$video->id
+        ]);
     }
 
     /**
@@ -224,9 +272,9 @@ class EventsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id,$tabe=13)
+    public function edit($id,$tabe=0)
     {
-        $isVideoSelected = false;
+        $IsNew = false;
         $ids = explode(',', $id);
         $count=0;
         foreach ($ids as $selectedId) {
@@ -245,7 +293,8 @@ class EventsController extends Controller
         $eventTypes=EventType::all();
         $countries = Country::all();
         $states = State::all();
-        return view('org/createEvent', compact('categories', 'cities', 'event','cityTimeZones','eventTypes','isVideoSelected', 'countries', 'states','tabe'));
+        $videos= Video::where('event_id',$event->id)->get();
+        return view('org/createEvent', compact('categories', 'cities', 'event','cityTimeZones','eventTypes','IsNew', 'countries', 'states','tabe','videos'));
         
     }
 
@@ -374,6 +423,11 @@ class EventsController extends Controller
         //
         $event = Event::find($request->eventDeleteId)->delete();
     }
+    public function destroyVideo($id)
+    {
+        $event = Video::find($id)->delete();
+        return "success";
+    }
 
     public function UpdateEventStatus(Request $request)
     {
@@ -395,7 +449,7 @@ class EventsController extends Controller
     public function getState(Request $request){
         
         $states = State::where('country_id',$request->countryId)->get();
-        $stateOptions="<option>Select State</option>";
+        $stateOptions="<option value='-1'>Select State</option>";
         foreach($states as $state){
             $stateOptions .="<option value='".$state->id."' >".$state->name."</option>";
         }
@@ -406,7 +460,7 @@ class EventsController extends Controller
         
         $citys = City::where('state_id',$request->cityId)->get();
 
-        $cityOptions="<option>Select City</option>";
+        $cityOptions="<option value='-1'>Select City</option>";
         foreach($citys as $city){
             $cityOptions .="<option value='".$city->id."' >".$city->name."</option>";
         }
