@@ -117,7 +117,7 @@ class VideosController extends Controller
         // } else {
         //     return 'from else';
         // }
-        return back()->withSuccess('Image uploaded successfully');
+        // return back()->withSuccess('Image uploaded successfully');
     }
 
     /**

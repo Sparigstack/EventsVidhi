@@ -9,6 +9,7 @@
                 <div class="card">
                     <div class="card-header addNewEventButton">
                        <i class="fa fa-table pt-3"></i> All Videos
+                       <button id="" class="btn m-1 pull-right btn-primary" style=""><a href="{{url("org/videos/new")}}">Add New Video</a></button>
                         <!-- <button id="" class="btn m-1 pull-right" style="border:1px solid transparent;"><a href="{{url("org/events/new")}}">Add New Event</a></button> -->
                     </div>
                     <div class="card-body">
@@ -25,6 +26,16 @@
                                 </thead>
                                 <tbody>
                                     <?php foreach ($videos as $video) { 
+                                        $AwsUrl = env('AWS_URL');
+                                        $videoUrl = "";
+                                        if (!empty($video->url)) {
+                                            if(substr( $video->url, 0, 8 ) != "https://"){
+                                                $videoUrl = $AwsUrl . $video->url;
+                                            }
+                                            else{
+                                                $videoUrl = $video->url;
+                                            }
+                                        }
                                          ?>
                                         <tr class="parent">
                                             <input class="csrf-token" type="hidden" value="{{ csrf_token() }}">
@@ -37,7 +48,8 @@
                                                 $eventDesc = $video->description;
                                             } ?>
                                             <td>{{$eventDesc}}</td>
-                                            <td>{{$video->url}}</td>
+                                            <!-- <td>{{$video->url}}</td> -->
+                                            <td>{{$videoUrl}}</td>
                                             <!-- <td> -->
                                                 <?php
                                                 // if ($event->is_online) {

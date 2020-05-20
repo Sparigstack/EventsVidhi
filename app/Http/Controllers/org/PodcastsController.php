@@ -54,7 +54,7 @@ class PodcastsController extends Controller
         if (isset($request->IsUploadVideo)){
             $validator = Validator::make($request->all(), [
                 'input_title' => 'required',
-                'input_podfile'=>'required|mimes:mp4,wmv,flv,ogv,ogx,webm'
+                'input_podfile'=>'required|mimes:mp3,m4a,wma'
             ]);
         }else{
             $validator = Validator::make($request->all(), [
@@ -94,7 +94,7 @@ class PodcastsController extends Controller
 
         return redirect('org/podcasts');
 
-        return back()->withSuccess('Image uploaded successfully');
+        // return back()->withSuccess('Image uploaded successfully');
     }
 
     /**
@@ -135,7 +135,7 @@ class PodcastsController extends Controller
         if (isset($request->IsUploadVideo)){
             $validator = Validator::make($request->all(), [
                 'input_title' => 'required',
-                'input_podfile'=>'required|mimes:mp4,wmv,flv,ogv,ogx,webm'
+                'input_podfile'=>'required|mimes:mp3,m4a,wma'
             ]);
         }else{
             $validator = Validator::make($request->all(), [

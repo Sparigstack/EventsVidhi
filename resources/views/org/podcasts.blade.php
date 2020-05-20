@@ -9,6 +9,7 @@
                 <div class="card">
                     <div class="card-header addNewEventButton">
                        <i class="fa fa-table pt-3"></i> All Podcasts
+                       <button id="" class="btn m-1 pull-right btn-primary" style=""><a href="{{url("org/podcasts/new")}}">Add New Podcast</a></button>
                         <!-- <button id="" class="btn m-1 pull-right" style="border:1px solid transparent;"><a href="{{url("org/events/new")}}">Add New Event</a></button> -->
                     </div>
                     <div class="card-body">
@@ -23,7 +24,17 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($podcasts as $podcast) { 
+                                    <?php foreach ($podcasts as $podcast) {
+                                        $AwsUrl = env('AWS_URL');
+                                        $videoPodcastUrl = "";
+                                        if (!empty($podcast->url)) {
+                                            if(substr( $podcast->url, 0, 8 ) != "https://"){
+                                                $videoPodcastUrl = $AwsUrl . $podcast->url;
+                                            }
+                                            else{
+                                                $videoPodcastUrl = $podcast->url;
+                                            }
+                                        }
                                          ?>
                                         <tr class="parent">
                                             <input class="csrf-token" type="hidden" value="{{ csrf_token() }}">
@@ -36,7 +47,8 @@
                                                 $eventDesc = $podcast->description;
                                             } ?>
                                             <td>{{$eventDesc}}</td>
-                                            <td>{{$podcast->url}}</td>
+                                            <!-- <td>{{$podcast->url}}</td> -->
+                                            <td>{{$videoPodcastUrl}}</td>
                                             <td>
                                                 <i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-edit" onclick="window.location='{{ url("org/podcasts/".$podcast->id) }}'"></i>
                                                 <a onclick="deletePodcast(this);" db-delete-id="{{$podcast->id}}"><i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-trash"></i></a> 
