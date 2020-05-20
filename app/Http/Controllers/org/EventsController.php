@@ -8,6 +8,8 @@ use DB;
 use App\Event;
 use App\Category;
 use App\City;
+use App\Country;
+use App\State;
 use App\Timezone;
 use App\EventCategory;
 use App\EventType;
@@ -58,9 +60,12 @@ class EventsController extends Controller
         $isVideoSelected = false;
         $categories = Category::all();
         $cities = City::all();
+        $countries = Country::all();
+        // $states = State::all();
         $cityTimeZones = Timezone::all();
         $eventTypes=EventType::all();
-        return view('org/createEvent', compact('categories', 'cities', 'cityTimeZones','eventTypes','isVideoSelected'));
+        $tabe=13;
+        return view('org/createEvent', compact('categories', 'cities', 'cityTimeZones','eventTypes','isVideoSelected', 'countries','tabe'));
     }
 
     /**
@@ -71,16 +76,7 @@ class EventsController extends Controller
      */
     public function store(Request $request)
     {
-        // $validate = $this->validate($request, [
-        //     'EventBannerImage' => 'image|mimes:jpeg,bmp,png,jpg,gif,spg|dimensions:max_width=468,max_height=200',
-        //     'EventThumbnailImage' => 'image|mimes:jpeg,bmp,png,jpg|dimensions:max_width=1280,max_height=720',
-        //     'title' => 'required',
-        //     'category' => 'required',
-        //     'Description' => 'required',
-        //     'EventDateTime' => 'required',
-        // ]);
-         
-        
+        // return $request->Address2;
         $validator = Validator::make($request->all(), [
             'EventBannerImage' => 'image|mimes:jpeg,bmp,png,jpg,gif,spg|dimensions:max_width=468,max_height=200',
             'EventThumbnailImage' => 'image|mimes:jpeg,bmp,png,jpg|dimensions:max_width=1280,max_height=720',
@@ -95,7 +91,7 @@ class EventsController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
-
+        
         //banner image
         // $fileBanner = $request->file('EventBannerImage');
         $bannerUrl = "";
@@ -144,7 +140,9 @@ class EventsController extends Controller
             $events->online_event_url = $request->EventUrl;
         } else {
             $events->city_id = $request->city;
-            $events->address = $request->Address;
+            $events->address = $request->Address1;
+            $events->address_line2 = $request->Address2;
+            $events->postal_code = $request->PostalCode;
             $events->is_online = '0';
         }
         // $events->city_id = $request->city;
@@ -160,16 +158,35 @@ class EventsController extends Controller
 
         $events->thumbnail = $thumbNailUrl;
         $events->banner = $bannerUrl;
-        if (isset($request->IsPublic)) {
+        // if (isset($request->IsPublic)) {
+        //     $events->is_public = '1';
+        // } else {
+        //     $events->is_public = '0';
+        // }
+        // if (isset($request->IsPaid)) {
+        //     $events->is_paid = '1';
+        // } else {
+        //     $events->is_paid = '0';
+        // }
+
+        if (isset($request->IsPublish)) {
+            $events->is_live = '1';
+        } else {
+            $events->is_live = '0';
+        }
+        
+        if ($request->IsPublic=="true") {
             $events->is_public = '1';
         } else {
             $events->is_public = '0';
         }
-        if (isset($request->IsPaid)) {
-            $events->is_paid = '1';
-        } else {
+
+        if ($request->IsFree=="true") {
             $events->is_paid = '0';
+        } else {
+            $events->is_paid = '1';
         }
+
         $events->save();
 
         $string = $request->HiddenCategoyID;
@@ -181,7 +198,7 @@ class EventsController extends Controller
             $eventCategory->category_id=number_format($categoryID);
             $eventCategory->save();
         }
-        return redirect('org/events');
+        return redirect("org/events/".$events->id."/14");
     }
 
     /**
@@ -191,6 +208,23 @@ class EventsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
+    {
+       
+    }
+
+    public function storeVideo(Request $request)
+    {
+        $MergeTool="test";
+        return 'mansi';
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id,$tabe=13)
     {
         $isVideoSelected = false;
         $ids = explode(',', $id);
@@ -209,31 +243,21 @@ class EventsController extends Controller
         $cities = City::all();
         $cityTimeZones = Timezone::all();
         $eventTypes=EventType::all();
-        return view('org/createEvent', compact('categories', 'cities', 'event','cityTimeZones','eventTypes','isVideoSelected'));
-    }
-
-    public function storeVideo(Request $request)
-    {
-        return 'mansi';
+        $countries = Country::all();
+        $states = State::all();
+        return view('org/createEvent', compact('categories', 'cities', 'event','cityTimeZones','eventTypes','isVideoSelected', 'countries', 'states','tabe'));
+        
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Update the specified resource in storage.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request, $id)
+    public function update(Request $request, $id)
     {
-        // $this->validate($request, [
-        //     'EventBannerImage' => 'image|mimes:jpeg,bmp,png,jpg,gif,spg|dimensions:max_width=468,max_height=200',
-        //     'EventThumbnailImage' => 'image|mimes:jpeg,bmp,png,jpg|dimensions:max_width=1280,max_height=720',
-        //     'title' => 'required',
-        //     'category' => 'required',
-        //     'Description' => 'required',
-        //     'EventDateTime' => 'required',
-        // ]);
-
         $user = Auth::user();
         $events = Event::findOrFail($id);
         //banner image
@@ -285,16 +309,16 @@ class EventsController extends Controller
 
         $events->thumbnail = $thumbNailUrl;
         $events->banner = $bannerUrl;
-        if (isset($request->IsPublic)) {
-            $events->is_public = '1';
-        } else {
-            $events->is_public = '0';
-        }
-        if (isset($request->IsPaid)) {
-            $events->is_paid = '1';
-        } else {
-            $events->is_paid = '0';
-        }
+        // if (isset($request->IsPublic)) {
+        //     $events->is_public = '1';
+        // } else {
+        //     $events->is_public = '0';
+        // }
+        // if (isset($request->IsPaid)) {
+        //     $events->is_paid = '1';
+        // } else {
+        //     $events->is_paid = '0';
+        // }
         if (isset($request->IsOnline)) {
             $events->is_online = '1';
             $events->city_id = null;
@@ -305,6 +329,25 @@ class EventsController extends Controller
             $events->city_id = $request->city;
             $events->address = $request->Address;
         }
+
+        if (isset($request->IsPublish)) {
+            $events->is_live = '1';
+        } else {
+            $events->is_live = '0';
+        }
+        
+        if ($request->IsPublic=="true") {
+            $events->is_public = '1';
+        } else {
+            $events->is_public = '0';
+        }
+
+        if ($request->IsFree=="true") {
+            $events->is_paid = '0';
+        } else {
+            $events->is_paid = '1';
+        }
+
         $string = $request->HiddenCategoyID;
         $EventCategorieIds = preg_split("/\,/", $string);
         EventCategory::where('event_id',$events->id)->delete();
@@ -321,18 +364,6 @@ class EventsController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
@@ -342,5 +373,43 @@ class EventsController extends Controller
     {
         //
         $event = Event::find($request->eventDeleteId)->delete();
+    }
+
+    public function UpdateEventStatus(Request $request)
+    {
+        $id = $request->id;
+        $events = Event::findOrFail($id);
+        if($request->status=='1'){
+            $events->is_live = 2;
+        }
+        if($request->status=='2'){
+            $events->is_live = 1;
+        }
+        if($request->status=='3'){
+            $events->is_live = 3;
+        }
+        
+        $events->save();
+    }
+
+    public function getState(Request $request){
+        
+        $states = State::where('country_id',$request->countryId)->get();
+        $stateOptions="<option>Select State</option>";
+        foreach($states as $state){
+            $stateOptions .="<option value='".$state->id."' >".$state->name."</option>";
+        }
+        return $stateOptions;
+    }
+
+    public function getCity(Request $request){
+        
+        $citys = City::where('state_id',$request->cityId)->get();
+
+        $cityOptions="<option>Select City</option>";
+        foreach($citys as $city){
+            $cityOptions .="<option value='".$city->id."' >".$city->name."</option>";
+        }
+        return $cityOptions;
     }
 }

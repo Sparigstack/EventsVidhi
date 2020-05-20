@@ -1,6 +1,7 @@
 .imageRadius{
 	border-radius: 8px;
-	max-height: 90px;
+  max-height: 180px;
+  min-height: 180px;
 }
 .customButtons .simpleButton{
 	display: none;
@@ -9,10 +10,11 @@
 	margin-top: 30px !important;
 }
 .addNewEventButton button{
-	background: #80808021 !important;
+	/*background: #80808021 !important;*/
 }
 .addNewEventButton button a{
-	color:black !important;
+	/*color:black !important;*/
+  color:white !important;
 }
 .createEventContainer{
 	padding-right: 25px !important;
@@ -28,6 +30,17 @@
   /*position: absolute;*/
   width: 100%;
 }
+.thumbNailContainer{
+  width: 40%;
+}
+.thumbNailContainer p{
+  text-align: center !important;
+  height: 170px !important;
+  align-items: center !important;
+  cursor: pointer !important;
+  line-height: unset!important;
+    display: flex;
+}
 .dragFileContainer p{
   width: 100%;
   height: 100%;
@@ -42,6 +55,17 @@
   height: 30%;
   outline: none;
   opacity: 0;
+}
+.dragFileContainer #EventBannerImage{
+  width: 94%;
+  height: 75%;
+}
+.dragFileContainer #EventThumbnailImage{
+  width: 38%;
+  height: 70%
+}
+#thumbnailImage{
+  width: 100%;
 }
 .secondary{
   padding: 4px !important;

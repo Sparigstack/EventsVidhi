@@ -11,12 +11,6 @@ $(document).ready(function () {
             { orderable: false, targets: 3 },
         ]
     });
-    
-    var podcastsTable = $('#default-datatable-podcasts').DataTable({
-        columnDefs: [
-            { orderable: false, targets: 3 },
-        ]
-    });
 
     $('#EventDateTime').change(function (time) {
         var dateRi = $(this).val();
@@ -78,8 +72,6 @@ function IsOnlineEvent(element) {
         $('#Address2').attr('readonly', true);
         $('#PostalCode').attr('readonly', true);
         $('#city').attr('disabled', true);
-        $('#country').attr('disabled', true);
-        $('#state').attr('disabled', true);
         $('#EventUrl').removeClass('d-none');
     } else {
         $('#EventUrl').val('');
@@ -88,8 +80,6 @@ function IsOnlineEvent(element) {
         $('#Address2').removeAttr('readonly', false);
         $('#PostalCode').removeAttr('readonly', false);
         $('#city').attr('disabled', false);
-        $('#country').attr('disabled', false);
-        $('#state').attr('disabled', false);
     }
 }
 
@@ -203,17 +193,7 @@ function UpdateEventStatus(element){
         type: "post",
         data: {_token: CSRF_TOKEN, 'id':$id,'status':$status},
         success: function (response) {
-            // console.log(response);
-            if($status == '1'){
-                $(element).attr('status', '2');
-                $(element).text('Resume');
-            } if($status == '2'){
-                $(element).attr('status', '1');
-                $(element).text('Pause');
-            } if($status == '3'){
-                $(".pauseButton").addClass('d-none');
-                $(".cancelButton").addClass('d-none');
-            }
+            console.log(response);
         },
         error: function (response) {
            console.log(response);
@@ -231,42 +211,6 @@ function addEventVideos(element) {
         data: { _token: CSRF_TOKEN},
         success: function (response) {
             console.log(response);
-        }
-    });
-}
-
-function getState(element){
-    var parent = findParent(element);
-    var CSRF_TOKEN = $('.csrf-token').val();
-    var urlString = $('.getState').val();
-    var countryId = $(element).val();
-    
-    $.ajax({
-        url: urlString,
-        type: 'post',
-        data: { _token: CSRF_TOKEN, countryId : countryId},
-        success: function (response) {
-            $('#state').attr('disabled', false);
-            $('#state').empty();
-            $('#state').append(response);
-            // console.log(response);
-        }
-    });
-}
-function getCity(element){
-    var parent = findParent(element);
-    var CSRF_TOKEN = $('.csrf-token').val();
-    var urlString = $('.getCity').val();
-    var cityId = $(element).val();
-    
-    $.ajax({
-        url: urlString,
-        type: 'post',
-        data: { _token: CSRF_TOKEN, cityId : cityId},
-        success: function (response) {
-            $('#city').attr('disabled', false);
-            $('#city').empty();
-            $('#city').append(response);
         }
     });
 }
