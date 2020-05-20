@@ -341,7 +341,8 @@ function addEventVideos(element) {
 
 function getState(element) {
     var parent = findParent(element);
-    var CSRF_TOKEN = $('.csrf-token').val();
+    //var CSRF_TOKEN = $('.csrf-token').val();
+    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr("content");
     var urlString = $('.getState').val();
     var countryId = $(element).val();
 
@@ -359,7 +360,8 @@ function getState(element) {
 }
 function getCity(element) {
     var parent = findParent(element);
-    var CSRF_TOKEN = $('.csrf-token').val();
+    //var CSRF_TOKEN = $('.csrf-token').val();
+    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr("content");
     var urlString = $('.getCity').val();
     var cityId = $(element).val();
 

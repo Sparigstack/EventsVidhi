@@ -19,7 +19,7 @@
                                     <tr>
                                         <th>Title</th>
                                         <th>Description</th>
-                                        <th>Video URL</th>
+                                        <th class="max-w-table-200">Video URL</th>
                                         <!-- <th>Location</th> -->
                                         <th>Action</th>
                                     </tr>
@@ -49,7 +49,7 @@
                                             } ?>
                                             <td>{{$eventDesc}}</td>
                                             <!-- <td>{{$video->url}}</td> -->
-                                            <td>{{$videoUrl}}</td>
+                                            <td class="max-w-table-200">{{$videoUrl}}</td>
                                             <!-- <td> -->
                                                 <?php
                                                 // if ($event->is_online) {
@@ -71,7 +71,7 @@
                                     <tr>
                                         <th>Title</th>
                                         <th>Description</th>
-                                        <th>Video URL</th>
+                                        <th class="max-w-table-200">Video URL</th>
                                         <!-- <th>Location</th> -->
                                         <th>Action</th>
                                     </tr>

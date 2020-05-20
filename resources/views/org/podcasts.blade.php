@@ -19,7 +19,7 @@
                                     <tr>
                                         <th>Title</th>
                                         <th>Description</th>
-                                        <th>Podcast URL</th>
+                                        <th class="max-w-table-200">Podcast URL</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -48,7 +48,7 @@
                                             } ?>
                                             <td>{{$eventDesc}}</td>
                                             <!-- <td>{{$podcast->url}}</td> -->
-                                            <td>{{$videoPodcastUrl}}</td>
+                                            <td class="max-w-table-200">{{$videoPodcastUrl}}</td>
                                             <td>
                                                 <i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-edit" onclick="window.location='{{ url("org/podcasts/".$podcast->id) }}'"></i>
                                                 <a onclick="deletePodcast(this);" db-delete-id="{{$podcast->id}}"><i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-trash"></i></a> 
@@ -61,7 +61,7 @@
                                     <tr>
                                         <th>Title</th>
                                         <th>Description</th>
-                                        <th>Podcast URL</th>
+                                        <th class="max-w-table-200">Podcast URL</th>
                                         <!-- <th>Location</th> -->
                                         <th>Action</th>
                                     </tr>
