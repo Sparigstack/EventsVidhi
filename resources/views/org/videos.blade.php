@@ -17,7 +17,7 @@
                                 <thead>
                                     <tr>
                                         <th>Title</th>
-                                        <th>Event Title</th>
+                                        <th>Description</th>
                                         <th>Video URL</th>
                                         <!-- <th>Location</th> -->
                                         <th>Action</th>
@@ -28,9 +28,15 @@
                                          ?>
                                         <tr class="parent">
                                             <input class="csrf-token" type="hidden" value="{{ csrf_token() }}">
-                                    <input type="hidden"  class="deleteEvent" value="{{url('deleteEvent')}}">
+                                    <input type="hidden"  class="deleteVideo" value="{{url('deleteVideo')}}">
                                             <td>{{$video->title}} </td>
-                                            <td></td>
+                                            <?php $eventDesc = "";
+                                            if(isset($video->event)){
+                                                $eventDesc = "Event:".$video->event->title;
+                                            }else{
+                                                $eventDesc = $video->description;
+                                            } ?>
+                                            <td>{{$eventDesc}}</td>
                                             <td>{{$video->url}}</td>
                                             <!-- <td> -->
                                                 <?php
@@ -52,7 +58,7 @@
                                 <thead>
                                     <tr>
                                         <th>Title</th>
-                                        <th>Event Title</th>
+                                        <th>Description</th>
                                         <th>Video URL</th>
                                         <!-- <th>Location</th> -->
                                         <th>Action</th>

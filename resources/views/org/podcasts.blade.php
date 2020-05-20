@@ -18,7 +18,7 @@
                                     <tr>
                                         <th>Title</th>
                                         <th>Description</th>
-                                        <th>URL</th>
+                                        <th>Podcast URL</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -27,7 +27,7 @@
                                          ?>
                                         <tr class="parent">
                                             <input class="csrf-token" type="hidden" value="{{ csrf_token() }}">
-                                    <input type="hidden"  class="deleteEvent" value="{{url('deleteEvent')}}">
+                                    <input type="hidden"  class="deletePodcast" value="{{url('deletePodcast')}}">
                                             <td>{{$podcast->title}} </td>
                                             <?php $eventDesc = "";
                                             if(isset($podcast->event)){
@@ -49,7 +49,7 @@
                                     <tr>
                                         <th>Title</th>
                                         <th>Description</th>
-                                        <th>URL</th>
+                                        <th>Podcast URL</th>
                                         <!-- <th>Location</th> -->
                                         <th>Action</th>
                                     </tr>

@@ -5,6 +5,32 @@
     <?php
     $CardTitle = "Add New Video";
     $ActionCall = url('org/videos/store');
+    $title = "";
+    $desription = "";
+    $videoEventId = 0;
+    $linkedEventCheckced = "";
+
+    if (!empty($video)) {
+        $ActionCall = url('org/videos/edit/' . $video->id);
+        $CardTitle = "Edit Video";
+        $title = $video->title;
+        $desription = $video->url;
+        // $desription = $video->description;
+        // if (!empty($video->desription)) {
+        //     $desription = $video->desription;
+        // }
+        if(isset($video->event)){
+            $linkedEventCheckced = "checked";
+            // $desription = $video->url;
+            // $desription = "Event:".$video->event->title;
+        }else{
+            // $desription = $video->url;
+            // $desription = $video->description;
+        }
+        if (!empty($video->event_id)) {
+            $videoEventId = $video->event_id;
+        }
+    }
     ?>
     <div class="row">
         <div class="col-lg-6">
@@ -24,11 +50,11 @@
                     {{ csrf_field() }}
                         <div class='form-group'>
                             <label for='input_title'>Video Title</label>
-                            <input type="text" class="form-control" id="input_title" name='input_title' value="{{  old('input_title') }}" placeholder="Enter Video Title" required>
+                            <input type="text" class="form-control" id="input_title" name='input_title' value="{{  old('input_title', $title) }}" placeholder="Enter Video Title" required>
                         </div>
                         <div class='form-group'>
                             <label for='input_url'>Video URL</label><span style="font-size: 11px;font-weight: 600;">&nbsp;&nbsp;(YouTube or Vimeo url)</span>
-                            <input type="text" class="form-control" id="input_url" name="input_url"  value="{{  old('input_url') }}" placeholder="Enter Video URL" required>
+                            <input type="text" class="form-control" id="input_url" name="input_url"  value="{{  old('input_url', $desription) }}" placeholder="Enter Video URL" required>
                         </div>
 
                         <div class="form-group">
@@ -50,8 +76,9 @@
                             </div>
                             <div class="form-group">
                                 <label for="BlankLabel"></label>
+                                 <input type="hidden" class="linkedEvent" name="linkedEvent" value="">
                                 <div class="icheck-material-primary">
-                                    <input onchange='showHideLinkEvent(this);' type="checkbox" id="IsLinkedEvent" name="IsLinkedEvent" @if(old('IsLinkedEvent')) checked @endif>
+                                    <input onchange='showHideLinkEvent(this);' type="checkbox" id="IsLinkedEvent" name="IsLinkedEvent" @if(old('IsLinkedEvent', $linkedEventCheckced)) checked @endif>
                                     <label for="IsLinkedEvent"> Do you want to link this video with any Event?</label>
                                 </div>
                             </div>
@@ -61,12 +88,18 @@
                                     <option value="">Select Event To Link</option>
                                     <?php
                                     foreach ($events as $event) {
+                                        $IsSelected = "";
+                                        if (!empty($video)) {
+                                            if ($event->id == $videoEventId) {
+                                                $IsSelected = "selected";
+                                            }
+                                        }
                                         //                                        $IsSelected = "";
                                         //                                        if ($event->id == $eventId) {
                                         //                                            $IsSelected = "selected";
                                         //                                        }
                                     ?>
-                                        <option value="{{$event->id}}"  @if (old('EventToLink')==$event->id) selected="selected" @endif ><?php echo $event->title; ?> </option>
+                                        <option value="{{$event->id}}" {{$IsSelected}}  @if (old('EventToLink')==$event->id) selected="selected" @endif ><?php echo $event->title; ?> </option>
                                     <?php } ?>
 
                                 </select>

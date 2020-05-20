@@ -4,6 +4,10 @@ namespace App\Http\Controllers\org;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use App\Podcast;
+use Illuminate\Support\Facades\Validator;
 
 class PodcastsController extends Controller
 {
@@ -21,8 +25,8 @@ class PodcastsController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $videos = Video::where('user_id',$user->id)->get();
-        return view('org/videos', compact('videos'));
+        $podcasts = Podcast::where('user_id',$user->id)->get();
+        return view('org/podcasts', compact('podcasts'));
     }
 
     /**
@@ -32,7 +36,9 @@ class PodcastsController extends Controller
      */
     public function create()
     {
-        //
+        $user = Auth::user();
+        $events = $user->events->sortBy('created_at');
+        return view('org/createPodcast', compact('events'));
     }
 
     /**
@@ -43,7 +49,52 @@ class PodcastsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // mov,mp4,wmv,flv,avi
+        $validator=null ;
+        if (isset($request->IsUploadVideo)){
+            $validator = Validator::make($request->all(), [
+                'input_title' => 'required',
+                'input_podfile'=>'required|mimes:mp4,wmv,flv,ogv,ogx,webm'
+            ]);
+        }else{
+            $validator = Validator::make($request->all(), [
+                'input_title' => 'required',
+                'input_url' => 'required',
+            ]);
+        }
+
+        if ($validator->fails()) {
+            return redirect('org/podcasts/new')
+                ->withErrors($validator)
+                ->withInput();
+        }
+        $podcast = new Podcast;
+        $podcast->title = $request->input_title;
+        $userId = Auth::id();
+        $podcast->user_id = $userId;
+        $UrlToSave = "";
+        if (isset($request->IsUploadVideo)) {
+            if ($request->hasFile('input_podfile')) {
+                $file = $request->file('input_podfile');
+                $name = time() . $file->getClientOriginalName();
+                $userId = Auth::id();
+                $filePath = 'org_' . $userId . '/Video/' . $name;
+                Storage::disk('s3')->put($filePath, file_get_contents($file));
+                $UrlToSave = $filePath;
+            }
+        } else {
+            $UrlToSave = $request->input_url;
+        }
+        if (isset($request->IsLinkedEvent)) {
+            $podcast->event_id = $request->EventToLink;
+        }
+
+        $podcast->url = $UrlToSave;
+        $podcast->save();
+
+        return redirect('org/podcasts');
+
+        return back()->withSuccess('Image uploaded successfully');
     }
 
     /**
@@ -65,7 +116,10 @@ class PodcastsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = Auth::user();
+        $podcast = Podcast::findOrFail($id);
+        $events = $user->events->sortBy('created_at');
+        return view('org/createPodcast', compact('events','podcast'));
     }
 
     /**
@@ -77,7 +131,58 @@ class PodcastsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validator=null ;
+        if (isset($request->IsUploadVideo)){
+            $validator = Validator::make($request->all(), [
+                'input_title' => 'required',
+                'input_podfile'=>'required|mimes:mp4,wmv,flv,ogv,ogx,webm'
+            ]);
+        }else{
+            $validator = Validator::make($request->all(), [
+                'input_title' => 'required',
+                'input_url' => 'required',
+            ]);
+        }
+
+        if ($validator->fails()) {
+            return redirect('org/podcasts/'. $id)
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $user = Auth::user();
+        $podcast = Podcast::findOrFail($id);
+
+        $podcast->title = $request->input_title;
+        $userId = Auth::id();
+        $podcast->user_id = $userId;
+        $UrlToSave = "";
+        if (isset($request->IsUploadVideo)) {
+            if ($request->hasFile('input_podfile')) {
+                $file = $request->file('input_podfile');
+                $name = time() . $file->getClientOriginalName();
+                $userId = Auth::id();
+                $filePath = 'org_' . $userId . '/Video/' . $name;
+                Storage::disk('s3')->put($filePath, file_get_contents($file));
+                $UrlToSave = $filePath;
+            }
+        } else {
+            $UrlToSave = $request->input_url;
+        }
+        // if (isset($request->IsLinkedEvent)) {
+        //     $podcast->event_id = $request->EventToLink;
+        // }
+        if ($request->linkedEvent == '1') {
+            $podcast->event_id = $request->EventToLink;
+        }
+        if ($request->linkedEvent == '0') {
+            $podcast->event_id = NULL;
+        }
+
+        $podcast->url = $UrlToSave;
+        $podcast->save();
+
+        return redirect('org/podcasts');
     }
 
     /**
@@ -86,8 +191,8 @@ class PodcastsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $podcastVideo = Podcast::find($request->podcastVideoDeleteId)->delete();
     }
 }

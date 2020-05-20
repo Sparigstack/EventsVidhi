@@ -107,6 +107,8 @@ class VideosController extends Controller
         $video->url = $UrlToSave;
         $video->save();
 
+        return redirect('org/videos');
+
         // if ($request->hasFile('VideoFile')) {
         //     $file = $request->file('VideoFile');
         //     $name = time() . $file->getClientOriginalName();
@@ -137,7 +139,10 @@ class VideosController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = Auth::user();
+        $video = Video::findOrFail($id);
+        $events = $user->events->sortBy('created_at');
+        return view('org/createVideo', compact('events','video'));
     }
 
     /**
@@ -149,7 +154,58 @@ class VideosController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validator=null ;
+        if (isset($request->IsUploadVideo)){
+            $validator = Validator::make($request->all(), [
+                'input_title' => 'required',
+                'input_vidfile'=>'required|mimes:mov,mp4,wmv,flv,avi'
+            ]);
+        }else{
+            $validator = Validator::make($request->all(), [
+                'input_title' => 'required',
+                'input_url' => 'required',
+            ]);
+        }
+
+        if ($validator->fails()) {
+            return redirect('org/videos/'. $id)
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $user = Auth::user();
+        $video = Video::findOrFail($id);
+
+        $video->title = $request->input_title;
+        $userId = Auth::id();
+        $video->user_id = $userId;
+        $UrlToSave = "";
+        if (isset($request->IsUploadVideo)) {
+            if ($request->hasFile('input_vidfile')) {
+                $file = $request->file('input_vidfile');
+                $name = time() . $file->getClientOriginalName();
+                $userId = Auth::id();
+                $filePath = 'org_' . $userId . '/Video/' . $name;
+                Storage::disk('s3')->put($filePath, file_get_contents($file));
+                $UrlToSave = $filePath;
+            }
+        } else {
+            $UrlToSave = $request->input_url;
+        }
+        // if (isset($request->IsLinkedEvent)) {
+        //     $video->event_id = $request->EventToLink;
+        // }
+        if ($request->linkedEvent == '1') {
+            $video->event_id = $request->EventToLink;
+        }
+        if ($request->linkedEvent == '0') {
+            $video->event_id = NULL;
+        }
+
+        $video->url = $UrlToSave;
+        $video->save();
+
+        return redirect('org/videos');
     }
 
     /**
@@ -158,8 +214,8 @@ class VideosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $video = Video::find($request->videoDeleteId)->delete();
     }
 }
