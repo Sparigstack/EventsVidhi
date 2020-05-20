@@ -39,3 +39,7 @@ Route::post('org/events/videos/store', 'org\EventsController@storeVideo');
 Route::get('org/videos', 'org\VideosController@index');
 Route::get('org/videos/new', 'org\VideosController@create');
 Route::post('org/videos/store', 'org\VideosController@store');
+
+Route::get('org/podcasts', 'org\PodcastsController@index');
+Route::get('org/podcasts/new', 'org\PodcastsController@create');
+Route::post('org/podcasts/store', 'org\PodcastsController@store');

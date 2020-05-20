@@ -11,6 +11,12 @@ $(document).ready(function () {
             { orderable: false, targets: 3 },
         ]
     });
+    
+    var podcastsTable = $('#default-datatable-podcasts').DataTable({
+        columnDefs: [
+            { orderable: false, targets: 3 },
+        ]
+    });
 
     $('#EventDateTime').change(function (time) {
         var dateRi = $(this).val();
