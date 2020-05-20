@@ -195,6 +195,7 @@ function deleteEvent(element) {
         }
     });
 }
+<<<<<<< HEAD
 function UploadVideoBox(element) {
     var field=$(element).parent().parent().parent();
     if (!$(field).find('#IsUploadVideo').is(':checked')) {
@@ -209,6 +210,11 @@ function UploadVideoBox(element) {
         $(field).find("#input_vidfile").prop('required', true);
     }
 }
+function showHideLinkEvent() {
+    if ($('#IsLinkedEvent').is(':checked')) {
+        $('.EventSelectionBox').removeClass('d-none');
+    } else {
+=======
 function deleteVideo(element) {
     var confirmDelete = confirm("Are you sure you want to delete this video?");
     if (!confirmDelete)
@@ -246,24 +252,40 @@ function deletePodcast(element) {
         }
     });
 }
+
+function UploadVideoBox(){
+   if(!$('#IsUploadVideo').is(':checked')){
+    $('#input_url').attr('readonly', false);
+    $("#input_url").prop('required',true);
+    $("#input_vidfile").prop('required',false);
+    $('.uploadVideoBox').addClass('d-none');
+   }else{
+    $('.uploadVideoBox').removeClass('d-none');
+    $('#input_url').attr('readonly', true);
+    $("#input_url").prop('required',false);
+    $("#input_vidfile").prop('required',true);
+   }
+}
+
 function UploadPodcastVideoBox(){
-    if(!$('#IsUploadVideo').is(':checked')){
-     $('#input_url').attr('readonly', false);
-     $("#input_url").prop('required',true);
-     $("#input_podfile").prop('required',false);
-     $('.uploadPodcastBox').addClass('d-none');
-    }else{
-     $('.uploadPodcastBox').removeClass('d-none');
-     $('#input_url').attr('readonly', true);
-     $("#input_url").prop('required',false);
-     $("#input_podfile").prop('required',true);
-    }
- }
-function showHideLinkEvent() {
+   if(!$('#IsUploadVideo').is(':checked')){
+    $('#input_url').attr('readonly', false);
+    $("#input_url").prop('required',true);
+    $("#input_podfile").prop('required',false);
+    $('.uploadPodcastBox').addClass('d-none');
+   }else{
+    $('.uploadPodcastBox').removeClass('d-none');
+    $('#input_url').attr('readonly', true);
+    $("#input_url").prop('required',false);
+    $("#input_podfile").prop('required',true);
+   }
+}
+function showHideLinkEvent(){
     if($('#IsLinkedEvent').is(':checked')){
         $('.EventSelectionBox').removeClass('d-none');
         $('.linkedEvent').val('1');
     }else{
+>>>>>>> 43c9ae61706b411bfb039ef1d27a97c8f33a722a
         $('.EventSelectionBox').addClass('d-none');
         $('.linkedEvent').val('0');
     }

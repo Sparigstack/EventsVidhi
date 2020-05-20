@@ -42,7 +42,16 @@ Route::post('org/events/deleteVideo/{id}', 'org\EventsController@destroyVideo');
 Route::get('org/videos', 'org\VideosController@index');
 Route::get('org/videos/new', 'org\VideosController@create');
 Route::post('org/videos/store', 'org\VideosController@store');
-Route::post('org/videos/update', 'org\VideosController@update');
+Route::get('org/videos/{videoid}', 'org\VideosController@edit');
+Route::post('org/videos/edit/{id}', 'org\VideosController@update');
+Route::post('deleteVideo', 'org\VideosController@destroy');
+
+Route::get('org/podcasts', 'org\PodcastsController@index');
+Route::get('org/podcasts/new', 'org\PodcastsController@create');
+Route::post('org/podcasts/store', 'org\PodcastsController@store');
+Route::get('org/podcasts/{podcastid}', 'org\PodcastsController@edit');
+Route::post('org/podcasts/edit/{podcastid}', 'org\PodcastsController@update');
+Route::post('deletePodcast', 'org\PodcastsController@destroy');
 
 Route::post('getState', 'org\EventsController@getState');
 Route::post('getCity', 'org\EventsController@getCity');

@@ -9,6 +9,7 @@
                 <div class="card">
                     <div class="card-header addNewEventButton">
                        <i class="fa fa-table pt-3"></i> All Videos
+                       <button id="" class="btn m-1 pull-right btn-primary" style=""><a href="{{url("org/videos/new")}}">Add New Video</a></button>
                         <!-- <button id="" class="btn m-1 pull-right" style="border:1px solid transparent;"><a href="{{url("org/events/new")}}">Add New Event</a></button> -->
                     </div>
                     <div class="card-body">
@@ -17,7 +18,7 @@
                                 <thead>
                                     <tr>
                                         <th>Title</th>
-                                        <th>Event Title</th>
+                                        <th>Description</th>
                                         <th>Video URL</th>
                                         <!-- <th>Location</th> -->
                                         <th>Action</th>
@@ -25,13 +26,30 @@
                                 </thead>
                                 <tbody>
                                     <?php foreach ($videos as $video) { 
+                                        $AwsUrl = env('AWS_URL');
+                                        $videoUrl = "";
+                                        if (!empty($video->url)) {
+                                            if(substr( $video->url, 0, 8 ) != "https://"){
+                                                $videoUrl = $AwsUrl . $video->url;
+                                            }
+                                            else{
+                                                $videoUrl = $video->url;
+                                            }
+                                        }
                                          ?>
                                         <tr class="parent">
                                             <input class="csrf-token" type="hidden" value="{{ csrf_token() }}">
-                                    <input type="hidden"  class="deleteEvent" value="{{url('deleteEvent')}}">
+                                    <input type="hidden"  class="deleteVideo" value="{{url('deleteVideo')}}">
                                             <td>{{$video->title}} </td>
-                                            <td></td>
-                                            <td>{{$video->url}}</td>
+                                            <?php $eventDesc = "";
+                                            if(isset($video->event)){
+                                                $eventDesc = "Event:".$video->event->title;
+                                            }else{
+                                                $eventDesc = $video->description;
+                                            } ?>
+                                            <td>{{$eventDesc}}</td>
+                                            <!-- <td>{{$video->url}}</td> -->
+                                            <td>{{$videoUrl}}</td>
                                             <!-- <td> -->
                                                 <?php
                                                 // if ($event->is_online) {
@@ -52,7 +70,7 @@
                                 <thead>
                                     <tr>
                                         <th>Title</th>
-                                        <th>Event Title</th>
+                                        <th>Description</th>
                                         <th>Video URL</th>
                                         <!-- <th>Location</th> -->
                                         <th>Action</th>

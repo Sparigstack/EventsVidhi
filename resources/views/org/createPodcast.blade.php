@@ -5,6 +5,29 @@
     <?php
     $CardTitle = "Add New Podcast";
     $ActionCall = url('org/podcasts/store');
+    $title = "";
+    $desription = "";
+    $podcastVideoEventId = 0;
+    $linkedEventCheckced = "";
+
+    if (!empty($podcast)) {
+        $ActionCall = url('org/podcasts/edit/' . $podcast->id);
+        $CardTitle = "Edit Podcast";
+        $title = $podcast->title;
+        $desription = $podcast->url;
+        
+        if(isset($podcast->event)){
+            $linkedEventCheckced = "checked";
+            // $desription = $podcast->url;
+            // $desription = "Event:".$podcast->event->title;
+        }else{
+            // $desription = $podcast->url;
+            // $desription = $podcast->description;
+        }
+        if (!empty($podcast->event_id)) {
+            $podcastVideoEventId = $podcast->event_id;
+        }
+    }
     ?>
     <div class="row">
         <div class="col-lg-6">
@@ -24,24 +47,24 @@
                     {{ csrf_field() }}
                         <div class='form-group'>
                             <label for='input_title'>Podcast Title</label>
-                            <input type="text" class="form-control" id="input_title" name='input_title' value="{{  old('input_title') }}" placeholder="Enter Podcast Title" required>
+                            <input type="text" class="form-control" id="input_title" name='input_title' value="{{  old('input_title', $title) }}" placeholder="Enter Podcast Title" required>
                         </div>
-<!--                        <div class='form-group'>
+                        <div class='form-group'>
                             <label for='input_url'>Podcast URL</label>
-                            <input type="text" class="form-control" id="input_url" name="input_url"  value="{{  old('input_url') }}" placeholder="Enter Video URL" required>
-                        </div>-->
+                            <input type="text" class="form-control" id="input_url" name="input_url"  value="{{  old('input_url', $desription) }}" placeholder="Enter Podcast URL" required>
+                        </div>
 
-<!--                        <div class="form-group">
+                        <div class="form-group">
                                 <label for="BlankLabel"></label>
                                 <div class="icheck-material-primary">
-                                    <input onclick="UploadVideoBox()" type="checkbox" id="IsUploadVideo" name="IsUploadVideo" @if(old('IsUploadVideo')) checked @endif>
-                                    <label for="IsUploadVideo">Or upload video</label>
+                                    <input onclick="UploadPodcastVideoBox()" type="checkbox" id="IsUploadVideo" name="IsUploadVideo" @if(old('IsUploadVideo')) checked @endif>
+                                    <label for="IsUploadVideo">Or upload podcast</label>
                                 </div>
-                            </div>-->
+                            </div>
 
                         <div class='parent' style='width: 100%;'>
                             <div class='form-group  d-none uploadPodcastBox'>
-                                <label for='input_vidfile'>Upload Podcast</label>
+                                <label for='input_podfile'>Upload Podcast</label>
                                 <div class='dragFileContainer'>
                                     <input type="file" id='input_podfile' name='input_podfile' multiple value="{{  old('input_podfile') }}" >
                                     <p>Drag your podcast here or click to upload</p>
@@ -50,9 +73,10 @@
                             </div>
                             <div class="form-group">
                                 <label for="BlankLabel"></label>
+                                <input type="hidden" class="linkedEvent" name="linkedEvent" value="">
                                 <div class="icheck-material-primary">
-                                    <input onchange='showHideLinkEvent(this);' type="checkbox" id="IsLinkedEvent" name="IsLinkedEvent" @if(old('IsLinkedEvent')) checked @endif>
-                                    <label for="IsLinkedEvent"> Do you want to link this video with any Event?</label>
+                                    <input onchange='showHideLinkEvent(this);' type="checkbox" id="IsLinkedEvent" name="IsLinkedEvent" @if(old('IsLinkedEvent', $linkedEventCheckced)) checked @endif>
+                                    <label for="IsLinkedEvent"> Do you want to link this podcast with any Event?</label>
                                 </div>
                             </div>
                             <div id='linkEvent' class="form-group EventSelectionBox d-none">
@@ -61,12 +85,18 @@
                                     <option value="">Select Event To Link</option>
                                     <?php
                                     foreach ($events as $event) {
+                                        $IsSelected = "";
+                                        if (!empty($podcast)) {
+                                            if ($event->id == $podcastVideoEventId) {
+                                                $IsSelected = "selected";
+                                            }
+                                        }
                                         //                                        $IsSelected = "";
                                         //                                        if ($event->id == $eventId) {
                                         //                                            $IsSelected = "selected";
                                         //                                        }
                                     ?>
-                                        <option value="{{$event->id}}"  @if (old('EventToLink')==$event->id) selected="selected" @endif ><?php echo $event->title; ?> </option>
+                                        <option value="{{$event->id}}" {{$IsSelected}}  @if (old('EventToLink')==$event->id) selected="selected" @endif ><?php echo $event->title; ?> </option>
                                     <?php } ?>
 
                                 </select>
@@ -74,7 +104,7 @@
                         </div>
 
 
-                        <button class="btn btn-primary px-5 pull-right" type="submit">Save Video</button>
+                        <button class="btn btn-primary px-5 pull-right" type="submit">Save Podcast</button>
                     </form>
 
                     <!--                    <form class="row" method="post" action="{{$ActionCall}}" enctype="multipart/form-data">
@@ -195,7 +225,7 @@
         $('.dragFileForm input').change(function() {
             $('.dragFileForm p').text(this.files.length + " file(s) selected");
         });
-        UploadVideoBox();
+        UploadPodcastVideoBox();
         showHideLinkEvent();
     });
 </script>
