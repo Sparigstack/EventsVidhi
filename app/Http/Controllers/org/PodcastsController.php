@@ -51,10 +51,10 @@ class PodcastsController extends Controller
     {
         // mov,mp4,wmv,flv,avi
         $validator=null ;
-        if (isset($request->IsUploadVideo)){
+        if (isset($request->IsUploadPodcast)){
             $validator = Validator::make($request->all(), [
                 'input_title' => 'required',
-                'input_podfile'=>'required|mimes:mp3,m4a,wma'
+                'input_podfile'=>'required|mimes:mpga,m4a,wma'
             ]);
         }else{
             $validator = Validator::make($request->all(), [
@@ -73,12 +73,12 @@ class PodcastsController extends Controller
         $userId = Auth::id();
         $podcast->user_id = $userId;
         $UrlToSave = "";
-        if (isset($request->IsUploadVideo)) {
+        if (isset($request->IsUploadPodcast)) {
             if ($request->hasFile('input_podfile')) {
                 $file = $request->file('input_podfile');
                 $name = time() . $file->getClientOriginalName();
                 $userId = Auth::id();
-                $filePath = 'org_' . $userId . '/Video/' . $name;
+                $filePath = 'org_' . $userId . '/Podcast/' . $name;
                 Storage::disk('s3')->put($filePath, file_get_contents($file));
                 $UrlToSave = $filePath;
             }

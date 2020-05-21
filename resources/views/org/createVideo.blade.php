@@ -222,8 +222,8 @@
 @endsection
 
 @section('script')
-<script src="{{asset('/js/customScript.js')}}" type="text/javascript"></script>
-<script>
+<script src="{{asset('/js/VideoAndPodcast.js')}}" type="text/javascript"></script>
+<!-- <script>
     $(document).ready(function() {
         $('.dragFileForm input').change(function() {
             $('.dragFileForm p').text(this.files.length + " file(s) selected");
@@ -231,5 +231,5 @@
         UploadVideoBoxVideoCon();
         showHideLinkEvent();
     });
-</script>
+</script> -->
 @endsection
