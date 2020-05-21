@@ -282,6 +282,7 @@
                                                             <?php } ?>
 
                                                         </select>
+                                                        <img src="{{ asset('assets/images/busy.gif') }}" class="loader-icon float-right d-none" alt="logo icon">
                                                     </div>
 
                                                     <div class="form-group col-lg-12">
@@ -292,6 +293,7 @@
 
 
                                                         </select>
+                                                        <img src="{{ asset('assets/images/busy.gif') }}" class="loader-icon float-right d-none" alt="logo icon">
                                                     </div>
 
                                                     <div class="form-group col-lg-12">

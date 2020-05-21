@@ -2,26 +2,26 @@ $(document).ready(function () {
     setEventDateAndTime();
     var table = $('#default-datatable').DataTable({
         columnDefs: [
-            { orderable: false, targets: 4 },
+            {orderable: false, targets: 4},
         ]
     });
 
     var videosTable = $('#default-datatable-videos').DataTable({
         columnDefs: [
-            { orderable: false, targets: 3 },
+            {orderable: false, targets: 3},
         ]
     });
 
     var podcastsTable = $('#default-datatable-podcasts').DataTable({
         columnDefs: [
-            { orderable: false, targets: 3 },
+            {orderable: false, targets: 3},
         ]
     });
 
     $('#SaveVideoAjax').on('submit', function (event) {
-        LoaderStart();
         event.preventDefault();
-        var CurentForm=$(this);
+        LoaderStart();
+        var CurentForm = $(this);
         var urlString = $('.addEventVideos').val();
         var formData = new FormData(this);
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr("content");
@@ -35,7 +35,7 @@ $(document).ready(function () {
             processData: false,
             success: function (response) {
                 //var HtmlContent="<div>"+response.videoUrl+"</div> <div>"+response.videoTitle+"</div>";
-                var HtmlContent='<ul class="list-group parent list-group-flush mb-2"><li class="list-group-item"><div class="media align-items-center"><div class="media-body ml-3"><h6 class="mb-0">'+response.videoTitle+'</h6><small class="small-font">'+response.videoUrl+'</small></div><div data-id="'+response.videoID+'" Type="video" onclick="RemoveSingleVideo(this);" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div></div></li>';
+                var HtmlContent = '<ul class="list-group parent list-group-flush mb-2"><li class="list-group-item"><div class="media align-items-center"><div class="media-body ml-3"><h6 class="mb-0">' + response.videoTitle + '</h6><small class="small-font">' + response.videoUrl + '</small></div><div data-id="' + response.videoID + '" Type="video" onclick="RemoveSingleVideo(this);" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div></div></li>';
                 $('#UploadedVideos').append(HtmlContent);
                 $(CurentForm).find('#input_url').val('');
                 $(CurentForm).find('#input_title').val('');
@@ -52,7 +52,7 @@ $(document).ready(function () {
     $('#SavePodCastAjax').on('submit', function (event) {
         LoaderStart();
         event.preventDefault();
-        var CurentForm=$(this);
+        var CurentForm = $(this);
         var urlString = $('.addPodCastVideos').val();
         var formData = new FormData(this);
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr("content");
@@ -66,7 +66,7 @@ $(document).ready(function () {
             processData: false,
             success: function (response) {
                 //var HtmlContent="<div>"+response.videoUrl+"</div> <div>"+response.videoTitle+"</div>";
-                var HtmlContent='<ul class="list-group parent list-group-flush mb-2"><li class="list-group-item"><div class="media align-items-center"><div class="media-body ml-3"><h6 class="mb-0">'+response.videoTitle+'</h6><small class="small-font">'+response.videoUrl+'</small></div><div data-id="'+response.videoID+'" Type="podcast" onclick="RemoveSingleVideo(this);" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div></div></li>';
+                var HtmlContent = '<ul class="list-group parent list-group-flush mb-2"><li class="list-group-item"><div class="media align-items-center"><div class="media-body ml-3"><h6 class="mb-0">' + response.videoTitle + '</h6><small class="small-font">' + response.videoUrl + '</small></div><div data-id="' + response.videoID + '" Type="podcast" onclick="RemoveSingleVideo(this);" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div></div></li>';
                 $('#UploadedVideos').append(HtmlContent);
                 $(CurentForm).find('#input_url').val('');
                 $(CurentForm).find('#input_title').val('');
@@ -99,7 +99,7 @@ $(document).ready(function () {
     });
     $(".files").on("change", function (e) {
         var files = e.target.files,
-            filesLength = files.length;
+                filesLength = files.length;
 
         for (var i = 0; i < filesLength; i++) {
             var f = files[i]
@@ -166,8 +166,7 @@ function setEventDateAndTime() {
         var ampm;
         if (Date.parse($(this).val())) {
             defaultdate = new Date($(this).val());
-        }
-        else {
+        } else {
             defaultdate = new Date();
         }
 
@@ -208,7 +207,7 @@ function deleteEvent(element) {
     $.ajax({
         url: urlString,
         type: 'post',
-        data: { _token: CSRF_TOKEN, eventDeleteId: eventDeleteId },
+        data: {_token: CSRF_TOKEN, eventDeleteId: eventDeleteId},
         success: function (response) {
             // console.log(response);
             location.reload();
@@ -216,43 +215,43 @@ function deleteEvent(element) {
     });
 }
 function UploadVideoBox(element) {
-    var field=$(element).parent().parent().parent();
+    var field = $(element).parent().parent().parent();
     if (!$(element).is(':checked')) {
         $(field).find('#input_url').attr('readonly', false);
         $(field).find("#input_url").prop('required', true);
-        if($(element).hasClass('PodCastUpload')){
+        if ($(element).hasClass('PodCastUpload')) {
             $(field).find("#podcast_video_file").prop('required', false);
             $(field).find('.uploadPodcastVideo').addClass('d-none');
-        }else{
+        } else {
             $(field).find("#input_vidfile").prop('required', false);
             $(field).find('.uploadVideoBox').addClass('d-none');
         }
-        
+
     } else {
         $(field).find('#input_url').attr('readonly', true);
         $(field).find("#input_url").prop('required', false);
-        if($(element).hasClass('PodCastUpload')){
+        if ($(element).hasClass('PodCastUpload')) {
             $(field).find("#podcast_video_file").prop('required', true);
             $(field).find('.uploadPodcastVideo').removeClass('d-none');
-        }else{
+        } else {
             $(field).find("#input_vidfile").prop('required', true);
             $(field).find('.uploadVideoBox').removeClass('d-none');
         }
-        
+
     }
 }
 function UploadVideoBoxVideoCon() {
-    if(!$('#IsUploadVideo').is(':checked')){
+    if (!$('#IsUploadVideo').is(':checked')) {
         $('#input_url').attr('readonly', false);
-        $("#input_url").prop('required',true);
-        $("#input_vidfile").prop('required',false);
+        $("#input_url").prop('required', true);
+        $("#input_vidfile").prop('required', false);
         $('.uploadVideoBox').addClass('d-none');
-       }else{
+    } else {
         $('.uploadVideoBox').removeClass('d-none');
         $('#input_url').attr('readonly', true);
-        $("#input_url").prop('required',false);
-        $("#input_vidfile").prop('required',true);
-       }
+        $("#input_url").prop('required', false);
+        $("#input_vidfile").prop('required', true);
+    }
 }
 function deleteVideo(element) {
     var confirmDelete = confirm("Are you sure you want to delete this video?");
@@ -265,7 +264,7 @@ function deleteVideo(element) {
     $.ajax({
         url: urlString,
         type: 'post',
-        data: { _token: CSRF_TOKEN, videoDeleteId: videoDeleteId },
+        data: {_token: CSRF_TOKEN, videoDeleteId: videoDeleteId},
         success: function (response) {
             // console.log(response);
             location.reload();
@@ -284,31 +283,31 @@ function deletePodcast(element) {
     $.ajax({
         url: urlString,
         type: 'post',
-        data: { _token: CSRF_TOKEN, podcastVideoDeleteId: podcastVideoDeleteId },
+        data: {_token: CSRF_TOKEN, podcastVideoDeleteId: podcastVideoDeleteId},
         success: function (response) {
             // console.log(response);
             location.reload();
         }
     });
 }
-function UploadPodcastVideoBox(){
-    if(!$('#IsUploadVideo').is(':checked')){
-     $('#input_url').attr('readonly', false);
-     $("#input_url").prop('required',true);
-     $("#input_podfile").prop('required',false);
-     $('.uploadPodcastBox').addClass('d-none');
-    }else{
-     $('.uploadPodcastBox').removeClass('d-none');
-     $('#input_url').attr('readonly', true);
-     $("#input_url").prop('required',false);
-     $("#input_podfile").prop('required',true);
+function UploadPodcastVideoBox() {
+    if (!$('#IsUploadPodcast').is(':checked')) {
+        $('#input_url').attr('readonly', false);
+        $("#input_url").prop('required', true);
+        $("#input_podfile").prop('required', false);
+        $('.uploadPodcastBox').addClass('d-none');
+    } else {
+        $('.uploadPodcastBox').removeClass('d-none');
+        $('#input_url').attr('readonly', true);
+        $("#input_url").prop('required', false);
+        $("#input_podfile").prop('required', true);
     }
- }
+}
 function showHideLinkEvent() {
-    if($('#IsLinkedEvent').is(':checked')){
+    if ($('#IsLinkedEvent').is(':checked')) {
         $('.EventSelectionBox').removeClass('d-none');
         $('.linkedEvent').val('1');
-    }else{
+    } else {
         $('.EventSelectionBox').addClass('d-none');
         $('.linkedEvent').val('0');
     }
@@ -324,8 +323,7 @@ function uploadVideo(element) {
         //   $('#IsUploadVideo').prop('checked',false);
 
         $('.UploadPodCastContainer').addClass('d-none');
-    }
-    else if ($(element).attr('id') == 'podcastVideoButton') {
+    } else if ($(element).attr('id') == 'podcastVideoButton') {
         $('.UploadPodCastContainer').removeClass('d-none');
         // $('.videoUrl').addClass('d-none');
         // $('.videoUploadBox').addClass('d-none');
@@ -345,16 +343,18 @@ function UpdateEventStatus(element) {
     $.ajax({
         url: URL,
         type: "post",
-        data: { _token: CSRF_TOKEN, 'id': $id, 'status': $status },
+        data: {_token: CSRF_TOKEN, 'id': $id, 'status': $status},
         success: function (response) {
             // console.log(response);
             if ($status == '1') {
                 $(element).attr('status', '2');
                 $(element).text('Resume');
-            } if ($status == '2') {
+            }
+            if ($status == '2') {
                 $(element).attr('status', '1');
                 $(element).text('Pause');
-            } if ($status == '3') {
+            }
+            if ($status == '3') {
                 $(".pauseButton").addClass('d-none');
                 $(".cancelButton").addClass('d-none');
             }
@@ -376,7 +376,7 @@ function addEventVideos(element) {
     $.ajax({
         url: urlString,
         type: 'post',
-        data: { _token: CSRF_TOKEN },
+        data: {_token: CSRF_TOKEN},
         success: function (response) {
 
             console.log(response);
@@ -391,12 +391,13 @@ function getState(element) {
     var CSRF_TOKEN = $('meta[name="csrf-token"]').attr("content");
     var urlString = $('.getState').val();
     var countryId = $(element).val();
-
+    showInputLoader(element);
     $.ajax({
         url: urlString,
         type: 'post',
-        data: { _token: CSRF_TOKEN, countryId: countryId },
+        data: {_token: CSRF_TOKEN, countryId: countryId},
         success: function (response) {
+            hideInputLoader(element);
             $('#state').attr('disabled', false);
             $('#state').empty();
             $('#state').append(response);
@@ -410,12 +411,13 @@ function getCity(element) {
     var CSRF_TOKEN = $('meta[name="csrf-token"]').attr("content");
     var urlString = $('.getCity').val();
     var cityId = $(element).val();
-
+    showInputLoader(element);
     $.ajax({
         url: urlString,
         type: 'post',
-        data: { _token: CSRF_TOKEN, cityId: cityId },
+        data: {_token: CSRF_TOKEN, cityId: cityId},
         success: function (response) {
+            hideInputLoader(element);
             $('#city').attr('disabled', false);
             $('#city').empty();
             $('#city').append(response);
@@ -434,28 +436,28 @@ function LoaderStop() {
     $('#pageloader-overlay').css('display', 'none');
 }
 
-function RemoveSingleVideo(element){
+function RemoveSingleVideo(element) {
     LoaderStart();
-    var id=$(element).attr('data-id');
-    var type=$(element).attr('Type');
-    var Field=findParent(element);
+    var id = $(element).attr('data-id');
+    var type = $(element).attr('Type');
+    var Field = findParent(element);
     var urlString = $('.RemoveEventVideos').val();
-    urlString +="/"+id+"/"+type;
+    urlString += "/" + id + "/" + type;
     var CSRF_TOKEN = $('.csrf-token').val();
     var countryId = $(element).val();
 
     $.ajax({
         url: urlString,
         type: 'post',
-        data: { _token: CSRF_TOKEN, id: id},
+        data: {_token: CSRF_TOKEN, id: id},
         success: function (response) {
             $(Field).remove();
             LoaderStop();
             // console.log(response);
         },
         error: function (error) {
-           alert('An Error Occured');
-           LoaderStop();
+            alert('An Error Occured');
+            LoaderStop();
             // console.log(error);
         }
     });
@@ -498,3 +500,14 @@ function RemoveSingleVideo(element){
 //         }
 //     });
 // }
+
+
+function showInputLoader(element) {
+    var parent = $(element).parent();
+    $(parent).find('.loader-icon').removeClass('d-none');
+}
+
+function hideInputLoader(element) {
+    var parent = $(element).parent();
+    $(parent).find('.loader-icon').addClass('d-none');
+}
