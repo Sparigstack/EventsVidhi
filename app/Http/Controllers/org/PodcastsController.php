@@ -85,8 +85,17 @@ class PodcastsController extends Controller
         } else {
             $UrlToSave = $request->input_url;
         }
-        if (isset($request->IsLinkedEvent)) {
+        // if (isset($request->IsLinkedEvent)) {
+        //     $podcast->event_id = $request->EventToLink;
+        // }
+
+        if ($request->linkedEvent == '1') {
             $podcast->event_id = $request->EventToLink;
+            $podcast->description = "";
+        }
+        if ($request->linkedEvent == '0') {
+            $podcast->description = $request->Description;
+            $podcast->event_id = NULL;
         }
 
         $podcast->url = $UrlToSave;
@@ -175,8 +184,10 @@ class PodcastsController extends Controller
         // }
         if ($request->linkedEvent == '1') {
             $podcast->event_id = $request->EventToLink;
+            $podcast->description = "";
         }
         if ($request->linkedEvent == '0') {
+            $podcast->description = $request->Description;
             $podcast->event_id = NULL;
         }
 

@@ -9,12 +9,16 @@
     $desription = "";
     $podcastVideoEventId = 0;
     $linkedEventCheckced = "";
+    $podcastvideoDescription = "";
 
     if (!empty($podcast)) {
         $ActionCall = url('org/podcasts/edit/' . $podcast->id);
         $CardTitle = "Edit Podcast";
         $title = $podcast->title;
         $desription = $podcast->url;
+        if(isset($podcast->description)){
+            $podcastvideoDescription = $podcast->description;
+        }
         
         if(isset($podcast->event)){
             $linkedEventCheckced = "checked";
@@ -71,14 +75,43 @@
                                 </div>
                                 <small class="text-danger">{{ $errors->first('input_podfile') }}</small>
                             </div>
-                            <div class="form-group">
+                            <!-- <div class="form-group">
                                 <label for="BlankLabel"></label>
                                 <input type="hidden" class="linkedEvent" name="linkedEvent" value="">
                                 <div class="icheck-material-primary">
                                     <input onchange='showHideLinkEvent(this);' type="checkbox" id="IsLinkedEvent" name="IsLinkedEvent" @if(old('IsLinkedEvent', $linkedEventCheckced)) checked @endif>
                                     <label for="IsLinkedEvent"> Do you want to link this podcast with any Event?</label>
                                 </div>
+                            </div> -->
+
+                            <div class="form-group">
+                                    <label for="BlankLabel"></label>
+                                <input type="hidden" class="linkedEvent" name="linkedEvent" value="">
+                                    <p> Do you want to link this podcast with any Event?</p>
+                                    <div class="row pl-3">
+                                    <div class="icheck-material-primary">
+                                        <input onchange='showHideLinkEvent(this);' type="radio" class="" id="yesEventLinked" name="IsLinkedEvent" @if(old('IsLinkedEvent', $linkedEventCheckced)) checked @endif>
+                                            <label for="yesEventLinked">Yes</label>
+                                    </div>
+                                    <div class="icheck-material-primary pl-2">
+                                        <?php 
+                                            $checkedRadio = "checked";
+                                            if($podcastVideoEventId != 0){
+                                                $checkedRadio = "";
+                                            }
+                                        ?>
+                                        <input onchange='showHideLinkEvent(this);' type="radio" id="noEventLinked" name="IsLinkedEvent" {{$checkedRadio}}>
+                                        <label for="noEventLinked">No</label>
+                                    </div>
+                                </div>
                             </div>
+
+                             <div class="form-group descriptionDiv">
+                                            <label for="Description">Podcast Description</label>
+                                            <textarea id="Description" name="Description" class="form-control" title="Description" placeholder="Description" autocomplete="off" rows="4">{{ old('Description', $podcastvideoDescription) }}</textarea>
+                            </div>
+
+
                             <div id='linkEvent' class="form-group EventSelectionBox d-none">
                                 <label for="EventToLink mb-0">Link To Event</label>
                                 <select autocomplete="off" value="" name="EventToLink" id="EventToLink" class=" custom-select">

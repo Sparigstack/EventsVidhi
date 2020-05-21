@@ -78,9 +78,9 @@
                                 </div>
                                 <small class="text-danger">{{ $errors->first('input_vidfile') }}</small>
                             </div>
-                            <div class="form-group">
-                                <label for="BlankLabel"></label>
-                                 <input type="hidden" class="linkedEvent" name="linkedEvent" value="">
+                            <!-- <div class="form-group"> -->
+                                <!-- <label for="BlankLabel"></label>
+                                 <input type="hidden" class="linkedEvent" name="linkedEvent" value=""> -->
                                 <!-- <div class="icheck-material-primary"> -->
                                     <!-- <input onchange='showHideLinkEvent(this);' type="checkbox" id="IsLinkedEvent" name="IsLinkedEvent" @if(old('IsLinkedEvent', $linkedEventCheckced)) checked @endif> -->
 
@@ -90,9 +90,11 @@
                                     <!-- <label for="IsLinkedEvent"> Do you want to link this video with any Event?</label> -->
                                 <!-- </div> -->
 
-                            </div>
+                            <!-- </div> -->
 
                             <div class="form-group">
+                                <label for="BlankLabel"></label>
+                                 <input type="hidden" class="linkedEvent" name="linkedEvent" value="">
                                     <p> Do you want to link this video with any Event?</p>
                                     <div class="row pl-3">
                                     <div class="icheck-material-primary">
@@ -113,7 +115,7 @@
                             </div>
 
                             <div class="form-group descriptionDiv">
-                                            <label for="Description">Description</label>
+                                            <label for="Description">Video Description</label>
                                             <textarea id="Description" name="Description" class="form-control" title="Description" placeholder="Description" autocomplete="off" rows="4">{{ old('Description', $videoDescription) }}</textarea>
                             </div>
                             <div id='linkEvent' class="form-group EventSelectionBox d-none">
