@@ -9,12 +9,16 @@
     $desription = "";
     $videoEventId = 0;
     $linkedEventCheckced = "";
+    $videoDescription = "";
 
     if (!empty($video)) {
         $ActionCall = url('org/videos/edit/' . $video->id);
         $CardTitle = "Edit Video";
         $title = $video->title;
         $desription = $video->url;
+        if(isset($video->description)){
+            $videoDescription = $video->description;
+        }
         // $desription = $video->description;
         // if (!empty($video->desription)) {
         //     $desription = $video->desription;
@@ -92,11 +96,17 @@
                                     <p> Do you want to link this video with any Event?</p>
                                     <div class="row pl-3">
                                     <div class="icheck-material-primary">
-                                        <input onchange='showHideLinkEvent(this);' type="radio" class="" id="yesEventLinked" name="IsLinkedEvent">
+                                        <input onchange='showHideLinkEvent(this);' type="radio" class="" id="yesEventLinked" name="IsLinkedEvent" @if(old('IsLinkedEvent', $linkedEventCheckced)) checked @endif>
                                             <label for="yesEventLinked">Yes</label>
                                     </div>
                                     <div class="icheck-material-primary pl-2">
-                                        <input onchange='showHideLinkEvent(this);' type="radio" id="noEventLinked" name="IsLinkedEvent" checked="">
+                                        <?php 
+                                            $checkedRadio = "checked";
+                                            if($videoEventId != 0){
+                                                $checkedRadio = "";
+                                            }
+                                        ?>
+                                        <input onchange='showHideLinkEvent(this);' type="radio" id="noEventLinked" name="IsLinkedEvent" {{$checkedRadio}}>
                                         <label for="noEventLinked">No</label>
                                     </div>
                                 </div>
@@ -104,8 +114,7 @@
 
                             <div class="form-group descriptionDiv">
                                             <label for="Description">Description</label>
-                                            <textarea id="Description" name="Description" required class="form-control" title="Description" placeholder="Description" autocomplete="off" rows="4">{{ old('Description', $desription) }}</textarea>
-                                            <small class="text-danger">{{ $errors->first('Description') }}</small>
+                                            <textarea id="Description" name="Description" class="form-control" title="Description" placeholder="Description" autocomplete="off" rows="4">{{ old('Description', $videoDescription) }}</textarea>
                             </div>
                             <div id='linkEvent' class="form-group EventSelectionBox d-none">
                                 <!-- <label for="EventToLink mb-0">Link To Event</label> -->

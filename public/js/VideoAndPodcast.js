@@ -68,12 +68,24 @@ function UploadPodcastVideoBox() {
         $("#input_podfile").prop('required', true);
     }
 }
+// function showHideLinkEvent() {
+//     if ($('#IsLinkedEvent').is(':checked')) {
+//         $('.EventSelectionBox').removeClass('d-none');
+//         $('.linkedEvent').val('1');
+//     } else {
+//         $('.EventSelectionBox').addClass('d-none');
+//         $('.linkedEvent').val('0');
+//     }
+
+// }
 function showHideLinkEvent() {
-    if ($('#IsLinkedEvent').is(':checked')) {
+    if ($('#yesEventLinked').is(':checked')) {
         $('.EventSelectionBox').removeClass('d-none');
+        $(".descriptionDiv").addClass('d-none');
         $('.linkedEvent').val('1');
     } else {
         $('.EventSelectionBox').addClass('d-none');
+        $(".descriptionDiv").removeClass('d-none');
         $('.linkedEvent').val('0');
     }
 

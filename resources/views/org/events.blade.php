@@ -62,7 +62,9 @@
                                     }
                                     ?>
                                     <td class="max-w-table-100">{{$dateStr}}</td>
-                                    <td>{{$event->category->name}}</td>
+                                    <td>
+                                        {{$event->category->name}}
+                                    </td>
                                     <td class="max-w-table-100 text-center p-1 align-middle">
                                         <button  onclick="window.location ='{{ url("org/events/$event->id") }}'" type="button" class="btn btn-outline-success waves-effect waves-light secondary "> Edit </button>
                                         <button onclick="deleteEvent(this);" db-delete-id="{{$event->id}}"type="button" class="btn btn-outline-danger waves-effect waves-light secondary"> Delete </button>
