@@ -278,13 +278,17 @@ class EventsController extends Controller
         if (isset($request->PodCastUpload)){
             $validator = Validator::make($request->all(), [
                 'input_title' => 'required',
-                'podcast_video_file'=>'required|mimes:mp3,m4a,wma'
+                'podcast_video_file'=>'required|mimes:mpga,m4a,wma'
             ]);
         }else{
             $validator = Validator::make($request->all(), [
                 'input_title' => 'required',
                 'input_url' => 'required',
             ]);
+        }
+        
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
         }
 
         $podcast = new Podcast;

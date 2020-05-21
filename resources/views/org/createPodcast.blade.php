@@ -57,8 +57,8 @@
                         <div class="form-group">
                                 <label for="BlankLabel"></label>
                                 <div class="icheck-material-primary">
-                                    <input onclick="UploadPodcastVideoBox()" type="checkbox" id="IsUploadVideo" name="IsUploadVideo" @if(old('IsUploadVideo')) checked @endif>
-                                    <label for="IsUploadVideo">Or upload podcast</label>
+                                    <input onclick="UploadPodcastVideoBox()" type="checkbox" id="IsUploadPodcast" name="IsUploadPodcast" @if(old('IsUploadPodcast')) checked @endif>
+                                    <label for="IsUploadPodcast">Or upload podcast</label>
                                 </div>
                             </div>
 
@@ -219,8 +219,8 @@
 @endsection
 
 @section('script')
-<script src="{{asset('/js/customScript.js')}}" type="text/javascript"></script>
-<script>
+<script src="{{asset('/js/VideoAndPodcast.js')}}" type="text/javascript"></script>
+<!-- <script>
     $(document).ready(function() {
         $('.dragFileForm input').change(function() {
             $('.dragFileForm p').text(this.files.length + " file(s) selected");
@@ -228,5 +228,5 @@
         UploadPodcastVideoBox();
         showHideLinkEvent();
     });
-</script>
+</script> -->
 @endsection

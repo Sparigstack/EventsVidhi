@@ -599,8 +599,8 @@
 @endsection
 
 @section('script')
-<!-- <script src="{{asset('/js/customScript.js')}}" type="text/javascript"></script> -->
-<script>
+<script src="{{asset('/js/Events.js')}}" type="text/javascript"></script>
+<!-- <script>
     $(document).ready(function() {
         $('#EventBannerImage').change(function() {
             $('#TempText').remove();
@@ -623,13 +623,5 @@
 
 
     });
-
-    function VideoFormContent() {
-        var EventID = $('#EventToLink').val();
-        var CsrfToken = $('meta[name="csrf-token"]').attr("content");
-        var TokenInput = '<input type="hidden" name="_token" value="' + CsrfToken + '">';
-        var HtmlContent = "<div class='col-lg-8 UploadVideoContainer parent m-auto pt-5'><form class='' ID='SaveVideoAjax' name='SaveVideoAjax' method='post' enctype='multipart/form-data'>" + TokenInput + "<input type='text' name='EventToLink' id='EventToLink' class='d-none' value='" + EventID + "'/><button  class='btn btn-primary d-none RemoveVideo' style='position: absolute;right: -132px;top:29px;'>Remove Video</button><div class='form-group  videoTitle'><label for='input_title'>Video Title</label><input type='text' class='form-control' id='input_title' name='input_title' value='' placeholder='Enter Video Title' required></div><div class='form-group videoUrl'><label for='input_url'>Video URL</label><span style='font-size: 11px;font-weight: 600;'>&nbsp;&nbsp;(YouTube or Vimeo url)</span><input type='text' class='form-control' id='input_url' name='input_url' value='' placeholder='Enter Video URL' required></div><div class='form-group videoUploadBox'><label for='BlankLabel'></label><div class='icheck-material-primary'><input onclick='UploadVideoBox(this)' type='checkbox' id='IsUploadVideo' name='IsUploadVideo' ><label for='IsUploadVideo'>Or upload video</label></div></div><div class='parent' style='width: 100%;'><div class='form-group  d-none uploadVideoBox'><div class='dragFileContainer'><input id='video_file' name='video_file' type='file' multiple><p>Drag your video file here or click in this area.</p></div></div><div class='form-group  d-none uploadPodcastVideo'><div class='dragFileContainer'><input id='podcast_video_file' name='podcast_video_file' type='file' multiple><p>Drag your podcast video file here or click in this area.</p></div></div></div><div class='col-lg-12'><button type='submit' data-id='' id='videoSubmitButton' class='btn btn-primary px-5 pull-right'> Save Video</button></div></form>";
-        $('.InsertVideoDiv').append(HtmlContent);
-    }
-</script>
+</script> -->
 @endsection
