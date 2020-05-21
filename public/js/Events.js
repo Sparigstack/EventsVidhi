@@ -17,12 +17,17 @@ $(document).ready(function () {
             cache: false,
             processData: false,
             success: function (response) {
-                //var HtmlContent="<div>"+response.videoUrl+"</div> <div>"+response.videoTitle+"</div>";
-                var HtmlContent='<ul class="list-group parent list-group-flush mb-2"><li class="list-group-item"><div class="media align-items-center"><div class="media-body ml-3"><h6 class="mb-0">'+response.videoTitle+'</h6><small class="small-font">'+response.videoUrl+'</small></div><div data-id="'+response.videoID+'" Type="video" onclick="RemoveSingleVideo(this);" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div></div></li>';
-                $('#UploadedVideos').append(HtmlContent);
-                $(CurentForm).find('#input_url').val('');
-                $(CurentForm).find('#input_title').val('');
-                $('.UploadVideoContainer').addClass('d-none');
+                if(response.error!=''){
+                    $('.VideoInvalid').append(response.error.video_file);
+                    alert(response.error.video_file);
+                }else{
+                    var HtmlContent='<ul class="list-group parent list-group-flush mb-2"><li class="list-group-item"><div class="media align-items-center"><div class="media-body ml-3"><h6 class="mb-0">'+response.videoTitle+'</h6><small class="small-font">'+response.videoUrl+'</small></div><div data-id="'+response.videoID+'" Type="video" onclick="RemoveSingleVideo(this);" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div></div></li>';
+                    $('#UploadedVideos').append(HtmlContent);
+                    $(CurentForm).find('#input_url').val('');
+                    $(CurentForm).find('#input_title').val('');
+                    $('.UploadVideoContainer').addClass('d-none');
+                    $('.VideoInvalid').empty();
+                }
                 LoaderStop();
             },
             error: function (err) {
@@ -48,12 +53,18 @@ $(document).ready(function () {
             cache: false,
             processData: false,
             success: function (response) {
-                //var HtmlContent="<div>"+response.videoUrl+"</div> <div>"+response.videoTitle+"</div>";
+                if(response.error!=''){
+                    $('.PodcastInvalid').append(response.error.podcast_video_file);
+                    // $(validateField).append(response.error.podcast_video_file);
+                    alert(response.error.podcast_video_file);
+                }else{
                 var HtmlContent='<ul class="list-group parent list-group-flush mb-2"><li class="list-group-item"><div class="media align-items-center"><div class="media-body ml-3"><h6 class="mb-0">'+response.videoTitle+'</h6><small class="small-font">'+response.videoUrl+'</small></div><div data-id="'+response.videoID+'" Type="podcast" onclick="RemoveSingleVideo(this);" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div></div></li>';
                 $('#UploadedVideos').append(HtmlContent);
                 $(CurentForm).find('#input_url').val('');
                 $(CurentForm).find('#input_title').val('');
                 $('.UploadPodCastContainer').addClass('d-none');
+                $('.PodcastInvalid').empty();
+                }
                 LoaderStop();
             },
             error: function (err) {

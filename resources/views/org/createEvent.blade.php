@@ -542,6 +542,7 @@
                                                             <p>Drag your video file here or click in this area.</p>
                                                         </div>
                                                     </div>
+                                                    <small class="text-danger VideoInvalid"></small>
                                                 </div>
 
                                                 <div class="col-lg-12">
@@ -578,6 +579,7 @@
                                                             <input id='podcast_video_file' name='podcast_video_file' type="file" multiple>
                                                             <p>Drag your podcast file here or click in this area.</p>
                                                         </div>
+                                                        <small class="text-danger PodcastInvalid"></small>
                                                     </div>
                                                 </div>
 
