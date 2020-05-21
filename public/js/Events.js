@@ -21,7 +21,7 @@ $(document).ready(function () {
                     $('.VideoInvalid').append(response.error.video_file);
                     alert(response.error.video_file);
                 }else{
-                    var HtmlContent='<ul class="list-group parent list-group-flush mb-2"><li class="list-group-item"><div class="media align-items-center"><div class="media-body ml-3"><h6 class="mb-0">'+response.videoTitle+'</h6><small class="small-font">'+response.videoUrl+'</small></div><div data-id="'+response.videoID+'" Type="video" onclick="RemoveSingleVideo(this);" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div></div></li>';
+                    var HtmlContent='<ul class="list-group parent list-group-flush mb-2"><li class="list-group-item"><div class="media align-items-center"><div class="media-body ml-3"><h6 class="mb-0">'+response.videoTitle+'</h6><small class="small-font">'+response.videoUrl+'</small></div><div data-id="'+response.videoID+'" Type="video" urltype="'+response.urlType+'" onclick="RemoveSingleVideo(this);" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div></div></li>';
                     $('#UploadedVideos').append(HtmlContent);
                     $(CurentForm).find('#input_url').val('');
                     $(CurentForm).find('#input_title').val('');
@@ -58,7 +58,7 @@ $(document).ready(function () {
                     // $(validateField).append(response.error.podcast_video_file);
                     alert(response.error.podcast_video_file);
                 }else{
-                var HtmlContent='<ul class="list-group parent list-group-flush mb-2"><li class="list-group-item"><div class="media align-items-center"><div class="media-body ml-3"><h6 class="mb-0">'+response.videoTitle+'</h6><small class="small-font">'+response.videoUrl+'</small></div><div data-id="'+response.videoID+'" Type="podcast" onclick="RemoveSingleVideo(this);" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div></div></li>';
+                var HtmlContent='<ul class="list-group parent list-group-flush mb-2"><li class="list-group-item"><div class="media align-items-center"><div class="media-body ml-3"><h6 class="mb-0">'+response.videoTitle+'</h6><small class="small-font">'+response.videoUrl+'</small></div><div data-id="'+response.videoID+'" Type="podcast" urltype="'+response.urlType+'" onclick="RemoveSingleVideo(this);" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div></div></li>';
                 $('#UploadedVideos').append(HtmlContent);
                 $(CurentForm).find('#input_url').val('');
                 $(CurentForm).find('#input_title').val('');
@@ -256,9 +256,10 @@ function RemoveSingleVideo(element) {
     LoaderStart();
     var id = $(element).attr('data-id');
     var type = $(element).attr('Type');
+    var urltype = $(element).attr('urltype');
     var Field = findParent(element);
     var urlString = $('.RemoveEventVideos').val();
-    urlString += "/" + id + "/" + type;
+    urlString += "/" + id + "/" + type+ "/" + urltype;
     var CSRF_TOKEN = $('.csrf-token').val();
     var countryId = $(element).val();
 

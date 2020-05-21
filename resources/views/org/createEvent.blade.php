@@ -476,7 +476,7 @@
                                                         <li class="list-group-item"><div class="media align-items-center">
                                                             <div class="media-body ml-3"><h6 class="mb-0"><?php echo $video->title ?></h6>
                                                             <small class="small-font"><?php echo $video->url ?>'</small></div>
-                                                            <div data-id="<?php echo $video->id?>" onclick="RemoveSingleVideo(this);" Type="video" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div>
+                                                            <div data-id="<?php echo $video->id?>" onclick="RemoveSingleVideo(this);" Type="video" UrlType="<?php echo $video->url_type?>" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div>
                                                         </div></li></ul>
                                             <?php } ?>
                                             <?php

@@ -38,7 +38,7 @@ class EventsController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $events = Event::where('user_id',$user->id)->where('date_time','>=',date('Y-m-d',strtotime(now())))
+        $events = Event::where('user_id', $user->id)->where('date_time', '>=', date('Y-m-d', strtotime(now())))
             ->get();
         return view('org/events', compact('events'));
     }
@@ -46,7 +46,7 @@ class EventsController extends Controller
     public function pastEvents()
     {
         $user = Auth::user();
-        $events = Event::where('user_id',$user->id)->where('date_time','<=',date('Y-m-d',strtotime(now())))
+        $events = Event::where('user_id', $user->id)->where('date_time', '<=', date('Y-m-d', strtotime(now())))
             ->get();
         return view('org/pastEvents', compact('events'));
     }
@@ -64,9 +64,9 @@ class EventsController extends Controller
         $countries = Country::all();
         // $states = State::all();
         $cityTimeZones = Timezone::all();
-        $eventTypes=EventType::all();
-        $tabe=0;
-        return view('org/createEvent', compact('categories', 'cities', 'cityTimeZones','eventTypes','IsNew', 'countries','tabe'));
+        $eventTypes = EventType::all();
+        $tabe = 0;
+        return view('org/createEvent', compact('categories', 'cities', 'cityTimeZones', 'eventTypes', 'IsNew', 'countries', 'tabe'));
     }
 
     /**
@@ -97,9 +97,9 @@ class EventsController extends Controller
             $file = $request->file('EventBannerImage');
             $name = time() . $file->getClientOriginalName();
             $userId = Auth::id();
-            $filePath = 'org_'.$userId.'/' . $name;
-           
-            Storage::disk('s3')->put($filePath, file_get_contents($file),'public');
+            $filePath = 'org_' . $userId . '/' . $name;
+
+            Storage::disk('s3')->put($filePath, file_get_contents($file), 'public');
             $bannerUrl = $filePath;
         }
 
@@ -108,10 +108,10 @@ class EventsController extends Controller
             $thumbnailfile = $request->file('EventThumbnailImage');
             $thumbnailName = time() . $thumbnailfile->getClientOriginalName();
             $userId = Auth::id();
-            $thumbnailfilePath = 'org_'.$userId.'/Thumbnail/' . $thumbnailName;
-           
-            Storage::disk('s3')->put($thumbnailfilePath, file_get_contents($thumbnailfile),'public');
-            $thumbNailUrl =$thumbnailfilePath;
+            $thumbnailfilePath = 'org_' . $userId . '/Thumbnail/' . $thumbnailName;
+
+            Storage::disk('s3')->put($thumbnailfilePath, file_get_contents($thumbnailfile), 'public');
+            $thumbNailUrl = $thumbnailfilePath;
         }
 
         $user = Auth::user();
@@ -119,7 +119,7 @@ class EventsController extends Controller
         $events->title = $request->title;
         $events->description = $request->Description;
         $events->category_id = $request->category;
-        $events->event_type_id=$request->eventType;
+        $events->event_type_id = $request->eventType;
         $events->user_id = $user->id;
         if (isset($request->IsOnline)) {
             $events->is_online = '1';
@@ -144,14 +144,14 @@ class EventsController extends Controller
         } else {
             $events->is_live = '0';
         }
-        
-        if ($request->IsPublic=="true") {
+
+        if ($request->IsPublic == "true") {
             $events->is_public = '1';
         } else {
             $events->is_public = '0';
         }
 
-        if ($request->IsFree=="true") {
+        if ($request->IsFree == "true") {
             $events->is_paid = '0';
         } else {
             $events->is_paid = '1';
@@ -161,14 +161,14 @@ class EventsController extends Controller
 
         $string = $request->HiddenCategoyID;
         $EventCategorieIds = preg_split("/\,/", $string);
-        
-        foreach($EventCategorieIds as $categoryID){
+
+        foreach ($EventCategorieIds as $categoryID) {
             $eventCategory = new EventCategory;
-            $eventCategory->event_id=$events->id;
-            $eventCategory->category_id=number_format($categoryID);
+            $eventCategory->event_id = $events->id;
+            $eventCategory->category_id = number_format($categoryID);
             $eventCategory->save();
         }
-        return redirect("org/events/".$events->id."/1");
+        return redirect("org/events/" . $events->id . "/1");
     }
 
     /**
@@ -179,18 +179,17 @@ class EventsController extends Controller
      */
     public function show($id)
     {
-       
     }
 
     public function storeVideo(Request $request)
     {
-        $validator=null ;
-        if (isset($request->IsUploadVideo)){
+        $validator = null;
+        if (isset($request->IsUploadVideo)) {
             $validator = Validator::make($request->all(), [
                 'input_title' => 'required',
-                'video_file'=>'required|mimes:mov,mp4,wmv,flv,avi'
+                'video_file' => 'required|mimes:mov,mp4,wmv,flv,avi'
             ]);
-        }else{
+        } else {
             $validator = Validator::make($request->all(), [
                 'input_title' => 'required',
                 'input_url' => 'required',
@@ -198,7 +197,7 @@ class EventsController extends Controller
         }
         if ($validator->fails()) {
             return response()->json([
-               'error'=> $validator->errors(),
+                'error' => $validator->errors(),
             ]);
         }
         $video = new Video;
@@ -206,7 +205,7 @@ class EventsController extends Controller
         $userId = Auth::id();
         $video->user_id = $userId;
         $UrlToSave = "";
-        $FinalUrl = ""; 
+        $FinalUrl = "";
         if (isset($request->IsUploadVideo)) {
             if ($request->hasFile('video_file')) {
                 $file = $request->file('video_file');
@@ -215,12 +214,14 @@ class EventsController extends Controller
                 $filePath = 'org_' . $userId . '/Video/' . $name;
                 Storage::disk('s3')->put($filePath, file_get_contents($file));
                 $UrlToSave = $filePath;
-               // $FinalUrl = env('AWS_URL'); 
-                $FinalUrl .=$UrlToSave;
+                // $FinalUrl = env('AWS_URL'); 
+                $FinalUrl .= $UrlToSave;
+                $video->url_type = 1;
             }
         } else {
             $UrlToSave = $request->input_url;
-            $FinalUrl=$UrlToSave;
+            $FinalUrl = $UrlToSave;
+            $video->url_type = 0;
         }
 
         $video->event_id = $request->EventToLink;
@@ -228,31 +229,32 @@ class EventsController extends Controller
         $video->url = $UrlToSave;
         $video->save();
         return response()->json([
-            'videoUrl'=>$FinalUrl,
-            'videoTitle'=>$video->title,
-            'videoID'=>$video->id,
-            'error'=>''
+            'videoUrl' => $FinalUrl,
+            'videoTitle' => $video->title,
+            'videoID' => $video->id,
+            'urlType' => $video->url_type,
+            'error' => ''
         ]);
     }
 
     public function storePodcast(Request $request)
     {
-        $validator=null ;
-        if (isset($request->IsUploadPodCast)){
+        $validator = null;
+        if (isset($request->IsUploadPodCast)) {
             $validator = Validator::make($request->all(), [
                 'input_title' => 'required',
-                'podcast_video_file'=>'required|mimes:mpga,m4a,wma'
+                'podcast_video_file' => 'required|mimes:mpga,m4a,wma'
             ]);
-        }else{
+        } else {
             $validator = Validator::make($request->all(), [
                 'input_title' => 'required',
                 'input_url' => 'required',
             ]);
         }
-        
+
         if ($validator->fails()) {
             return response()->json([
-               'error'=> $validator->errors(),
+                'error' => $validator->errors(),
             ]);
         }
 
@@ -261,7 +263,7 @@ class EventsController extends Controller
         $userId = Auth::id();
         $podcast->user_id = $userId;
         $UrlToSave = "";
-        $FinalUrl = ""; 
+        $FinalUrl = "";
         if (isset($request->IsUploadPodCast)) {
             if ($request->hasFile('podcast_video_file')) {
                 $file = $request->file('podcast_video_file');
@@ -271,11 +273,13 @@ class EventsController extends Controller
                 Storage::disk('s3')->put($filePath, file_get_contents($file));
                 $UrlToSave = $filePath;
                 //$FinalUrl = env('AWS_URL'); 
-                $FinalUrl .=$UrlToSave;
+                $FinalUrl .= $UrlToSave;
+                $podcast->url_type = 1;
             }
         } else {
             $UrlToSave = $request->input_url;
-            $FinalUrl=$UrlToSave;
+            $FinalUrl = $UrlToSave;
+            $podcast->url_type = 0;
         }
 
         $podcast->event_id = $request->EventToLink;
@@ -283,10 +287,11 @@ class EventsController extends Controller
         $podcast->url = $UrlToSave;
         $podcast->save();
         return response()->json([
-            'videoUrl'=>$FinalUrl,
-            'videoTitle'=>$podcast->title,
-            'videoID'=>$podcast->id,
-            'error'=>''
+            'videoUrl' => $FinalUrl,
+            'videoTitle' => $podcast->title,
+            'videoID' => $podcast->id,
+            'urlType' => $podcast->url_type,
+            'error' => ''
         ]);
     }
 
@@ -296,31 +301,30 @@ class EventsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id,$tabe=0)
+    public function edit($id, $tabe = 0)
     {
         $IsNew = false;
         $ids = explode(',', $id);
-        $count=0;
+        $count = 0;
         foreach ($ids as $selectedId) {
-            if($count == 0){
-                    $selectedId = $id;
-            }else{
+            if ($count == 0) {
+                $selectedId = $id;
+            } else {
                 $isVideoSelected = true;
             }
-            $count++;        
+            $count++;
         }
 
         $event = Event::findOrFail($id);
         $categories = Category::all();
         $cities = City::all();
         $cityTimeZones = Timezone::all();
-        $eventTypes=EventType::all();
+        $eventTypes = EventType::all();
         $countries = Country::all();
         $states = State::all();
-        $videos= Video::where('event_id',$event->id)->get();
-        $podcasts= Podcast::where('event_id',$event->id)->get();
-        return view('org/createEvent', compact('categories', 'cities', 'event','cityTimeZones','eventTypes','IsNew', 'countries', 'states','tabe','videos','podcasts'));
-        
+        $videos = Video::where('event_id', $event->id)->get();
+        $podcasts = Podcast::where('event_id', $event->id)->get();
+        return view('org/createEvent', compact('categories', 'cities', 'event', 'cityTimeZones', 'eventTypes', 'IsNew', 'countries', 'states', 'tabe', 'videos', 'podcasts'));
     }
 
     /**
@@ -340,34 +344,33 @@ class EventsController extends Controller
             $file = $request->file('EventBannerImage');
             $name = time() . $file->getClientOriginalName();
             $userId = Auth::id();
-            $filePath = 'org_'.$userId.'/' . $name;
-           
-            Storage::disk('s3')->put($filePath, file_get_contents($file),'public');
+            $filePath = 'org_' . $userId . '/' . $name;
+
+            Storage::disk('s3')->put($filePath, file_get_contents($file), 'public');
             $bannerUrl = $filePath;
-            if(!empty($events->banner)){
+            if (!empty($events->banner)) {
                 Storage::disk('s3')->delete($events->banner);
             }
-            
         }
         $thumbNailUrl = "";
         if ($request->hasFile('EventThumbnailImage')) {
             $thumbnailfile = $request->file('EventThumbnailImage');
             $thumbnailName = time() . $thumbnailfile->getClientOriginalName();
             $userId = Auth::id();
-            $thumbnailfilePath = 'org_'.$userId.'/Thumbnail/' . $thumbnailName;
-           
-            Storage::disk('s3')->put($thumbnailfilePath, file_get_contents($thumbnailfile),'public');
+            $thumbnailfilePath = 'org_' . $userId . '/Thumbnail/' . $thumbnailName;
+
+            Storage::disk('s3')->put($thumbnailfilePath, file_get_contents($thumbnailfile), 'public');
             $thumbNailUrl = $thumbnailfilePath;
-            if(!empty($events->thumbnail)){
+            if (!empty($events->thumbnail)) {
                 Storage::disk('s3')->delete($events->thumbnail);
             }
         }
 
-        
+
         $events->title = $request->title;
         $events->description = $request->Description;
         $events->category_id = $request->category;
-        $events->event_type_id=$request->eventType;
+        $events->event_type_id = $request->eventType;
         $events->user_id = $user->id;
 
         $StartDateTime = $request->EventDateTime;
@@ -395,14 +398,14 @@ class EventsController extends Controller
         } else {
             $events->is_live = '0';
         }
-        
-        if ($request->IsPublic=="true") {
+
+        if ($request->IsPublic == "true") {
             $events->is_public = '1';
         } else {
             $events->is_public = '0';
         }
 
-        if ($request->IsFree=="true") {
+        if ($request->IsFree == "true") {
             $events->is_paid = '0';
         } else {
             $events->is_paid = '1';
@@ -410,11 +413,11 @@ class EventsController extends Controller
 
         $string = $request->HiddenCategoyID;
         $EventCategorieIds = preg_split("/\,/", $string);
-        EventCategory::where('event_id',$events->id)->delete();
-        foreach($EventCategorieIds as $categoryID){
+        EventCategory::where('event_id', $events->id)->delete();
+        foreach ($EventCategorieIds as $categoryID) {
             $eventCategory = new EventCategory;
-            $eventCategory->event_id=$events->id;
-            $eventCategory->category_id=number_format($categoryID);
+            $eventCategory->event_id = $events->id;
+            $eventCategory->category_id = number_format($categoryID);
             $eventCategory->save();
         }
 
@@ -434,14 +437,23 @@ class EventsController extends Controller
         //
         $event = Event::find($request->eventDeleteId)->delete();
     }
-    public function destroyVideo($id,$Type)
+    public function destroyVideo($id, $Type, $UrlType)
     {
-        if($Type=="podcast"){
-            $event = Podcast::find($id)->delete();
-        }else{
-            $event = Video::find($id)->delete();
+        if ($Type == "podcast") {
+            // $event = Podcast::find($id)->delete();
+            $media = Podcast::find($id);
+            if (!empty($media->url)) {
+                Storage::disk('s3')->delete($media->url);
+            }
+            Podcast::find($id)->delete();
+        } else {
+            $media = Video::find($id);
+            if (!empty($media->url)) {
+                Storage::disk('s3')->delete($media->url);
+            }
+            Video::find($id)->delete();
         }
-       
+
         return "success";
     }
 
@@ -449,36 +461,38 @@ class EventsController extends Controller
     {
         $id = $request->id;
         $events = Event::findOrFail($id);
-        if($request->status=='1'){
+        if ($request->status == '1') {
             $events->is_live = 2;
         }
-        if($request->status=='2'){
+        if ($request->status == '2') {
             $events->is_live = 1;
         }
-        if($request->status=='3'){
+        if ($request->status == '3') {
             $events->is_live = 3;
         }
-        
+
         $events->save();
     }
 
-    public function getState(Request $request){
-        
-        $states = State::where('country_id',$request->countryId)->get();
-        $stateOptions="<option value='-1'>Select State</option>";
-        foreach($states as $state){
-            $stateOptions .="<option value='".$state->id."' >".$state->name."</option>";
+    public function getState(Request $request)
+    {
+
+        $states = State::where('country_id', $request->countryId)->get();
+        $stateOptions = "<option value='-1'>Select State</option>";
+        foreach ($states as $state) {
+            $stateOptions .= "<option value='" . $state->id . "' >" . $state->name . "</option>";
         }
         return $stateOptions;
     }
 
-    public function getCity(Request $request){
-        
-        $citys = City::where('state_id',$request->cityId)->get();
+    public function getCity(Request $request)
+    {
 
-        $cityOptions="<option value='-1'>Select City</option>";
-        foreach($citys as $city){
-            $cityOptions .="<option value='".$city->id."' >".$city->name."</option>";
+        $citys = City::where('state_id', $request->cityId)->get();
+
+        $cityOptions = "<option value='-1'>Select City</option>";
+        foreach ($citys as $city) {
+            $cityOptions .= "<option value='" . $city->id . "' >" . $city->name . "</option>";
         }
         return $cityOptions;
     }
