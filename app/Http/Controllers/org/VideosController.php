@@ -100,8 +100,16 @@ class VideosController extends Controller
         } else {
             $UrlToSave = $request->input_url;
         }
-        if (isset($request->IsLinkedEvent)) {
+        // if (isset($request->IsLinkedEvent)) {
+        //     $video->event_id = $request->EventToLink;
+        // }
+        if ($request->linkedEvent == '1') {
             $video->event_id = $request->EventToLink;
+            $video->description = "";
+        }
+        if ($request->linkedEvent == '0') {
+            $video->description = $request->Description;
+            $video->event_id = NULL;
         }
 
         $video->url = $UrlToSave;
@@ -197,10 +205,18 @@ class VideosController extends Controller
         // }
         if ($request->linkedEvent == '1') {
             $video->event_id = $request->EventToLink;
+            $video->description = "";
         }
         if ($request->linkedEvent == '0') {
+            $video->description = $request->Description;
             $video->event_id = NULL;
         }
+        // if ($request->linkedEvent == '1') {
+        //     $video->event_id = $request->EventToLink;
+        // }
+        // if ($request->linkedEvent == '0') {
+        //     $video->event_id = NULL;
+        // }
 
         $video->url = $UrlToSave;
         $video->save();

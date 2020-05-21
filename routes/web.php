@@ -13,7 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'HomeController@index');
+Route::get('/', function () {
+    return view('home');
+});
 
 //Route::resource('events', 'EventsController');
 Route::get('events', 'EventsController@index');
@@ -33,7 +35,6 @@ Route::post('org/events/store', 'org\EventsController@store');
 Route::post('deleteEvent', 'org\EventsController@destroy');
 Route::post('org/events/edit/{id}', 'org\EventsController@update');
 Route::post('org/events/videos/store', 'org\EventsController@storeVideo');
-Route::post('org/events/podcast/store', 'org\EventsController@storePodcast');
 Route::post('org/events/update', 'org\EventsController@UpdateEventStatus');
 Route::post('org/events/deleteVideo/{id}/{Type}/{UrlType}', 'org\EventsController@destroyVideo');
 

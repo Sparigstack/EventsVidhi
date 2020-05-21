@@ -475,7 +475,18 @@
                                                     <ul class="list-group parent list-group-flush mb-2">
                                                         <li class="list-group-item"><div class="media align-items-center">
                                                             <div class="media-body ml-3"><h6 class="mb-0"><?php echo $video->title ?></h6>
-                                                            <small class="small-font"><?php echo $video->url ?>'</small></div>
+                                                            <small class="small-font">
+                                                              <?php  $AwsUrl = env('AWS_URL');
+                                                                    $videoUrl = "";
+                                                                if (!empty($video->url)) {
+                                                                    if(substr( $video->url, 0, 8 ) != "https://"){
+                                                                    $videoUrl = $AwsUrl . $video->url;
+                                                                }
+                                                            else{
+                                                                $videoUrl = $video->url;
+                                                            } 
+                                                        }?>
+                                                            {{$videoUrl}}</small></div>
                                                             <div data-id="<?php echo $video->id?>" onclick="RemoveSingleVideo(this);" Type="video" UrlType="<?php echo $video->url_type?>" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div>
                                                         </div></li></ul>
                                             <?php } ?>
@@ -485,7 +496,18 @@
                                                     <ul class="list-group parent list-group-flush mb-2">
                                                         <li class="list-group-item"><div class="media align-items-center">
                                                             <div class="media-body ml-3"><h6 class="mb-0"><?php echo $podcast->title ?></h6>
-                                                            <small class="small-font"><?php echo $podcast->url ?>'</small></div>
+                                                            <small class="small-font">
+                                                                <?php  $AwsUrl = env('AWS_URL');
+                                                                    $podcastvideoUrl = "";
+                                                                if (!empty($podcast->url)) {
+                                                                    if(substr( $podcast->url, 0, 8 ) != "https://"){
+                                                                    $podcastvideoUrl = $AwsUrl . $podcast->url;
+                                                                }
+                                                            else{
+                                                                $podcastvideoUrl = $podcast->url;
+                                                            } 
+                                                        }?>
+                                                                {{$podcastvideoUrl}}</small></div>
                                                             <div data-id="<?php echo $podcast->id?>" onclick="RemoveSingleVideo(this);" Type="podcast" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div>
                                                         </div></li></ul>
                                             <?php } ?>
