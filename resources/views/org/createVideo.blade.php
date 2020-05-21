@@ -77,14 +77,39 @@
                             <div class="form-group">
                                 <label for="BlankLabel"></label>
                                  <input type="hidden" class="linkedEvent" name="linkedEvent" value="">
-                                <div class="icheck-material-primary">
-                                    <input onchange='showHideLinkEvent(this);' type="checkbox" id="IsLinkedEvent" name="IsLinkedEvent" @if(old('IsLinkedEvent', $linkedEventCheckced)) checked @endif>
-                                    <label for="IsLinkedEvent"> Do you want to link this video with any Event?</label>
+                                <!-- <div class="icheck-material-primary"> -->
+                                    <!-- <input onchange='showHideLinkEvent(this);' type="checkbox" id="IsLinkedEvent" name="IsLinkedEvent" @if(old('IsLinkedEvent', $linkedEventCheckced)) checked @endif> -->
+
+                                    <!-- <input onchange='showHideLinkEvent(this);' type="radio" id="IsLinkedEvent" name="IsLinkedEvent" @if(old('IsLinkedEvent', $linkedEventCheckced)) checked @endif> Yes
+                                    <input onchange='showHideLinkEvent(this);' type="radio" id="noEvent" name="noEvent" @if(old('IsLinkedEvent', $linkedEventCheckced)) checked @endif> No -->
+
+                                    <!-- <label for="IsLinkedEvent"> Do you want to link this video with any Event?</label> -->
+                                <!-- </div> -->
+
+                            </div>
+
+                            <div class="form-group">
+                                    <p> Do you want to link this video with any Event?</p>
+                                    <div class="row pl-3">
+                                    <div class="icheck-material-primary">
+                                        <input onchange='showHideLinkEvent(this);' type="radio" class="" id="yesEventLinked" name="IsLinkedEvent">
+                                            <label for="yesEventLinked">Yes</label>
+                                    </div>
+                                    <div class="icheck-material-primary pl-2">
+                                        <input onchange='showHideLinkEvent(this);' type="radio" id="noEventLinked" name="IsLinkedEvent" checked="">
+                                        <label for="noEventLinked">No</label>
+                                    </div>
                                 </div>
                             </div>
+
+                            <div class="form-group descriptionDiv">
+                                            <label for="Description">Description</label>
+                                            <textarea id="Description" name="Description" required class="form-control" title="Description" placeholder="Description" autocomplete="off" rows="4">{{ old('Description', $desription) }}</textarea>
+                                            <small class="text-danger">{{ $errors->first('Description') }}</small>
+                            </div>
                             <div id='linkEvent' class="form-group EventSelectionBox d-none">
-                                <label for="EventToLink mb-0">Link To Event</label>
-                                <select autocomplete="off" value="" name="EventToLink" id="EventToLink" class=" custom-select">
+                                <!-- <label for="EventToLink mb-0">Link To Event</label> -->
+                                <select autocomplete="off" value="" name="EventToLink" id="EventToLink" class="custom-select">
                                     <option value="">Select Event To Link</option>
                                     <?php
                                     foreach ($events as $event) {

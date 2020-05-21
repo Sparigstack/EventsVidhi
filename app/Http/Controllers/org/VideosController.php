@@ -100,9 +100,21 @@ class VideosController extends Controller
         } else {
             $UrlToSave = $request->input_url;
         }
-        if (isset($request->IsLinkedEvent)) {
+        // if (isset($request->IsLinkedEvent)) {
+        //     $video->event_id = $request->EventToLink;
+        // }
+        if ($request->linkedEvent == '1') {
             $video->event_id = $request->EventToLink;
         }
+        if ($request->linkedEvent == '0') {
+            $video->description = $request->Description;
+        }
+        // if (isset($request->EventToLink)) {
+        //     $video->event_id = $request->EventToLink;
+        // }
+        // if (isset($request->Description)) {
+        //     $video->description = $request->Description;
+        // }
 
         $video->url = $UrlToSave;
         $video->save();

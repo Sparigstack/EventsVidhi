@@ -78,7 +78,7 @@ class PodcastsController extends Controller
                 $file = $request->file('input_podfile');
                 $name = time() . $file->getClientOriginalName();
                 $userId = Auth::id();
-                $filePath = 'org_' . $userId . '/Video/' . $name;
+                $filePath = 'org_' . $userId . '/Podcast/' . $name;
                 Storage::disk('s3')->put($filePath, file_get_contents($file));
                 $UrlToSave = $filePath;
             }
@@ -96,6 +96,7 @@ class PodcastsController extends Controller
 
         // return back()->withSuccess('Image uploaded successfully');
     }
+
 
     /**
      * Display the specified resource.
