@@ -84,7 +84,7 @@
                         </div>
                         <ul class="sidebar-menu do-nicescrol in">
                             <li class="sidebar-header">MAIN NAVIGATION</li>
-                            <li class="active">
+                            <li>
                                 <a href="{{ url('org/events') }}" class="waves-effect">
                                     <i class="zmdi zmdi-view-dashboard"></i> <span>Events</span><i class="fa fa-angle-left pull-right"></i>
                                 </a>
@@ -112,29 +112,29 @@
                                     <i class="fa fa-file-video-o"></i> <span>Videos</span><i class="fa fa-angle-left pull-right"></i>
                                 </a>
                                 <ul class="sidebar-submenu in">
-                                    <li class=""><a href="{{ url('org/videos/new') }}" class=""><i class="zmdi zmdi-long-arrow-right"></i> Add New Video</a></li>
-                                    <li class=""><a href="{{ url('org/videos') }}" class=""><i class="zmdi zmdi-long-arrow-right"></i> All Videos</a></li>
+                                    <li class="active"><a href="{{ url('org/videos/new') }}" class="active"><i class="zmdi zmdi-long-arrow-right"></i> Add New Video</a></li>
+                                    <li class=""><a href="{{ url('org/videos') }}" class="active"><i class="zmdi zmdi-long-arrow-right"></i> All Videos</a></li>
 
                                 </ul>
                             </li>
                             <li>
-                                <a href="{{url('org/videos')}}" class="waves-effect">
+                                <a href="{{url('org/podcasts')}}" class="waves-effect">
                                     <i class="fa fa-file-video-o"></i> <span>Podcasts</span><i class="fa fa-angle-left pull-right"></i>
                                 </a>
                                 <ul class="sidebar-submenu in">
-                                    <li class=""><a href="{{ url('org/podcasts/new') }}" class=""><i class="zmdi zmdi-long-arrow-right"></i> Add New Podcast</a></li>
-                                    <li class=""><a href="{{ url('org/podcasts') }}" class=""><i class="zmdi zmdi-long-arrow-right"></i> All Podcasts</a></li>
+                                    <li class="active"><a href="{{ url('org/podcasts/new') }}" class="active"><i class="zmdi zmdi-long-arrow-right"></i> Add New Podcast</a></li>
+                                    <li class=""><a href="{{ url('org/podcasts') }}" class="active"><i class="zmdi zmdi-long-arrow-right"></i> All Podcasts</a></li>
 
                                 </ul>
                             </li>
                             <li>
-                                <a href="{{url('org/videos')}}" class="waves-effect">
+                                <a href="{{url('/')}}" class="waves-effect">
                                     <i class="zmdi zmdi-format-list-bulleted"></i> <span>Forms</span><i class="fa fa-angle-left pull-right"></i>
                                 </a>
                                 <ul class="sidebar-submenu in">
-                                    <li class=""><a href="{{ url('org/videos/new') }}"><i class="zmdi zmdi-long-arrow-right"></i> Registration Form</a></li>
-                                    <li class=""><a href="{{ url('org/videos/new') }}"><i class="zmdi zmdi-long-arrow-right"></i> Feedback Form</a></li>
-                                    <li class=""><a href="{{ url('org/videos/new') }}"><i class="zmdi zmdi-long-arrow-right"></i> Custom Form</a></li>
+                                    <li class="active"><a href="{{url('/')}}" class="active"><i class="zmdi zmdi-long-arrow-right"></i> Registration Form</a></li>
+                                    <li class=""><a href="{{url('/')}}" class="active"><i class="zmdi zmdi-long-arrow-right"></i> Feedback Form</a></li>
+                                    <li class=""><a href="{{url('/')}}" class="active"><i class="zmdi zmdi-long-arrow-right"></i> Custom Form</a></li>
 
                                 </ul>
                             </li>
