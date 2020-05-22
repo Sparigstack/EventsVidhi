@@ -15,6 +15,7 @@ use App\EventCategory;
 use App\EventType;
 use App\Video;
 use App\Podcast;
+use App\Speaker;
 use DateTime;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\UploadedFile;
@@ -293,6 +294,50 @@ class EventsController extends Controller
             'urlType' => $podcast->url_type,
             'error' => ''
         ]);
+    }
+
+    public function storeSpeaker(Request $request){
+        // return response()->json([
+        //     'test' =>  'mansi',
+        // ]);
+
+        $validator = null;
+            $validator = Validator::make($request->all(), [
+                'speakerTitle' => 'required',
+                'speakerFirstName' => 'required',
+                'speakerLastName' => 'required',
+                'speakerOrganization' => 'required',
+            ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'error' => $validator->errors(),
+            ]);
+        }
+
+        $speaker = new Speaker;
+        $speaker->title = $request->speakerTitle;
+        $speaker->first_name = $request->speakerFirstName;
+        $speaker->last_name = $request->speakerLastName;
+        $speaker->description = $request->speakerDesc;
+        $speaker->organization = $request->speakerOrganization;
+        $speaker->linkedin_url = $request->speakerLinkedinUrl;
+        $userId = Auth::id();
+        $UrlToSave = "";
+        $FinalUrl = "";
+        if ($request->hasFile('profilePicImage')) {
+                $file = $request->file('profilePicImage');
+                $name = time() . $file->getClientOriginalName();
+                $userId = Auth::id();
+                $filePath = 'org_' . $userId . '/Speaker/' . $name;
+                Storage::disk('s3')->put($filePath, file_get_contents($file));
+                $UrlToSave = $filePath;
+                //$FinalUrl = env('AWS_URL'); 
+                $FinalUrl .= $UrlToSave;
+            }
+        $speaker->profile_pic = $FinalUrl;
+        $speaker->event_id = $request->eventId;
+        $speaker->save();
     }
 
     /**

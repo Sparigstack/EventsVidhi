@@ -109,7 +109,11 @@
                         <a class="nav-link" data-toggle="tab" href="#tabe-15"><span class="hidden-xs">Participants</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#tabe-16"><span class="hidden-xs">Promote</span></a>
+                        <a class="nav-link
+                        <?php if ($tabe == 2) {
+                            echo "active";
+                        } ?>
+                        " data-toggle="tab" href="#tabe-16"><span class="hidden-xs">Speakers</span></a>
                     </li>
                 </ul>
 
@@ -598,12 +602,99 @@
                                     </div>
                                 </div>
                             </div>
-                    </div>
-                <?php } else { ?>
+                            <?php } else { ?>
                     <div class="text-center m-4"><label class="">Please save basic details to add media</label></div>
+                <?php } ?>
+                    </div>
+
+                
+
+                <div class="speakers row tab-pane <?php if ($tabe == 2) {
+                        echo "active";
+                    } ?>" 
+                    id="tabe-16">
+                    <?php if ($IsNew == false) { ?>
+                <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+                                        <input type="hidden" name="_token" value="bk1OhavN4UAzV8S98BIoRMOxciaSsCWi3X6j8YAf">
+
+                                    <div class="card col-lg-12 p-4 speakerContainer d-none m-auto parent">
+                                        <form class="" id="SaveSpeaker" name="SaveSpeaker" method="post" enctype="multipart/form-data">
+                                            {{ csrf_field() }}
+                                            <input type="hidden" class="addSpeakers" value="{{url('org/events/speaker/store')}}">
+                                            <input type="text" name="EventToLinkId" id="EventToLink" class="d-none" value="{{$event->id}}" />
+
+                                        <div class="form-group col-lg-12 row">
+                                            <div class="form-group col-lg-6">
+                                                <label for="profilePicImage">Profile Pic</label>
+                                                <div class="dragFileContainer thumbNailContainer" style="display: flex;justify-content: center;">
+                                                    <input type="file" accept="image/*" id="EventThumbnailImage" name="profilePicImage" class="form-control files" value="">
+                                                <img id="thumbnailImage" src="" class="d-none imageRadius" alt="your image" width="100" value="">
+                                                <p id="TempTextThumb">Drop your image here or click to upload.</p>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="form-group col-lg-6">
+                                                <label for="speakerTitle">Title</label>
+                                                <input type="text" class="form-control mb-2" id="speakerTitle" value="" name="speakerTitle" placeholder="Enter Title" required="">
+                                                <small class="text-danger"></small>
+
+                                                <label for="speakerFirstName">First Name</label>
+                                                <input type="text" class="form-control mb-2" id="speakerFirstName" value="" name="speakerFirstName" placeholder="Enter First Name" required="">
+                                                <small class="text-danger"></small>
+
+                                                <label for="speakerLastName">Last Name</label>
+                                                <input type="text" class="form-control" id="speakerLastName" value="" name="speakerLastName" placeholder="Enter Last Name" required="">
+                                                <small class="text-danger"></small>
+                                                
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-lg-12">
+                                            <label for="speakerDesc">Description</label>
+                                            <textarea id="speakerDesc" name="speakerDesc" required="" class="form-control" title="Description" placeholder="Description" autocomplete="off" rows="4"></textarea>
+                                            <small class="text-danger"></small>
+                                        </div>
+
+                                        <div class="form-group col-lg-12">
+                                            <label for="speakerOrganization">Organization</label>
+                                                <input type="text" class="form-control" id="speakerOrganization" value="" name="speakerOrganization" placeholder="Enter Organization" required="">
+                                                <small class="text-danger"></small>
+                                        </div>
+
+                                        <div class="form-group col-lg-12">
+                                            <label for="speakerLinkedinUrl">LinkedIn URL</label>
+                                                <input type="text" class="form-control" id="speakerLinkedinUrl" value="" name="speakerLinkedinUrl" placeholder="Enter LinkedIn Url">
+                                                <small class="text-danger"></small>
+                                        </div>
+
+                                        <div class="col-lg-12">
+                                                    <button type="submit" id="speakerSubmitButton" data-id="" class="btn btn-primary px-5 pull-right"> Save Speaker</button>
+                                                </div>
+                                        </form>
+                                     </div>  
+
+                                     <div class="text-center col-lg-12 mt-2">
+                                            <button type="button" id="speakerButton" class="btn btn-outline-primary btn-round waves-effect waves-light m-1" onclick="uploadSpeaker(this);">Add Speaker</button>
+                                        </div> 
+                                </div>
+                            </div>
+                        </div>
+                
+<?php } else { ?>
+                    <div class="text-center m-4"><label class="">Please save basic details to add speakers</label></div>
                 <?php } ?>
 
                 </div>
+
+                </div>
+                <!-- <div class="parent row tab-pane" id="tabe-15">
+
+                </div> -->
+
+
             </div>
 
 

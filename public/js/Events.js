@@ -74,6 +74,52 @@ $(document).ready(function () {
         });
     });
 
+     $('#SaveSpeaker').on('submit', function (event) {
+        LoaderStart();
+        event.preventDefault();
+        var CurentForm=$(this);
+        var urlStringSpeaker = $('.addSpeakers').val();
+        // var formData = new FormData(this);
+        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr("content");
+        var speakerTitle = $("#speakerTitle").val();
+        var speakerFirstName = $("#speakerFirstName").val();
+        var speakerLastName = $("#speakerLastName").val();
+        var speakerDesc = $("#speakerDesc").val();
+        var speakerOrganization = $("#speakerOrganization").val();
+        var speakerLinkedinUrl = $("#speakerLinkedinUrl").val();
+        var speakerProfilePic = $("#thumbnailImage").val();
+        var eventId = $("#EventToLink").val();
+        $.ajax({
+            url: urlStringSpeaker,
+            method: "post",
+            // data: new FormData(this),
+            data: {_token: CSRF_TOKEN, speakerTitle:speakerTitle, speakerFirstName:speakerFirstName, speakerLastName:speakerLastName,speakerDesc:speakerDesc,speakerOrganization:speakerOrganization,speakerLinkedinUrl:speakerLinkedinUrl, speakerProfilePic:speakerProfilePic, eventId:eventId},
+            // dataType: 'JSON',
+            // contentType: false,
+            // cache: false,
+            // processData: false,
+            success: function (response) {
+                
+                    console.log(response);
+                // var HtmlContent='<ul class="list-group parent list-group-flush mb-2"><li class="list-group-item"><div class="media align-items-center"><div class="media-body ml-3"><h6 class="mb-0">'+response.videoTitle+'</h6><small class="small-font">'+response.videoUrl+'</small></div><div data-id="'+response.videoID+'" Type="podcast" urltype="'+response.urlType+'" onclick="RemoveSingleVideo(this);" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div></div></li>';
+                // $('#UploadedVideos').append(HtmlContent);
+                $(CurentForm).find('#speakerTitle').val('');
+                $(CurentForm).find('#speakerFirstName').val('');
+                $(CurentForm).find('#speakerLastName').val('');
+                $(CurentForm).find('#speakerDesc').val('');
+                $(CurentForm).find('#speakerOrganization').val('');
+                $(CurentForm).find('#speakerLinkedinUrl').val('');
+                $('.speakerContainer').addClass('d-none');
+                // $('.PodcastInvalid').empty();
+                LoaderStop();
+            },
+            error: function (err) {
+                console.log(err);
+                LoaderStop();
+            }
+        });
+    });
+
     $('#EventDateTime').change(function (time) {
         var dateRi = $(this).val();
         var defaultdate;
@@ -205,6 +251,12 @@ function uploadVideo(element) {
         $('.UploadVideoContainer').addClass('d-none');
     }
     // $('.uploadVideo').removeClass('d-none');
+}
+
+function uploadSpeaker(element) {
+    if ($(element).attr('id') == 'speakerButton') {
+        $('.speakerContainer').removeClass('d-none');
+    } 
 }
 
 function getState(element) {
