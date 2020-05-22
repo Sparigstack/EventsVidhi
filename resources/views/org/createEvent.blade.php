@@ -30,6 +30,8 @@
     $eventTypeID = 0;
     $ThumnailUrl = "";
     $ThumbNailHidden = "d-none";
+    $profilePicUrl = "";
+    $profilePicHidden = "d-none";
     $BannerUrl = "";
     $BannerHidden = "d-none";
     $AwsUrl = "https://panelhiveus.s3.us-west-1.amazonaws.com/";
@@ -82,6 +84,13 @@
         }
         if ($event->is_live == 1) {
             $IsLive = "checked";
+        }
+    }
+
+    if(!empty($speaker)){
+        if (!empty($speaker->profilePic)) {
+            $profilePicUrl = $AwsUrl . $speaker->profilePic;
+            $profilePicHidden = "";
         }
     }
 
@@ -617,21 +626,50 @@
                 <div class="col-lg-12">
                             <div class="card">
                                 <div class="card-body">
+                                    <div id="uploadedSpeakers" class="col-lg-12 m-auto p-0">
+                                        <?php
+                                            foreach($speakers as $speaker){?>
+                                                    <ul class="list-group parent list-group-flush shadow-none">
+                                                        <li class="list-group-item">
+                        <div class="media align-items-center">
+                            <?php
+                            $profileurl = "";
+                            if($speaker->profile_pic){
+                                $pic = $speaker->profile_pic;
+                             $profileurl = env('AWS_URL') . $pic;
+                            } else{
+                                $profileurl = "https://via.placeholder.com/110x110";
+                            }
+                                 ?>
+                            <img src="{{$profileurl}}" alt="user avatar" class="customer-img rounded"  height="100" width="100">
+                            <div class="media-body ml-3">
+                                <h6 class="mb-0">{{$speaker->first_name}} {{$speaker->last_name}}</h6>
+                                <small class="small-font">{{$speaker->organization}} - {{$speaker->description}}</small>
+
+                            </div>
+                            <div data-id="<?php echo $speaker->id?>" onclick="RemoveSingleSpeaker(this);" Type="file" UrlType="" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div>
+                        </div>
+                    </li>
+                                                    </ul>
+                                            <?php } ?>
+
+                                        </div>
                                         <input type="hidden" name="_token" value="bk1OhavN4UAzV8S98BIoRMOxciaSsCWi3X6j8YAf">
 
                                     <div class="card col-lg-12 p-4 speakerContainer d-none m-auto parent">
                                         <form class="" id="SaveSpeaker" name="SaveSpeaker" method="post" enctype="multipart/form-data">
                                             {{ csrf_field() }}
                                             <input type="hidden" class="addSpeakers" value="{{url('org/events/speaker/store')}}">
+                                            <input type="hidden" class="removeEventSpeakers" value="{{url('org/events/deleteSpeaker')}}">
                                             <input type="text" name="EventToLinkId" id="EventToLink" class="d-none" value="{{$event->id}}" />
 
                                         <div class="form-group col-lg-12 row">
                                             <div class="form-group col-lg-6">
                                                 <label for="profilePicImage">Profile Pic</label>
                                                 <div class="dragFileContainer thumbNailContainer" style="display: flex;justify-content: center;">
-                                                    <input type="file" accept="image/*" id="EventThumbnailImage" name="profilePicImage" class="form-control files" value="">
-                                                <img id="thumbnailImage" src="" class="d-none imageRadius" alt="your image" width="100" value="">
-                                                <p id="TempTextThumb">Drop your image here or click to upload.</p>
+                                                    <input type="file" accept="image/*" id="EventProfilePicImage" name="profilePicImageUpload" class="form-control files" picvalue="">
+                                                <img id="profilePicImage" src="" class="d-none imageRadius w-100 {{$profilePicHidden}}" alt="your image" width="100" value="">
+                                                        <p id="TempTextThumb" class="TempTextPic">Drop your image here or click to upload.</p>
                                                 </div>
                                             </div>
 
@@ -676,7 +714,7 @@
                                         </form>
                                      </div>  
 
-                                     <div class="text-center col-lg-12 mt-2">
+                                     <div class="text-center col-lg-12 mt-4">
                                             <button type="button" id="speakerButton" class="btn btn-outline-primary btn-round waves-effect waves-light m-1" onclick="uploadSpeaker(this);">Add Speaker</button>
                                         </div> 
                                 </div>

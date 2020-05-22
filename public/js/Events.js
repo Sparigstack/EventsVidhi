@@ -79,7 +79,7 @@ $(document).ready(function () {
         event.preventDefault();
         var CurentForm=$(this);
         var urlStringSpeaker = $('.addSpeakers').val();
-        // var formData = new FormData(this);
+        var formData = new FormData(this);
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr("content");
         var speakerTitle = $("#speakerTitle").val();
         var speakerFirstName = $("#speakerFirstName").val();
@@ -87,22 +87,23 @@ $(document).ready(function () {
         var speakerDesc = $("#speakerDesc").val();
         var speakerOrganization = $("#speakerOrganization").val();
         var speakerLinkedinUrl = $("#speakerLinkedinUrl").val();
-        var speakerProfilePic = $("#thumbnailImage").val();
+        var speakerProfilePic = $("#profilePicImage").attr("src");
+        // var picSave = $(".profilePicImage").attr('picvalue',speakerProfilePic);
         var eventId = $("#EventToLink").val();
         $.ajax({
             url: urlStringSpeaker,
             method: "post",
-            // data: new FormData(this),
-            data: {_token: CSRF_TOKEN, speakerTitle:speakerTitle, speakerFirstName:speakerFirstName, speakerLastName:speakerLastName,speakerDesc:speakerDesc,speakerOrganization:speakerOrganization,speakerLinkedinUrl:speakerLinkedinUrl, speakerProfilePic:speakerProfilePic, eventId:eventId},
-            // dataType: 'JSON',
-            // contentType: false,
-            // cache: false,
-            // processData: false,
+            data: new FormData(this),
+            dataType: 'JSON',
+            contentType: false,
+            cache: false,
+            processData: false,
             success: function (response) {
                 
                     console.log(response);
-                // var HtmlContent='<ul class="list-group parent list-group-flush mb-2"><li class="list-group-item"><div class="media align-items-center"><div class="media-body ml-3"><h6 class="mb-0">'+response.videoTitle+'</h6><small class="small-font">'+response.videoUrl+'</small></div><div data-id="'+response.videoID+'" Type="podcast" urltype="'+response.urlType+'" onclick="RemoveSingleVideo(this);" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div></div></li>';
-                // $('#UploadedVideos').append(HtmlContent);
+                // var HtmlContent='<ul class="list-group parent list-group-flush mb-2"><li class="list-group-item"><div class="media align-items-center"><div class="media-body ml-3"><h6 class="mb-0">'+ response.speakerTitle +' </h6><small class="small-font">'+ response.profilePicImage +'</small></div><div data-id="'+ response.id +'" onclick="RemoveSingleSpeaker(this);" type="file" urltype="" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor:pointer;"></i></div></div></li></ul>';
+                var HtmlContent = '<ul class="list-group parent list-group-flush shadow-none"><li class="list-group-item"><div class="media align-items-center"><img src="'+ response.profilePicImage +'" alt="user avatar" class="customer-img rounded" height="100" width="100"><div class="media-body ml-3"><h6 class="mb-0">'+ response.speakerFirstName + response.speakerLastName +'</h6><small class="small-font">'+ response.speakerOrganization + ' - ' + response.speakerDesc +'</small></div><div data-id="'+ response.id +'" onclick="RemoveSingleSpeaker(this);" type="file" urltype="" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor:pointer;"></i></div></li></ul>';
+                $('#uploadedSpeakers').append(HtmlContent);
                 $(CurentForm).find('#speakerTitle').val('');
                 $(CurentForm).find('#speakerFirstName').val('');
                 $(CurentForm).find('#speakerLastName').val('');
@@ -110,6 +111,7 @@ $(document).ready(function () {
                 $(CurentForm).find('#speakerOrganization').val('');
                 $(CurentForm).find('#speakerLinkedinUrl').val('');
                 $('.speakerContainer').addClass('d-none');
+                $("#profilePicImage").attr('src','');
                 // $('.PodcastInvalid').empty();
                 LoaderStop();
             },
@@ -169,6 +171,12 @@ $(document).ready(function () {
         $('#TempTextThumb').remove();
         document.getElementById('thumbnailImage').src = window.URL.createObjectURL(this.files[0]);
         document.getElementById('thumbnailImage').classList.remove('d-none');
+    });
+
+    $('#EventProfilePicImage').change(function() {
+        $('.TempTextPic').remove();
+        document.getElementById('profilePicImage').src = window.URL.createObjectURL(this.files[0]);
+        document.getElementById('profilePicImage').classList.remove('d-none');
     });
 
     $('#video_file').change(function() {
@@ -328,6 +336,35 @@ function RemoveSingleVideo(element) {
             alert('An Error Occured');
             LoaderStop();
             // console.log(error);
+        }
+    });
+
+}
+
+function RemoveSingleSpeaker(element) {
+    LoaderStart();
+    var id = $(element).attr('data-id');
+    // var type = $(element).attr('Type');
+    // var urltype = $(element).attr('urltype');
+    var Field = findParent(element);
+    var urlString = $('.removeEventSpeakers').val();
+    urlString += "/" + id ;
+    var CSRF_TOKEN = $('.csrf-token').val();
+    var countryId = $(element).val();
+
+    $.ajax({
+        url: urlString,
+        type: 'post',
+        data: {_token: CSRF_TOKEN, id: id},
+        success: function (response) {
+            $(Field).remove();
+            LoaderStop();
+            console.log(response);
+        },
+        error: function (error) {
+            alert('An Error Occured');
+            LoaderStop();
+            console.log(error);
         }
     });
 
