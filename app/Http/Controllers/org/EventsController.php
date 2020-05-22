@@ -218,6 +218,8 @@ class EventsController extends Controller
                 // $FinalUrl = env('AWS_URL'); 
                 $FinalUrl .= $UrlToSave;
                 $video->url_type = 1;
+                $size=$request->file('video_file')->getSize();
+                $video->file_size= $size;
             }
         } else {
             $UrlToSave = $request->input_url;
@@ -276,6 +278,8 @@ class EventsController extends Controller
                 //$FinalUrl = env('AWS_URL'); 
                 $FinalUrl .= $UrlToSave;
                 $podcast->url_type = 1;
+                $size=$request->file('podcast_video_file')->getSize();
+                $podcast->file_size= $size;
             }
         } else {
             $UrlToSave = $request->input_url;
@@ -307,7 +311,6 @@ class EventsController extends Controller
                 'speakerFirstName' => 'required',
                 'speakerLastName' => 'required',
                 'speakerOrganization' => 'required',
-                'profilePicImage' => 'image|mimes:jpeg,bmp,png,jpg|dimensions:max_width=420,max_height=360',
             ]);
 
         if ($validator->fails()) {
@@ -326,8 +329,8 @@ class EventsController extends Controller
         $userId = Auth::id();
         $UrlToSave = "";
         $FinalUrl = "";
-        if ($request->hasFile('profilePicImageUpload')) {
-                $file = $request->file('profilePicImageUpload');
+        if ($request->hasFile('profilePicImage')) {
+                $file = $request->file('profilePicImage');
                 $name = time() . $file->getClientOriginalName();
                 $userId = Auth::id();
                 $filePath = 'org_' . $userId . '/Speaker/' . $name;
@@ -336,27 +339,9 @@ class EventsController extends Controller
                 //$FinalUrl = env('AWS_URL'); 
                 $FinalUrl .= $UrlToSave;
             }
-            $jsonPicUrl = "";
-            if($FinalUrl != ""){
-                $jsonPicUrl = env('AWS_URL'). $FinalUrl;
-            }else{
-                $jsonPicUrl = "https://via.placeholder.com/110x110";
-            }
-            
         $speaker->profile_pic = $FinalUrl;
-        $speaker->event_id = $request->EventToLinkId;
+        $speaker->event_id = $request->eventId;
         $speaker->save();
-
-        return response()->json([
-            'speakerTitle' => $speaker->title,
-            'profilePicImage' => $jsonPicUrl,
-            'id' => $speaker->id,
-            'speakerFirstName' => $speaker->first_name,
-            'speakerLastName' => $speaker->last_name,
-            'speakerOrganization' => $speaker->organization,
-            'speakerDesc' => $speaker->description,
-            'error' => ''
-        ]);
     }
 
     /**
@@ -380,6 +365,7 @@ class EventsController extends Controller
         }
 
         $event = Event::findOrFail($id);
+        $speakers = Speaker::where('event_id', $event->id)->get();
         $categories = Category::all();
         $cities = City::all();
         $cityTimeZones = Timezone::all();
@@ -388,8 +374,7 @@ class EventsController extends Controller
         $states = State::all();
         $videos = Video::where('event_id', $event->id)->get();
         $podcasts = Podcast::where('event_id', $event->id)->get();
-        $speakers = Speaker::where('event_id', $event->id)->get();
-        return view('org/createEvent', compact('categories', 'cities', 'event', 'cityTimeZones', 'eventTypes', 'IsNew', 'countries', 'states', 'tabe', 'videos', 'podcasts', 'speakers'));
+        return view('org/createEvent', compact('categories', 'cities', 'event', 'cityTimeZones', 'eventTypes', 'IsNew', 'countries', 'states', 'tabe', 'videos', 'podcasts','speakers'));
     }
 
     /**
@@ -520,17 +505,6 @@ class EventsController extends Controller
         }
 
         return "success";
-    }
-
-    public function destroySpeaker($id)
-    {
-            $speaker = Speaker::find($id);
-            if (!empty($speaker->profile_pic)) {
-                Storage::disk('s3')->delete($speaker->profile_pic);
-            }
-            Speaker::find($id)->delete();
-
-            return "success";
     }
 
     public function UpdateEventStatus(Request $request)

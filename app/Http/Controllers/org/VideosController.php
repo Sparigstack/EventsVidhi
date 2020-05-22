@@ -35,7 +35,7 @@ class VideosController extends Controller
         //     ];
         // }
         $user = Auth::user();
-        $videos = Video::where('user_id',$user->id)->get();
+        $videos = Video::where('user_id', $user->id)->get();
         // var_dump($videos->events->title); 
         // var_dump($images);
         // return;
@@ -65,13 +65,13 @@ class VideosController extends Controller
      */
     public function store(Request $request)
     {
-        $validator=null ;
-        if (isset($request->IsUploadVideo)){
+        $validator = null;
+        if (isset($request->IsUploadVideo)) {
             $validator = Validator::make($request->all(), [
                 'input_title' => 'required',
-                'input_vidfile'=>'required|mimes:mov,mp4,wmv,flv,avi'
+                'input_vidfile' => 'required|mimes:mov,mp4,wmv,flv,avi'
             ]);
-        }else{
+        } else {
             $validator = Validator::make($request->all(), [
                 'input_title' => 'required',
                 'input_url' => 'required',
@@ -95,6 +95,9 @@ class VideosController extends Controller
                 $userId = Auth::id();
                 $filePath = 'org_' . $userId . '/Video/' . $name;
                 Storage::disk('s3')->put($filePath, file_get_contents($file));
+               // $size = Storage::disk('s3')->size($filePath);
+                $size=$request->file('input_vidfile')->getSize();
+                $video->file_size= $size;
                 $UrlToSave = $filePath;
             }
         } else {
@@ -150,7 +153,7 @@ class VideosController extends Controller
         $user = Auth::user();
         $video = Video::findOrFail($id);
         $events = $user->events->sortBy('created_at');
-        return view('org/createVideo', compact('events','video'));
+        return view('org/createVideo', compact('events', 'video'));
     }
 
     /**
@@ -162,13 +165,13 @@ class VideosController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validator=null ;
-        if (isset($request->IsUploadVideo)){
+        $validator = null;
+        if (isset($request->IsUploadVideo)) {
             $validator = Validator::make($request->all(), [
                 'input_title' => 'required',
-                'input_vidfile'=>'required|mimes:mov,mp4,wmv,flv,avi'
+                'input_vidfile' => 'required|mimes:mov,mp4,wmv,flv,avi'
             ]);
-        }else{
+        } else {
             $validator = Validator::make($request->all(), [
                 'input_title' => 'required',
                 'input_url' => 'required',
@@ -176,7 +179,7 @@ class VideosController extends Controller
         }
 
         if ($validator->fails()) {
-            return redirect('org/videos/'. $id)
+            return redirect('org/videos/' . $id)
                 ->withErrors($validator)
                 ->withInput();
         }
@@ -196,6 +199,8 @@ class VideosController extends Controller
                 $filePath = 'org_' . $userId . '/Video/' . $name;
                 Storage::disk('s3')->put($filePath, file_get_contents($file));
                 $UrlToSave = $filePath;
+                $size=$request->file('input_vidfile')->getSize();
+                $video->file_size= $size;
             }
         } else {
             $UrlToSave = $request->input_url;

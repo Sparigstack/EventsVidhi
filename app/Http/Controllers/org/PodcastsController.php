@@ -81,6 +81,8 @@ class PodcastsController extends Controller
                 $filePath = 'org_' . $userId . '/Podcast/' . $name;
                 Storage::disk('s3')->put($filePath, file_get_contents($file));
                 $UrlToSave = $filePath;
+                $size=$request->file('input_podfile')->getSize();
+                $podcast->file_size= $size;
             }
         } else {
             $UrlToSave = $request->input_url;
