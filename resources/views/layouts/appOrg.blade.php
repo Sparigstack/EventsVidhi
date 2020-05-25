@@ -105,6 +105,19 @@
                             </ul>
                         </li>
                         <li>
+                            <a href="javaScript:void();" class="waves-effect">
+                                <i class="zmdi zmdi-email"></i>
+                                <span>Communications</span>
+                                <!--<small class="badge float-right badge-warning">12</small>-->
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="javaScript:void();" class="waves-effect">
+                                <i class="zmdi zmdi-grid"></i> <span>Followers</span>
+                            </a>
+                        </li>
+                        <li>
                             <a href="{{url('org/videos')}}" class="waves-effect">
                                 <i class="fa fa-file-video-o"></i> <span>Videos</span><i class="fa fa-angle-left pull-right"></i>
                             </a>
@@ -124,19 +137,6 @@
 
                             </ul>
                         </li>
-                        <li>
-                            <a href="javaScript:void();" class="waves-effect">
-                                <i class="zmdi zmdi-grid"></i> <span>Followers</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="javaScript:void();" class="waves-effect">
-                                <i class="zmdi zmdi-email"></i>
-                                <span>Communications</span>
-                                <!--<small class="badge float-right badge-warning">12</small>-->
-                            </a>
-                        </li>
-                        
                         <li>
                             <a href="{{url('/')}}" class="waves-effect">
                                 <i class="zmdi zmdi-format-list-bulleted"></i> <span>Forms</span><i class="fa fa-angle-left pull-right"></i>
@@ -175,7 +175,7 @@
                     <li class="nav-item">
                         <a class="nav-link dropdown-toggle dropdown-toggle-nocaret UserIconWithText" data-toggle="dropdown" href="#">
                             <!-- <div class="mr-2 AvailableStorage">{{ number_format((float)$totalGb, 3, '.', '')}} GB Used out of 3GB</div> -->
-                            <!--<div class="mr-2 AvailableStorage">{{ $totalGb }} GB Used out of 3GB</div>-->
+                            <div class="mr-2 AvailableStorage"></div>
                             <div>
                                 <span class="user-profile"><img src="https://via.placeholder.com/110x110" class="img-circle" alt="user avatar"></span>
                             </div>
@@ -197,11 +197,9 @@
                                 <li class="dropdown-divider"></li>
                                 <li class="dropdown-item"><i class="icon-wallet mr-2"></i> Account</li>
                                 <li class="dropdown-divider"></li> -->
-                            <li class="dropdown-item"><a class style="color:inherit" href="{{url('profile')}}"><i class="icon-settings mr-2"></i> Profile</a>
-                            </li>
+                            <li class="dropdown-item"><i class="icon-settings mr-2"></i> Profile</li>
                             <li class="dropdown-divider"></li>
-                            <li class="dropdown-item"><a class style="color:inherit" href="{{url('account')}}"><i class="icon-settings mr-2"></i> Account</a>
-                            </li>
+                            <li class="dropdown-item"><a style="color:inherit" href="{{url('account')}}"><i class="icon-wallet mr-2"></i> Account</a></li>
                             <li class="dropdown-divider"></li>
                             <li class="dropdown-item"><a class style="color:inherit" href="{{ route('logout') }}" onclick="event.preventDefault();
                                         document.getElementById('logout-form').submit();"><i class="icon-power mr-2"></i> Logout</a></li>

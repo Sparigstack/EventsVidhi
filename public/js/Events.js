@@ -4,7 +4,7 @@ $(document).ready(function () {
     $('#SaveVideoAjax').on('submit', function (event) {
         LoaderStart();
         event.preventDefault();
-        var CurentForm=$(this);
+        var CurentForm = $(this);
         var urlString = $('.addEventVideos').val();
         var formData = new FormData(this);
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr("content");
@@ -17,11 +17,11 @@ $(document).ready(function () {
             cache: false,
             processData: false,
             success: function (response) {
-                if(response.error!=''){
+                if (response.error != '') {
                     $('.VideoInvalid').append(response.error.video_file);
                     alert(response.error.video_file);
-                }else{
-                    var HtmlContent='<ul class="list-group parent list-group-flush mb-2"><li class="list-group-item"><div class="media align-items-center"><div class="media-body ml-3"><h6 class="mb-0">'+response.videoTitle+'</h6><small class="small-font">'+response.videoUrl+'</small></div><div data-id="'+response.videoID+'" Type="video" urltype="'+response.urlType+'" onclick="RemoveSingleVideo(this);" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div></div></li>';
+                } else {
+                    var HtmlContent = '<ul class="list-group parent list-group-flush mb-2"><li class="list-group-item"><div class="media align-items-center"><div class="media-body ml-3"><h6 class="mb-0">' + response.videoTitle + '</h6><small class="small-font">' + response.videoUrl + '</small></div><div data-id="' + response.videoID + '" Type="video" urltype="' + response.urlType + '" onclick="RemoveSingleVideo(this);" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div></div></li>';
                     $('#UploadedVideos').append(HtmlContent);
                     $(CurentForm).find('#input_url').val('');
                     $(CurentForm).find('#input_title').val('');
@@ -40,7 +40,7 @@ $(document).ready(function () {
     $('#SavePodCastAjax').on('submit', function (event) {
         LoaderStart();
         event.preventDefault();
-        var CurentForm=$(this);
+        var CurentForm = $(this);
         var urlString = $('.addPodCastVideos').val();
         var formData = new FormData(this);
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr("content");
@@ -53,17 +53,17 @@ $(document).ready(function () {
             cache: false,
             processData: false,
             success: function (response) {
-                if(response.error!=''){
+                if (response.error != '') {
                     $('.PodcastInvalid').append(response.error.podcast_video_file);
                     // $(validateField).append(response.error.podcast_video_file);
                     alert(response.error.podcast_video_file);
-                }else{
-                var HtmlContent='<ul class="list-group parent list-group-flush mb-2"><li class="list-group-item"><div class="media align-items-center"><div class="media-body ml-3"><h6 class="mb-0">'+response.videoTitle+'</h6><small class="small-font">'+response.videoUrl+'</small></div><div data-id="'+response.videoID+'" Type="podcast" urltype="'+response.urlType+'" onclick="RemoveSingleVideo(this);" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div></div></li>';
-                $('#UploadedVideos').append(HtmlContent);
-                $(CurentForm).find('#input_url').val('');
-                $(CurentForm).find('#input_title').val('');
-                $('.UploadPodCastContainer').addClass('d-none');
-                $('.PodcastInvalid').empty();
+                } else {
+                    var HtmlContent = '<ul class="list-group parent list-group-flush mb-2"><li class="list-group-item"><div class="media align-items-center"><div class="media-body ml-3"><h6 class="mb-0">' + response.videoTitle + '</h6><small class="small-font">' + response.videoUrl + '</small></div><div data-id="' + response.videoID + '" Type="podcast" urltype="' + response.urlType + '" onclick="RemoveSingleVideo(this);" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div></div></li>';
+                    $('#UploadedVideos').append(HtmlContent);
+                    $(CurentForm).find('#input_url').val('');
+                    $(CurentForm).find('#input_title').val('');
+                    $('.UploadPodCastContainer').addClass('d-none');
+                    $('.PodcastInvalid').empty();
                 }
                 LoaderStop();
             },
@@ -74,17 +74,17 @@ $(document).ready(function () {
         });
     });
 
-     $('.SaveSpeaker').on('submit', function (event) {
+    $('.SaveSpeaker').on('submit', function (event) {
         LoaderStart();
         event.preventDefault();
-        var CurentForm=$(this);
+        var CurentForm = $(this);
         // var urlStringSpeaker = $('.addSpeakers').val();
         var urlStringSpeaker = "";
         var speakerId = $("#speakerSubmitButton").attr('data-id');
-        if(speakerId != ""){
+        if (speakerId != "") {
             urlStringSpeaker = $('.updateSpeaker').val();
             urlStringSpeaker += "/" + speakerId;
-        } else{
+        } else {
             urlStringSpeaker = $('.addSpeakers').val();
         }
         var formData = new FormData(this);
@@ -107,17 +107,14 @@ $(document).ready(function () {
             cache: false,
             processData: false,
             success: function (response) {
-                
-                    console.log(response);
-                // var HtmlContent='<ul class="list-group parent list-group-flush mb-2"><li class="list-group-item"><div class="media align-items-center"><div class="media-body ml-3"><h6 class="mb-0">'+ response.speakerTitle +' </h6><small class="small-font">'+ response.profilePicImage +'</small></div><div data-id="'+ response.id +'" onclick="RemoveSingleSpeaker(this);" type="file" urltype="" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor:pointer;"></i></div></div></li></ul>';
-                var HtmlContent = '<ul class="list-group parent list-group-flush shadow-none"><li class="list-group-item"><div class="media align-items-center"><img src="'+ response.profilePicImage +'" alt="user avatar" class="customer-img rounded" height="100" width="100"><div class="media-body ml-3"><h6 class="mb-0">'+ response.speakerFirstName + response.speakerLastName +'</h6><small class="small-font">'+ response.speakerOrganization + ' - ' + response.speakerDesc +'</small></div><div data-id="'+ response.id +'" onclick="EditSingleSpeaker(this);" Type="file UrlType="" class="mr-2"><i class="fa icon fas fa-edit clickable" style="font-size: 22px;cursor: pointer;"></i></div><div data-id="'+ response.id +'" onclick="RemoveSingleSpeaker(this);" type="file" urltype="" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor:pointer;"></i></div></li></ul>';
+
+                console.log(response);
+                var HtmlContent = '<ul class="list-group parent list-group-flush shadow-none"><li class="list-group-item"><div class="media align-items-center"><img src="' + response.profilePicImage + '" alt="user avatar" class="customer-img rounded" height="100" width="100"><div class="media-body ml-3"><h6 class="mb-0">' + response.speakerFirstName + response.speakerLastName + '</h6><small class="small-font">' + response.speakerOrganization + ' - ' + response.speakerDesc + '</small></div><div data-id="' + response.id + '" onclick="EditSingleSpeaker(this);" Type="file UrlType="" class="mr-2"><i class="fa icon fas fa-edit clickable" style="font-size: 22px;cursor: pointer;"></i></div><div data-id="' + response.id + '" onclick="RemoveSingleSpeaker(this);" type="file" urltype="" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor:pointer;"></i></div></li></ul>';
                 $('#uploadedSpeakers').append(HtmlContent);
                 $('.speakerContainer').addClass('d-none');
                 $(CurentForm).parent().addClass('d-none');
-                // $(CurentForm).parent().parent().find('.speakerList')removeClass('d-none');
-                $("#speakerSubmitButton").attr('data-id','');
+                $("#speakerSubmitButton").attr('data-id', '');
                 $("#speakerId").val('');
-                // $('.PodcastInvalid').empty();
                 LoaderStop();
             },
             error: function (err) {
@@ -166,35 +163,35 @@ $(document).ready(function () {
         }
     });
 
-    $('#EventBannerImage').change(function() {
+    $('#EventBannerImage').change(function () {
         $('#TempText').remove();
         document.getElementById('bannerImage').src = window.URL.createObjectURL(this.files[0]);
         document.getElementById('bannerImage').classList.remove('d-none');
     });
 
-    $('#EventThumbnailImage').change(function() {
+    $('#EventThumbnailImage').change(function () {
         $('#TempTextThumb').remove();
         document.getElementById('thumbnailImage').src = window.URL.createObjectURL(this.files[0]);
         document.getElementById('thumbnailImage').classList.remove('d-none');
     });
 
-    $('#EventProfilePicImage').change(function() {
+    $('#EventProfilePicImage').change(function () {
         $('.TempTextPic').remove();
         document.getElementById('profilePicImage').src = window.URL.createObjectURL(this.files[0]);
         document.getElementById('profilePicImage').classList.remove('d-none');
     });
 
-    $('.EditProfilePic').change(function() {
+    $('.EditProfilePic').change(function () {
         $('.TempTextPic').remove();
         document.getElementsByClassName('profilePicImage').src = window.URL.createObjectURL(this.files[0]);
         // document.getElementsByClassName('profilePicImage').classList.remove('d-none');
         $('.profilePicImage').removeClass('d-none');
     });
 
-    $('#video_file').change(function() {
+    $('#video_file').change(function () {
         $(this).parent().find('p').text(this.files.length + " file(s) selected");
     });
-    $('#podcast_video_file').change(function() {
+    $('#podcast_video_file').change(function () {
         $(this).parent().find('p').text(this.files.length + " file(s) selected");
     });
 
@@ -275,8 +272,21 @@ function uploadVideo(element) {
 
 function uploadSpeaker(element) {
     if ($(element).attr('id') == 'speakerButton') {
+        if($('.TempTextPic').hasClass('d-none')){
+            $('.TempTextPic').removeClass('d-none');
+        }  
         $('.speakerContainer').removeClass('d-none');
-    } 
+        $("#speakerTitle").val('');
+        $("#speakerFirstName").val('');
+        $("#speakerLastName").val('');
+        $("#speakerDesc").val('');
+        $("#speakerOrganization").val('');
+        $("#speakerLinkedinUrl").val('');
+        $("#profilePicImage").attr('src','');
+        $("#profilePicImage").addClass('d-none');
+        $("#speakerSubmitButton").attr('data-id', '');
+        $("#speakerId").val('');
+    }
 }
 
 function getState(element) {
@@ -289,7 +299,7 @@ function getState(element) {
     $.ajax({
         url: urlString,
         type: 'post',
-        data: {_token: CSRF_TOKEN, countryId: countryId},
+        data: { _token: CSRF_TOKEN, countryId: countryId },
         success: function (response) {
             hideInputLoader(element);
             $('#state').attr('disabled', false);
@@ -309,7 +319,7 @@ function getCity(element) {
     $.ajax({
         url: urlString,
         type: 'post',
-        data: {_token: CSRF_TOKEN, cityId: cityId},
+        data: { _token: CSRF_TOKEN, cityId: cityId },
         success: function (response) {
             hideInputLoader(element);
             $('#city').attr('disabled', false);
@@ -331,14 +341,14 @@ function RemoveSingleVideo(element) {
     var urltype = $(element).attr('urltype');
     var Field = findParent(element);
     var urlString = $('.RemoveEventVideos').val();
-    urlString += "/" + id + "/" + type+ "/" + urltype;
+    urlString += "/" + id + "/" + type + "/" + urltype;
     var CSRF_TOKEN = $('.csrf-token').val();
     var countryId = $(element).val();
 
     $.ajax({
         url: urlString,
         type: 'post',
-        data: {_token: CSRF_TOKEN, id: id},
+        data: { _token: CSRF_TOKEN, id: id },
         success: function (response) {
             $(Field).remove();
             LoaderStop();
@@ -367,7 +377,7 @@ function RemoveSingleSpeaker(element) {
     $.ajax({
         url: urlString,
         type: 'post',
-        data: {_token: CSRF_TOKEN, id: id},
+        data: { _token: CSRF_TOKEN, id: id },
         success: function (response) {
             $(Field).remove();
             LoaderStop();
@@ -394,6 +404,7 @@ function EditSingleSpeaker(element) {
     // var type = $(element).attr('Type');
     // var urltype = $(element).attr('urltype');
     var Field = findParent(element);
+    
     var urlString = $('.editEventSpeakers').val();
     urlString += "/" + id;
     var CSRF_TOKEN = $('.csrf-token').val();
@@ -402,7 +413,7 @@ function EditSingleSpeaker(element) {
     $.ajax({
         url: urlString,
         type: 'post',
-        data: {_token: CSRF_TOKEN, id: id},
+        data: { _token: CSRF_TOKEN, id: id },
         success: function (response) {
             $(".speakerContainer").removeClass('d-none');
             $("#speakerTitle").val(response.title);
@@ -411,9 +422,13 @@ function EditSingleSpeaker(element) {
             $("#speakerDesc").val(response.description);
             $("#speakerOrganization").val(response.organization);
             $("#speakerLinkedinUrl").val(response.linkedin_url);
-            $("#profilePicImage").val(response.profile_pic);
+            $("#profilePicImage").attr('src', response.profile_pic);
             $("#speakerSubmitButton").attr('data-id', response.id);
             $("#speakerId").val(response.id);
+            $('html, body').animate({
+                'scrollTop' : $("#SaveSpeaker").position().top
+            });
+            $(Field).addClass('d-none');
 
             // $(Field).addClass('d-none');
             // $(Field).parent().find('.editSpeakerContainer').removeClass('d-none');
@@ -438,7 +453,7 @@ function EditSingleSpeaker(element) {
 
 }
 
-function removeOldProfilePic(element){
+function removeOldProfilePic(element) {
     LoaderStart();
     var Field = findParent(element);
     var dataPic = $(element).attr('data-pic');
@@ -449,14 +464,14 @@ function removeOldProfilePic(element){
     $.ajax({
         url: urlString,
         type: 'post',
-        data: {_token: CSRF_TOKEN, id: id, dataPic:dataPic},
+        data: { _token: CSRF_TOKEN, id: id, dataPic: dataPic },
         success: function (response) {
             console.log(response);
             $(Field).parent().find(".TempTextPic").removeClass('d-none');
             $(Field).parent().find(".deletePicDiv").addClass('d-none');
             $(Field).parent().find(".profilePicImage").addClass('d-none');
-            $(Field).parent().find(".profilePicImage").attr('src','');
-            $(Field).parent().find(".profilePicImage").attr('db-pic','');
+            $(Field).parent().find(".profilePicImage").attr('src', '');
+            $(Field).parent().find(".profilePicImage").attr('db-pic', '');
             LoaderStop();
         },
         error: function (error) {

@@ -214,13 +214,13 @@ class EventsController extends Controller
                 $userId = Auth::id();
                 // $filePath = 'org_' . $userId . '/Video/' . $name;
                 $filePath = 'org_' . $userId . '/Video';
-                $fileLocation= Storage::disk('s3')->put($filePath, file_get_contents($file));
+                $fileLocation = Storage::disk('s3')->put($filePath, file_get_contents($file));
                 $UrlToSave = $fileLocation;
                 // $FinalUrl = env('AWS_URL'); 
                 $FinalUrl .= $UrlToSave;
                 $video->url_type = 1;
-                $size=$request->file('video_file')->getSize();
-                $video->file_size= $size;
+                $size = $request->file('video_file')->getSize();
+                $video->file_size = $size;
             }
         } else {
             $UrlToSave = $request->input_url;
@@ -279,8 +279,8 @@ class EventsController extends Controller
                 //$FinalUrl = env('AWS_URL'); 
                 $FinalUrl .= $UrlToSave;
                 $podcast->url_type = 1;
-                $size=$request->file('podcast_video_file')->getSize();
-                $podcast->file_size= $size;
+                $size = $request->file('podcast_video_file')->getSize();
+                $podcast->file_size = $size;
             }
         } else {
             $UrlToSave = $request->input_url;
@@ -301,18 +301,19 @@ class EventsController extends Controller
         ]);
     }
 
-    public function storeSpeaker(Request $request){
-//         return response()->json([
-//             'eventid' =>  $request->EventToLinkId,
-//         ]);
+    public function storeSpeaker(Request $request)
+    {
+        //         return response()->json([
+        //             'eventid' =>  $request->EventToLinkId,
+        //         ]);
 
         $validator = null;
-            $validator = Validator::make($request->all(), [
-                'speakerTitle' => 'required',
-                'speakerFirstName' => 'required',
-                'speakerLastName' => 'required',
-                'speakerOrganization' => 'required',
-            ]);
+        $validator = Validator::make($request->all(), [
+            'speakerTitle' => 'required',
+            'speakerFirstName' => 'required',
+            'speakerLastName' => 'required',
+            'speakerOrganization' => 'required',
+        ]);
 
         if ($validator->fails()) {
             return response()->json([
@@ -331,15 +332,15 @@ class EventsController extends Controller
         $UrlToSave = "";
         $FinalUrl = "";
         if ($request->hasFile('profilePicImageUpload')) {
-                $file = $request->file('profilePicImageUpload');
-                $name = time() . $file->getClientOriginalName();
-                $userId = Auth::id();
-                $filePath = 'org_' . $userId . '/Speaker/' . $name;
-                Storage::disk('s3')->put($filePath, file_get_contents($file));
-                $UrlToSave = $filePath;
-                //$FinalUrl = env('AWS_URL'); 
-                $FinalUrl .= $UrlToSave;
-            }
+            $file = $request->file('profilePicImageUpload');
+            $name = time() . $file->getClientOriginalName();
+            $userId = Auth::id();
+            $filePath = 'org_' . $userId . '/Speaker/' . $name;
+            Storage::disk('s3')->put($filePath, file_get_contents($file));
+            $UrlToSave = $filePath;
+            //$FinalUrl = env('AWS_URL'); 
+            $FinalUrl .= $UrlToSave;
+        }
         // if($request->dataPic ==""){
         //     $speaker->profile_pic = $FinalUrl;
         // } else{
@@ -350,12 +351,12 @@ class EventsController extends Controller
         $speaker->save();
 
         $profileUrl = "";
-        if($FinalUrl != ""){
-            $profileUrl = env('AWS_URL'). $FinalUrl;
-        } else{
+        if ($FinalUrl != "") {
+            $profileUrl = env('AWS_URL') . $FinalUrl;
+        } else {
             $profileUrl = "https://via.placeholder.com/110x110";
         }
-        
+
         return response()->json([
             'profilePicImage' => $profileUrl,
             'speakerFirstName' => $speaker->first_name,
@@ -397,7 +398,7 @@ class EventsController extends Controller
         $states = State::all();
         $videos = Video::where('event_id', $event->id)->get();
         $podcasts = Podcast::where('event_id', $event->id)->get();
-        return view('org/createEvent', compact('categories', 'cities', 'event', 'cityTimeZones', 'eventTypes', 'IsNew', 'countries', 'states', 'tabe', 'videos', 'podcasts','speakers'));
+        return view('org/createEvent', compact('categories', 'cities', 'event', 'cityTimeZones', 'eventTypes', 'IsNew', 'countries', 'states', 'tabe', 'videos', 'podcasts', 'speakers'));
     }
 
     /**
@@ -512,14 +513,13 @@ class EventsController extends Controller
     }
     public function destroyVideo($id, $Type, $UrlType)
     {
-        if($Type == "speaker"){
+        if ($Type == "speaker") {
             $speaker = Speaker::find($id);
             if (!empty($speaker->profile_pic)) {
                 Storage::disk('s3')->delete($speaker->profile_pic);
             }
             Speaker::find($id)->delete();
-        }
-        else if ($Type == "podcast") {
+        } else if ($Type == "podcast") {
             // $event = Podcast::find($id)->delete();
             $media = Podcast::find($id);
             if (!empty($media->url)) {
@@ -577,28 +577,34 @@ class EventsController extends Controller
         return $cityOptions;
     }
 
-    public function deleteProfilePic(Request $request){
+    public function deleteProfilePic(Request $request)
+    {
         if ($request->dataPic) {
-                Storage::disk('s3')->delete($request->dataPic);
-                $speaker = Speaker::findOrFail($request->id);
-                $speaker->profile_pic = "";
-                $speaker->save();
+            Storage::disk('s3')->delete($request->dataPic);
+            $speaker = Speaker::findOrFail($request->id);
+            $speaker->profile_pic = "";
+            $speaker->save();
         }
     }
 
-    public function editSpeaker(Request $request, $id){
+    public function editSpeaker(Request $request, $id)
+    {
         $speakers = Speaker::findOrFail($request->id);
+        $FinalUrl = env('AWS_URL');
+        $FinalUrl .= $speakers->profile_pic;
+        $speakers->profile_pic = $FinalUrl;
         return $speakers;
     }
 
-    public function updateSpeaker(Request $request, $id){
+    public function updateSpeaker(Request $request, $id)
+    {
         $validator = null;
-            $validator = Validator::make($request->all(), [
-                'speakerTitle' => 'required',
-                'speakerFirstName' => 'required',
-                'speakerLastName' => 'required',
-                'speakerOrganization' => 'required',
-            ]);
+        $validator = Validator::make($request->all(), [
+            'speakerTitle' => 'required',
+            'speakerFirstName' => 'required',
+            'speakerLastName' => 'required',
+            'speakerOrganization' => 'required',
+        ]);
 
         if ($validator->fails()) {
             return response()->json([
@@ -615,28 +621,31 @@ class EventsController extends Controller
         $speaker->linkedin_url = $request->speakerLinkedinUrl;
         $userId = Auth::id();
         $UrlToSave = "";
-        $FinalUrl = "";
+        $FinalUrl =$speaker->profile_pic ;
         if ($request->hasFile('profilePicImageUpload')) {
-                $file = $request->file('profilePicImageUpload');
-                $name = time() . $file->getClientOriginalName();
-                $userId = Auth::id();
-                $filePath = 'org_' . $userId . '/Speaker/' . $name;
-                Storage::disk('s3')->put($filePath, file_get_contents($file));
-                $UrlToSave = $filePath;
-                //$FinalUrl = env('AWS_URL'); 
-                $FinalUrl .= $UrlToSave;
-            }
+            $FinalUrl='';
+            Storage::disk('s3')->delete($speaker->profile_pic);
+
+            $file = $request->file('profilePicImageUpload');
+            $name = time() . $file->getClientOriginalName();
+            $userId = Auth::id();
+            $filePath = 'org_' . $userId . '/Speaker/' . $name;
+            Storage::disk('s3')->put($filePath, file_get_contents($file));
+            $UrlToSave = $filePath;
+            //$FinalUrl = env('AWS_URL'); 
+            $FinalUrl .= $UrlToSave;
+        }
         $speaker->profile_pic = $FinalUrl;
         $speaker->event_id = $request->EventToLinkId;
         $speaker->save();
 
         $profileUrl = "";
-        if($FinalUrl != ""){
-            $profileUrl = env('AWS_URL'). $FinalUrl;
-        } else{
+        if ($FinalUrl != "") {
+            $profileUrl = env('AWS_URL') . $FinalUrl;
+        } else {
             $profileUrl = "https://via.placeholder.com/110x110";
         }
-        
+
         return response()->json([
             'profilePicImage' => $profileUrl,
             'speakerFirstName' => $speaker->first_name,
