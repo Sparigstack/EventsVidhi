@@ -384,6 +384,11 @@ function RemoveSingleSpeaker(element) {
 
 function EditSingleSpeaker(element) {
     LoaderStart();
+    $('.editSpeakerContainer').removeClass('d-none');
+    $("#profilePicImage").removeClass("d-none");
+    $(".TempTextPic").addClass("d-none");
+    $(".deletePicDiv").removeClass("d-none");
+
     event.preventDefault();
     var id = $(element).attr('data-id');
     // var type = $(element).attr('Type');
