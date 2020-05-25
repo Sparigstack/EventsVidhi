@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use App\Video;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\UploadedFile;
 
 class VideosController extends Controller
 {
@@ -83,6 +84,7 @@ class VideosController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
+       
         $video = new Video;
         $video->title = $request->input_title;
         $userId = Auth::id();
@@ -93,12 +95,13 @@ class VideosController extends Controller
                 $file = $request->file('input_vidfile');
                 $name = time() . $file->getClientOriginalName();
                 $userId = Auth::id();
-                $filePath = 'org_' . $userId . '/Video/' . $name;
-                Storage::disk('s3')->put($filePath, file_get_contents($file));
+                // $filePath = 'org_' . $userId . '/Video/' . $name;
+                $filePath = 'org_' . $userId . '/Video';
+                $fileLocation= Storage::disk('s3')->put($filePath, $request->file('input_vidfile'));
                // $size = Storage::disk('s3')->size($filePath);
                 $size=$request->file('input_vidfile')->getSize();
                 $video->file_size= $size;
-                $UrlToSave = $filePath;
+                $UrlToSave = $fileLocation;
             }
         } else {
             $UrlToSave = $request->input_url;

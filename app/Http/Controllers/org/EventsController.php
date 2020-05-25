@@ -212,9 +212,10 @@ class EventsController extends Controller
                 $file = $request->file('video_file');
                 $name = time() . $file->getClientOriginalName();
                 $userId = Auth::id();
-                $filePath = 'org_' . $userId . '/Video/' . $name;
-                Storage::disk('s3')->put($filePath, file_get_contents($file));
-                $UrlToSave = $filePath;
+                // $filePath = 'org_' . $userId . '/Video/' . $name;
+                $filePath = 'org_' . $userId . '/Video';
+                $fileLocation= Storage::disk('s3')->put($filePath, file_get_contents($file));
+                $UrlToSave = $fileLocation;
                 // $FinalUrl = env('AWS_URL'); 
                 $FinalUrl .= $UrlToSave;
                 $video->url_type = 1;
