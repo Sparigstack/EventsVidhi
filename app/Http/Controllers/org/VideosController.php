@@ -10,11 +10,9 @@ use App\Video;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\UploadedFile;
 
-class VideosController extends Controller
-{
+class VideosController extends Controller {
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->middleware('verified');
     }
 
@@ -23,8 +21,7 @@ class VideosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index() {
         //
         // $url = 'https://s3.' . env('AWS_DEFAULT_REGION') . '.amazonaws.com/' . env('AWS_BUCKET') . '/';
         // $images = [];
@@ -51,8 +48,7 @@ class VideosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
         $user = Auth::user();
         $events = $user->events->sortBy('created_at');
         return view('org/createVideo', compact('events'));
@@ -64,27 +60,26 @@ class VideosController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         $validator = null;
         if (isset($request->IsUploadVideo)) {
             $validator = Validator::make($request->all(), [
-                'input_title' => 'required',
-                'input_vidfile' => 'required|mimes:mov,mp4,wmv,flv,avi'
+                        'input_title' => 'required',
+                        'input_vidfile' => 'required|mimes:mov,mp4,wmv,flv,avi'
             ]);
         } else {
             $validator = Validator::make($request->all(), [
-                'input_title' => 'required',
-                'input_url' => 'required',
+                        'input_title' => 'required',
+                        'input_url' => 'required',
             ]);
         }
 
         if ($validator->fails()) {
             return redirect('org/videos/new')
-                ->withErrors($validator)
-                ->withInput();
+                            ->withErrors($validator)
+                            ->withInput();
         }
-       
+
         $video = new Video;
         $video->title = $request->input_title;
         $userId = Auth::id();
@@ -97,10 +92,10 @@ class VideosController extends Controller
                 $userId = Auth::id();
                 // $filePath = 'org_' . $userId . '/Video/' . $name;
                 $filePath = 'org_' . $userId . '/Video';
-                $fileLocation= Storage::disk('s3')->put($filePath, $request->file('input_vidfile'));
-               // $size = Storage::disk('s3')->size($filePath);
-                $size=$request->file('input_vidfile')->getSize();
-                $video->file_size= $size;
+                $fileLocation = Storage::disk('s3')->put($filePath, $request->file('input_vidfile'));
+                // $size = Storage::disk('s3')->size($filePath);
+                $size = $request->file('input_vidfile')->getSize();
+                $video->file_size = $size;
                 $UrlToSave = $fileLocation;
             }
         } else {
@@ -120,9 +115,8 @@ class VideosController extends Controller
 
         $video->url = $UrlToSave;
         $video->save();
-
-        return redirect('org/videos');
-
+        return response()->json(['success' => 'File Uploaded Successfully']);
+        //return redirect('org/videos');
         // if ($request->hasFile('VideoFile')) {
         //     $file = $request->file('VideoFile');
         //     $name = time() . $file->getClientOriginalName();
@@ -140,8 +134,7 @@ class VideosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id) {
         //
     }
 
@@ -151,8 +144,7 @@ class VideosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
+    public function edit($id) {
         $user = Auth::user();
         $video = Video::findOrFail($id);
         $events = $user->events->sortBy('created_at');
@@ -166,25 +158,24 @@ class VideosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id) {
         $validator = null;
         if (isset($request->IsUploadVideo)) {
             $validator = Validator::make($request->all(), [
-                'input_title' => 'required',
-                'input_vidfile' => 'required|mimes:mov,mp4,wmv,flv,avi'
+                        'input_title' => 'required',
+                        'input_vidfile' => 'required|mimes:mov,mp4,wmv,flv,avi'
             ]);
         } else {
             $validator = Validator::make($request->all(), [
-                'input_title' => 'required',
-                'input_url' => 'required',
+                        'input_title' => 'required',
+                        'input_url' => 'required',
             ]);
         }
 
         if ($validator->fails()) {
             return redirect('org/videos/' . $id)
-                ->withErrors($validator)
-                ->withInput();
+                            ->withErrors($validator)
+                            ->withInput();
         }
 
         $user = Auth::user();
@@ -202,8 +193,8 @@ class VideosController extends Controller
                 $filePath = 'org_' . $userId . '/Video/' . $name;
                 Storage::disk('s3')->put($filePath, file_get_contents($file));
                 $UrlToSave = $filePath;
-                $size=$request->file('input_vidfile')->getSize();
-                $video->file_size= $size;
+                $size = $request->file('input_vidfile')->getSize();
+                $video->file_size = $size;
             }
         } else {
             $UrlToSave = $request->input_url;
@@ -238,8 +229,12 @@ class VideosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request)
-    {
-        $video = Video::find($request->videoDeleteId)->delete();
+    public function destroy(Request $request) {
+        $video = Video::find($request->videoDeleteId);
+        if (!empty($video->url)) {
+            Storage::disk('s3')->delete($video->url);
+        }
+        $video->delete();
     }
+
 }

@@ -5,6 +5,7 @@
     <?php
     $CardTitle = "Add New Video";
     $ActionCall = url('org/videos/store');
+    $RedirectCall = url('org/videos');
     $title = "";
     $desription = "";
     $videoEventId = 0;
@@ -52,6 +53,7 @@
 
                     <form class="dragFileForm" action="{{$ActionCall}}" method="POST" enctype="multipart/form-data">
                         {{ csrf_field() }}
+                        <input type="hidden" id="hdnRedirect" value="{{$RedirectCall}}" />
                         <div class='form-group'>
                             <label for='input_title'>Video Title</label>
                             <input type="text" class="form-control" id="input_title" name='input_title' value="{{  old('input_title', $title) }}" placeholder="Enter Video Title" required>
@@ -77,6 +79,12 @@
                                     <p>Drag your video file here or click in this area.</p>
                                 </div>
                                 <small class="text-danger">{{ $errors->first('input_vidfile') }}</small>
+                            </div>
+                            <div class="form-group ">
+                                <div class="progress_upload">
+                                    <div class="bar_upload"></div >
+                                    <div class="percent_upload">0%</div >
+                                </div>
                             </div>
                             <!-- <div class="form-group"> -->
                             <!-- <label for="BlankLabel"></label>
@@ -142,10 +150,7 @@
                             </div>
                         </div>
 
-                        <div class="progress_upload">
-                            <div class="bar_upload"></div >
-                            <div class="percent_upload">0%</div >
-                        </div>
+
                         <button class="btn btn-primary px-5 pull-right" type="submit">Save Video</button>
                     </form>
 
@@ -262,13 +267,42 @@
 
 @section('script')
 <script src="{{asset('/js/VideoAndPodcast.js')}}" type="text/javascript"></script>
-<!-- <script>
-    $(document).ready(function() {
-        $('.dragFileForm input').change(function() {
-            $('.dragFileForm p').text(this.files.length + " file(s) selected");
+<script>
+    (function () {
+
+        var bar = $('.bar_upload');
+        var percent = $('.percent_upload');
+        //var status = $('#status');
+
+        $('.dragFileForm').ajaxForm({
+            beforeSend: function () {
+                //status.empty();
+                var percentVal = '0%';
+                var posterValue = $('input[name=input_vidfile]').fieldValue();
+                bar.width(percentVal)
+                percent.html(percentVal);                
+            },
+            uploadProgress: function (event, position, total, percentComplete) {
+                var percentVal = percentComplete + '%';
+                bar.width(percentVal);
+                percent.html(percentVal);
+                LoaderStart();
+            },
+            success: function () {
+                LoaderStop();
+                var percentVal = 'Redirecting..';
+                bar.width(percentVal);
+                percent.html(percentVal);
+            },
+            complete: function (xhr) {
+                //status.html(xhr.responseText);
+                //alert('Uploaded Successfully');
+
+                window.location.href = $('#hdnRedirect').val();
+            }
         });
-        UploadVideoBoxVideoCon();
-        showHideLinkEvent();
-    });
-</script> -->
+
+    })();
+</script>
+
 @endsection
