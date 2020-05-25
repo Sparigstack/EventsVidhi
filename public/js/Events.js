@@ -74,7 +74,7 @@ $(document).ready(function () {
         });
     });
 
-     $('#SaveSpeaker').on('submit', function (event) {
+     $('.SaveSpeaker').on('submit', function (event) {
         LoaderStart();
         event.preventDefault();
         var CurentForm=$(this);
@@ -102,16 +102,12 @@ $(document).ready(function () {
                 
                     //console.log(response);
                 // var HtmlContent='<ul class="list-group parent list-group-flush mb-2"><li class="list-group-item"><div class="media align-items-center"><div class="media-body ml-3"><h6 class="mb-0">'+ response.speakerTitle +' </h6><small class="small-font">'+ response.profilePicImage +'</small></div><div data-id="'+ response.id +'" onclick="RemoveSingleSpeaker(this);" type="file" urltype="" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor:pointer;"></i></div></div></li></ul>';
-                var HtmlContent = '<ul class="list-group parent list-group-flush shadow-none"><li class="list-group-item"><div class="media align-items-center"><img src="'+ response.profilePicImage +'" alt="user avatar" class="customer-img rounded" height="100" width="100"><div class="media-body ml-3"><h6 class="mb-0">'+ response.speakerFirstName + response.speakerLastName +'</h6><small class="small-font">'+ response.speakerOrganization + ' - ' + response.speakerDesc +'</small></div><div data-id="'+ response.id +'" onclick="RemoveSingleSpeaker(this);" type="file" urltype="" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor:pointer;"></i></div></li></ul>';
+                var HtmlContent = '<ul class="list-group parent list-group-flush shadow-none"><li class="list-group-item"><div class="media align-items-center"><img src="'+ response.profilePicImage +'" alt="user avatar" class="customer-img rounded" height="100" width="100"><div class="media-body ml-3"><h6 class="mb-0">'+ response.speakerFirstName + response.speakerLastName +'</h6><small class="small-font">'+ response.speakerOrganization + ' - ' + response.speakerDesc +'</small></div><div data-id="'+ response.id +'" onclick="EditSingleSpeaker(this);" Type="file UrlType="" class="mr-2"><i class="fa icon fas fa-edit clickable" style="font-size: 22px;cursor: pointer;"></i></div><div data-id="'+ response.id +'" onclick="RemoveSingleSpeaker(this);" type="file" urltype="" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor:pointer;"></i></div></li></ul>';
                 $('#uploadedSpeakers').append(HtmlContent);
-                $(CurentForm).find('#speakerTitle').val('');
-                $(CurentForm).find('#speakerFirstName').val('');
-                $(CurentForm).find('#speakerLastName').val('');
-                $(CurentForm).find('#speakerDesc').val('');
-                $(CurentForm).find('#speakerOrganization').val('');
-                $(CurentForm).find('#speakerLinkedinUrl').val('');
                 $('.speakerContainer').addClass('d-none');
-                $("#profilePicImage").attr('src','');
+                $(CurentForm).parent().addClass('d-none');
+                // $(CurentForm).parent().parent().find('.speakerList')removeClass('d-none');
+                $('#uploadedSpeakers').append(HtmlContent);
                 // $('.PodcastInvalid').empty();
                 LoaderStop();
             },
@@ -177,6 +173,13 @@ $(document).ready(function () {
         $('.TempTextPic').remove();
         document.getElementById('profilePicImage').src = window.URL.createObjectURL(this.files[0]);
         document.getElementById('profilePicImage').classList.remove('d-none');
+    });
+
+    $('.EditProfilePic').change(function() {
+        $('.TempTextPic').remove();
+        document.getElementsByClassName('profilePicImage').src = window.URL.createObjectURL(this.files[0]);
+        // document.getElementsByClassName('profilePicImage').classList.remove('d-none');
+        $('.profilePicImage').removeClass('d-none');
     });
 
     $('#video_file').change(function() {
@@ -368,4 +371,73 @@ function RemoveSingleSpeaker(element) {
         }
     });
 
+}
+
+function EditSingleSpeaker(element) {
+    LoaderStart();
+    event.preventDefault();
+    var id = $(element).attr('data-id');
+    // var type = $(element).attr('Type');
+    // var urltype = $(element).attr('urltype');
+    var Field = findParent(element);
+    var urlString = $('.editEventSpeakers').val();
+    urlString += "/" + id;
+    var CSRF_TOKEN = $('.csrf-token').val();
+    var countryId = $(element).val();
+
+    $.ajax({
+        url: urlString,
+        type: 'post',
+        data: {_token: CSRF_TOKEN, id: id},
+        success: function (response) {
+            $(Field).addClass('d-none');
+            $(Field).parent().find('.editSpeakerContainer').removeClass('d-none');
+            if($(Field).parent().find("#profilePicImage").attr('db-pic') != ""){
+                $(Field).parent().find("#profilePicImage").removeClass("d-none");
+                $(Field).parent().find(".TempTextPic").addClass("d-none");
+                $(Field).parent().find(".deletePicDiv").removeClass("d-none");
+            } else{
+                $(Field).parent().find("#profilePicImage").addClass("d-none");
+                $(Field).parent().find(".TempTextPic").removeClass("d-none");
+                $(Field).parent().find(".deletePicDiv").addClass("d-none");
+            }
+            LoaderStop();
+            console.log(response);
+        },
+        error: function (error) {
+            alert('An Error Occured');
+            LoaderStop();
+            console.log(error);
+        }
+    });
+
+}
+
+function removeOldProfilePic(element){
+    LoaderStart();
+    var Field = findParent(element);
+    var dataPic = $(element).attr('data-pic');
+    var id = $(Field).parent().find(".speakerId").val();
+    var urlString = $('.deleteProfilePic').val();
+    var CSRF_TOKEN = $('.csrf-token').val();
+
+    $.ajax({
+        url: urlString,
+        type: 'post',
+        data: {_token: CSRF_TOKEN, id: id, dataPic:dataPic},
+        success: function (response) {
+            console.log(response);
+            $(Field).parent().find(".TempTextPic").removeClass('d-none');
+            $(Field).parent().find(".deletePicDiv").addClass('d-none');
+            $(Field).parent().find(".profilePicImage").addClass('d-none');
+            $(Field).parent().find(".profilePicImage").attr('src','');
+            $(Field).parent().find(".profilePicImage").attr('db-pic','');
+            LoaderStop();
+        },
+        error: function (error) {
+            // alert('An Error Occured');
+            LoaderStop();
+            console.log(error);
+        }
+    });
 }

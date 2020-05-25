@@ -320,6 +320,9 @@ class EventsController extends Controller
         }
 
         $speaker = new Speaker;
+        if($request->speakerId){
+            $speaker = Speaker::findOrFail($request->speakerId);
+        }
         $speaker->title = $request->speakerTitle;
         $speaker->first_name = $request->speakerFirstName;
         $speaker->last_name = $request->speakerLastName;
@@ -339,12 +342,24 @@ class EventsController extends Controller
                 //$FinalUrl = env('AWS_URL'); 
                 $FinalUrl .= $UrlToSave;
             }
-        $speaker->profile_pic = $FinalUrl;
+        if($request->dataPic ==""){
+            $speaker->profile_pic = $FinalUrl;
+        } else{
+            $speaker->profile_pic = $request->dataPic;
+        }
+        // $speaker->profile_pic = $FinalUrl;
         $speaker->event_id = $request->EventToLinkId;
         $speaker->save();
+
+        $profileUrl = "";
+        if($FinalUrl != ""){
+            $profileUrl = env('AWS_URL'). $FinalUrl;
+        } else{
+            $profileUrl = "https://via.placeholder.com/110x110";
+        }
         
         return response()->json([
-            'profilePicImage' => env('AWS_URL'). $FinalUrl,
+            'profilePicImage' => $profileUrl,
             'speakerFirstName' => $speaker->first_name,
             'speakerLastName' => $speaker->last_name,
             'speakerOrganization' => $speaker->organization,
@@ -562,5 +577,18 @@ class EventsController extends Controller
             $cityOptions .= "<option value='" . $city->id . "' >" . $city->name . "</option>";
         }
         return $cityOptions;
+    }
+
+    public function deleteProfilePic(Request $request){
+        if ($request->dataPic) {
+                Storage::disk('s3')->delete($request->dataPic);
+                $speaker = Speaker::findOrFail($request->id);
+                $speaker->profile_pic = "";
+                $speaker->save();
+        }
+    }
+
+    public function editSpeaker(Request $request, $id){
+        // $speakers = Speaker::findOrFail($id);
     }
 }
