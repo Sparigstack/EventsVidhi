@@ -40,6 +40,7 @@ Route::post('org/events/deleteVideo/{id}/{Type}/{UrlType}', 'org\EventsControlle
 Route::post('org/events/speaker/store', 'org\EventsController@storeSpeaker');
 Route::post('org/events/deleteSpeaker/{id}/{Type}/{UrlType}', 'org\EventsController@destroyVideo');
 Route::post('org/events/editSpeaker/{id}', 'org\EventsController@editSpeaker');
+Route::post('org/events/updateSpeaker/{id}', 'org\EventsController@updateSpeaker');
 Route::post('org/events/speaker/deleteProfilePic', 'org\EventsController@deleteProfilePic');
 Route::post('org/events/podcast/store', 'org\EventsController@storePodcast');
 
@@ -59,3 +60,11 @@ Route::post('deletePodcast', 'org\PodcastsController@destroy');
 
 Route::post('getState', 'org\EventsController@getState');
 Route::post('getCity', 'org\EventsController@getCity');
+
+Route::get('profile', function () {
+    return view('profile');
+});
+
+Route::get('account', function () {
+    return view('account');
+});

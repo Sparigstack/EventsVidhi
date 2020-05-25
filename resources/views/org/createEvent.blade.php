@@ -622,7 +622,6 @@
                         echo "active";
                     } ?>" 
                     id="tabe-16">
-                    <input type="hidden" class="editEventSpeakers" value="{{url('org/events/editSpeaker')}}">
                     <?php if ($IsNew == false) { ?>
                 <div class="col-lg-12">
                             <div class="card">
@@ -655,75 +654,6 @@
                     </li>
                                                     </ul>
 
-                                                    <div class="card col-lg-12 p-4 editSpeakerContainer d-none m-auto parent">
-                                        <form class="SaveSpeaker" id="SaveSpeaker" name="SaveSpeaker" method="post" enctype="multipart/form-data">
-                                            {{ csrf_field() }}
-                                            <input type="hidden" class="addSpeakers" value="{{url('org/events/speaker/store')}}">
-                                            <input type="text" name="EventToLinkId" id="EventToLink" class="d-none" value="{{$event->id}}" />
-                                            <input type="hidden" class="speakerId" name="speakerId" value="{{$speaker->id}}">
-                                            <input type="hidden" class="deleteProfilePic" name="deleteProfilePic" value="{{url('org/events/speaker/deleteProfilePic')}}">
-
-                                        <div class="form-group col-lg-12 row">
-                                            <div class="form-group col-lg-6">
-                                                <label for="profilePicImage">Profile Pic</label>
-                                                <div class="mr-4 pr-5 deletePicDiv">
-                                                <i class="fa fa-close" style="display: flex;justify-content: center;cursor:pointer;" onclick="removeOldProfilePic(this);" data-pic="{{$speaker->profile_pic}}"> </i>
-                                                <input type="hidden" class="dataPic" name="dataPic" value="{{$speaker->profile_pic}}">
-                                                </div>
-                                                <div class="dragFileContainer thumbNailContainer" style="display: flex;justify-content: center;">
-                                                    <input type="file" accept="image/*" id="EventProfilePicImage" name="profilePicImageUpload" class="form-control files EditProfilePic" picvalue="">
-                                                    <?php
-                                                        $picUrl = "";
-                                                        if($speaker->profile_pic){
-                                                            $picUrl = env('AWS_URL') . $speaker->profile_pic;
-                                                        }
-                                                     ?>
-                                                <img id="profilePicImage"  src="{{$picUrl}}" class="imageRadius w-100 profilePicImage" alt="your image" width="100" value="" db-pic="{{$speaker->profile_pic}}" />
-                                                        <p id="TempTextThumb" class="TempTextPic">Drop your image here or click to upload.</p>
-                                                </div>
-                                            </div>
-
-
-                                            <div class="form-group col-lg-6">
-                                                <label for="speakerTitle">Title</label>
-                                                <input type="text" class="form-control mb-2" id="speakerTitle" value="{{$speaker->title}}" name="speakerTitle" placeholder="Enter Title" required="">
-                                                <small class="text-danger"></small>
-
-                                                <label for="speakerFirstName">First Name</label>
-                                                <input type="text" class="form-control mb-2" id="speakerFirstName" value="{{$speaker->first_name}}" name="speakerFirstName" placeholder="Enter First Name" required="">
-                                                <small class="text-danger"></small>
-
-                                                <label for="speakerLastName">Last Name</label>
-                                                <input type="text" class="form-control" id="speakerLastName" value="{{$speaker->last_name}}" name="speakerLastName" placeholder="Enter Last Name" required="">
-                                                <small class="text-danger"></small>
-                                                
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group col-lg-12">
-                                            <label for="speakerDesc">Description</label>
-                                            <textarea id="speakerDesc" name="speakerDesc" required="" class="form-control" title="Description" placeholder="Description" autocomplete="off" rows="4">{{$speaker->description}}</textarea>
-                                            <small class="text-danger"></small>
-                                        </div>
-
-                                        <div class="form-group col-lg-12">
-                                            <label for="speakerOrganization">Organization</label>
-                                                <input type="text" class="form-control" id="speakerOrganization" value="{{$speaker->organization}}" name="speakerOrganization" placeholder="Enter Organization" required="">
-                                                <small class="text-danger"></small>
-                                        </div>
-
-                                        <div class="form-group col-lg-12">
-                                            <label for="speakerLinkedinUrl">LinkedIn URL</label>
-                                                <input type="text" class="form-control" id="speakerLinkedinUrl" value="{{$speaker->linkedin_url}}" name="speakerLinkedinUrl" placeholder="Enter LinkedIn Url">
-                                                <small class="text-danger"></small>
-                                        </div>
-
-                                        <div class="col-lg-12">
-                                                    <button type="submit" id="speakerSubmitButton" data-id="" class="btn btn-primary px-5 pull-right"> Save Speaker</button>
-                                                </div>
-                                        </form>
-                                     </div>
-
                                  </div>
                                             <?php } ?>
                                         </div>
@@ -734,6 +664,9 @@
                                         <form class="SaveSpeaker" id="SaveSpeaker" name="SaveSpeaker" method="post" enctype="multipart/form-data">
                                             {{ csrf_field() }}
                                             <input type="hidden" class="addSpeakers" value="{{url('org/events/speaker/store')}}">
+                                            <input type="hidden" class="editEventSpeakers" value="{{url('org/events/editSpeaker')}}">
+                                            <input type="hidden" class="updateSpeaker" value="{{url('org/events/updateSpeaker')}}">
+                                            <input type="hidden" class="speakerId" value="" name="speakerId">
                                             <input type="hidden" class="removeEventSpeakers" value="{{url('org/events/deleteSpeaker')}}">
                                             <input type="text" name="EventToLinkId" id="EventToLink" class="d-none" value="{{$event->id}}" />
 

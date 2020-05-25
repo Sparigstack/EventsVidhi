@@ -320,9 +320,6 @@ class EventsController extends Controller
         }
 
         $speaker = new Speaker;
-        if($request->speakerId){
-            $speaker = Speaker::findOrFail($request->speakerId);
-        }
         $speaker->title = $request->speakerTitle;
         $speaker->first_name = $request->speakerFirstName;
         $speaker->last_name = $request->speakerLastName;
@@ -342,12 +339,12 @@ class EventsController extends Controller
                 //$FinalUrl = env('AWS_URL'); 
                 $FinalUrl .= $UrlToSave;
             }
-        if($request->dataPic ==""){
-            $speaker->profile_pic = $FinalUrl;
-        } else{
-            $speaker->profile_pic = $request->dataPic;
-        }
-        // $speaker->profile_pic = $FinalUrl;
+        // if($request->dataPic ==""){
+        //     $speaker->profile_pic = $FinalUrl;
+        // } else{
+        //     $speaker->profile_pic = $request->dataPic;
+        // }
+        $speaker->profile_pic = $FinalUrl;
         $speaker->event_id = $request->EventToLinkId;
         $speaker->save();
 
@@ -589,6 +586,64 @@ class EventsController extends Controller
     }
 
     public function editSpeaker(Request $request, $id){
-        // $speakers = Speaker::findOrFail($id);
+        $speakers = Speaker::findOrFail($request->id);
+        return $speakers;
+    }
+
+    public function updateSpeaker(Request $request, $id){
+        $validator = null;
+            $validator = Validator::make($request->all(), [
+                'speakerTitle' => 'required',
+                'speakerFirstName' => 'required',
+                'speakerLastName' => 'required',
+                'speakerOrganization' => 'required',
+            ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'error' => $validator->errors(),
+            ]);
+        }
+
+        $speaker = Speaker::findOrFail($id);
+        $speaker->title = $request->speakerTitle;
+        $speaker->first_name = $request->speakerFirstName;
+        $speaker->last_name = $request->speakerLastName;
+        $speaker->description = $request->speakerDesc;
+        $speaker->organization = $request->speakerOrganization;
+        $speaker->linkedin_url = $request->speakerLinkedinUrl;
+        $userId = Auth::id();
+        $UrlToSave = "";
+        $FinalUrl = "";
+        if ($request->hasFile('profilePicImageUpload')) {
+                $file = $request->file('profilePicImageUpload');
+                $name = time() . $file->getClientOriginalName();
+                $userId = Auth::id();
+                $filePath = 'org_' . $userId . '/Speaker/' . $name;
+                Storage::disk('s3')->put($filePath, file_get_contents($file));
+                $UrlToSave = $filePath;
+                //$FinalUrl = env('AWS_URL'); 
+                $FinalUrl .= $UrlToSave;
+            }
+        $speaker->profile_pic = $FinalUrl;
+        $speaker->event_id = $request->EventToLinkId;
+        $speaker->save();
+
+        $profileUrl = "";
+        if($FinalUrl != ""){
+            $profileUrl = env('AWS_URL'). $FinalUrl;
+        } else{
+            $profileUrl = "https://via.placeholder.com/110x110";
+        }
+        
+        return response()->json([
+            'profilePicImage' => $profileUrl,
+            'speakerFirstName' => $speaker->first_name,
+            'speakerLastName' => $speaker->last_name,
+            'speakerOrganization' => $speaker->organization,
+            'speakerDesc' => $speaker->description,
+            'id' => $speaker->id,
+            'error' => ''
+        ]);
     }
 }
