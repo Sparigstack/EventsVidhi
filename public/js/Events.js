@@ -107,7 +107,7 @@ $(document).ready(function () {
                 $('.speakerContainer').addClass('d-none');
                 $(CurentForm).parent().addClass('d-none');
                 // $(CurentForm).parent().parent().find('.speakerList')removeClass('d-none');
-                $('#uploadedSpeakers').append(HtmlContent);
+                // $('#uploadedSpeakers').append(HtmlContent);
                 // $('.PodcastInvalid').empty();
                 LoaderStop();
             },
@@ -375,6 +375,11 @@ function RemoveSingleSpeaker(element) {
 
 function EditSingleSpeaker(element) {
     LoaderStart();
+    $('.editSpeakerContainer').removeClass('d-none');
+    $("#profilePicImage").removeClass("d-none");
+    $(".TempTextPic").addClass("d-none");
+    $(".deletePicDiv").removeClass("d-none");
+
     event.preventDefault();
     var id = $(element).attr('data-id');
     // var type = $(element).attr('Type');
