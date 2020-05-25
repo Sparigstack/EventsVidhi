@@ -1,23 +1,23 @@
 .imageRadius{
-	border-radius: 8px;
-  max-height: 180px;
-  min-height: 180px;
+    border-radius: 8px;
+    max-height: 180px;
+    min-height: 180px;
 }
 .customButtons .simpleButton{
-	display: none;
+    display: none;
 }
 .xdsoft_datetimepicker .xdsoft_datepicker.active+.xdsoft_timepicker{
-	margin-top: 30px !important;
+    margin-top: 30px !important;
 }
 .addNewEventButton button{
-	/*background: #80808021 !important;*/
+    /*background: #80808021 !important;*/
 }
 .addNewEventButton button a{
-	/*color:black !important;*/
-  color:white !important;
+    /*color:black !important;*/
+    color:white !important;
 }
 .createEventContainer{
-	padding-right: 25px !important;
+    padding-right: 25px !important;
     padding-left: 25px !important;
 }
 .dragFileForm{
@@ -26,59 +26,59 @@
     min-height: auto;
 }
 .dragFileContainer{
-  border: 4px dashed darkgray;
-  /*position: absolute;*/
-  width: 100%;
+    border: 4px dashed darkgray;
+    /*position: absolute;*/
+    width: 100%;
 }
 .thumbNailContainer{
-  width: 40%;
+    width: 40%;
 }
 .thumbNailContainer p{
-  text-align: center !important;
-  height: 170px !important;
-  align-items: center !important;
-  cursor: pointer !important;
-  line-height: unset!important;
+    text-align: center !important;
+    height: 170px !important;
+    align-items: center !important;
+    cursor: pointer !important;
+    line-height: unset!important;
     display: flex;
 }
 .dragFileContainer p{
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  line-height: 170px;  
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    line-height: 170px;  
 }
 .dragFileContainer input{
-  position: absolute;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 30%;
-  outline: none;
-  opacity: 0;
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 30%;
+    outline: none;
+    opacity: 0;
 }
 .dragFileContainer #EventBannerImage{
-  width: 94%;
-  height: 75%;
+    width: 94%;
+    height: 75%;
 }
 .dragFileContainer #EventThumbnailImage{
-  width: 38%;
-  height: 70%
+    width: 38%;
+    height: 70%
 }
 #thumbnailImage{
-  width: 100%;
+    width: 100%;
 }
 #pageloader-overlay.visible {
-  opacity: 0.5 !important;
+    opacity: 0.5 !important;
 }
 .secondary{
-  padding: 4px !important;
+    padding: 4px !important;
 }
 /* .dragFileForm .btn.btn-primary{
     position: absolute;right: 0;bottom: 0;
 } */
 /*.dragFileContainer button:hover{
   background: #149174;
-	color: #0C5645;
+        color: #0C5645;
 }
 .dragFileContainer button:active{
   border:0;
@@ -94,10 +94,14 @@ table .max-w-table-100 .btn{margin: 10px auto;min-width: 60px;}
     white-space: normal!important;
 }
 .UserIconWithText{
-  display: flex !important;
-  align-items: flex-end !important;
+    display: flex !important;
+    align-items: flex-end !important;
 }
 .AvailableStorage{
-  font-size: 15px;
-  color: #505050c7;
+    font-size: 15px;
+    color: #505050c7;
 }
+
+.progress_upload { position:relative; width:100%; border: 1px solid #7F98B2; padding: 1px; border-radius: 3px; }
+.bar_upload { background-color: #B4F5B4; width:0%; height:25px; border-radius: 3px; }
+.percent_upload { position:absolute; display:inline-block; top:3px; left:48%; color: #7F98B2;}

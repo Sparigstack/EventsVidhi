@@ -16,18 +16,18 @@
         $CardTitle = "Edit Video";
         $title = $video->title;
         $desription = $video->url;
-        if(isset($video->description)){
+        if (isset($video->description)) {
             $videoDescription = $video->description;
         }
         // $desription = $video->description;
         // if (!empty($video->desription)) {
         //     $desription = $video->desription;
         // }
-        if(isset($video->event)){
+        if (isset($video->event)) {
             $linkedEventCheckced = "checked";
             // $desription = $video->url;
             // $desription = "Event:".$video->event->title;
-        }else{
+        } else {
             // $desription = $video->url;
             // $desription = $video->description;
         }
@@ -51,7 +51,7 @@
                     @endif
 
                     <form class="dragFileForm" action="{{$ActionCall}}" method="POST" enctype="multipart/form-data">
-                    {{ csrf_field() }}
+                        {{ csrf_field() }}
                         <div class='form-group'>
                             <label for='input_title'>Video Title</label>
                             <input type="text" class="form-control" id="input_title" name='input_title' value="{{  old('input_title', $title) }}" placeholder="Enter Video Title" required>
@@ -62,12 +62,12 @@
                         </div>
 
                         <div class="form-group">
-                                <label for="BlankLabel"></label>
-                                <div class="icheck-material-primary">
-                                    <input onclick="UploadVideoBoxVideoCon()" type="checkbox" id="IsUploadVideo" name="IsUploadVideo" @if(old('IsUploadVideo')) checked @endif>
-                                    <label for="IsUploadVideo">Or upload video</label>
-                                </div>
+                            <label for="BlankLabel"></label>
+                            <div class="icheck-material-primary">
+                                <input onclick="UploadVideoBoxVideoCon()" type="checkbox" id="IsUploadVideo" name="IsUploadVideo" @if(old('IsUploadVideo')) checked @endif>
+                                       <label for="IsUploadVideo">Or upload video</label>
                             </div>
+                        </div>
 
                         <div class='parent' style='width: 100%;'>
                             <div class='form-group  d-none uploadVideoBox'>
@@ -79,34 +79,34 @@
                                 <small class="text-danger">{{ $errors->first('input_vidfile') }}</small>
                             </div>
                             <!-- <div class="form-group"> -->
-                                <!-- <label for="BlankLabel"></label>
-                                 <input type="hidden" class="linkedEvent" name="linkedEvent" value=""> -->
-                                <!-- <div class="icheck-material-primary"> -->
-                                    <!-- <input onchange='showHideLinkEvent(this);' type="checkbox" id="IsLinkedEvent" name="IsLinkedEvent" @if(old('IsLinkedEvent', $linkedEventCheckced)) checked @endif> -->
+                            <!-- <label for="BlankLabel"></label>
+                             <input type="hidden" class="linkedEvent" name="linkedEvent" value=""> -->
+                            <!-- <div class="icheck-material-primary"> -->
+                                <!-- <input onchange='showHideLinkEvent(this);' type="checkbox" id="IsLinkedEvent" name="IsLinkedEvent" @if(old('IsLinkedEvent', $linkedEventCheckced)) checked @endif> -->
 
                                     <!-- <input onchange='showHideLinkEvent(this);' type="radio" id="IsLinkedEvent" name="IsLinkedEvent" @if(old('IsLinkedEvent', $linkedEventCheckced)) checked @endif> Yes
                                     <input onchange='showHideLinkEvent(this);' type="radio" id="noEvent" name="noEvent" @if(old('IsLinkedEvent', $linkedEventCheckced)) checked @endif> No -->
 
-                                    <!-- <label for="IsLinkedEvent"> Do you want to link this video with any Event?</label> -->
-                                <!-- </div> -->
+                            <!-- <label for="IsLinkedEvent"> Do you want to link this video with any Event?</label> -->
+                            <!-- </div> -->
 
                             <!-- </div> -->
 
                             <div class="form-group">
                                 <label for="BlankLabel"></label>
-                                 <input type="hidden" class="linkedEvent" name="linkedEvent" value="">
-                                    <p> Do you want to link this video with any Event?</p>
-                                    <div class="row pl-3">
+                                <input type="hidden" class="linkedEvent" name="linkedEvent" value="">
+                                <p> Do you want to link this video with any Event?</p>
+                                <div class="row pl-3">
                                     <div class="icheck-material-primary">
                                         <input onchange='showHideLinkEvent(this);' type="radio" class="" id="yesEventLinked" name="IsLinkedEvent" @if(old('IsLinkedEvent', $linkedEventCheckced)) checked @endif>
-                                            <label for="yesEventLinked">Yes</label>
+                                               <label for="yesEventLinked">Yes</label>
                                     </div>
                                     <div class="icheck-material-primary pl-2">
-                                        <?php 
-                                            $checkedRadio = "checked";
-                                            if($videoEventId != 0){
-                                                $checkedRadio = "";
-                                            }
+                                        <?php
+                                        $checkedRadio = "checked";
+                                        if ($videoEventId != 0) {
+                                            $checkedRadio = "";
+                                        }
                                         ?>
                                         <input onchange='showHideLinkEvent(this);' type="radio" id="noEventLinked" name="IsLinkedEvent" {{$checkedRadio}}>
                                         <label for="noEventLinked">No</label>
@@ -115,8 +115,8 @@
                             </div>
 
                             <div class="form-group descriptionDiv">
-                                            <label for="Description">Video Description</label>
-                                            <textarea id="Description" name="Description" class="form-control" title="Description" placeholder="Description" autocomplete="off" rows="4">{{ old('Description', $videoDescription) }}</textarea>
+                                <label for="Description">Video Description</label>
+                                <textarea id="Description" name="Description" class="form-control" title="Description" placeholder="Description" autocomplete="off" rows="4">{{ old('Description', $videoDescription) }}</textarea>
                             </div>
                             <div id='linkEvent' class="form-group EventSelectionBox d-none">
                                 <!-- <label for="EventToLink mb-0">Link To Event</label> -->
@@ -134,7 +134,7 @@
                                         //                                        if ($event->id == $eventId) {
                                         //                                            $IsSelected = "selected";
                                         //                                        }
-                                    ?>
+                                        ?>
                                         <option value="{{$event->id}}" {{$IsSelected}}  @if (old('EventToLink')==$event->id) selected="selected" @endif ><?php echo $event->title; ?> </option>
                                     <?php } ?>
 
@@ -142,7 +142,10 @@
                             </div>
                         </div>
 
-
+                        <div class="progress_upload">
+                            <div class="bar_upload"></div >
+                            <div class="percent_upload">0%</div >
+                        </div>
                         <button class="btn btn-primary px-5 pull-right" type="submit">Save Video</button>
                     </form>
 
