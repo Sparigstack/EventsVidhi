@@ -26,6 +26,7 @@ function deleteVideo(element) {
     var videoDeleteId = $(element).attr('db-delete-id');
     var CSRF_TOKEN = $('.csrf-token').val();
     var urlString = $('.deleteVideo').val();
+    LoaderStart();
     $.ajax({
         url: urlString,
         type: 'post',
