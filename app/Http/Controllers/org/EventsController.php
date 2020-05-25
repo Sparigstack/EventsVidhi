@@ -301,9 +301,9 @@ class EventsController extends Controller
     }
 
     public function storeSpeaker(Request $request){
-        // return response()->json([
-        //     'test' =>  'mansi',
-        // ]);
+//         return response()->json([
+//             'eventid' =>  $request->EventToLinkId,
+//         ]);
 
         $validator = null;
             $validator = Validator::make($request->all(), [
@@ -329,8 +329,8 @@ class EventsController extends Controller
         $userId = Auth::id();
         $UrlToSave = "";
         $FinalUrl = "";
-        if ($request->hasFile('profilePicImage')) {
-                $file = $request->file('profilePicImage');
+        if ($request->hasFile('profilePicImageUpload')) {
+                $file = $request->file('profilePicImageUpload');
                 $name = time() . $file->getClientOriginalName();
                 $userId = Auth::id();
                 $filePath = 'org_' . $userId . '/Speaker/' . $name;
@@ -340,8 +340,18 @@ class EventsController extends Controller
                 $FinalUrl .= $UrlToSave;
             }
         $speaker->profile_pic = $FinalUrl;
-        $speaker->event_id = $request->eventId;
+        $speaker->event_id = $request->EventToLinkId;
         $speaker->save();
+        
+        return response()->json([
+            'profilePicImage' => env('AWS_URL'). $FinalUrl,
+            'speakerFirstName' => $speaker->first_name,
+            'speakerLastName' => $speaker->last_name,
+            'speakerOrganization' => $speaker->organization,
+            'speakerDesc' => $speaker->description,
+            'id' => $speaker->id,
+            'error' => ''
+        ]);
     }
 
     /**
@@ -489,7 +499,14 @@ class EventsController extends Controller
     }
     public function destroyVideo($id, $Type, $UrlType)
     {
-        if ($Type == "podcast") {
+        if($Type == "speaker"){
+            $speaker = Speaker::find($id);
+            if (!empty($speaker->profile_pic)) {
+                Storage::disk('s3')->delete($speaker->profile_pic);
+            }
+            Speaker::find($id)->delete();
+        }
+        else if ($Type == "podcast") {
             // $event = Podcast::find($id)->delete();
             $media = Podcast::find($id);
             if (!empty($media->url)) {

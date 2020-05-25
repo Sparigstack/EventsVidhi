@@ -38,7 +38,7 @@ Route::post('org/events/videos/store', 'org\EventsController@storeVideo');
 Route::post('org/events/update', 'org\EventsController@UpdateEventStatus');
 Route::post('org/events/deleteVideo/{id}/{Type}/{UrlType}', 'org\EventsController@destroyVideo');
 Route::post('org/events/speaker/store', 'org\EventsController@storeSpeaker');
-Route::post('org/events/deleteSpeaker/{id}', 'org\EventsController@destroySpeaker');
+Route::post('org/events/deleteSpeaker/{id}/{Type}/{UrlType}', 'org\EventsController@destroyVideo');
 Route::post('org/events/podcast/store', 'org\EventsController@storePodcast');
 
 Route::get('org/videos', 'org\VideosController@index');

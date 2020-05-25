@@ -51,14 +51,14 @@
 
 <body>
 <!-- <?php
-$videoSize = Auth::user()->videos->sum('file_size');
+//$videoSize = Auth::user()->videos->sum('file_size');
 // $fs=Video::where('user_id', 4)->sum('file_size');
 // return $fs/8589934592;
 ?> -->
 {{$vidSize= Auth::user()->videos->sum('file_size')}}
 {{$podSize= Auth::user()->podcasts->sum('file_size')}}
 {{$total=$vidSize+$podSize}}
-{{$totalGb=$total/8589934592}}
+{{$totalGb=$total/1073741824}}
 
     <div id="pageloader-overlay" class="visible incoming" style="display: none;">
         <div class="loader-wrapper-outer">
@@ -174,7 +174,8 @@ $videoSize = Auth::user()->videos->sum('file_size');
 
                     <li class="nav-item">
                         <a class="nav-link dropdown-toggle dropdown-toggle-nocaret UserIconWithText" data-toggle="dropdown" href="#">
-                            <div class="mr-2 AvailableStorage">{{ number_format((float)$totalGb, 2, '.', '')}} GB Used out of 3GB</div>
+                            <div class="mr-2 AvailableStorage">{{ number_format((float)$totalGb, 3, '.', '')}} GB Used out of 3GB</div>
+                            <!--<div class="mr-2 AvailableStorage">{{ $totalGb }} GB Used out of 3GB</div>-->
                             <div>
                                 <span class="user-profile"><img src="https://via.placeholder.com/110x110" class="img-circle" alt="user avatar"></span>
                             </div>

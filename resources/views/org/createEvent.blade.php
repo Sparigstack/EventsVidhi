@@ -668,7 +668,7 @@
                                                 <label for="profilePicImage">Profile Pic</label>
                                                 <div class="dragFileContainer thumbNailContainer" style="display: flex;justify-content: center;">
                                                     <input type="file" accept="image/*" id="EventProfilePicImage" name="profilePicImageUpload" class="form-control files" picvalue="">
-                                                <img id="profilePicImage" src="" class="d-none imageRadius w-100 {{$profilePicHidden}}" alt="your image" width="100" value="">
+                                                <img id="profilePicImage"  src="" class="d-none imageRadius w-100 {{$profilePicHidden}}" alt="your image" width="100" value="">
                                                         <p id="TempTextThumb" class="TempTextPic">Drop your image here or click to upload.</p>
                                                 </div>
                                             </div>

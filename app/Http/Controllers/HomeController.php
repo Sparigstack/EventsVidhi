@@ -14,7 +14,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        //$this->middleware('auth');
     }
 
     /**
@@ -24,8 +24,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        Artisan::call('config:clear');
-        Artisan::call('cache:clear');
+//        Artisan::call('config:clear');
+//        Artisan::call('cache:clear');
         return view('home');
     }
 }
