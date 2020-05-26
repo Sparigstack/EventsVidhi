@@ -286,20 +286,24 @@
                 var percentVal = percentComplete + '%';
                 bar.width(percentVal);
                 percent.html(percentVal);
-                LoaderStart();
+                if(percentComplete==100){
+                    window.location.href = $('#hdnRedirect').val();
+                }
+               
+               // LoaderStart();
             },
-            success: function () {
-                LoaderStop();
-                var percentVal = 'Redirecting..';
-                bar.width(percentVal);
-                percent.html(percentVal);
-            },
-            complete: function (xhr) {
-                //status.html(xhr.responseText);
-                //alert('Uploaded Successfully');
+            // success: function () {
+            //     LoaderStop();
+            //     var percentVal = 'Redirecting..';
+            //     bar.width(percentVal);
+            //     percent.html(percentVal);
+            // },
+            // complete: function (xhr) {
+            //     //status.html(xhr.responseText);
+            //     //alert('Uploaded Successfully');
 
-                window.location.href = $('#hdnRedirect').val();
-            }
+            //     window.location.href = $('#hdnRedirect').val();
+            // }
         });
 
     })();

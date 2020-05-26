@@ -97,19 +97,7 @@ class VideosController extends Controller {
                 // $size = $request->file('input_vidfile')->getSize();
                 // $video->file_size = $size;
                 // $UrlToSave = $fileLocation;
-
-                $file = $request->file('input_vidfile');
-                // $name = time() . $file->getClientOriginalName();
-                // $userId = Auth::id();
-                // // $filePath = 'org_' . $userId . '/Video/' . $name;
-                // $filePath = 'org_' . $userId . '/Video';
-                // $fileLocation = Storage::disk('s3')->put($filePath, $request->file('input_vidfile'));
-                // // $size = Storage::disk('s3')->size($filePath);
-                $filePath = "public/TemporaryFiles";
-                $fileLocation = Storage::disk('local')->put($filePath, $request->file('input_vidfile'));
-                $size = $request->file('input_vidfile')->getSize();
-                $video->file_size = $size;
-                $UrlToSave = $fileLocation;
+                $UrlToSave = "In Progress";
             }
         } else {
             $UrlToSave = $request->input_url;
@@ -128,6 +116,25 @@ class VideosController extends Controller {
 
         $video->url = $UrlToSave;
         $video->save();
+
+      
+        if (isset($request->IsUploadVideo)) {
+            if ($request->hasFile('input_vidfile')) {
+                $videoupdate=Video::findOrFail($video->id);
+                $file = $request->file('input_vidfile');
+               // $name = time() . $file->getClientOriginalName();
+                $userId = Auth::id();
+                // $filePath = 'org_' . $userId . '/Video/' . $name;
+                $filePath = 'org_' . $userId . '/Video';
+                $fileLocation = Storage::disk('s3')->put($filePath, $request->file('input_vidfile'));
+                // $size = Storage::disk('s3')->size($filePath);
+                $size = $request->file('input_vidfile')->getSize();
+                $videoupdate->file_size = $size;
+                $videoupdate->url = $fileLocation;
+                $videoupdate->save();
+            }
+        }
+
         return response()->json(['success' => 'File Uploaded Successfully']);
         //return redirect('org/videos');
         // if ($request->hasFile('VideoFile')) {
