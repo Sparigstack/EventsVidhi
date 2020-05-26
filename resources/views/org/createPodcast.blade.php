@@ -5,6 +5,7 @@
     <?php
     $CardTitle = "Add New Podcast";
     $ActionCall = url('org/podcasts/store');
+    $RedirectCall = url('org/podcasts');
     $title = "";
     $desription = "";
     $podcastVideoEventId = 0;
@@ -49,6 +50,7 @@
 
                     <form class="dragFileForm" action="{{$ActionCall}}" method="POST" enctype="multipart/form-data">
                     {{ csrf_field() }}
+                    <input type="hidden" id="hdnRedirect" value="{{$RedirectCall}}" />
                         <div class='form-group'>
                             <label for='input_title'>Podcast Title</label>
                             <input type="text" class="form-control" id="input_title" name='input_title' value="{{  old('input_title', $title) }}" placeholder="Enter Podcast Title" required>
