@@ -60,14 +60,14 @@
                         </div>
                         <div class='form-group'>
                             <label for='input_url'>Video URL</label><span style="font-size: 11px;font-weight: 600;">&nbsp;&nbsp;(YouTube or Vimeo url)</span>
-                            <input type="text" class="form-control" id="input_url" name="input_url"  value="{{  old('input_url', $desription) }}" placeholder="Enter Video URL" required>
+                            <input type="text" class="form-control" id="input_url" name="input_url" value="{{  old('input_url', $desription) }}" placeholder="Enter Video URL" required>
                         </div>
 
                         <div class="form-group">
                             <label for="BlankLabel"></label>
                             <div class="icheck-material-primary">
                                 <input onclick="UploadVideoBoxVideoCon()" type="checkbox" id="IsUploadVideo" name="IsUploadVideo" @if(old('IsUploadVideo')) checked @endif>
-                                       <label for="IsUploadVideo">Or upload video</label>
+                                <label for="IsUploadVideo">Or upload video</label>
                             </div>
                         </div>
 
@@ -75,24 +75,24 @@
                             <div class='form-group  d-none uploadVideoBox'>
                                 <label for='input_vidfile'>Upload Video</label>
                                 <div class='dragFileContainer'>
-                                    <input type="file" id='input_vidfile' name='input_vidfile' value="{{  old('input_vidfile') }}" >
+                                    <input type="file" id='input_vidfile' name='input_vidfile' value="{{  old('input_vidfile') }}">
                                     <p>Drag your video file here or click in this area.</p>
                                 </div>
                                 <small class="text-danger">{{ $errors->first('input_vidfile') }}</small>
                             </div>
                             <div class="form-group progressBar d-none">
                                 <div class="progress_upload">
-                                    <div class="bar_upload"></div >
-                                    <div class="percent_upload">0%</div >
+                                    <div class="bar_upload"></div>
+                                    <div class="percent_upload">0%</div>
                                 </div>
                             </div>
                             <!-- <div class="form-group"> -->
                             <!-- <label for="BlankLabel"></label>
                              <input type="hidden" class="linkedEvent" name="linkedEvent" value=""> -->
                             <!-- <div class="icheck-material-primary"> -->
-                                <!-- <input onchange='showHideLinkEvent(this);' type="checkbox" id="IsLinkedEvent" name="IsLinkedEvent" @if(old('IsLinkedEvent', $linkedEventCheckced)) checked @endif> -->
+                            <!-- <input onchange='showHideLinkEvent(this);' type="checkbox" id="IsLinkedEvent" name="IsLinkedEvent" @if(old('IsLinkedEvent', $linkedEventCheckced)) checked @endif> -->
 
-                                    <!-- <input onchange='showHideLinkEvent(this);' type="radio" id="IsLinkedEvent" name="IsLinkedEvent" @if(old('IsLinkedEvent', $linkedEventCheckced)) checked @endif> Yes
+                            <!-- <input onchange='showHideLinkEvent(this);' type="radio" id="IsLinkedEvent" name="IsLinkedEvent" @if(old('IsLinkedEvent', $linkedEventCheckced)) checked @endif> Yes
                                     <input onchange='showHideLinkEvent(this);' type="radio" id="noEvent" name="noEvent" @if(old('IsLinkedEvent', $linkedEventCheckced)) checked @endif> No -->
 
                             <!-- <label for="IsLinkedEvent"> Do you want to link this video with any Event?</label> -->
@@ -107,7 +107,7 @@
                                 <div class="row pl-3">
                                     <div class="icheck-material-primary">
                                         <input onchange='showHideLinkEvent(this);' type="radio" class="" id="yesEventLinked" name="IsLinkedEvent" @if(old('IsLinkedEvent', $linkedEventCheckced)) checked @endif>
-                                               <label for="yesEventLinked">Yes</label>
+                                        <label for="yesEventLinked">Yes</label>
                                     </div>
                                     <div class="icheck-material-primary pl-2">
                                         <?php
@@ -142,8 +142,8 @@
                                         //                                        if ($event->id == $eventId) {
                                         //                                            $IsSelected = "selected";
                                         //                                        }
-                                        ?>
-                                        <option value="{{$event->id}}" {{$IsSelected}}  @if (old('EventToLink')==$event->id) selected="selected" @endif ><?php echo $event->title; ?> </option>
+                                    ?>
+                                        <option value="{{$event->id}}" {{$IsSelected}} @if (old('EventToLink')==$event->id) selected="selected" @endif ><?php echo $event->title; ?> </option>
                                     <?php } ?>
 
                                 </select>
@@ -268,29 +268,34 @@
 @section('script')
 <script src="{{asset('/js/VideoAndPodcast.js')}}" type="text/javascript"></script>
 <script>
-    (function () {
+    (function() {
 
         var bar = $('.bar_upload');
         var percent = $('.percent_upload');
         //var status = $('#status');
 
         $('.dragFileForm').ajaxForm({
-            beforeSend: function () {
+            beforeSend: function() {
                 //status.empty();
                 var percentVal = '0%';
                 var posterValue = $('input[name=input_vidfile]').fieldValue();
                 bar.width(percentVal)
-                percent.html(percentVal);                
+                percent.html(percentVal);
             },
-            uploadProgress: function (event, position, total, percentComplete) {
+            uploadProgress: function(event, position, total, percentComplete) {
                 var percentVal = percentComplete + '%';
                 bar.width(percentVal);
                 percent.html(percentVal);
-                if(percentComplete==100){
-                    window.location.href = $('#hdnRedirect').val();
+                if (percentComplete == 100) {
+                    LoaderStart();
+                    var interval = setInterval(function mak() {
+                        clearInterval(interval);
+                        window.location.href = $('#hdnRedirect').val();
+                        LoaderStop();
+                    }, 5000);
+                    // window.location.href = $('#hdnRedirect').val();
                 }
-               
-               // LoaderStart();
+                // LoaderStart();
             },
             // success: function () {
             //     LoaderStop();
