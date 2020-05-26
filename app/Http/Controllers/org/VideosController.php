@@ -97,7 +97,7 @@ class VideosController extends Controller {
                 // $size = $request->file('input_vidfile')->getSize();
                 // $video->file_size = $size;
                 // $UrlToSave = $fileLocation;
-                $UrlToSave = "In Progress";
+                //$UrlToSave = "In Progress";
             }
         } else {
             $UrlToSave = $request->input_url;
