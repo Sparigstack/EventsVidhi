@@ -491,11 +491,11 @@
                                                             <small class="small-font">
                                                               <?php  $AwsUrl = env('AWS_URL');
                                                                     $videoUrl = "";
-                                                                if (!empty($video->url)) {
-                                                                    if(substr( $video->url, 0, 8 ) != "https://"){
+                                                                if (!empty($video->url_type)) {
+                                                                    if($video->url_type == 1){
                                                                     $videoUrl = $AwsUrl . $video->url;
                                                                 }
-                                                            else{
+                                                                else{
                                                                 $videoUrl = $video->url;
                                                             } 
                                                         }?>
@@ -512,11 +512,11 @@
                                                             <small class="small-font">
                                                                 <?php  $AwsUrl = env('AWS_URL');
                                                                     $podcastvideoUrl = "";
-                                                                if (!empty($podcast->url)) {
-                                                                    if(substr( $podcast->url, 0, 8 ) != "https://"){
+                                                                if (!empty($podcast->url_type)) {
+                                                                    if($podcast->url_type == 1){
                                                                     $podcastvideoUrl = $AwsUrl . $podcast->url;
                                                                 }
-                                                            else{
+                                                                else{
                                                                 $podcastvideoUrl = $podcast->url;
                                                             } 
                                                         }?>
@@ -630,7 +630,7 @@
                                         <?php
                                             foreach($speakers as $speaker){?>
                                             <div class="parent">
-                                                    <ul class="list-group parent list-group-flush shadow-none speakerList">
+                                                    <ul class="list-group parent list-group-flush speakerList mb-2">
                                                         <li class="list-group-item">
                         <div class="media align-items-center">
                             <?php
@@ -717,6 +717,8 @@
 
                                         <div class="col-lg-12">
                                                     <button type="submit" id="speakerSubmitButton" data-id="" class="btn btn-primary px-5 pull-right"> Save Speaker</button>
+
+                                                    <input type="button" id="speakerCancelButton" data-id="" class="btn btn-primary pull-right mr-2" value="Cancel" onclick="showSpeakerListing(this);">
                                                 </div>
                                         </form>
                                      </div>  

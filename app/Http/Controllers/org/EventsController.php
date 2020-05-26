@@ -212,9 +212,9 @@ class EventsController extends Controller
                 $file = $request->file('video_file');
                 $name = time() . $file->getClientOriginalName();
                 $userId = Auth::id();
-                // $filePath = 'org_' . $userId . '/Video/' . $name;
+                // $filePath1 = 'org_' . $userId . '/Video/' . $name;
                 $filePath = 'org_' . $userId . '/Video';
-                $fileLocation = Storage::disk('s3')->put($filePath, file_get_contents($file));
+                $fileLocation = Storage::disk('s3')->put($filePath, $request->file('video_file'));
                 $UrlToSave = $fileLocation;
                 // $FinalUrl = env('AWS_URL'); 
                 $FinalUrl .= $UrlToSave;
@@ -232,8 +232,14 @@ class EventsController extends Controller
 
         $video->url = $UrlToSave;
         $video->save();
+        $videoUrlLink = "";
+        if($video->url_type == 1){
+            $videoUrlLink = env('AWS_URL').$UrlToSave;
+        }else{
+            $videoUrlLink = $UrlToSave;
+        }
         return response()->json([
-            'videoUrl' => $FinalUrl,
+            'videoUrl' => $videoUrlLink,
             'videoTitle' => $video->title,
             'videoID' => $video->id,
             'urlType' => $video->url_type,
@@ -292,8 +298,15 @@ class EventsController extends Controller
 
         $podcast->url = $UrlToSave;
         $podcast->save();
+
+        $podcastVideoUrlLink = "";
+        if($podcast->url_type == 1){
+            $podcastVideoUrlLink = env('AWS_URL').$UrlToSave;
+        }else{
+            $podcastVideoUrlLink = $UrlToSave;
+        }
         return response()->json([
-            'videoUrl' => $FinalUrl,
+            'videoUrl' => $podcastVideoUrlLink,
             'videoTitle' => $podcast->title,
             'videoID' => $podcast->id,
             'urlType' => $podcast->url_type,
@@ -592,7 +605,12 @@ class EventsController extends Controller
         $speakers = Speaker::findOrFail($request->id);
         $FinalUrl = env('AWS_URL');
         $FinalUrl .= $speakers->profile_pic;
-        $speakers->profile_pic = $FinalUrl;
+        if($speakers->profile_pic != ''){
+            $speakers->profile_pic = $FinalUrl;
+        } else{
+            $speakers->profile_pic = '';
+        }
+        // $speakers->profile_pic = $FinalUrl;
         return $speakers;
     }
 

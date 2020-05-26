@@ -36,8 +36,12 @@
                                                 $videoUrl = $video->url;
                                             }
                                         }
+                                        $backColor = "";
+                                        if(isset($video->event)){
+                                            $backColor = "background-color:#f4f4f4;";
+                                        }
                                          ?>
-                                        <tr class="parent">
+                                        <tr class="parent" style="{{$backColor}}">
                                             <input class="csrf-token" type="hidden" value="{{ csrf_token() }}">
                                     <input type="hidden"  class="deleteVideo" value="{{url('deleteVideo')}}">
                                             <td>{{$video->title}} </td>
@@ -60,9 +64,9 @@
                                                 ?>
                                             <!-- </td> -->
                                             <td>
-                                                <i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-edit" onclick="window.location='{{ url("org/videos/$video->id") }}'"></i>
-                                                <a onclick="deleteVideo(this);" db-delete-id="{{$video->id}}"><i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-trash"></i></a>
-                                                <a href="{{$videoUrl}}" target="_blank"><i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;color:black;" class="fa fa-file-video-o"></i></a> 
+                                                <i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-edit"  title="Edit Video" onclick="window.location='{{ url("org/videos/$video->id") }}'"></i>
+                                                <a onclick="deleteVideo(this);" db-delete-id="{{$video->id}}"><i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-trash" title="Delete Video"></i></a>
+                                                <a href="{{$videoUrl}}" target="_blank"><i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;color:black;" class="fa fa-file-video-o" title="View Video"></i></a> 
                                             </td>
                                         </tr>
                                     <?php }  ?>
