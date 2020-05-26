@@ -35,8 +35,12 @@
                                                 $videoPodcastUrl = $podcast->url;
                                             }
                                         }
+                                        $backColor = "";
+                                        if(isset($podcast->event)){
+                                            $backColor = "background-color:#f4f4f4;";
+                                        }
                                          ?>
-                                        <tr class="parent">
+                                        <tr class="parent" style="{{$backColor}}">
                                             <input class="csrf-token" type="hidden" value="{{ csrf_token() }}">
                                     <input type="hidden"  class="deletePodcast" value="{{url('deletePodcast')}}">
                                             <td>{{$podcast->title}} </td>
@@ -50,9 +54,9 @@
                                             <!-- <td>{{$podcast->url}}</td> -->
                                             <!-- <td class="max-w-table-200">{{$videoPodcastUrl}}</td> -->
                                             <td>
-                                                <i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-edit" onclick="window.location='{{ url("org/podcasts/".$podcast->id) }}'"></i>
-                                                <a onclick="deletePodcast(this);" db-delete-id="{{$podcast->id}}"><i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-trash"></i></a>
-                                                <a href="{{$videoPodcastUrl}}" target="_blank"><i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;color:black;" class="fa fa-file-video-o"></i></a> 
+                                                <i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-edit" title="Edit Podcast" onclick="window.location='{{ url("org/podcasts/".$podcast->id) }}'"></i>
+                                                <a onclick="deletePodcast(this);" db-delete-id="{{$podcast->id}}"><i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-trash" title="Delete Podcast"></i></a>
+                                                <a href="{{$videoPodcastUrl}}" target="_blank"><i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;color:black;" class="fa fa-file-video-o" title="View Podcast"></i></a> 
                                             </td>
                                         </tr>
                                     <?php }  ?>

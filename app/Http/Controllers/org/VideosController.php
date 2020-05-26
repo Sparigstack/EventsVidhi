@@ -87,13 +87,26 @@ class VideosController extends Controller {
         $UrlToSave = "";
         if (isset($request->IsUploadVideo)) {
             if ($request->hasFile('input_vidfile')) {
+                // $file = $request->file('input_vidfile');
+                // $name = time() . $file->getClientOriginalName();
+                // $userId = Auth::id();
+                // // $filePath = 'org_' . $userId . '/Video/' . $name;
+                // $filePath = 'org_' . $userId . '/Video';
+                // $fileLocation = Storage::disk('s3')->put($filePath, $request->file('input_vidfile'));
+                // // $size = Storage::disk('s3')->size($filePath);
+                // $size = $request->file('input_vidfile')->getSize();
+                // $video->file_size = $size;
+                // $UrlToSave = $fileLocation;
+
                 $file = $request->file('input_vidfile');
-                $name = time() . $file->getClientOriginalName();
-                $userId = Auth::id();
-                // $filePath = 'org_' . $userId . '/Video/' . $name;
-                $filePath = 'org_' . $userId . '/Video';
-                $fileLocation = Storage::disk('s3')->put($filePath, $request->file('input_vidfile'));
-                // $size = Storage::disk('s3')->size($filePath);
+                // $name = time() . $file->getClientOriginalName();
+                // $userId = Auth::id();
+                // // $filePath = 'org_' . $userId . '/Video/' . $name;
+                // $filePath = 'org_' . $userId . '/Video';
+                // $fileLocation = Storage::disk('s3')->put($filePath, $request->file('input_vidfile'));
+                // // $size = Storage::disk('s3')->size($filePath);
+                $filePath = "public/TemporaryFiles";
+                $fileLocation = Storage::disk('local')->put($filePath, $request->file('input_vidfile'));
                 $size = $request->file('input_vidfile')->getSize();
                 $video->file_size = $size;
                 $UrlToSave = $fileLocation;
@@ -187,14 +200,27 @@ class VideosController extends Controller {
         $UrlToSave = "";
         if (isset($request->IsUploadVideo)) {
             if ($request->hasFile('input_vidfile')) {
+                // $file = $request->file('input_vidfile');
+                // $name = time() . $file->getClientOriginalName();
+                // $userId = Auth::id();
+                // $filePath = 'org_' . $userId . '/Video/' . $name;
+                // Storage::disk('s3')->put($filePath, file_get_contents($file));
+                // $UrlToSave = $filePath;
+                // $size = $request->file('input_vidfile')->getSize();
+                // $video->file_size = $size;
+
                 $file = $request->file('input_vidfile');
-                $name = time() . $file->getClientOriginalName();
-                $userId = Auth::id();
-                $filePath = 'org_' . $userId . '/Video/' . $name;
-                Storage::disk('s3')->put($filePath, file_get_contents($file));
-                $UrlToSave = $filePath;
+                // $name = time() . $file->getClientOriginalName();
+                // $userId = Auth::id();
+                // // $filePath = 'org_' . $userId . '/Video/' . $name;
+                // $filePath = 'org_' . $userId . '/Video';
+                // $fileLocation = Storage::disk('s3')->put($filePath, $request->file('input_vidfile'));
+                // // $size = Storage::disk('s3')->size($filePath);
+                $filePath = "public/TemporaryFiles";
+                $fileLocation = Storage::disk('local')->put($filePath, $request->file('input_vidfile'));
                 $size = $request->file('input_vidfile')->getSize();
                 $video->file_size = $size;
+                $UrlToSave = $fileLocation;
             }
         } else {
             $UrlToSave = $request->input_url;
