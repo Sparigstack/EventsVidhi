@@ -8,13 +8,13 @@ $(document).ready(function () {
 
     var videosTable = $('#default-datatable-videos').DataTable({
         columnDefs: [
-            {orderable: false, targets: 3},
+            {orderable: false, targets: 2},
         ]
     });
 
     var podcastsTable = $('#default-datatable-podcasts').DataTable({
         columnDefs: [
-            {orderable: false, targets: 3},
+            {orderable: false, targets: 2},
         ]
     });
 

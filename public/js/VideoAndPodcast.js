@@ -11,8 +11,10 @@ function UploadVideoBoxVideoCon() {
         $("#input_url").prop('required', true);
         $("#input_vidfile").prop('required', false);
         $('.uploadVideoBox').addClass('d-none');
+        $('.progressBar').addClass('d-none');
     } else {
         $('.uploadVideoBox').removeClass('d-none');
+        $('.progressBar').removeClass('d-none');
         $('#input_url').attr('readonly', true);
         $("#input_url").prop('required', false);
         $("#input_vidfile").prop('required', true);
@@ -62,8 +64,10 @@ function UploadPodcastVideoBox() {
         $("#input_url").prop('required', true);
         $("#input_podfile").prop('required', false);
         $('.uploadPodcastBox').addClass('d-none');
+        $('.podcastProgressBar').addClass('d-none');
     } else {
         $('.uploadPodcastBox').removeClass('d-none');
+        $('.podcastProgressBar').removeClass('d-none');
         $('#input_url').attr('readonly', true);
         $("#input_url").prop('required', false);
         $("#input_podfile").prop('required', true);

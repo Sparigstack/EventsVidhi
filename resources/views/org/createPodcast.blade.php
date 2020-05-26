@@ -70,10 +70,16 @@
                             <div class='form-group  d-none uploadPodcastBox'>
                                 <label for='input_podfile'>Upload Podcast</label>
                                 <div class='dragFileContainer'>
-                                    <input type="file" id='input_podfile' name='input_podfile' multiple value="{{  old('input_podfile') }}" >
+                                    <input type="file" id='input_podfile' name='input_podfile' value="{{  old('input_podfile') }}" >
                                     <p>Drag your podcast here or click to upload</p>
                                 </div>
                                 <small class="text-danger">{{ $errors->first('input_podfile') }}</small>
+                            </div>
+                            <div class="form-group podcastProgressBar d-none">
+                                <div class="progress_upload">
+                                    <div class="bar_upload"></div >
+                                    <div class="percent_upload">0%</div >
+                                </div>
                             </div>
                             <!-- <div class="form-group">
                                 <label for="BlankLabel"></label>
@@ -262,4 +268,42 @@
         showHideLinkEvent();
     });
 </script> -->
+
+<script>
+    (function () {
+
+        var bar = $('.bar_upload');
+        var percent = $('.percent_upload');
+        //var status = $('#status');
+
+        $('.dragFileForm').ajaxForm({
+            beforeSend: function () {
+                //status.empty();
+                var percentVal = '0%';
+                var posterValue = $('input[name=input_podfile]').fieldValue();
+                bar.width(percentVal)
+                percent.html(percentVal);                
+            },
+            uploadProgress: function (event, position, total, percentComplete) {
+                var percentVal = percentComplete + '%';
+                bar.width(percentVal);
+                percent.html(percentVal);
+                LoaderStart();
+            },
+            success: function () {
+                LoaderStop();
+                var percentVal = 'Redirecting..';
+                bar.width(percentVal);
+                percent.html(percentVal);
+            },
+            complete: function (xhr) {
+                //status.html(xhr.responseText);
+                //alert('Uploaded Successfully');
+
+                window.location.href = $('#hdnRedirect').val();
+            }
+        });
+
+    })();
+</script>
 @endsection

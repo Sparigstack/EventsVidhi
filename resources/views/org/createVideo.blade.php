@@ -75,12 +75,12 @@
                             <div class='form-group  d-none uploadVideoBox'>
                                 <label for='input_vidfile'>Upload Video</label>
                                 <div class='dragFileContainer'>
-                                    <input type="file" id='input_vidfile' name='input_vidfile' multiple value="{{  old('input_vidfile') }}" >
+                                    <input type="file" id='input_vidfile' name='input_vidfile' value="{{  old('input_vidfile') }}" >
                                     <p>Drag your video file here or click in this area.</p>
                                 </div>
                                 <small class="text-danger">{{ $errors->first('input_vidfile') }}</small>
                             </div>
-                            <div class="form-group ">
+                            <div class="form-group progressBar d-none">
                                 <div class="progress_upload">
                                     <div class="bar_upload"></div >
                                     <div class="percent_upload">0%</div >

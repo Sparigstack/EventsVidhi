@@ -551,7 +551,7 @@
                                                 <div class='parent' style='width: 100%;'>
                                                     <div class='form-group  d-none uploadVideoBox'>
                                                         <div class='dragFileContainer'>
-                                                            <input id='video_file' name='video_file' type="file" multiple>
+                                                            <input id='video_file' name='video_file' type="file">
                                                             <p>Drag your video file here or click in this area.</p>
                                                         </div>
                                                     </div>
@@ -589,7 +589,7 @@
                                                     
                                                     <div class='form-group  d-none uploadPodcastVideo'>
                                                         <div class='dragFileContainer'>
-                                                            <input id='podcast_video_file' name='podcast_video_file' type="file" multiple>
+                                                            <input id='podcast_video_file' name='podcast_video_file' type="file">
                                                             <p>Drag your podcast file here or click in this area.</p>
                                                         </div>
                                                         <small class="text-danger PodcastInvalid"></small>

@@ -17,10 +17,10 @@
                             <table id="default-datatable-podcasts" class="table table-bordered">
                                 <thead>
                                     <tr>
-                                        <th>Title</th>
-                                        <th>Description</th>
-                                        <th class="max-w-table-200">Podcast URL</th>
-                                        <th>Action</th>
+                                        <th width="42.5%">Title</th>
+                                        <th width="42.5%">Description</th>
+                                        <!-- <th class="max-w-table-200">Podcast URL</th> -->
+                                        <th width="15%">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -48,10 +48,11 @@
                                             } ?>
                                             <td>{{$eventDesc}}</td>
                                             <!-- <td>{{$podcast->url}}</td> -->
-                                            <td class="max-w-table-200">{{$videoPodcastUrl}}</td>
+                                            <!-- <td class="max-w-table-200">{{$videoPodcastUrl}}</td> -->
                                             <td>
                                                 <i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-edit" onclick="window.location='{{ url("org/podcasts/".$podcast->id) }}'"></i>
-                                                <a onclick="deletePodcast(this);" db-delete-id="{{$podcast->id}}"><i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-trash"></i></a> 
+                                                <a onclick="deletePodcast(this);" db-delete-id="{{$podcast->id}}"><i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-trash"></i></a>
+                                                <a href="{{$videoPodcastUrl}}" target="_blank"><i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;color:black;" class="fa fa-file-video-o"></i></a> 
                                             </td>
                                         </tr>
                                     <?php }  ?>
@@ -59,11 +60,11 @@
 
                                 <thead>
                                     <tr>
-                                        <th>Title</th>
-                                        <th>Description</th>
-                                        <th class="max-w-table-200">Podcast URL</th>
+                                        <th width="42.5%">Title</th>
+                                        <th width="42.5%">Description</th>
+                                        <!-- <th class="max-w-table-200">Podcast URL</th> -->
                                         <!-- <th>Location</th> -->
-                                        <th>Action</th>
+                                        <th width="15%">Action</th>
                                     </tr>
                                 </thead>
                             </table>
