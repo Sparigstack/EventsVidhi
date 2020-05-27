@@ -25,13 +25,24 @@ class CsvImportController extends Controller
         //         'error' => $validator->errors(),
         //     ]);
         // }
-        // if ($request->hasFile('CsvFile')) {
-        //     $file = $request->file('CsvFile');
-        //     $customerArr = $this->csvToArray($file);
-        // }
-        $file = $request->file('CsvFile');
-        $customerArr =csvToArray($file);
 
-        return $customerArr;
+        $path = $request->file('CsvFile')->getRealPath();
+        $data = array_map('str_getcsv', file($path));
+        // $csv_data = array_slice($data, 0, 2);
+
+
+        $userId = Auth::id();
+        $numberOfRows = count($data);
+        for ($i = 1; $i < $numberOfRows; $i++) {
+
+            $contact = new Contact;
+            $contact->user_id = $userId;
+            $contact->first_name = $data[$i][0];
+            $contact->last_name = $data[$i][1];
+            $contact->email = $data[$i][2];
+            $contact->save();
+        }
+
+        return 'success';
     }
 }
