@@ -152,6 +152,14 @@
                             </ul>
                         </li>
 
+                        <li>
+                            <a href="{{url('org/csvImport')}}" class="waves-effect">
+                                <i class="fa fa-download"></i>
+                                <span>CSV Import</span>
+                                <!--<small class="badge float-right badge-warning">12</small>-->
+                            </a>
+                        </li>
+
                     </ul>
 
                 </div>

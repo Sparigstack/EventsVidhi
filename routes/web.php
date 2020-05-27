@@ -61,10 +61,15 @@ Route::post('deletePodcast', 'org\PodcastsController@destroy');
 Route::post('getState', 'org\EventsController@getState');
 Route::post('getCity', 'org\EventsController@getCity');
 
+Route::post('org/csv/import', 'org\CsvImportController@store');
+
 Route::get('profile', function () {
     return view('profile');
 });
 
 Route::get('account', function () {
     return view('account');
+});
+Route::get('org/csvImport', function () {
+    return view('org/csvImport');
 });
