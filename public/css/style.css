@@ -55,6 +55,7 @@
     height: 30%;
     outline: none;
     opacity: 0;
+    cursor: pointer;
 }
 .dragFileContainer #EventBannerImage{
     width: 94%;
