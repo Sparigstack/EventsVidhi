@@ -37,20 +37,33 @@
                                         }
                                         $backColor = "";
                                         if(isset($podcast->event)){
-                                            $backColor = "background-color:#f4f4f4;";
+                                            $backColor = "eventLinkedBg";
                                         }
                                          ?>
-                                        <tr class="parent" style="{{$backColor}}">
+                                        <tr class="parent {{$backColor}}">
                                             <input class="csrf-token" type="hidden" value="{{ csrf_token() }}">
                                     <input type="hidden"  class="deletePodcast" value="{{url('deletePodcast')}}">
                                             <td>{{$podcast->title}} </td>
                                             <?php $eventDesc = "";
+                                            $eventPrefix = "";
+                                            $eventLink = "";
+                                            $desc = "";
                                             if(isset($podcast->event)){
-                                                $eventDesc = "Event:".$podcast->event->title;
+                                                $eventPrefix = "Event :";
+                                                $eventDesc = $podcast->event->title;
                                             }else{
-                                                $eventDesc = $podcast->description;
+                                                $desc = $podcast->description;
                                             } ?>
-                                            <td>{{$eventDesc}}</td>
+                                            <td>
+                                                <?php if(!empty($eventDesc)){
+                                                    $eventId = $podcast->event->id;
+                                                    ?>
+                                                <b>{{$eventPrefix}}</b><a target="_blank" href="{{url('org/events/'.$eventId)}}"> {{$eventDesc}}</a>
+                                                <?php
+                                                } else { ?>
+                                                    {{$desc}}
+                                                <?php } ?>
+                                                </td>
                                             <!-- <td>{{$podcast->url}}</td> -->
                                             <!-- <td class="max-w-table-200">{{$videoPodcastUrl}}</td> -->
                                             <td>

@@ -25,11 +25,11 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($videos as $video) { 
-                                        $AwsUrl = env('AWS_URL');
+                                    <?php $AwsUrl = env('AWS_URL');
+                                    foreach ($videos as $video) {
                                         $videoUrl = "";
                                         if (!empty($video->url)) {
-                                            if(substr( $video->url, 0, 8 ) != "https://"){
+                                            if(substr($video->url, 0, 8 ) != "https://"){
                                                 $videoUrl = $AwsUrl . $video->url;
                                             }
                                             else{
@@ -38,20 +38,33 @@
                                         }
                                         $backColor = "";
                                         if(isset($video->event)){
-                                            $backColor = "background-color:#f4f4f4;";
+                                            $backColor = "eventLinkedBg";
                                         }
                                          ?>
-                                        <tr class="parent" style="{{$backColor}}">
+                                        <tr class="parent {{$backColor}}">
                                             <input class="csrf-token" type="hidden" value="{{ csrf_token() }}">
                                     <input type="hidden"  class="deleteVideo" value="{{url('deleteVideo')}}">
                                             <td>{{$video->title}} </td>
                                             <?php $eventDesc = "";
+                                            $eventPrefix = "";
+                                            $eventLink = "";
+                                            $desc = "";
                                             if(isset($video->event)){
-                                                $eventDesc = "Event:".$video->event->title;
+                                                $eventPrefix = "Event :";
+                                                $eventDesc = $video->event->title;
                                             }else{
-                                                $eventDesc = $video->description;
+                                                $desc = $video->description;
                                             } ?>
-                                            <td>{{$eventDesc}}</td>
+                                            <td>
+                                                <?php if(!empty($eventDesc)){
+                                                    $eventId = $video->event->id;
+                                                    ?>
+                                                <b>{{$eventPrefix}}</b><a target="_blank" href="{{url('org/events/'.$eventId)}}"> {{$eventDesc}}</a>
+                                                <?php
+                                                } else { ?>
+                                                    {{$desc}}
+                                                <?php } ?>
+                                                </td>
                                             <!-- <td>{{$video->url}}</td> -->
                                             <!-- <td class="max-w-table-200">{{$videoUrl}}</td> -->
                                             <!-- <td> -->
