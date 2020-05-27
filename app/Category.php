@@ -11,6 +11,6 @@ class Category extends Model
     ///each user may have multiple events - field - user_id
     ///returns array of object
     public function events() {
-        return $this->hasMany('App\Event');
+        return $this->belongsToMany('App\Event', 'event_categories');
     }
 }

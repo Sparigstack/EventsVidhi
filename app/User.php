@@ -49,4 +49,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function podcasts() {
         return $this->hasMany('App\Podcast');
     }
+    public function contacts() {
+        return $this->hasMany('App\Contact');
+    }
+    public function tags() {
+        return $this->hasMany('App\Tag');
+    }
 }

@@ -34,9 +34,14 @@ class Event extends Model
         return $this->belongsTo('App\Timezone');
     }
 
-    public function eventCategory() {
-        return $this->hasMany('App\EventCategory');
+//    public function eventCategory() {
+//        return $this->hasMany('App\EventCategory');
+//    }
+    
+    public function categories() {
+        return $this->belongsToMany('App\Category', 'event_categories');
     }
+    
     public function Videos() {
         return $this->hasMany('App\Video');
     }
