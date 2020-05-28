@@ -35,17 +35,17 @@ class MoveFileToS3 implements ShouldQueue
     public function handle()
     {
         // Upload file to S3
-//        $result = Storage::disk('s3')->putFileAs(
-//            '/',
-//            new File(storage_path('app/' . $this->filename)),
-//            $this->filename
-//        );
-        
-        $result = Storage::disk('s3')->put(
+        $result = Storage::disk('s3')->putFileAs(
             '/',
             new File(storage_path('app/' . $this->filename)),
             $this->filename
         );
+        
+//        $result = Storage::disk('s3')->put(
+//            '/',
+//            new File(storage_path('app/' . $this->filename)),
+//            $this->filename
+//        );
 
         // Forces collection of any existing garbage cycles
         // If we don't add this, in some cases the file remains locked
