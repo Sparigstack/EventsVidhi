@@ -128,8 +128,12 @@
 
                         <li>
                             <a href="javaScript:void();" class="waves-effect">
-                                <i class="zmdi zmdi-grid"></i> <span>Followers</span>
+                                <i class="zmdi zmdi-grid"></i> <span>Contacts</span>
                             </a>
+                            <ul class="sidebar-submenu in">
+                                <li class="active"><a href="{{ url('org/contacts/new') }}" class="active"><i class="zmdi zmdi-long-arrow-right"></i> Add New Contact</a></li>
+                                <li class=""><a href="{{ url('org/contacts') }}" class="active"><i class="zmdi zmdi-long-arrow-right"></i> All Contacts</a></li>
+                            </ul>
                         </li>
 
                         <li>

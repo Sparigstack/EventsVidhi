@@ -4,6 +4,7 @@ namespace App\Http\Controllers\org;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Contact;
 
 class ContactsController extends Controller
 {
@@ -21,9 +22,8 @@ class ContactsController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $events = Event::where('user_id', $user->id)->where('date_time', '>=', date('Y-m-d', strtotime(now())))
-            ->get();
-        return view('org/events', compact('events'));
+        $contacts = $user->contacts;
+        return view('org/contacts', compact('contacts'));
     }
 
     /**
@@ -33,7 +33,7 @@ class ContactsController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -44,7 +44,25 @@ class ContactsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'firstname' => 'required',
+            'lastname' => 'required',
+            'email' => 'required',            
+        ]);
+
+        if ($validator->fails()) {
+            return redirect('org/contacts/new')
+                ->withErrors($validator)
+                ->withInput();
+        }
+        
+        $contact = new Contact;
+        $contact->first_name = $request->firstname;
+        $contact->last_name = $request->lastname;
+        $contact->email = $reqeust->email;
+        $contact->user_id = Auth::id();
+        $contact->save();
+        return redirect('org/contacts');
     }
 
     /**
