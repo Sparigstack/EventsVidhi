@@ -17,59 +17,24 @@
                             <table id="default-datatable-contacts" class="table table-bordered">
                                 <thead>
                                     <tr>
-                                        <th width="42.5%">Title</th>
-                                        <th width="42.5%">Description</th>
-                                        <!-- <th class="max-w-table-200">Contact URL</th> -->
-                                        <th width="15%">Action</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Email Address</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php foreach ($contacts as $contact) {
-                                        $AwsUrl = env('AWS_URL');
-                                        $videoContactUrl = "";
-                                        if (!empty($contact->url)) {
-                                            if(substr( $contact->url, 0, 8 ) != "https://"){
-                                                $videoContactUrl = $AwsUrl . $contact->url;
-                                            }
-                                            else{
-                                                $videoContactUrl = $contact->url;
-                                            }
-                                        }
-                                        $backColor = "";
-                                        if(isset($contact->event)){
-                                            $backColor = "eventLinkedBg";
-                                        }
                                          ?>
-                                        <tr class="parent {{$backColor}}">
+                                        <tr class="parent">
                                             <input class="csrf-token" type="hidden" value="{{ csrf_token() }}">
                                     <input type="hidden"  class="deleteContact" value="{{url('deleteContact')}}">
-                                            <td>{{$contact->title}} </td>
-                                            <?php $eventDesc = "";
-                                            $eventPrefix = "";
-                                            $eventLink = "";
-                                            $desc = "";
-                                            if(isset($contact->event)){
-                                                $eventPrefix = "Event :";
-                                                $eventDesc = $contact->event->title;
-                                            }else{
-                                                $desc = $contact->description;
-                                            } ?>
-                                            <td>
-                                                <?php if(!empty($eventDesc)){
-                                                    $eventId = $contact->event->id;
-                                                    ?>
-                                                <b>{{$eventPrefix}}</b><a target="_blank" href="{{url('org/events/'.$eventId)}}"> {{$eventDesc}}</a>
-                                                <?php
-                                                } else { ?>
-                                                    {{$desc}}
-                                                <?php } ?>
-                                                </td>
-                                            <!-- <td>{{$contact->url}}</td> -->
-                                            <!-- <td class="max-w-table-200">{{$videoContactUrl}}</td> -->
+                                            <td>{{$contact->first_name}} </td>
+                                            <td>{{$contact->last_name}}</td>
+                                            <td>{{$contact->email}}</td>
                                             <td>
                                                 <i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-edit" title="Edit Contact" onclick="window.location='{{ url("org/contacts/".$contact->id) }}'"></i>
-                                                <a onclick="deleteContact(this);" db-delete-id="{{$contact->id}}"><i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-trash" title="Delete Contact"></i></a>
-                                                <a href="{{$videoContactUrl}}" target="_blank"><i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;color:black;" class="fa fa-file-video-o" title="View Contact"></i></a> 
+                                                <a onclick="deleteContact(this);" db-delete-id="{{$contact->id}}"><i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-trash" title="Delete Contact"></i></a>              
                                             </td>
                                         </tr>
                                     <?php }  ?>
@@ -77,11 +42,10 @@
 
                                 <thead>
                                     <tr>
-                                        <th width="42.5%">Title</th>
-                                        <th width="42.5%">Description</th>
-                                        <!-- <th class="max-w-table-200">Contact URL</th> -->
-                                        <!-- <th>Location</th> -->
-                                        <th width="15%">Action</th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Email Address</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                             </table>

@@ -73,7 +73,7 @@
                                 <label for='input_podfile'>Upload Podcast</label>
                                 <div class='dragFileContainer'>
                                     <input type="file" id='input_podfile' name='input_podfile' value="{{  old('input_podfile') }}" >
-                                    <p>Drag your podcast here or click to upload</p>
+                                    <p class="dragFileText">Drag your podcast here or click to upload</p>
                                 </div>
                                 <small class="text-danger">{{ $errors->first('input_podfile') }}</small>
                             </div>
