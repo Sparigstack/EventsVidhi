@@ -267,7 +267,7 @@
 
 @section('script')
 <script src="{{asset('/js/VideoAndPodcast.js')}}" type="text/javascript"></script>
-<script>
+<!--<script>
     (function() {
 
         var bar = $('.bar_upload');
@@ -312,6 +312,6 @@
         });
 
     })();
-</script>
+</script>-->
 
 @endsection
