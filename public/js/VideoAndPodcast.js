@@ -1,6 +1,7 @@
 $(document).ready(function() {
     $('.dragFileForm input').change(function() {
-        $('.dragFileForm p').text(this.files.length + " file(s) selected");
+        // $('.dragFileForm p').text(this.files.length + " file(s) selected");
+        $('.dragFileForm').find('.dragFileText').text(this.files.length + " file(s) selected");
     });
     UploadPodcastVideoBox();
     showHideLinkEvent();
