@@ -143,9 +143,10 @@ class VideosController extends Controller {
                 // $name = time() . $file->getClientOriginalName();
                 $userId = Auth::id();
                 // $filePath = 'org_' . $userId . '/Video/' . $name;
-                $filePath = 'org_' . $userId . '/Video';
+                //$filePath = 'org_' . $userId . '/Video';
                 //$fileLocation = Storage::disk('s3')->put($filePath, $request->file('input_vidfile'));
-                // $size = Storage::disk('s3')->size($filePath);
+                //$fileLocation = Storage::disk('s3')->put($filePath, fopen($request->file('input_vidfile'), 'r+'));
+                //$size = Storage::disk('s3')->size($filePath);
                 $size = $request->file('input_vidfile')->getSize();
                 $videoupdate->file_size = $size;
 

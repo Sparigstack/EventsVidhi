@@ -12,30 +12,7 @@
         @endguest
     </div>
 
-<!--    <h4>Your files</h4>
-    <ul class="list-group">
-        @forelse ($s3Files as $file)
-        <li class="list-group-item">
-            <a href="#">
-                {{ basename($file) }}
-            </a>
-        </li>
-        @empty
-        <li class="list-group-item">You have no files</li>
-        @endforelse
-    </ul>
 
-    @if (!empty($localFiles))
-    <hr />
-    <h4>Uploading and encrypting...</h4>
-    <ul class="list-group">
-        @foreach ($localFiles as $file)
-        <li class="list-group-item">
-            {{ basename($file) }}
-        </li>
-        @endforeach
-    </ul>
-    @endif-->
 
     <!--    <div class="row justify-content-center">
             <div class="col-md-8">
