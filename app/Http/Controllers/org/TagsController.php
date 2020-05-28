@@ -41,4 +41,10 @@ class TagsController extends Controller
             'error' => ''
         ]);
     }
+    public function delete($id){
+        $event = Tag::find($id)->delete();
+        return response()->json([
+            "status"=>"success"
+        ]);
+    }
 }

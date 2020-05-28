@@ -5,17 +5,20 @@ namespace App\Http\Controllers\org;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Contact;
+use App\ContactTag;
+use App\Tag;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class ContactsController extends Controller
 {
-    
+
     public function __construct()
     {
         $this->middleware('verified');
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -37,7 +40,8 @@ class ContactsController extends Controller
     {
         // $user = Auth::user();
         $contacts = Contact::all();
-        return view('org/createContact', compact('contacts'));
+        $tags = Tag::all();
+        return view('org/createContact', compact('contacts', 'tags'));
     }
 
     /**
@@ -51,7 +55,7 @@ class ContactsController extends Controller
         $validator = Validator::make($request->all(), [
             'firstName' => 'required',
             'lastName' => 'required',
-            'emailAddress' => 'required',            
+            'emailAddress' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -61,13 +65,29 @@ class ContactsController extends Controller
         }
 
         $user = Auth::user();
-        
+
         $contact = new Contact;
         $contact->first_name = $request->firstName;
         $contact->last_name = $request->lastName;
         $contact->email = $request->emailAddress;
+        $contact->contact_number = $request->ContactNumber;
         $contact->user_id = $user->id;
         $contact->save();
+
+
+        try {
+            $string = $request->HiddenCategoyID;
+            $tagIDS = preg_split("/\,/", $string);
+            foreach ($tagIDS as $tagID) {
+                $ContactTag = new ContactTag();
+                $ContactTag->contact_id = $contact->id;
+                $ContactTag->tag_id = number_format($tagID);
+                $ContactTag->save();
+            }
+        } catch (Exception $e) {
+        }
+
+
         return redirect('org/contacts');
     }
 
@@ -92,7 +112,7 @@ class ContactsController extends Controller
     {
         $user = Auth::user();
         $contact = Contact::findOrFail($id);
-        
+
         return view('org/createContact', compact('contact'));
     }
 
@@ -108,7 +128,7 @@ class ContactsController extends Controller
         $validator = Validator::make($request->all(), [
             'firstName' => 'required',
             'lastName' => 'required',
-            'emailAddress' => 'required',            
+            'emailAddress' => 'required',
         ]);
 
         if ($validator->fails()) {

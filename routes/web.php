@@ -84,3 +84,4 @@ Route::get('org/csvImport', function () {
 Route::get('org/tags', 'org\TagsController@show');
 
 Route::post('org/tags/store', 'org\TagsController@store');
+Route::post('org/tags/delete/{id}', 'org\TagsController@Delete');

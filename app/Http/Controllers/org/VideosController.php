@@ -128,7 +128,7 @@ class VideosController extends Controller {
 
                 $filename = "";
                 if ($request->hasFile('input_vidfile') && $request->file('input_vidfile')->isValid()) {
-                    $filename = Storage::putFile('org_' . auth()->user()->id . '/video', $request->file('input_vidfile'));
+                    $filename = Storage::disk('local')->putfile('org_' . auth()->user()->id . '/video', $request->file('input_vidfile'));
                     $videoupdate->url = $filename;
                     
                     // check if we have a valid file uploaded

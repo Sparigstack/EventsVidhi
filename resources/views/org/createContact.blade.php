@@ -9,14 +9,18 @@
     $firstname = "";
     $lastname = "";
     $email = "";
-    
+    $contactNumber = "";
+    $IsSelected="";
+    $MultSelectTags="";
     if (!empty($contact)) {
         $ActionCall = url('org/contacts/edit/' . $contact->id);
         $CardTitle = "Edit Contact";
         $firstname = $contact->first_name;
         $lastname = $contact->last_name;
         $email = $contact->email;
-        
+        if (!empty($contact->contact_number)) {
+            $contactNumber =  $contact->contact_number;
+        }
     }
     ?>
     <div class="row">
@@ -33,20 +37,60 @@
                     </div>
                     @endif
 
-                    <form class="" action="{{$ActionCall}}" method="post" >
-                    {{ csrf_field() }}
-                   <!--  <input type="hidden" id="hdnRedirect" value="{{$RedirectCall}}" /> -->
+                    <form class="" action="{{$ActionCall}}" method="post">
+                        {{ csrf_field() }}
+                        <!--  <input type="hidden" id="hdnRedirect" value="{{$RedirectCall}}" /> -->
                         <div class='form-group'>
                             <label for='firstName'>First Name</label>
                             <input type="text" class="form-control" id="firstName" name='firstName' value="{{  old('firstName', $firstname) }}" placeholder="Enter First Name" required>
                         </div>
                         <div class='form-group'>
                             <label for='lastName'>Last Name</label>
-                            <input type="text" class="form-control" id="lastName" name="lastName"  value="{{  old('lastName', $lastname) }}" placeholder="Enter Last Name" required>
+                            <input type="text" class="form-control" id="lastName" name="lastName" value="{{  old('lastName', $lastname) }}" placeholder="Enter Last Name" required>
                         </div>
                         <div class='form-group'>
                             <label for='emailAddress'>Email Address</label>
-                            <input type="text" class="form-control" id="emailAddress" name="emailAddress"  value="{{  old('emailAddress', $email) }}" placeholder="Enter Email Address" required>
+                            <input type="text" class="form-control" id="emailAddress" name="emailAddress" value="{{  old('emailAddress', $email) }}" placeholder="Enter Email Address" required>
+                        </div>
+                        <div class='form-group'>
+                            <label for='ContactNumber'>Contact Number</label>
+                            <input type="text" class="form-control" id="ContactNumber" name="ContactNumber" value="{{  old('ContactNumber', $contactNumber) }}" placeholder="Enter Contact Number">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="">Select Tags</label>
+                            <select class="form-control multiple-select" multiple="multiple" name="tags" id="tags">
+                                <?php if (!empty($contact)) {
+                                    $IsSelected = "";
+                                    foreach ($tags as $tag) {
+
+                                        foreach ($event->eventCategory as $EventCategory) {
+
+                                            if ($category->id == $EventCategory->category_id) {
+                                                $IsSelected = "selected";
+                                                if ($checkCount == "no") {
+                                                    $MultSelectTags .= strval($category->id);
+                                                } else {
+                                                    $MultSelectTags .= "," . $category->id;
+                                                }
+                                                $checkCount = "yes";
+                                            } else {
+                                                $IsSelected = "";
+                                            }
+
+                                ?>
+                                            <option value="{{old('tags',$category->id)}}" {{$IsSelected}} @if (old('tags')==$category->id) selected="selected" @endif ><?php echo $category->name; ?> </option>
+                                        <?php }
+                                    }
+                                } else {
+                                    foreach ($tags as $tag) {
+                                        ?>
+                                        <option value="{{old('tags',$tag->id)}}" {{$IsSelected}} @if (old('tags')==$tag->id) selected="selected" @endif ><?php echo $tag->name; ?> </option>
+                                <?php }
+                                } ?>
+                            </select>
+                            <small class="text-danger">{{ $errors->first('tags') }}</small>
+                            <textarea id="HiddenCategoyID" name="HiddenCategoyID" required class="form-controld d-none" title="HiddenCategoyID" placeholder="HiddenCategoyID" autocomplete="off" rows="4">{{ old('HiddenCategoyID', $MultSelectTags) }} </textarea>
                         </div>
 
 
@@ -177,33 +221,33 @@
 </script> -->
 
 <script>
-    (function () {
+    (function() {
 
         var bar = $('.bar_upload');
         var percent = $('.percent_upload');
         //var status = $('#status');
 
         $('.dragFileForm').ajaxForm({
-            beforeSend: function () {
+            beforeSend: function() {
                 //status.empty();
                 var percentVal = '0%';
                 var posterValue = $('input[name=input_podfile]').fieldValue();
                 bar.width(percentVal)
-                percent.html(percentVal);                
+                percent.html(percentVal);
             },
-            uploadProgress: function (event, position, total, percentComplete) {
+            uploadProgress: function(event, position, total, percentComplete) {
                 var percentVal = percentComplete + '%';
                 bar.width(percentVal);
                 percent.html(percentVal);
                 LoaderStart();
             },
-            success: function () {
+            success: function() {
                 LoaderStop();
                 var percentVal = 'Redirecting..';
                 bar.width(percentVal);
                 percent.html(percentVal);
             },
-            complete: function (xhr) {
+            complete: function(xhr) {
                 //status.html(xhr.responseText);
                 //alert('Uploaded Successfully');
 
@@ -212,5 +256,85 @@
         });
 
     })();
+
+    $(document).ready(function() {
+            $('.single-select').select2();
+
+            $('.multiple-select').select2({
+                placeholder: "Select tags",
+                allowClear: true
+            });
+            var MultiSlectCounter = 0;
+            $('.multiple-select').on('select2:select', function(e) {
+                console.log(e.params.data.id);
+                if (MultiSlectCounter == 0) {
+                    $('#HiddenCategoyID').append(e.params.data.id);
+                } else {
+                    $('#HiddenCategoyID').append("," + e.params.data.id);
+                }
+
+                MultiSlectCounter += 1;
+            });
+            $('.multiple-select').on('select2:unselecting', function(e) {
+                console.log(e.params.args.data.id);
+                var str = $('#HiddenCategoyID').val();
+                var res = str.replace(e.params.args.data.id, "");
+                $('#HiddenCategoyID').empty();
+                $('#HiddenCategoyID').append(res);
+            });
+
+
+            //multiselect start
+
+            $('#my_multi_select1').multiSelect();
+            $('#my_multi_select2').multiSelect({
+                selectableOptgroup: true
+            });
+
+            $('#my_multi_select3').multiSelect({
+                selectableHeader: "<input type='text' class='form-control search-input' autocomplete='off' placeholder='search...'>",
+                selectionHeader: "<input type='text' class='form-control search-input' autocomplete='off' placeholder='search...'>",
+                afterInit: function(ms) {
+                    var that = this,
+                        $selectableSearch = that.$selectableUl.prev(),
+                        $selectionSearch = that.$selectionUl.prev(),
+                        selectableSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selectable:not(.ms-selected)',
+                        selectionSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selection.ms-selected';
+
+                    that.qs1 = $selectableSearch.quicksearch(selectableSearchString)
+                        .on('keydown', function(e) {
+                            if (e.which === 40) {
+                                that.$selectableUl.focus();
+                                return false;
+                            }
+                        });
+
+                    that.qs2 = $selectionSearch.quicksearch(selectionSearchString)
+                        .on('keydown', function(e) {
+                            if (e.which == 40) {
+                                that.$selectionUl.focus();
+                                return false;
+                            }
+                        });
+                },
+                afterSelect: function() {
+                    this.qs1.cache();
+                    this.qs2.cache();
+                },
+                afterDeselect: function() {
+                    this.qs1.cache();
+                    this.qs2.cache();
+                }
+            });
+
+            $('.custom-header').multiSelect({
+                selectableHeader: "<div class='custom-header'>Selectable items</div>",
+                selectionHeader: "<div class='custom-header'>Selection items</div>",
+                selectableFooter: "<div class='custom-header'>Selectable footer</div>",
+                selectionFooter: "<div class='custom-header'>Selection footer</div>"
+            });
+
+
+        });
 </script>
 @endsection

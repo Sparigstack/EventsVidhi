@@ -114,3 +114,19 @@ table .max-w-table-100 .btn{margin: 10px auto;min-width: 60px;}
 .eventLinkedBg{
     background-color:#f3f3d1;
 }
+.select2-container--default .select2-selection--multiple .select2-selection__rendered li{
+    display: flex;
+    flex-direction: row-reverse;
+    padding-top: 4px;
+    padding-bottom: 2px;
+}
+.select2-selection__choice__remove{
+    padding-left: 8px;
+    padding-right: 2px;
+}
+.select2-container--default.select2-container--focus .select2-selection--multiple {
+    height: auto;
+}
+.select2-container--default .select2-selection--multiple{
+    height: auto !important;
+}
