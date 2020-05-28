@@ -80,3 +80,7 @@ Route::get('account', function () {
 Route::get('org/csvImport', function () {
     return view('org/csvImport');
 });
+
+Route::get('org/tags', 'org\TagsController@show');
+
+Route::post('org/tags/store', 'org\TagsController@store');

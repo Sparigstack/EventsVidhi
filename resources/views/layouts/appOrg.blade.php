@@ -133,16 +133,18 @@
                             <ul class="sidebar-submenu in">
                                 <li class="active"><a href="{{ url('org/contacts/new') }}" class="active"><i class="zmdi zmdi-long-arrow-right"></i> Add New Contact</a></li>
                                 <li class=""><a href="{{ url('org/contacts') }}" class="active"><i class="zmdi zmdi-long-arrow-right"></i> All Contacts</a></li>
+                                <li class=""><a href="{{url('org/csvImport')}}" class="active"><i class="zmdi zmdi-long-arrow-right"></i> CSV Import</a></li>
+                                <li class=""><a href="{{url('org/tags')}}" class="active"><i class="zmdi zmdi-long-arrow-right"></i> Tags</a></li>
                             </ul>
                         </li>
 
-                        <li>
+                        <!-- <li>
                             <a href="{{url('org/csvImport')}}" class="waves-effect">
                                 <i class="fa fa-download"></i>
-                                <span>CSV Import</span>
+                                <span>CSV Import</span> -->
                                 <!--<small class="badge float-right badge-warning">12</small>-->
-                            </a>
-                        </li>
+                            <!-- </a>
+                        </li> -->
 
                         <li>
                             <a href="javaScript:void();" class="waves-effect">
