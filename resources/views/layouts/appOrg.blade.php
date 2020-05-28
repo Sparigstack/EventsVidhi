@@ -137,6 +137,14 @@
                         </li>
 
                         <li>
+                            <a href="{{url('org/csvImport')}}" class="waves-effect">
+                                <i class="fa fa-download"></i>
+                                <span>CSV Import</span>
+                                <!--<small class="badge float-right badge-warning">12</small>-->
+                            </a>
+                        </li>
+
+                        <li>
                             <a href="javaScript:void();" class="waves-effect">
                                 <i class="zmdi zmdi-email"></i>
                                 <span>Communications</span>
@@ -154,14 +162,6 @@
                                 <li class=""><a href="{{url('/')}}" class="active"><i class="zmdi zmdi-long-arrow-right"></i> Custom Form</a></li>
 
                             </ul>
-                        </li>
-
-                        <li>
-                            <a href="{{url('org/csvImport')}}" class="waves-effect">
-                                <i class="fa fa-download"></i>
-                                <span>CSV Import</span>
-                                <!--<small class="badge float-right badge-warning">12</small>-->
-                            </a>
                         </li>
 
                     </ul>
