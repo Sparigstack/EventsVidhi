@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers\org;
 
+use App\Jobs\EncryptFile;
+use App\Jobs\MoveFileToS3;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use SoareCostin\FileVault\Facades\FileVault;
 use App\Video;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\UploadedFile;
@@ -86,19 +90,19 @@ class VideosController extends Controller {
         $video->user_id = $userId;
         $UrlToSave = "";
         if (isset($request->IsUploadVideo)) {
-            if ($request->hasFile('input_vidfile')) {
-                // $file = $request->file('input_vidfile');
-                // $name = time() . $file->getClientOriginalName();
-                // $userId = Auth::id();
-                // // $filePath = 'org_' . $userId . '/Video/' . $name;
-                // $filePath = 'org_' . $userId . '/Video';
-                // $fileLocation = Storage::disk('s3')->put($filePath, $request->file('input_vidfile'));
-                // // $size = Storage::disk('s3')->size($filePath);
-                // $size = $request->file('input_vidfile')->getSize();
-                // $video->file_size = $size;
-                // $UrlToSave = $fileLocation;
-                //$UrlToSave = "In Progress";
-            }
+            //if ($request->hasFile('input_vidfile')) {
+            // $file = $request->file('input_vidfile');
+            // $name = time() . $file->getClientOriginalName();
+            // $userId = Auth::id();
+            // // $filePath = 'org_' . $userId . '/Video/' . $name;
+            // $filePath = 'org_' . $userId . '/Video';
+            // $fileLocation = Storage::disk('s3')->put($filePath, $request->file('input_vidfile'));
+            // // $size = Storage::disk('s3')->size($filePath);
+            // $size = $request->file('input_vidfile')->getSize();
+            // $video->file_size = $size;
+            // $UrlToSave = $fileLocation;
+            //$UrlToSave = "In Progress";
+            //}
         } else {
             $UrlToSave = $request->input_url;
         }
@@ -117,20 +121,34 @@ class VideosController extends Controller {
         $video->url = $UrlToSave;
         $video->save();
 
-      
+
         if (isset($request->IsUploadVideo)) {
             if ($request->hasFile('input_vidfile')) {
-                $videoupdate=Video::findOrFail($video->id);
-                $file = $request->file('input_vidfile');
-               // $name = time() . $file->getClientOriginalName();
+                $videoupdate = Video::findOrFail($video->id);
+
+                $filename = "";
+                if ($request->hasFile('input_vidfile') && $request->file('input_vidfile')->isValid()) {
+                    $filename = Storage::putFile('org_' . auth()->user()->id . '/video', $request->file('input_vidfile'));
+                    $videoupdate->url = $filename;
+                    
+                    // check if we have a valid file uploaded
+                    if ($filename) {
+                        EncryptFile::withChain([
+                            new MoveFileToS3($filename),
+                        ])->dispatch($filename);
+                    }
+                }
+
+                //$file = $request->file('input_vidfile');
+                // $name = time() . $file->getClientOriginalName();
                 $userId = Auth::id();
                 // $filePath = 'org_' . $userId . '/Video/' . $name;
                 $filePath = 'org_' . $userId . '/Video';
-                $fileLocation = Storage::disk('s3')->put($filePath, $request->file('input_vidfile'));
+                //$fileLocation = Storage::disk('s3')->put($filePath, $request->file('input_vidfile'));
                 // $size = Storage::disk('s3')->size($filePath);
                 $size = $request->file('input_vidfile')->getSize();
                 $videoupdate->file_size = $size;
-                $videoupdate->url = $fileLocation;
+
                 $videoupdate->save();
             }
         }

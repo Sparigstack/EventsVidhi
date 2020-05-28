@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-
+<?php $v = "1.0.1"; ?>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -22,7 +22,7 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <!-- custom styles -->
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/style.css?v='.$v) }}" rel="stylesheet">
     <!-- simplebar CSS-->
     <link href="{{ asset('assets/plugins/simplebar/css/simplebar.css') }}" rel="stylesheet">
     <!-- Bootstrap core CSS-->
@@ -230,9 +230,6 @@
                 @yield('content')
             </div>
     </div>
-
-
-
     <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/jquery.form.js') }}"></script>
     <script src="{{ asset('assets/js/popper.min.js') }}"></script>
@@ -241,7 +238,7 @@
     <script src="{{ asset('assets/js/sidebar-menu.js') }}"></script>
     <script src="{{ asset('assets/js/app-script.js') }}"></script>
     <script src="{{ asset('assets/plugins/jquery-knob/jquery.knob.js') }}"></script>
-    <script src="{{asset('/js/customScript.js')}}" type="text/javascript"></script>
+    <script src="{{asset('/js/customScript.js?v='.$v)}}" type="text/javascript"></script>
     <!-- Data Tables -->
     <script src="{{ asset('assets/plugins/bootstrap-datatable/js/jquery.dataTables.min.js') }}"></script>
     <!-- <script src="{{ asset('assets/plugins/bootstrap-datatable/js/buttons.bootstrap4.min.js') }}"></script> -->
