@@ -91,6 +91,7 @@
                 },
                 success: function (response) {
                     console.log(response);
+                    alert('Contacts are saved');
                 },
                 complete: function (xhr) {
                     //status.html(xhr.responseText);
