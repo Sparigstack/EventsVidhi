@@ -292,7 +292,7 @@
                         clearInterval(interval);
                         window.location.href = $('#hdnRedirect').val();
                         LoaderStop();
-                    }, 5000);
+                    }, 2000);
                     // window.location.href = $('#hdnRedirect').val();
                 }
                 // LoaderStart();
