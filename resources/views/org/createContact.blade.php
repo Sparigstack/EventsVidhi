@@ -33,100 +33,20 @@
                     </div>
                     @endif
 
-                    <form class="dragFileForm" action="{{$ActionCall}}" method="POST" >
+                    <form class="" action="{{$ActionCall}}" method="post" >
                     {{ csrf_field() }}
-                    <input type="hidden" id="hdnRedirect" value="{{$RedirectCall}}" />
+                   <!--  <input type="hidden" id="hdnRedirect" value="{{$RedirectCall}}" /> -->
                         <div class='form-group'>
-                            <label for='input_title'>Contact Title</label>
-                            <input type="text" class="form-control" id="input_title" name='input_title' value="{{  old('input_title', $title) }}" placeholder="Enter Contact Title" required>
+                            <label for='firstName'>First Name</label>
+                            <input type="text" class="form-control" id="firstName" name='firstName' value="{{  old('firstName', $firstname) }}" placeholder="Enter First Name" required>
                         </div>
                         <div class='form-group'>
-                            <label for='input_url'>Contact URL</label>
-                            <input type="text" class="form-control" id="input_url" name="input_url"  value="{{  old('input_url', $desription) }}" placeholder="Enter Contact URL" required>
+                            <label for='lastName'>Last Name</label>
+                            <input type="text" class="form-control" id="lastName" name="lastName"  value="{{  old('lastName', $lastname) }}" placeholder="Enter Last Name" required>
                         </div>
-
-                        <div class="form-group">
-                                <label for="BlankLabel"></label>
-                                <div class="icheck-material-primary">
-                                    <input onclick="UploadContactVideoBox()" type="checkbox" id="IsUploadContact" name="IsUploadContact" @if(old('IsUploadContact')) checked @endif>
-                                    <label for="IsUploadContact">Or upload contact</label>
-                                </div>
-                            </div>
-
-                        <div class='parent' style='width: 100%;'>
-                            <div class='form-group  d-none uploadContactBox'>
-                                <label for='input_podfile'>Upload Contact</label>
-                                <div class='dragFileContainer'>
-                                    <input type="file" id='input_podfile' name='input_podfile' value="{{  old('input_podfile') }}" >
-                                    <p>Drag your contact here or click to upload</p>
-                                </div>
-                                <small class="text-danger">{{ $errors->first('input_podfile') }}</small>
-                            </div>
-                            <div class="form-group contactProgressBar d-none">
-                                <div class="progress_upload">
-                                    <div class="bar_upload"></div >
-                                    <div class="percent_upload">0%</div >
-                                </div>
-                            </div>
-                            <!-- <div class="form-group">
-                                <label for="BlankLabel"></label>
-                                <input type="hidden" class="linkedEvent" name="linkedEvent" value="">
-                                <div class="icheck-material-primary">
-                                    <input onchange='showHideLinkEvent(this);' type="checkbox" id="IsLinkedEvent" name="IsLinkedEvent" @if(old('IsLinkedEvent', $linkedEventCheckced)) checked @endif>
-                                    <label for="IsLinkedEvent"> Do you want to link this contact with any Event?</label>
-                                </div>
-                            </div> -->
-
-                            <div class="form-group">
-                                    <label for="BlankLabel"></label>
-                                <input type="hidden" class="linkedEvent" name="linkedEvent" value="">
-                                    <p> Do you want to link this contact with any Event?</p>
-                                    <div class="row pl-3">
-                                    <div class="icheck-material-primary">
-                                        <input onchange='showHideLinkEvent(this);' type="radio" class="" id="yesEventLinked" name="IsLinkedEvent" @if(old('IsLinkedEvent', $linkedEventCheckced)) checked @endif>
-                                            <label for="yesEventLinked">Yes</label>
-                                    </div>
-                                    <div class="icheck-material-primary pl-2">
-                                        <?php 
-                                            $checkedRadio = "checked";
-                                            if($contactVideoEventId != 0){
-                                                $checkedRadio = "";
-                                            }
-                                        ?>
-                                        <input onchange='showHideLinkEvent(this);' type="radio" id="noEventLinked" name="IsLinkedEvent" {{$checkedRadio}}>
-                                        <label for="noEventLinked">No</label>
-                                    </div>
-                                </div>
-                            </div>
-
-                             <div class="form-group descriptionDiv">
-                                            <label for="Description">Contact Description</label>
-                                            <textarea id="Description" name="Description" class="form-control" title="Description" placeholder="Description" autocomplete="off" rows="4">{{ old('Description', $contactvideoDescription) }}</textarea>
-                            </div>
-
-
-                            <div id='linkEvent' class="form-group EventSelectionBox d-none">
-                                <label for="EventToLink mb-0">Link To Event</label>
-                                <select autocomplete="off" value="" name="EventToLink" id="EventToLink" class=" custom-select">
-                                    <option value="">Select Event To Link</option>
-                                    <?php
-                                    foreach ($events as $event) {
-                                        $IsSelected = "";
-                                        if (!empty($contact)) {
-                                            if ($event->id == $contactVideoEventId) {
-                                                $IsSelected = "selected";
-                                            }
-                                        }
-                                        //                                        $IsSelected = "";
-                                        //                                        if ($event->id == $eventId) {
-                                        //                                            $IsSelected = "selected";
-                                        //                                        }
-                                    ?>
-                                        <option value="{{$event->id}}" {{$IsSelected}}  @if (old('EventToLink')==$event->id) selected="selected" @endif ><?php echo $event->title; ?> </option>
-                                    <?php } ?>
-
-                                </select>
-                            </div>
+                        <div class='form-group'>
+                            <label for='emailAddress'>Email Address</label>
+                            <input type="text" class="form-control" id="emailAddress" name="emailAddress"  value="{{  old('emailAddress', $email) }}" placeholder="Enter Email Address" required>
                         </div>
 
 

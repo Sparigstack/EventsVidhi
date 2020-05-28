@@ -5,6 +5,8 @@ namespace App\Http\Controllers\org;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Contact;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class ContactsController extends Controller
 {
@@ -33,7 +35,9 @@ class ContactsController extends Controller
      */
     public function create()
     {
-        
+        // $user = Auth::user();
+        $contacts = Contact::all();
+        return view('org/createContact', compact('contacts'));
     }
 
     /**
@@ -45,9 +49,9 @@ class ContactsController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'firstname' => 'required',
-            'lastname' => 'required',
-            'email' => 'required',            
+            'firstName' => 'required',
+            'lastName' => 'required',
+            'emailAddress' => 'required',            
         ]);
 
         if ($validator->fails()) {
@@ -55,12 +59,14 @@ class ContactsController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
+
+        $user = Auth::user();
         
         $contact = new Contact;
-        $contact->first_name = $request->firstname;
-        $contact->last_name = $request->lastname;
-        $contact->email = $reqeust->email;
-        $contact->user_id = Auth::id();
+        $contact->first_name = $request->firstName;
+        $contact->last_name = $request->lastName;
+        $contact->email = $request->emailAddress;
+        $contact->user_id = $user->id;
         $contact->save();
         return redirect('org/contacts');
     }
@@ -84,7 +90,10 @@ class ContactsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = Auth::user();
+        $contact = Contact::findOrFail($id);
+        
+        return view('org/createContact', compact('contact'));
     }
 
     /**
@@ -96,7 +105,27 @@ class ContactsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'firstName' => 'required',
+            'lastName' => 'required',
+            'emailAddress' => 'required',            
+        ]);
+
+        if ($validator->fails()) {
+            return redirect('org/contacts/new')
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $user = Auth::user();
+
+        $contact = Contact::findOrFail($id);
+        $contact->first_name = $request->firstName;
+        $contact->last_name = $request->lastName;
+        $contact->email = $request->emailAddress;
+        $contact->user_id = $user->id;
+        $contact->save();
+        return redirect('org/contacts');
     }
 
     /**
@@ -105,8 +134,8 @@ class ContactsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $contact = Contact::find($request->contactDeleteId)->delete();
     }
 }

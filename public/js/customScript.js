@@ -18,6 +18,12 @@ $(document).ready(function () {
         ]
     });
 
+    var contactsTable = $('#default-datatable-contacts').DataTable({
+        columnDefs: [
+            {orderable: false, targets: 3},
+        ]
+    });
+
     // $('#SaveVideoAjax').on('submit', function (event) {
     //     event.preventDefault();
     //     LoaderStart();
@@ -214,6 +220,26 @@ function deleteEvent(element) {
         }
     });
 }
+
+function deleteContact(element) {
+    var confirmDelete = confirm("Are you sure you want to delete this contact?");
+    if (!confirmDelete)
+        return;
+    var parent = findParent(element);
+    var contactDeleteId = $(element).attr('db-delete-id');
+    var CSRF_TOKEN = $('.csrf-token').val();
+    var urlString = $('.deleteContact').val();
+    $.ajax({
+        url: urlString,
+        type: 'post',
+        data: {_token: CSRF_TOKEN, contactDeleteId: contactDeleteId},
+        success: function (response) {
+            // console.log(response);
+            location.reload();
+        }
+    });
+}
+
 // function UploadVideoBox(element) {
 //     var field = $(element).parent().parent().parent();
 //     if (!$(element).is(':checked')) {
