@@ -128,15 +128,15 @@ class VideosController extends Controller {
 
                 $filename = "";
                 if ($request->hasFile('input_vidfile') && $request->file('input_vidfile')->isValid()) {
-//                    $filename = Storage::putFile('org_' . auth()->user()->id . '/video', $request->file('input_vidfile'));
-//                    $videoupdate->url = $filename;
-//                    
-//                    // check if we have a valid file uploaded
-//                    if ($filename) {
-//                        EncryptFile::withChain([
-//                            new MoveFileToS3($filename),
-//                        ])->dispatch($filename);
-//                    }
+                    $filename = Storage::putFile('org_' . auth()->user()->id . '/video', $request->file('input_vidfile'));
+                    $videoupdate->url = $filename;
+                    
+                    // check if we have a valid file uploaded
+                    if ($filename) {
+                        EncryptFile::withChain([
+                            new MoveFileToS3($filename),
+                        ])->dispatch($filename);
+                    }
                 }
 
                 //$file = $request->file('input_vidfile');
@@ -145,8 +145,8 @@ class VideosController extends Controller {
                 // $filePath = 'org_' . $userId . '/Video/' . $name;
                 $filePath = 'org_' . $userId . '/Video';
                 //$fileLocation = Storage::disk('s3')->put($filePath, $request->file('input_vidfile'));
-                $fileLocation = Storage::disk('s3')->put($filePath, fopen($request->file('input_vidfile'), 'r+'));
-                // $size = Storage::disk('s3')->size($filePath);
+                //$fileLocation = Storage::disk('s3')->put($filePath, fopen($request->file('input_vidfile'), 'r+'));
+                //$size = Storage::disk('s3')->size($filePath);
                 $size = $request->file('input_vidfile')->getSize();
                 $videoupdate->file_size = $size;
 
