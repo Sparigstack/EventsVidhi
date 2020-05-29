@@ -38,9 +38,10 @@ class ContactsController extends Controller
      */
     public function create()
     {
-        // $user = Auth::user();
+        $user = Auth::user();
         $contacts = Contact::all();
-        $tags = Tag::all();
+        // $tags = Tag::all();
+        $tags = Tag::where('user_id', $user->id)->get();
         return view('org/createContact', compact('contacts', 'tags'));
     }
 

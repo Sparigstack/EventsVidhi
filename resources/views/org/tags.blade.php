@@ -1,4 +1,12 @@
 @extends('layouts.appOrg')
+<style>
+.select2-dropdown {
+    display: none !important;
+}
+.select2-selection__rendered{
+    height: 100px !important;
+}
+</style>
 @section('content')
 
 <div class="container-fluid">
@@ -25,7 +33,7 @@
                             </div>
                             <div class="col-lg-2 pt-4 mt-2 pl-0"><button type="submit" class="btn btn-primary">Save Tag</button></div>
 
-                            <div class="form-group col-lg-12">
+                            <div class="form-group col-lg-12 mt-2">
 
                                 <select multiple="multiple" class="form-control multiple-select" name="allTags" id="allTags" placeholder="">
                                     @foreach($tags as $tag)
@@ -59,6 +67,9 @@
     $(document).ready(function() {
         $('.single-select').select2();
 
+        $('.select2-dropdown').css('display','none');
+        $('.select2-selection__rendered').css('height','100px !important');
+
         $('.multiple-select').select2({
             placeholder: "Select tags",
             allowClear: true
@@ -75,10 +86,10 @@
             MultiSlectCounter += 1;
         });
         $('.multiple-select').on('select2:unselecting', function(e) {
-            // var confirmDelete = confirm("Are you sure you want to delete this tag?");
-            // if (!confirmDelete){
-            //     return;
-            // }
+            var confirmDelete = confirm("Are you sure want to remove this Tag from all Contacts and delete permanently?");
+            if (!confirmDelete){
+                return false;
+            }
             var tagID = e.params.args.data.id;
             //alert(tagID);
            // var parent = findParent(element);

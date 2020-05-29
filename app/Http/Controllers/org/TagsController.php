@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DB;
 use App\Tag;
+use App\ContactTag;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -42,6 +43,7 @@ class TagsController extends Controller
         ]);
     }
     public function delete($id){
+        $contact_tag = ContactTag::where('tag_id', $id)->delete();
         $event = Tag::find($id)->delete();
         return response()->json([
             "status"=>"success"
