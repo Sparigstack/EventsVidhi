@@ -6,6 +6,10 @@
 .select2-selection__rendered{
     height: 100px !important;
 }
+
+.select2-container--default .select2-selection--multiple{
+    height: auto !important;
+}
 </style>
 @section('content')
 
@@ -69,6 +73,7 @@
 
         $('.select2-dropdown').css('display','none');
         $('.select2-selection__rendered').css('height','100px !important');
+        
 
         $('.multiple-select').select2({
             placeholder: "Select tags",

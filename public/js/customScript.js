@@ -20,7 +20,7 @@ $(document).ready(function () {
 
     var contactsTable = $('#default-datatable-contacts').DataTable({
         columnDefs: [
-            {orderable: false, targets: 3},
+            {orderable: false, targets: 4},
         ]
     });
 

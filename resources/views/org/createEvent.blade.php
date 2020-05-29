@@ -223,7 +223,9 @@
                                                         $IsSelected = "";
                                                         foreach ($categories as $category) {
 
-                                                            foreach ($event->eventCategory as $EventCategory) {
+                                                            // foreach ($event->eventCategory as $EventCategory) {
+
+                                                            foreach ($event->categories as $EventCategory) {
 
                                                                 if ($category->id == $EventCategory->category_id) {
                                                                     $IsSelected = "selected";

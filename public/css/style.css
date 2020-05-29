@@ -138,10 +138,10 @@ table .max-w-table-100 .btn{margin: 10px auto;min-width: 60px;}
     border-left: 1px solid;
 }
 .select2-container--default.select2-container--focus .select2-selection--multiple {
-    height: auto;
+    /*height: auto;*/
 }
 .select2-container--default .select2-selection--multiple{
-    height: auto !important;
+    /*height: auto !important;*/
 }
 
 .select2-container .select2-search--inline{

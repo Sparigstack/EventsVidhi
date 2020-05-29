@@ -20,6 +20,7 @@
                                         <th>First Name</th>
                                         <th>Last Name</th>
                                         <th>Email Address</th>
+                                        <th>Tags</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -32,6 +33,12 @@
                                             <td>{{$contact->first_name}} </td>
                                             <td>{{$contact->last_name}}</td>
                                             <td>{{$contact->email}}</td>
+                                            <td> <?php $tagSplit = []; 
+                                             foreach($contact->tags as $tagName){
+                                               $tagSplit[] = $tagName->name;
+                                            }
+                                            echo implode(", ",$tagSplit); ?>
+                                            </td>
                                             <td>
                                                 <i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-edit" title="Edit Contact" onclick="window.location='{{ url("org/contacts/".$contact->id) }}'"></i>
                                                 <a onclick="deleteContact(this);" db-delete-id="{{$contact->id}}"><i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-trash" title="Delete Contact"></i></a>              
@@ -45,6 +52,7 @@
                                         <th>First Name</th>
                                         <th>Last Name</th>
                                         <th>Email Address</th>
+                                        <th>Tags</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>

@@ -62,16 +62,17 @@
                             <select class="form-control multiple-select" multiple="multiple" name="tags" id="tags">
                                 <?php if (!empty($contact)) {
                                     $IsSelected = "";
-                                    foreach ($tags as $tag) {
+                                    foreach ($contact->tags as $contacts) {
+                                    
+                                        foreach ($tagsData as $contact_tags) {
 
-                                        foreach ($event->eventCategory as $EventCategory) {
-
-                                            if ($category->id == $EventCategory->category_id) {
+                                            if ($contact_tags->id == $contacts->id) {
                                                 $IsSelected = "selected";
+                                                $checkCount = "yes";
                                                 if ($checkCount == "no") {
-                                                    $MultSelectTags .= strval($category->id);
+                                                    $MultSelectTags .= strval($contacts->id);
                                                 } else {
-                                                    $MultSelectTags .= "," . $category->id;
+                                                    $MultSelectTags .= "," . $contacts->id;
                                                 }
                                                 $checkCount = "yes";
                                             } else {
@@ -79,15 +80,19 @@
                                             }
 
                                 ?>
-                                            <option value="{{old('tags',$category->id)}}" {{$IsSelected}} @if (old('tags')==$category->id) selected="selected" @endif ><?php echo $category->name; ?> </option>
-                                        <?php }
-                                    }
+                                <option value="{{old('tags',$contact_tags->id)}}" {{$IsSelected}} @if (old('tags')==$contact_tags->id) selected="selected" @endif ><?php echo $contact_tags->name; ?> </option>
+                                            
+                                        <?php } ?>
+                                        
+                                  <?php  }
                                 } else {
-                                    foreach ($tags as $tag) {
+                                    foreach ($tagsData as $contact_tags) {
                                         ?>
-                                        <option value="{{old('tags',$tag->id)}}" {{$IsSelected}} @if (old('tags')==$tag->id) selected="selected" @endif ><?php echo $tag->name; ?> </option>
+                                        <option value="{{old('tags',$contact_tags->id)}}" {{$IsSelected}} @if (old('tags')==$contact_tags->id) selected="selected" @endif ><?php echo $contact_tags->name; ?> </option>
                                 <?php }
                                 } ?>
+                            
+
                             </select>
                             <small class="text-danger">{{ $errors->first('tags') }}</small>
                             <textarea id="HiddenCategoyID" name="HiddenCategoyID" required class="form-controld d-none" title="HiddenCategoyID" placeholder="HiddenCategoyID" autocomplete="off" rows="4">{{ old('HiddenCategoyID', $MultSelectTags) }} </textarea>

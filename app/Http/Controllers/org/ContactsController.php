@@ -41,8 +41,8 @@ class ContactsController extends Controller
         $user = Auth::user();
         $contacts = Contact::all();
         // $tags = Tag::all();
-        $tags = Tag::where('user_id', $user->id)->get();
-        return view('org/createContact', compact('contacts', 'tags'));
+        $tagsData = Tag::where('user_id', $user->id)->get();
+        return view('org/createContact', compact('contacts', 'tagsData'));
     }
 
     /**
@@ -113,8 +113,10 @@ class ContactsController extends Controller
     {
         $user = Auth::user();
         $contact = Contact::findOrFail($id);
+        $contact_tag = ContactTag::where('contact_id', $contact->id)->get();
+        $tagsData = Tag::where('user_id', $user->id)->get();
 
-        return view('org/createContact', compact('contact'));
+        return view('org/createContact', compact('contact', 'contact_tag', 'tagsData'));
     }
 
     /**
@@ -144,8 +146,22 @@ class ContactsController extends Controller
         $contact->first_name = $request->firstName;
         $contact->last_name = $request->lastName;
         $contact->email = $request->emailAddress;
+        $contact->contact_number = $request->ContactNumber;
         $contact->user_id = $user->id;
         $contact->save();
+
+        try {
+            $string = $request->HiddenCategoyID;
+            $tagIDS = preg_split("/\,/", $string);
+            // ContactTag::where('contact_id', $contact->id)->delete();
+            foreach ($tagIDS as $tagID) {
+                $ContactTag = new ContactTag;
+                $ContactTag->contact_id = $contact->id;
+                $ContactTag->tag_id = number_format($tagID);
+                $ContactTag->save();
+            }
+        } catch (Exception $e) {
+        }
         return redirect('org/contacts');
     }
 
@@ -157,6 +173,7 @@ class ContactsController extends Controller
      */
     public function destroy(Request $request)
     {
+        $contact_tags = ContactTag::where('contact_id', $request->contactDeleteId)->delete();
         $contact = Contact::find($request->contactDeleteId)->delete();
     }
 }
