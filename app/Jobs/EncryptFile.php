@@ -32,6 +32,7 @@ class EncryptFile implements ShouldQueue
      */
     public function handle()
     {
-        FileVault::encrypt($this->filename);
+        //commented encryption becasue we dont want it for now.
+        //FileVault::encrypt($this->filename);
     }
 }

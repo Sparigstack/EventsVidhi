@@ -278,7 +278,7 @@
             beforeSend: function() {
                 //status.empty();
                 var percentVal = '0%';
-                var posterValue = $('input[name=input_vidfile]').fieldValue();
+                //var posterValue = $('input[name=input_vidfile]').fieldValue();
                 bar.width(percentVal)
                 percent.html(percentVal);
             },

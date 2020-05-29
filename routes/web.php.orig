@@ -1,0 +1,106 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
+Route::get('/', function () {
+    return view('home');
+});
+
+//Route::resource('events', 'EventsController');
+Route::get('events', 'EventsController@index');
+Route::get('events/{eventid}', 'EventsController@show');
+
+
+Auth::routes(['verify' => true]);
+
+Route::get('/home', 'HomeController@index')->name('home');
+//Route::get('/home/create', 'HomeController@create')->name('home');
+
+///All routes for Organizer panel will be here.
+Route::get('org/events', 'org\EventsController@index')->name('orgEvents');
+Route::get('org/pastEvents', 'org\EventsController@pastEvents');
+Route::get('org/events/new', 'org\EventsController@create')->name('newEvent');;
+Route::get('org/events/{eventid}/{tabe?}', 'org\EventsController@edit');
+Route::post('org/events/store', 'org\EventsController@store');
+Route::post('deleteEvent', 'org\EventsController@destroy');
+Route::post('org/events/edit/{id}', 'org\EventsController@update');
+Route::post('org/events/videos/store', 'org\EventsController@storeVideo');
+Route::post('org/events/update', 'org\EventsController@UpdateEventStatus');
+Route::post('org/events/deleteVideo/{id}/{Type}/{UrlType}', 'org\EventsController@destroyVideo');
+Route::post('org/events/speaker/store', 'org\EventsController@storeSpeaker');
+Route::post('org/events/deleteSpeaker/{id}/{Type}/{UrlType}', 'org\EventsController@destroyVideo');
+Route::post('org/events/editSpeaker/{id}', 'org\EventsController@editSpeaker');
+Route::post('org/events/updateSpeaker/{id}', 'org\EventsController@updateSpeaker');
+Route::post('org/events/speaker/deleteProfilePic', 'org\EventsController@deleteProfilePic');
+Route::post('org/events/podcast/store', 'org\EventsController@storePodcast');
+
+Route::get('org/videos', 'org\VideosController@index');
+Route::get('org/videos/new', 'org\VideosController@create');
+Route::post('org/videos/store', 'org\VideosController@store');
+Route::post('org/videos/store_demo', 'org\VideosController@store_demo');
+//Route::post('org/videos/store_demo', function () {
+//    $msg = "from here";
+//    return view('createVideo_t', compact('msg'));
+//});
+Route::get('org/videos/{videoid}', 'org\VideosController@edit');
+Route::post('org/videos/edit/{id}', 'org\VideosController@update');
+Route::post('deleteVideo', 'org\VideosController@destroy');
+
+Route::get('org/podcasts', 'org\PodcastsController@index');
+Route::get('org/podcasts/new', 'org\PodcastsController@create');
+Route::post('org/podcasts/store', 'org\PodcastsController@store');
+Route::get('org/podcasts/{podcastid}', 'org\PodcastsController@edit');
+Route::post('org/podcasts/edit/{podcastid}', 'org\PodcastsController@update');
+Route::post('deletePodcast', 'org\PodcastsController@destroy');
+
+Route::get('org/contacts', 'org\ContactsController@index');
+Route::get('org/contacts/new', 'org\ContactsController@create');
+Route::post('org/contacts/store', 'org\ContactsController@store');
+Route::get('org/contacts/{contactid}', 'org\ContactsController@edit');
+Route::post('org/contacts/edit/{contactid}', 'org\ContactsController@update');
+Route::post('deleteContact', 'org\ContactsController@destroy');
+
+Route::post('getState', 'org\EventsController@getState');
+Route::post('getCity', 'org\EventsController@getCity');
+
+Route::post('org/csv/import', 'org\CsvImportController@store');
+
+Route::get('profile', function () {
+    return view('profile');
+});
+
+Route::get('account', function () {
+    return view('account');
+});
+Route::get('org/csvImport', function () {
+    return view('org/csvImport');
+});
+
+<<<<<<< HEAD
+
+Route::post('/upload', function()
+{
+    return Plupload::receive('file', function ($file)
+    {
+        $file->move(storage_path() . '/test/', $file->getClientOriginalName());
+
+        return 'ready';
+    });
+});
+=======
+Route::get('org/tags', 'org\TagsController@show');
+
+Route::post('org/tags/store', 'org\TagsController@store');
+Route::post('org/tags/delete/{id}', 'org\TagsController@Delete');
+>>>>>>> 551c9f4b18ee64834c7dae209d501604bda2067f

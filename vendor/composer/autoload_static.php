@@ -79,6 +79,7 @@ class ComposerStaticInit64b7fcf415f12f33f2fc750a4da7e832
             'Symfony\\Component\\ErrorHandler\\' => 31,
             'Symfony\\Component\\CssSelector\\' => 30,
             'Symfony\\Component\\Console\\' => 26,
+            'SoareCostin\\FileVault\\' => 22,
         ),
         'R' => 
         array (
@@ -291,6 +292,10 @@ class ComposerStaticInit64b7fcf415f12f33f2fc750a4da7e832
         array (
             0 => __DIR__ . '/..' . '/symfony/console',
         ),
+        'SoareCostin\\FileVault\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/soarecostin/file-vault/src',
+        ),
         'Ramsey\\Uuid\\' => 
         array (
             0 => __DIR__ . '/..' . '/ramsey/uuid/src',
@@ -479,6 +484,13 @@ class ComposerStaticInit64b7fcf415f12f33f2fc750a4da7e832
             'Mockery' => 
             array (
                 0 => __DIR__ . '/..' . '/mockery/mockery/library',
+            ),
+        ),
+        'J' => 
+        array (
+            'JildertMiedema\\LaravelPlupload' => 
+            array (
+                0 => __DIR__ . '/..' . '/jildertmiedema/laravel-plupload/src',
             ),
         ),
         'H' => 
@@ -3006,6 +3018,13 @@ class ComposerStaticInit64b7fcf415f12f33f2fc750a4da7e832
         'Illuminate\\View\\ViewFinderInterface' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/View/ViewFinderInterface.php',
         'Illuminate\\View\\ViewName' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/View/ViewName.php',
         'Illuminate\\View\\ViewServiceProvider' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/View/ViewServiceProvider.php',
+        'JildertMiedema\\LaravelPlupload\\Builder' => __DIR__ . '/..' . '/jildertmiedema/laravel-plupload/src/JildertMiedema/LaravelPlupload/Builder.php',
+        'JildertMiedema\\LaravelPlupload\\Facades\\Plupload' => __DIR__ . '/..' . '/jildertmiedema/laravel-plupload/src/JildertMiedema/LaravelPlupload/Facades/Plupload.php',
+        'JildertMiedema\\LaravelPlupload\\LaravelPluploadServiceProvider' => __DIR__ . '/..' . '/jildertmiedema/laravel-plupload/src/JildertMiedema/LaravelPlupload/LaravelPluploadServiceProvider.php',
+        'JildertMiedema\\LaravelPlupload\\Manager' => __DIR__ . '/..' . '/jildertmiedema/laravel-plupload/src/JildertMiedema/LaravelPlupload/Manager.php',
+        'JildertMiedema\\LaravelPlupload\\Plupload' => __DIR__ . '/..' . '/jildertmiedema/laravel-plupload/src/JildertMiedema/LaravelPlupload/Plupload.php',
+        'JildertMiedema\\LaravelPlupload\\PluploadException' => __DIR__ . '/..' . '/jildertmiedema/laravel-plupload/src/JildertMiedema/LaravelPlupload/PluploadException.php',
+        'JildertMiedema\\LaravelPlupload\\Receiver' => __DIR__ . '/..' . '/jildertmiedema/laravel-plupload/src/JildertMiedema/LaravelPlupload/Receiver.php',
         'JmesPath\\AstRuntime' => __DIR__ . '/..' . '/mtdowling/jmespath.php/src/AstRuntime.php',
         'JmesPath\\CompilerRuntime' => __DIR__ . '/..' . '/mtdowling/jmespath.php/src/CompilerRuntime.php',
         'JmesPath\\DebugRuntime' => __DIR__ . '/..' . '/mtdowling/jmespath.php/src/DebugRuntime.php',
@@ -4692,6 +4711,10 @@ class ComposerStaticInit64b7fcf415f12f33f2fc750a4da7e832
         'SebastianBergmann\\Type\\UnknownType' => __DIR__ . '/..' . '/sebastian/type/src/UnknownType.php',
         'SebastianBergmann\\Type\\VoidType' => __DIR__ . '/..' . '/sebastian/type/src/VoidType.php',
         'SebastianBergmann\\Version' => __DIR__ . '/..' . '/sebastian/version/src/Version.php',
+        'SoareCostin\\FileVault\\Facades\\FileVault' => __DIR__ . '/..' . '/soarecostin/file-vault/src/Facades/FileVault.php',
+        'SoareCostin\\FileVault\\FileEncrypter' => __DIR__ . '/..' . '/soarecostin/file-vault/src/FileEncrypter.php',
+        'SoareCostin\\FileVault\\FileVault' => __DIR__ . '/..' . '/soarecostin/file-vault/src/FileVault.php',
+        'SoareCostin\\FileVault\\FileVaultServiceProvider' => __DIR__ . '/..' . '/soarecostin/file-vault/src/FileVaultServiceProvider.php',
         'Symfony\\Component\\Console\\Application' => __DIR__ . '/..' . '/symfony/console/Application.php',
         'Symfony\\Component\\Console\\CommandLoader\\CommandLoaderInterface' => __DIR__ . '/..' . '/symfony/console/CommandLoader/CommandLoaderInterface.php',
         'Symfony\\Component\\Console\\CommandLoader\\ContainerCommandLoader' => __DIR__ . '/..' . '/symfony/console/CommandLoader/ContainerCommandLoader.php',

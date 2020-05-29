@@ -25,6 +25,7 @@ Route::get('events/{eventid}', 'EventsController@show');
 Auth::routes(['verify' => true]);
 
 Route::get('/home', 'HomeController@index')->name('home');
+//Route::get('/home/create', 'HomeController@create')->name('home');
 
 ///All routes for Organizer panel will be here.
 Route::get('org/events', 'org\EventsController@index')->name('orgEvents');
@@ -47,6 +48,11 @@ Route::post('org/events/podcast/store', 'org\EventsController@storePodcast');
 Route::get('org/videos', 'org\VideosController@index');
 Route::get('org/videos/new', 'org\VideosController@create');
 Route::post('org/videos/store', 'org\VideosController@store');
+Route::post('org/videos/store_demo', 'org\VideosController@store_demo');
+//Route::post('org/videos/store_demo', function () {
+//    $msg = "from here";
+//    return view('createVideo_t', compact('msg'));
+//});
 Route::get('org/videos/{videoid}', 'org\VideosController@edit');
 Route::post('org/videos/edit/{id}', 'org\VideosController@update');
 Route::post('deleteVideo', 'org\VideosController@destroy');
@@ -85,3 +91,7 @@ Route::get('org/tags', 'org\TagsController@show');
 
 Route::post('org/tags/store', 'org\TagsController@store');
 Route::post('org/tags/delete/{id}', 'org\TagsController@Delete');
+
+Route::get('org/customFields', 'org\CustomFieldController@Index');
+Route::post('org/customfield/store', 'org\CustomFieldController@store');
+Route::post('org/customfield/delete/{id}', 'org\CustomFieldController@delete');
