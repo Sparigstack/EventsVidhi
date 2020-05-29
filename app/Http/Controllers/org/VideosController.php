@@ -54,8 +54,9 @@ class VideosController extends Controller {
      */
     public function create() {
         $user = Auth::user();
-        $events = $user->events->sortBy('created_at');
-        return view('org/createVideo', compact('events'));
+        //$events = $user->events->sortBy('created_at');
+        //return view('org/createVideo', compact('events'));
+        return view('org/createVideo_t');
     }
 
     /**
@@ -90,25 +91,10 @@ class VideosController extends Controller {
         $video->user_id = $userId;
         $UrlToSave = "";
         if (isset($request->IsUploadVideo)) {
-            //if ($request->hasFile('input_vidfile')) {
-            // $file = $request->file('input_vidfile');
-            // $name = time() . $file->getClientOriginalName();
-            // $userId = Auth::id();
-            // // $filePath = 'org_' . $userId . '/Video/' . $name;
-            // $filePath = 'org_' . $userId . '/Video';
-            // $fileLocation = Storage::disk('s3')->put($filePath, $request->file('input_vidfile'));
-            // // $size = Storage::disk('s3')->size($filePath);
-            // $size = $request->file('input_vidfile')->getSize();
-            // $video->file_size = $size;
-            // $UrlToSave = $fileLocation;
-            //$UrlToSave = "In Progress";
-            //}
+            $video->url_type = 1;
         } else {
             $UrlToSave = $request->input_url;
         }
-        // if (isset($request->IsLinkedEvent)) {
-        //     $video->event_id = $request->EventToLink;
-        // }
         if ($request->linkedEvent == '1') {
             $video->event_id = $request->EventToLink;
             $video->description = "";
@@ -128,25 +114,20 @@ class VideosController extends Controller {
 
                 $filename = "";
                 if ($request->hasFile('input_vidfile') && $request->file('input_vidfile')->isValid()) {
-                    $filename = Storage::putFile('org_' . auth()->user()->id . '/video', $request->file('input_vidfile'));
+                    $filename = Storage::disk('local')->putFile('org_' . auth()->user()->id . '/video', $request->file('input_vidfile'));
                     $videoupdate->url = $filename;
-                    
+
                     // check if we have a valid file uploaded
                     if ($filename) {
-                        EncryptFile::withChain([
-                            new MoveFileToS3($filename),
-                        ])->dispatch($filename);
+//                        EncryptFile::withChain([
+//                            new MoveFileToS3($filename),
+//                        ])->dispatch($filename);
+
+                        MoveFileToS3::dispatch($filename);
                     }
                 }
 
-                //$file = $request->file('input_vidfile');
-                // $name = time() . $file->getClientOriginalName();
                 $userId = Auth::id();
-                // $filePath = 'org_' . $userId . '/Video/' . $name;
-                //$filePath = 'org_' . $userId . '/Video';
-                //$fileLocation = Storage::disk('s3')->put($filePath, $request->file('input_vidfile'));
-                //$fileLocation = Storage::disk('s3')->put($filePath, fopen($request->file('input_vidfile'), 'r+'));
-                //$size = Storage::disk('s3')->size($filePath);
                 $size = $request->file('input_vidfile')->getSize();
                 $videoupdate->file_size = $size;
 
@@ -155,18 +136,13 @@ class VideosController extends Controller {
         }
 
         return response()->json(['success' => 'File Uploaded Successfully']);
-        //return redirect('org/videos');
-        // if ($request->hasFile('VideoFile')) {
-        //     $file = $request->file('VideoFile');
-        //     $name = time() . $file->getClientOriginalName();
-        //     $filePath = 'images/' . $name;
-        //     Storage::disk('s3')->put($filePath, file_get_contents($file));
-        // } else {
-        //     return 'from else';
-        // }
-        // return back()->withSuccess('Image uploaded successfully');
+        
     }
 
+    public function store_demo(Request $request) {
+        //return 'got here';
+        return $request->file('vid_file')->getSize();
+    }
     /**
      * Display the specified resource.
      *
@@ -283,9 +259,14 @@ class VideosController extends Controller {
      */
     public function destroy(Request $request) {
         $video = Video::find($request->videoDeleteId);
-        if (!empty($video->url)) {
-            Storage::disk('s3')->delete($video->url);
+        try {
+            if (!empty($video->url) && (isset($video->url_type) && $video->url_type === 1)) {
+                Storage::disk('s3')->delete($video->url);
+            }
+        } catch (Exception $ex) {
+            //do nothing
         }
+
         $video->delete();
     }
 

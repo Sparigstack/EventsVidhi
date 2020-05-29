@@ -62,5 +62,10 @@
         </div>
 
     </body>
-
+    <script type="text/javascript">
+    // Initialize the widget when the DOM is ready
+    $(document).ready(function () {
+        alert('here');
+    });
+    </script>
 </html>

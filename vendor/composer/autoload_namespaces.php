@@ -7,6 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Mockery' => array($vendorDir . '/mockery/mockery/library'),
+    'JildertMiedema\\LaravelPlupload' => array($vendorDir . '/jildertmiedema/laravel-plupload/src'),
     'Highlight\\' => array($vendorDir . '/scrivo/highlight.php'),
     'HighlightUtilities\\' => array($vendorDir . '/scrivo/highlight.php'),
 );

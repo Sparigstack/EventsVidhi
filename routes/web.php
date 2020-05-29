@@ -25,6 +25,7 @@ Route::get('events/{eventid}', 'EventsController@show');
 Auth::routes(['verify' => true]);
 
 Route::get('/home', 'HomeController@index')->name('home');
+//Route::get('/home/create', 'HomeController@create')->name('home');
 
 ///All routes for Organizer panel will be here.
 Route::get('org/events', 'org\EventsController@index')->name('orgEvents');
@@ -47,6 +48,11 @@ Route::post('org/events/podcast/store', 'org\EventsController@storePodcast');
 Route::get('org/videos', 'org\VideosController@index');
 Route::get('org/videos/new', 'org\VideosController@create');
 Route::post('org/videos/store', 'org\VideosController@store');
+Route::post('org/videos/store_demo', 'org\VideosController@store_demo');
+//Route::post('org/videos/store_demo', function () {
+//    $msg = "from here";
+//    return view('createVideo_t', compact('msg'));
+//});
 Route::get('org/videos/{videoid}', 'org\VideosController@edit');
 Route::post('org/videos/edit/{id}', 'org\VideosController@update');
 Route::post('deleteVideo', 'org\VideosController@destroy');
@@ -79,4 +85,15 @@ Route::get('account', function () {
 });
 Route::get('org/csvImport', function () {
     return view('org/csvImport');
+});
+
+
+Route::post('/upload', function()
+{
+    return Plupload::receive('file', function ($file)
+    {
+        $file->move(storage_path() . '/test/', $file->getClientOriginalName());
+
+        return 'ready';
+    });
 });

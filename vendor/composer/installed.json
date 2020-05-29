@@ -1191,6 +1191,54 @@
         ]
     },
     {
+        "name": "jildertmiedema/laravel-plupload",
+        "version": "V0.6.0",
+        "version_normalized": "0.6.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/jildertmiedema/laravel-plupload.git",
+            "reference": "9ff5379e7837575ad681e205e817ce1988497a53"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/jildertmiedema/laravel-plupload/zipball/9ff5379e7837575ad681e205e817ce1988497a53",
+            "reference": "9ff5379e7837575ad681e205e817ce1988497a53",
+            "shasum": ""
+        },
+        "require": {
+            "illuminate/support": "^7.0",
+            "php": ">=7.2.5"
+        },
+        "require-dev": {
+            "mockery/mockery": "^1.2",
+            "phpunit/phpunit": "^8.5"
+        },
+        "time": "2020-05-19T11:29:21+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "JildertMiedema\\LaravelPlupload": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Jildert Miedema",
+                "email": "jildertmiedema@gmail.com"
+            }
+        ],
+        "description": "Laravel 5/Plupload - Handle large file uploads",
+        "keywords": [
+            "laravel",
+            "large files",
+            "pluload"
+        ]
+    },
+    {
         "name": "laravel/framework",
         "version": "v7.10.3",
         "version_normalized": "7.10.3.0",
@@ -4247,6 +4295,71 @@
         ],
         "description": "Library that helps with managing the version number of Git-hosted PHP projects",
         "homepage": "https://github.com/sebastianbergmann/version"
+    },
+    {
+        "name": "soarecostin/file-vault",
+        "version": "v1.0.2",
+        "version_normalized": "1.0.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/soarecostin/file-vault.git",
+            "reference": "f7ce2a4e820edab3bffbbd2dcf3632e5d1b222ab"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/soarecostin/file-vault/zipball/f7ce2a4e820edab3bffbbd2dcf3632e5d1b222ab",
+            "reference": "f7ce2a4e820edab3bffbbd2dcf3632e5d1b222ab",
+            "shasum": ""
+        },
+        "require": {
+            "illuminate/support": "5.8.* || 6.*.* || ^7.0",
+            "php": "^7.1"
+        },
+        "require-dev": {
+            "orchestra/testbench": "3.8.*",
+            "phpunit/phpunit": "^7.0"
+        },
+        "time": "2020-03-07T17:23:40+00:00",
+        "type": "library",
+        "extra": {
+            "laravel": {
+                "providers": [
+                    "SoareCostin\\FileVault\\FileVaultServiceProvider"
+                ],
+                "aliases": {
+                    "FileVault": "SoareCostin\\FileVault\\Facades\\FileVault"
+                }
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "SoareCostin\\FileVault\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Costin Soare",
+                "email": "soarecostin@gmail.com",
+                "role": "Developer"
+            }
+        ],
+        "homepage": "https://github.com/soarecostin/file-vault",
+        "keywords": [
+            "CBC",
+            "decrypt",
+            "decryption",
+            "encrypt",
+            "encryption",
+            "file",
+            "file-vault",
+            "laravel",
+            "php"
+        ]
     },
     {
         "name": "swiftmailer/swiftmailer",
