@@ -136,6 +136,7 @@
                                 <li class=""><a href="{{ url('org/contacts') }}" class="active"><i class="zmdi zmdi-long-arrow-right"></i> All Contacts</a></li>
                                 <li class=""><a href="{{url('org/csvImport')}}" class="active"><i class="zmdi zmdi-long-arrow-right"></i> CSV Import</a></li>
                                 <li class=""><a href="{{url('org/tags')}}" class="active"><i class="zmdi zmdi-long-arrow-right"></i> Tags</a></li>
+                                <li class=""><a href="{{url('org/customFields')}}" class="active"><i class="zmdi zmdi-long-arrow-right"></i> Custom Fields</a></li>
                             </ul>
                         </li>
 
