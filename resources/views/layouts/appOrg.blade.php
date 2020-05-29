@@ -117,7 +117,7 @@
                         </li>
                         <li>
                             <a href="{{url('org/podcasts')}}" class="waves-effect">
-                                <i class="fa fa-file-video-o"></i> <span>Podcasts</span><i class="fa fa-angle-left pull-right"></i>
+                                <i class="fa fa-headphones"></i> <span>Podcasts</span><i class="fa fa-angle-left pull-right"></i>
                             </a>
                             <ul class="sidebar-submenu in">
                                 <li class="active"><a href="{{ url('org/podcasts/new') }}" class="active"><i class="zmdi zmdi-long-arrow-right"></i> Add New Podcast</a></li>
@@ -128,13 +128,24 @@
 
                         <li>
                             <a href="javaScript:void();" class="waves-effect">
-                                <i class="zmdi zmdi-grid"></i> <span>Contacts</span><i class="fa fa-angle-left pull-right"></i>
+                                <i class="fa fa-user-circle"></i> <span>Contacts</span><i class="fa fa-angle-left pull-right"></i>
                             </a>
+                            <!-- zmdi zmdi-grid -->
                             <ul class="sidebar-submenu in">
                                 <li class="active"><a href="{{ url('org/contacts/new') }}" class="active"><i class="zmdi zmdi-long-arrow-right"></i> Add New Contact</a></li>
                                 <li class=""><a href="{{ url('org/contacts') }}" class="active"><i class="zmdi zmdi-long-arrow-right"></i> All Contacts</a></li>
+                                <li class=""><a href="{{url('org/csvImport')}}" class="active"><i class="zmdi zmdi-long-arrow-right"></i> CSV Import</a></li>
+                                <li class=""><a href="{{url('org/tags')}}" class="active"><i class="zmdi zmdi-long-arrow-right"></i> Tags</a></li>
                             </ul>
                         </li>
+
+                        <!-- <li>
+                            <a href="{{url('org/csvImport')}}" class="waves-effect">
+                                <i class="fa fa-download"></i>
+                                <span>CSV Import</span> -->
+                                <!--<small class="badge float-right badge-warning">12</small>-->
+                            <!-- </a>
+                        </li> -->
 
                         <li>
                             <a href="javaScript:void();" class="waves-effect">
@@ -154,14 +165,6 @@
                                 <li class=""><a href="{{url('/')}}" class="active"><i class="zmdi zmdi-long-arrow-right"></i> Custom Form</a></li>
 
                             </ul>
-                        </li>
-
-                        <li>
-                            <a href="{{url('org/csvImport')}}" class="waves-effect">
-                                <i class="fa fa-download"></i>
-                                <span>CSV Import</span>
-                                <!--<small class="badge float-right badge-warning">12</small>-->
-                            </a>
                         </li>
 
                     </ul>
@@ -258,85 +261,85 @@
     <!--Select Plugins Js-->
     <script src="{{ asset('assets/plugins/select2/js/select2.min.js') }}"></script>
     <script>
-        $(document).ready(function() {
-            $('.single-select').select2();
+        // $(document).ready(function() {
+        //     $('.single-select').select2();
 
-            $('.multiple-select').select2({
-                placeholder: "Select categories",
-                allowClear: true
-            });
-            var MultiSlectCounter = 0;
-            $('.multiple-select').on('select2:select', function(e) {
-                console.log(e.params.data.id);
-                if (MultiSlectCounter == 0) {
-                    $('#HiddenCategoyID').append(e.params.data.id);
-                } else {
-                    $('#HiddenCategoyID').append("," + e.params.data.id);
-                }
+        //     $('.multiple-select').select2({
+        //         placeholder: "Select categories",
+        //         allowClear: true
+        //     });
+        //     var MultiSlectCounter = 0;
+        //     $('.multiple-select').on('select2:select', function(e) {
+        //         console.log(e.params.data.id);
+        //         if (MultiSlectCounter == 0) {
+        //             $('#HiddenCategoyID').append(e.params.data.id);
+        //         } else {
+        //             $('#HiddenCategoyID').append("," + e.params.data.id);
+        //         }
 
-                MultiSlectCounter += 1;
-            });
-            $('.multiple-select').on('select2:unselecting', function(e) {
-                console.log(e.params.args.data.id);
-                var str = $('#HiddenCategoyID').val();
-                var res = str.replace(e.params.args.data.id, "");
-                $('#HiddenCategoyID').empty();
-                $('#HiddenCategoyID').append(res);
-            });
-
-
-            //multiselect start
-
-            $('#my_multi_select1').multiSelect();
-            $('#my_multi_select2').multiSelect({
-                selectableOptgroup: true
-            });
-
-            $('#my_multi_select3').multiSelect({
-                selectableHeader: "<input type='text' class='form-control search-input' autocomplete='off' placeholder='search...'>",
-                selectionHeader: "<input type='text' class='form-control search-input' autocomplete='off' placeholder='search...'>",
-                afterInit: function(ms) {
-                    var that = this,
-                        $selectableSearch = that.$selectableUl.prev(),
-                        $selectionSearch = that.$selectionUl.prev(),
-                        selectableSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selectable:not(.ms-selected)',
-                        selectionSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selection.ms-selected';
-
-                    that.qs1 = $selectableSearch.quicksearch(selectableSearchString)
-                        .on('keydown', function(e) {
-                            if (e.which === 40) {
-                                that.$selectableUl.focus();
-                                return false;
-                            }
-                        });
-
-                    that.qs2 = $selectionSearch.quicksearch(selectionSearchString)
-                        .on('keydown', function(e) {
-                            if (e.which == 40) {
-                                that.$selectionUl.focus();
-                                return false;
-                            }
-                        });
-                },
-                afterSelect: function() {
-                    this.qs1.cache();
-                    this.qs2.cache();
-                },
-                afterDeselect: function() {
-                    this.qs1.cache();
-                    this.qs2.cache();
-                }
-            });
-
-            $('.custom-header').multiSelect({
-                selectableHeader: "<div class='custom-header'>Selectable items</div>",
-                selectionHeader: "<div class='custom-header'>Selection items</div>",
-                selectableFooter: "<div class='custom-header'>Selectable footer</div>",
-                selectionFooter: "<div class='custom-header'>Selection footer</div>"
-            });
+        //         MultiSlectCounter += 1;
+        //     });
+        //     $('.multiple-select').on('select2:unselecting', function(e) {
+        //         console.log(e.params.args.data.id);
+        //         var str = $('#HiddenCategoyID').val();
+        //         var res = str.replace(e.params.args.data.id, "");
+        //         $('#HiddenCategoyID').empty();
+        //         $('#HiddenCategoyID').append(res);
+        //     });
 
 
-        });
+        //     //multiselect start
+
+        //     $('#my_multi_select1').multiSelect();
+        //     $('#my_multi_select2').multiSelect({
+        //         selectableOptgroup: true
+        //     });
+
+        //     $('#my_multi_select3').multiSelect({
+        //         selectableHeader: "<input type='text' class='form-control search-input' autocomplete='off' placeholder='search...'>",
+        //         selectionHeader: "<input type='text' class='form-control search-input' autocomplete='off' placeholder='search...'>",
+        //         afterInit: function(ms) {
+        //             var that = this,
+        //                 $selectableSearch = that.$selectableUl.prev(),
+        //                 $selectionSearch = that.$selectionUl.prev(),
+        //                 selectableSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selectable:not(.ms-selected)',
+        //                 selectionSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selection.ms-selected';
+
+        //             that.qs1 = $selectableSearch.quicksearch(selectableSearchString)
+        //                 .on('keydown', function(e) {
+        //                     if (e.which === 40) {
+        //                         that.$selectableUl.focus();
+        //                         return false;
+        //                     }
+        //                 });
+
+        //             that.qs2 = $selectionSearch.quicksearch(selectionSearchString)
+        //                 .on('keydown', function(e) {
+        //                     if (e.which == 40) {
+        //                         that.$selectionUl.focus();
+        //                         return false;
+        //                     }
+        //                 });
+        //         },
+        //         afterSelect: function() {
+        //             this.qs1.cache();
+        //             this.qs2.cache();
+        //         },
+        //         afterDeselect: function() {
+        //             this.qs1.cache();
+        //             this.qs2.cache();
+        //         }
+        //     });
+
+        //     $('.custom-header').multiSelect({
+        //         selectableHeader: "<div class='custom-header'>Selectable items</div>",
+        //         selectionHeader: "<div class='custom-header'>Selection items</div>",
+        //         selectableFooter: "<div class='custom-header'>Selectable footer</div>",
+        //         selectionFooter: "<div class='custom-header'>Selection footer</div>"
+        //     });
+
+
+        // });
     </script>
     @yield('script')
 
