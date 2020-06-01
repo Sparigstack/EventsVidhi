@@ -220,6 +220,8 @@
                             <li class="dropdown-divider"></li>
                             <li class="dropdown-item"><a style="color:inherit" href="{{url('account')}}"><i class="icon-wallet mr-2"></i> Account</a></li>
                             <li class="dropdown-divider"></li>
+                            <li class="dropdown-item"><a style="color:inherit" href="{{url('org/settings')}}"><i class="icon-settings mr-2"></i> Setting</a></li>
+                            <li class="dropdown-divider"></li>
                             <li class="dropdown-item"><a class style="color:inherit" href="{{ route('logout') }}" onclick="event.preventDefault();
                                         document.getElementById('logout-form').submit();"><i class="icon-power mr-2"></i> Logout</a></li>
                         </ul>

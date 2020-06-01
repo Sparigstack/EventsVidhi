@@ -85,9 +85,8 @@ Route::get('profile', function () {
 Route::get('account', function () {
     return view('account');
 });
-Route::get('org/csvImport', function () {
-    return view('org/csvImport');
-});
+Route::get('org/csvImport', 'org\CsvImportController@index');
+Route::get('org/settings','org\SettingController@index');
 
 Route::get('org/tags', 'org\TagsController@show');
 
@@ -97,3 +96,6 @@ Route::post('org/tags/delete/{id}', 'org\TagsController@Delete');
 Route::get('org/customFields', 'org\CustomFieldController@Index');
 Route::post('org/customfield/store', 'org\CustomFieldController@store');
 Route::post('org/customfield/delete/{id}', 'org\CustomFieldController@delete');
+Route::post('org/setting/update', 'org\SettingController@update');
+
+
