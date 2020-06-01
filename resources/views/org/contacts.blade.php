@@ -14,13 +14,13 @@
                     </div>
                     <div class="card-body">
 
-                        <form method="post" action="contacts">
-                                {{ csrf_field() }}
+                        <form method="" action="contacts/1">
+                                <!-- {{ csrf_field() }} -->
                             <div class="row p-1 mb-3">
-                                <div class="col-sm-12 col-lg-2 col-md-2">
+                                <div class="col-sm-12 col-lg-6 col-md-6">
                                         <!-- <label>Search Tags</label> -->
                                         
-                                         <select name="tagSelection[]" id="tagSelection" multiple>
+                                         <select class="form-control multiple-select" name="tagSelection[]" id="tagSelection" multiple="multiple">
                                           <?php  foreach($tagList as $tagLists){  ?>
                                             <option value="{{$tagLists->id}}">{{$tagLists->name}}</option>
                                           <?php } ?>
@@ -29,8 +29,7 @@
                                 </div>
 
                                 <div class="col-sm-12 col-lg-4 col-md-4">
-                                    <label class=""></label>
-                                    <button type="submit" class="btn mt-4 btn-primary">Search Tags</button>
+                                    <button type="submit" class="btn btn-primary">Search Tags</button>
                                 </div>
                             </div>
                         </form>
@@ -88,5 +87,27 @@
 
     </div>
 </div>
+
+@endsection
+
+@section('script')
+
+<script>
+$(document).ready(function() {
+
+    $('.multiple-select').select2({
+                placeholder: "Select tags",
+                allowClear: true
+            });
+
+    $('.custom-header').multiSelect({
+                selectableHeader: "<div class='custom-header'>Selectable items</div>",
+                selectionHeader: "<div class='custom-header'>Selection items</div>",
+                selectableFooter: "<div class='custom-header'>Selectable footer</div>",
+                selectionFooter: "<div class='custom-header'>Selection footer</div>"
+    });
+ });
+
+</script>
 
 @endsection

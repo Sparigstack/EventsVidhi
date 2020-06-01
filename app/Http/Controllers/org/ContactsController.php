@@ -8,6 +8,7 @@ use App\Contact;
 use App\ContactTag;
 use App\Tag;
 use Exception;
+use DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -24,16 +25,33 @@ class ContactsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index($tage_ids=0)
     {
         $user = Auth::user();
-        $contacts = $user->contacts;
         $tagList = Tag::where('user_id', $user->id)->get();
-
-        if(isset($request->tagSelection)){
-            $tagSelection = $request->tagSelection;
-            $tagSelection = implode(',', $tagSelection);
-            // $contacts = ContactTag::where('tag_id', explode(',', $tagSelection))->get();
+        
+        if($tage_ids == 0){
+            $contacts = $user->contacts;
+        } else{
+            $tab_ids = $tage_ids;
+            $contactsQuery = "select c.*, t.* from contact_tag ct join contacts c on c.id=ct.contact_id join tags t on t.id=ct.tag_id where ct.tag_id IN(" . $tab_ids .  ")";
+            // $contactsQuery = DB::table("contact_tag as ct")
+            //     ->join('contacts as c', 'c.id', '=', 'ct.contact_id')
+            //     ->join('tags as t', 't.id', '=', 'ct.tag_id')
+            //     ->select('c.*', 't.*')
+            //     ->whereIn('ct.tag_id', array($tab_ids))
+            //     ->with('tags')
+            //     ->get();
+             // $contactsQuery = Contact::with(['tags' => function ($query) {
+             //        $query->whereIn('id', $tab_ids);
+             //    }])->get();
+            $contacts = DB::select(DB::raw($contactsQuery));
+            // $ids = "";
+            // foreach($contacts as $contact){
+            //     $ids .= $contact->id . ',';
+            // }
+            $contacts = $user->contacts()->tags()->whereIn('id', array($tab_ids))->get();
+            var_dump($contacts);return;
         }
         return view('org/contacts', compact('contacts', 'tagList'));
     }
