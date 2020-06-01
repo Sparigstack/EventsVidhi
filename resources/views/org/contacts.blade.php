@@ -13,6 +13,29 @@
                         <!-- <button id="" class="btn m-1 pull-right" style="border:1px solid transparent;"><a href="{{url("org/events/new")}}">Add New Event</a></button> -->
                     </div>
                     <div class="card-body">
+
+                        <form method="post" action="contacts">
+                                {{ csrf_field() }}
+                            <div class="row p-1 mb-3">
+                                <div class="col-sm-12 col-lg-2 col-md-2">
+                                        <!-- <label>Search Tags</label> -->
+                                        
+                                         <select name="tagSelection[]" id="tagSelection" multiple>
+                                          <?php  foreach($tagList as $tagLists){  ?>
+                                            <option value="{{$tagLists->id}}">{{$tagLists->name}}</option>
+                                          <?php } ?>
+                                        </select>
+                                        <!-- <input type="text" class="form-control" placeholder="" value="" name="search" id="search"> -->
+                                </div>
+
+                                <div class="col-sm-12 col-lg-4 col-md-4">
+                                    <label class=""></label>
+                                    <button type="submit" class="btn mt-4 btn-primary">Search Tags</button>
+                                </div>
+                            </div>
+                        </form>
+
+
                         <div class="table-responsive" id="default-datatable_wrapper">
                             <table id="default-datatable-contacts" class="table table-bordered">
                                 <thead>

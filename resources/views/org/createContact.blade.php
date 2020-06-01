@@ -62,9 +62,11 @@
                             <select class="form-control multiple-select" multiple="multiple" name="tags" id="tags">
                                 <?php if (!empty($contact)) {
                                     $IsSelected = "";
-                                    foreach ($contact->tags as $contacts) {
+                                    
                                     
                                         foreach ($tagsData as $contact_tags) {
+
+                                            foreach ($contact->tags as $contacts) {
 
                                             if ($contact_tags->id == $contacts->id) {
                                                 $IsSelected = "selected";

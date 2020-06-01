@@ -24,11 +24,18 @@ class ContactsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
         $contacts = $user->contacts;
-        return view('org/contacts', compact('contacts'));
+        $tagList = Tag::where('user_id', $user->id)->get();
+
+        if(isset($request->tagSelection)){
+            $tagSelection = $request->tagSelection;
+            $tagSelection = implode(',', $tagSelection);
+            // $contacts = ContactTag::where('tag_id', explode(',', $tagSelection))->get();
+        }
+        return view('org/contacts', compact('contacts', 'tagList'));
     }
 
     /**
@@ -150,18 +157,20 @@ class ContactsController extends Controller
         $contact->user_id = $user->id;
         $contact->save();
 
-        try {
+        // try {
             $string = $request->HiddenCategoyID;
             $tagIDS = preg_split("/\,/", $string);
-            // ContactTag::where('contact_id', $contact->id)->delete();
+            ContactTag::where('contact_id', $contact->id)->delete();
             foreach ($tagIDS as $tagID) {
-                $ContactTag = new ContactTag;
-                $ContactTag->contact_id = $contact->id;
-                $ContactTag->tag_id = number_format($tagID);
-                $ContactTag->save();
+                if($tagID != ''){
+                    $ContactTag = new ContactTag;
+                    $ContactTag->contact_id = $contact->id;
+                    $ContactTag->tag_id = (int)$tagID;
+                    $ContactTag->save();
+                }
             }
-        } catch (Exception $e) {
-        }
+        // } catch (Exception $e) {
+        // }
         return redirect('org/contacts');
     }
 
