@@ -7,7 +7,7 @@
     $RedirectCall = "";
     ?>
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-6">
             <div class="card">
                 <div class="card-body">
                     <div class="card-title">
@@ -26,7 +26,7 @@
 
                         <div class='parent' style='width: 100%;'>
                             <div class='form-group '>
-                                <label for='CsvFile'>Upload CSV</label>
+                                <label class="w-100" for='CsvFile'>Upload CSV <span class="CsvUploadInfo">Oreder Should be like First Name, Last Name, Email, Contact Number {{$customFieldOrder}}</span></label>
                                 <div class='dragFileContainer'>
                                     <input type="file" id='CsvFile' name='CsvFile' value="{{  old('CsvFile') }}" style="height: 44%" required>
                                     <p>Drag your CSV file here or click in this area.</p>
@@ -68,6 +68,7 @@
 
             $('.CsvImportForm').ajaxForm({
                 beforeSend: function() {
+                    LoaderStart();
                     //status.empty();
                     var percentVal = '0%';
                     var posterValue = $('input[name=CsvFile]').fieldValue();
@@ -90,6 +91,7 @@
                     // LoaderStart();
                 },
                 success: function (response) {
+                    LoaderStop();
                     console.log(response);
                     alert('Contacts are saved');
                 },
@@ -100,6 +102,7 @@
                    // window.location.href = $('#hdnRedirect').val();
                 },
                 error: function (response) {
+                    LoaderStop();
                     console.log(response);
                 }
             });
