@@ -17,6 +17,7 @@ class SettingController extends Controller
     }
     public function update(Request $request)
     {
+        
         $userID = Auth::id();
         $user=User::FindOrFail($userID);
         if($request->key=="username"){
@@ -26,9 +27,9 @@ class SettingController extends Controller
             }
             $user->username=$request->value;
         }else if($request->key=="AutoAproveFollower"){
-            if($request->value==true){
+            if($request->value=="true"){
                 $user->auto_approve_follower=1;
-            }else{
+            }else {
                 $user->auto_approve_follower=0;
             }
         }
