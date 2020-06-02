@@ -72,6 +72,7 @@ Route::post('org/contacts/store', 'org\ContactsController@store');
 Route::get('org/contacts/{contactid}', 'org\ContactsController@edit');
 Route::post('org/contacts/edit/{contactid}', 'org\ContactsController@update');
 Route::post('deleteContact', 'org\ContactsController@destroy');
+Route::post('org/contact/approve/{id}', 'org\ContactsController@approve');
 
 Route::post('getState', 'org\EventsController@getState');
 Route::post('getCity', 'org\EventsController@getCity');

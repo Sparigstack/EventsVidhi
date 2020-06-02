@@ -61,3 +61,31 @@ function DeleteCustomField(element) {
         }
     });
 }
+function Approve(element){
+    var confirmDelete = confirm("Appprove this contact?");
+    if (!confirmDelete) {
+        return false;
+    }
+    LoaderStart();
+    var parent = findParent(element);
+    var CSRF_TOKEN = $('.csrf-token').val();
+    var DataID = $(element).attr('data-id');
+    var urlString = $('.ApproveContact').val();
+    urlString += "/" + DataID;
+    showInputLoader(element);
+    $.ajax({
+        url: urlString,
+        type: 'post',
+        data: { _token: CSRF_TOKEN, id: DataID },
+        success: function (response) {
+            $(element).find('.fa-square-o').removeClass('fa-square-o').addClass('fa-check-square');
+            LoaderStop();
+            // console.log(response);
+        },
+        error: function (response) {
+            console.log(response);
+            LoaderStop();
+            // console.log(response);
+        }
+    });
+}
