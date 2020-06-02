@@ -77,7 +77,7 @@ if(!empty($user)){
 
                     <div class="form-group col-lg-12">
                         <label for="organizerUsername">Organizer Username</label>
-                        <input type="text" id="organizerUsername" value="{{$user->username}}" name="organizerUsername" class="form-control" title="Organizer Username" placeholder="Organizer Username" autocomplete="off" rows="0" required="">
+                        <input type="text" id="organizerUsername" value="{{$user->username}}" name="organizerUsername" class="form-control" title="Organizer Username" placeholder="Organizer Username" autocomplete="off" rows="0">
                     </div>
 
                     <div class="form-group col-lg-12">
@@ -87,12 +87,17 @@ if(!empty($user)){
                 </div>
                 </div>
 
-					<!-- <div class="form-group col-lg-12">
-            			<label for="descBox">Description Box</label>
-                        <textarea id="descBox" name="descBox" required="" class="form-control" title="Description Box" placeholder="Description Box" autocomplete="off" rows="4"></textarea>
-					</div>
+                    <div class="form-group col-lg-6">
+                        <label for="organizerMobile">Organizer Phone Number</label>
+                        <input type="text" id="organizerMobile" value="{{$user->phone}}" name="organizerMobile" class="form-control" title="Organizer Phone Number" placeholder="Organizer Phone Number" autocomplete="off" rows="0">
+                    </div>
 
 					<div class="form-group col-lg-12">
+            			<label for="organizerDesc">Organizer Description</label>
+                        <textarea id="organizerDesc" name="organizerDesc" class="form-control" title="Organizer Description" placeholder="Organizer Description" autocomplete="off" rows="4">{{$user->description}}</textarea>
+					</div>
+
+					<!-- <div class="form-group col-lg-12">
             			<label for="facebookAcc">Facebook Account</label>
 						<input type="text" id="facebookAcc" value="" name="facebookAcc" class="form-control" title="Facebook Account" placeholder="Facebook Account" autocomplete="off" rows="0">
 					</div>

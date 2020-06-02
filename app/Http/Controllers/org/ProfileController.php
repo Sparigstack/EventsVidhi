@@ -28,7 +28,6 @@ class ProfileController extends Controller
             'profileImg' => 'image|mimes:jpeg,bmp,png,jpg|dimensions:max_width=420,max_height=360',
             'profileBannerImage' => 'image|mimes:jpeg,bmp,png,jpg,gif,spg|dimensions:max_width=845,max_height=445',
             'organizerName' => 'required',
-            'organizerUsername' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -68,6 +67,8 @@ class ProfileController extends Controller
     	$users->name = $request->organizerName;
     	$users->username = $request->organizerUsername;
         $users->email = $request->organizerEmail;
+        $users->description = $request->organizerDesc;
+        $users->phone = $request->organizerMobile;
         if($profilePicUrl != ""){
         	$users->profile_pic = $profilePicUrl;
         }
