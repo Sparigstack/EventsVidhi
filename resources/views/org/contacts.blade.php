@@ -69,7 +69,7 @@
                                                 if (Auth()->user()->auto_approve_follower != 1 && $contact->is_approved != 1) { ?>
                                                     <a onclick="Approve(this);" data-id="{{$contact->id}}"><i style="font-family:fontawesome;font-style:normal;cursor:pointer;margin-left:5px;" class="fa fa-square-o" title="Approve"></i> </a>
                                                 <?php }else { ?>
-                                                    <a onclick="" data-id="{{$contact->id}}"><i style="font-family:fontawesome;font-style:normal;cursor:pointer;margin-left:5px;" class="fas fa-check-square" title="Approved"></i> </a>
+                                                    <a onclick="" data-id="{{$contact->id}}"><i style="font-family:fontawesome;font-style:normal;margin-left:5px;" class="fas fa-check-square" title="Approved"></i> </a>
 
                                                 <?php } ?>
 

@@ -87,7 +87,7 @@
         }
     }
 
-    if(!empty($speaker)){
+    if (!empty($speaker)) {
         if (!empty($speaker->profilePic)) {
             $profilePicUrl = $AwsUrl . $speaker->profilePic;
             $profilePicHidden = "";
@@ -452,6 +452,16 @@
                                                                 <label for="ItIsPaid">Paid</label>
                                                             </div>
                                                         </div><br>
+                                                        <div class="form-group col-lg-12">
+                                                            <label for="title">Human friendly event url</label>
+                                                            <?php $IsReadOnly=""; if(Auth()->user()->username==null || Auth()->user()->username=="" || Auth()->user()->username==" "){ $IsReadOnly="disabled" ?>
+                                                                <p style="color:green;">Please click <a href="{{url('settings')}}">here</a> to set username and be able to enter human friendly url.
+                                                                
+                                                                </p>
+                                                            <?php } ?>
+                                                            <div class="p-1">{{env('APP_URL')}}</div>
+                                                            <input type="text" class="form-control" id="CustomUrl" name="CustomUrl" placeholder="Human friendly event url" {{$IsReadOnly}}>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -482,49 +492,57 @@
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-body row">
-                                       
+
                                         <div id="UploadedVideos" class="col-lg-8 m-auto p-0">
-                                        <?php
-                                            foreach($videos as $video){?>
-                                                    
-                                                    <ul class="list-group parent list-group-flush mb-2">
-                                                        <li class="list-group-item"><div class="media align-items-center">
-                                                            <div class="media-body ml-3"><h6 class="mb-0"><?php echo $video->title ?></h6>
-                                                            <small class="small-font">
-                                                              <?php  $AwsUrl = env('AWS_URL');
+                                            <?php
+                                            foreach ($videos as $video) { ?>
+
+                                                <ul class="list-group parent list-group-flush mb-2">
+                                                    <li class="list-group-item">
+                                                        <div class="media align-items-center">
+                                                            <div class="media-body ml-3">
+                                                                <h6 class="mb-0"><?php echo $video->title ?></h6>
+                                                                <small class="small-font">
+                                                                    <?php $AwsUrl = env('AWS_URL');
                                                                     $videoUrl = "";
-                                                                if (!empty($video->url_type)) {
-                                                                    if($video->url_type == 1){
-                                                                    $videoUrl = $AwsUrl . $video->url;
-                                                                }
-                                                                else{
-                                                                $videoUrl = $video->url;
-                                                            } 
-                                                        }?>
-                                                            {{$videoUrl}}</small></div>
-                                                            <div data-id="<?php echo $video->id?>" onclick="RemoveSingleVideo(this);" Type="video" UrlType="<?php echo $video->url_type?>" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div>
-                                                        </div></li></ul>
+                                                                    if (!empty($video->url_type)) {
+                                                                        if ($video->url_type == 1) {
+                                                                            $videoUrl = $AwsUrl . $video->url;
+                                                                        } else {
+                                                                            $videoUrl = $video->url;
+                                                                        }
+                                                                    } ?>
+                                                                    {{$videoUrl}}</small>
+                                                            </div>
+                                                            <div data-id="<?php echo $video->id ?>" onclick="RemoveSingleVideo(this);" Type="video" UrlType="<?php echo $video->url_type ?>" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
                                             <?php } ?>
                                             <?php
-                                            foreach($podcasts as $podcast){?>
-                                                    
-                                                    <ul class="list-group parent list-group-flush mb-2">
-                                                        <li class="list-group-item"><div class="media align-items-center">
-                                                            <div class="media-body ml-3"><h6 class="mb-0"><?php echo $podcast->title ?></h6>
-                                                            <small class="small-font">
-                                                                <?php  $AwsUrl = env('AWS_URL');
+                                            foreach ($podcasts as $podcast) { ?>
+
+                                                <ul class="list-group parent list-group-flush mb-2">
+                                                    <li class="list-group-item">
+                                                        <div class="media align-items-center">
+                                                            <div class="media-body ml-3">
+                                                                <h6 class="mb-0"><?php echo $podcast->title ?></h6>
+                                                                <small class="small-font">
+                                                                    <?php $AwsUrl = env('AWS_URL');
                                                                     $podcastvideoUrl = "";
-                                                                if (!empty($podcast->url_type)) {
-                                                                    if($podcast->url_type == 1){
-                                                                    $podcastvideoUrl = $AwsUrl . $podcast->url;
-                                                                }
-                                                                else{
-                                                                $podcastvideoUrl = $podcast->url;
-                                                            } 
-                                                        }?>
-                                                                {{$podcastvideoUrl}}</small></div>
-                                                            <div data-id="<?php echo $podcast->id?>" onclick="RemoveSingleVideo(this);" Type="podcast" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div>
-                                                        </div></li></ul>
+                                                                    if (!empty($podcast->url_type)) {
+                                                                        if ($podcast->url_type == 1) {
+                                                                            $podcastvideoUrl = $AwsUrl . $podcast->url;
+                                                                        } else {
+                                                                            $podcastvideoUrl = $podcast->url;
+                                                                        }
+                                                                    } ?>
+                                                                    {{$podcastvideoUrl}}</small>
+                                                            </div>
+                                                            <div data-id="<?php echo $podcast->id ?>" onclick="RemoveSingleVideo(this);" Type="podcast" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
                                             <?php } ?>
 
                                         </div>
@@ -588,7 +606,7 @@
                                                 </div>
 
                                                 <div class='parent' style='width: 100%;'>
-                                                    
+
                                                     <div class='form-group  d-none uploadPodcastVideo'>
                                                         <div class='dragFileContainer'>
                                                             <input id='podcast_video_file' name='podcast_video_file' type="file">
@@ -613,130 +631,129 @@
                                     </div>
                                 </div>
                             </div>
-                            <?php } else { ?>
-                    <div class="text-center m-4"><label class="">Please save basic details to add media</label></div>
-                <?php } ?>
+                        <?php } else { ?>
+                            <div class="text-center m-4"><label class="">Please save basic details to add media</label></div>
+                        <?php } ?>
                     </div>
 
-                
 
-                <div class="speakers row tab-pane <?php if ($tabe == 2) {
-                        echo "active";
-                    } ?>" 
-                    id="tabe-16">
-                    <?php if ($IsNew == false) { ?>
-                <div class="col-lg-12">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div id="uploadedSpeakers" class="col-lg-12 m-auto p-0">
-                                        <?php
-                                            foreach($speakers as $speaker){?>
-                                            <div class="parent">
+
+                    <div class="speakers row tab-pane <?php if ($tabe == 2) {
+                                                            echo "active";
+                                                        } ?>" id="tabe-16">
+                        <?php if ($IsNew == false) { ?>
+                            <div class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div id="uploadedSpeakers" class="col-lg-12 m-auto p-0">
+                                            <?php
+                                            foreach ($speakers as $speaker) { ?>
+                                                <div class="parent">
                                                     <ul class="list-group parent list-group-flush speakerList mb-2">
                                                         <li class="list-group-item">
-                        <div class="media align-items-center">
-                            <?php
-                            $profileurl = "";
-                            if($speaker->profile_pic){
-                                $pic = $speaker->profile_pic;
-                             $profileurl = env('AWS_URL') . $pic;
-                            } else{
-                                $profileurl = "https://via.placeholder.com/110x110";
-                            }
-                                 ?>
-                            <img src="{{$profileurl}}" alt="user avatar" class="customer-img rounded"  height="100" width="100">
-                            <div class="media-body ml-3">
-                                <h6 class="mb-0">{{$speaker->first_name}} {{$speaker->last_name}}</h6>
-                                <small class="small-font">{{$speaker->organization}} - {{$speaker->description}}</small>
+                                                            <div class="media align-items-center">
+                                                                <?php
+                                                                $profileurl = "";
+                                                                if ($speaker->profile_pic) {
+                                                                    $pic = $speaker->profile_pic;
+                                                                    $profileurl = env('AWS_URL') . $pic;
+                                                                } else {
+                                                                    $profileurl = "https://via.placeholder.com/110x110";
+                                                                }
+                                                                ?>
+                                                                <img src="{{$profileurl}}" alt="user avatar" class="customer-img rounded" height="100" width="100">
+                                                                <div class="media-body ml-3">
+                                                                    <h6 class="mb-0">{{$speaker->first_name}} {{$speaker->last_name}}</h6>
+                                                                    <small class="small-font">{{$speaker->organization}} - {{$speaker->description}}</small>
 
-                            </div>
-                            <div data-id="<?php echo $speaker->id?>" onclick="EditSingleSpeaker(this);" Type="file" UrlType="" class="mr-2"><i class="fa icon fas fa-edit clickable" style="font-size: 22px;cursor: pointer;"></i></div>
-                            <div data-id="<?php echo $speaker->id?>" onclick="RemoveSingleSpeaker(this);" Type="file" UrlType="" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div>
-                        </div>
-                    </li>
+                                                                </div>
+                                                                <div data-id="<?php echo $speaker->id ?>" onclick="EditSingleSpeaker(this);" Type="file" UrlType="" class="mr-2"><i class="fa icon fas fa-edit clickable" style="font-size: 22px;cursor: pointer;"></i></div>
+                                                                <div data-id="<?php echo $speaker->id ?>" onclick="RemoveSingleSpeaker(this);" Type="file" UrlType="" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div>
+                                                            </div>
+                                                        </li>
                                                     </ul>
 
-                                 </div>
+                                                </div>
                                             <?php } ?>
                                         </div>
 
                                         <input type="hidden" name="_token" value="bk1OhavN4UAzV8S98BIoRMOxciaSsCWi3X6j8YAf">
 
-                                    <div class="card col-lg-12 p-4 speakerContainer d-none m-auto parent">
-                                        <form class="SaveSpeaker" id="SaveSpeaker" name="SaveSpeaker" method="post" enctype="multipart/form-data">
-                                            {{ csrf_field() }}
-                                            <input type="hidden" class="addSpeakers" value="{{url('org/events/speaker/store')}}">
-                                            <input type="hidden" class="editEventSpeakers" value="{{url('org/events/editSpeaker')}}">
-                                            <input type="hidden" class="updateSpeaker" value="{{url('org/events/updateSpeaker')}}">
-                                            <input type="hidden" class="speakerId" value="" name="speakerId">
-                                            <input type="hidden" class="removeEventSpeakers" value="{{url('org/events/deleteSpeaker')}}">
-                                            <input type="text" name="EventToLinkId" id="EventToLink" class="d-none" value="{{$event->id}}" />
+                                        <div class="card col-lg-12 p-4 speakerContainer d-none m-auto parent">
+                                            <form class="SaveSpeaker" id="SaveSpeaker" name="SaveSpeaker" method="post" enctype="multipart/form-data">
+                                                {{ csrf_field() }}
+                                                <input type="hidden" class="addSpeakers" value="{{url('org/events/speaker/store')}}">
+                                                <input type="hidden" class="editEventSpeakers" value="{{url('org/events/editSpeaker')}}">
+                                                <input type="hidden" class="updateSpeaker" value="{{url('org/events/updateSpeaker')}}">
+                                                <input type="hidden" class="speakerId" value="" name="speakerId">
+                                                <input type="hidden" class="removeEventSpeakers" value="{{url('org/events/deleteSpeaker')}}">
+                                                <input type="text" name="EventToLinkId" id="EventToLink" class="d-none" value="{{$event->id}}" />
 
-                                        <div class="form-group col-lg-12 row">
-                                            <div class="form-group col-lg-6">
-                                                <label for="profilePicImage">Profile Pic</label>
-                                                <div class="dragFileContainer thumbNailContainer" style="display: flex;justify-content: center;">
-                                                    <input type="file" accept="image/*" id="EventProfilePicImage" name="profilePicImageUpload" class="form-control files" picvalue="">
-                                                <img id="profilePicImage"  src="" class="d-none imageRadius w-100 {{$profilePicHidden}}" alt="your image" width="100" value="">
-                                                        <p id="TempTextThumb" class="TempTextPic">Drop your image here or click to upload.</p>
+                                                <div class="form-group col-lg-12 row">
+                                                    <div class="form-group col-lg-6">
+                                                        <label for="profilePicImage">Profile Pic</label>
+                                                        <div class="dragFileContainer thumbNailContainer" style="display: flex;justify-content: center;">
+                                                            <input type="file" accept="image/*" id="EventProfilePicImage" name="profilePicImageUpload" class="form-control files" picvalue="">
+                                                            <img id="profilePicImage" src="" class="d-none imageRadius w-100 {{$profilePicHidden}}" alt="your image" width="100" value="">
+                                                            <p id="TempTextThumb" class="TempTextPic">Drop your image here or click to upload.</p>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="form-group col-lg-6">
+                                                        <label for="speakerTitle">Title</label>
+                                                        <input type="text" class="form-control mb-2" id="speakerTitle" value="" name="speakerTitle" placeholder="Enter Title" required="">
+                                                        <small class="text-danger"></small>
+
+                                                        <label for="speakerFirstName">First Name</label>
+                                                        <input type="text" class="form-control mb-2" id="speakerFirstName" value="" name="speakerFirstName" placeholder="Enter First Name" required="">
+                                                        <small class="text-danger"></small>
+
+                                                        <label for="speakerLastName">Last Name</label>
+                                                        <input type="text" class="form-control" id="speakerLastName" value="" name="speakerLastName" placeholder="Enter Last Name" required="">
+                                                        <small class="text-danger"></small>
+
+                                                    </div>
                                                 </div>
-                                            </div>
 
+                                                <div class="form-group col-lg-12">
+                                                    <label for="speakerDesc">Description</label>
+                                                    <textarea id="speakerDesc" name="speakerDesc" required="" class="form-control" title="Description" placeholder="Description" autocomplete="off" rows="4"></textarea>
+                                                    <small class="text-danger"></small>
+                                                </div>
 
-                                            <div class="form-group col-lg-6">
-                                                <label for="speakerTitle">Title</label>
-                                                <input type="text" class="form-control mb-2" id="speakerTitle" value="" name="speakerTitle" placeholder="Enter Title" required="">
-                                                <small class="text-danger"></small>
+                                                <div class="form-group col-lg-12">
+                                                    <label for="speakerOrganization">Organization</label>
+                                                    <input type="text" class="form-control" id="speakerOrganization" value="" name="speakerOrganization" placeholder="Enter Organization" required="">
+                                                    <small class="text-danger"></small>
+                                                </div>
 
-                                                <label for="speakerFirstName">First Name</label>
-                                                <input type="text" class="form-control mb-2" id="speakerFirstName" value="" name="speakerFirstName" placeholder="Enter First Name" required="">
-                                                <small class="text-danger"></small>
+                                                <div class="form-group col-lg-12">
+                                                    <label for="speakerLinkedinUrl">LinkedIn URL</label>
+                                                    <input type="text" class="form-control" id="speakerLinkedinUrl" value="" name="speakerLinkedinUrl" placeholder="Enter LinkedIn Url">
+                                                    <small class="text-danger"></small>
+                                                </div>
 
-                                                <label for="speakerLastName">Last Name</label>
-                                                <input type="text" class="form-control" id="speakerLastName" value="" name="speakerLastName" placeholder="Enter Last Name" required="">
-                                                <small class="text-danger"></small>
-                                                
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group col-lg-12">
-                                            <label for="speakerDesc">Description</label>
-                                            <textarea id="speakerDesc" name="speakerDesc" required="" class="form-control" title="Description" placeholder="Description" autocomplete="off" rows="4"></textarea>
-                                            <small class="text-danger"></small>
-                                        </div>
-
-                                        <div class="form-group col-lg-12">
-                                            <label for="speakerOrganization">Organization</label>
-                                                <input type="text" class="form-control" id="speakerOrganization" value="" name="speakerOrganization" placeholder="Enter Organization" required="">
-                                                <small class="text-danger"></small>
-                                        </div>
-
-                                        <div class="form-group col-lg-12">
-                                            <label for="speakerLinkedinUrl">LinkedIn URL</label>
-                                                <input type="text" class="form-control" id="speakerLinkedinUrl" value="" name="speakerLinkedinUrl" placeholder="Enter LinkedIn Url">
-                                                <small class="text-danger"></small>
-                                        </div>
-
-                                        <div class="col-lg-12">
+                                                <div class="col-lg-12">
                                                     <button type="submit" id="speakerSubmitButton" data-id="" class="btn btn-primary px-5 pull-right"> Save Speaker</button>
 
                                                     <input type="button" id="speakerCancelButton" data-id="" class="btn btn-primary pull-right mr-2" value="Cancel" onclick="showSpeakerListing(this);">
                                                 </div>
-                                        </form>
-                                     </div>  
+                                            </form>
+                                        </div>
 
-                                     <div class="text-center col-lg-12 mt-4">
+                                        <div class="text-center col-lg-12 mt-4">
                                             <button type="button" id="speakerButton" class="btn btn-outline-primary btn-round waves-effect waves-light m-1" onclick="uploadSpeaker(this);">Add Speaker</button>
-                                        </div> 
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                
-<?php } else { ?>
-                    <div class="text-center m-4"><label class="">Please save basic details to add speakers</label></div>
-                <?php } ?>
 
-                </div>
+                        <?php } else { ?>
+                            <div class="text-center m-4"><label class="">Please save basic details to add speakers</label></div>
+                        <?php } ?>
+
+                    </div>
 
                 </div>
                 <!-- <div class="parent row tab-pane" id="tabe-15">
@@ -766,83 +783,83 @@
 <script src="{{asset('/js/Events.js')}}" type="text/javascript"></script>
 <script>
     $(document).ready(function() {
-            $('.single-select').select2();
+        $('.single-select').select2();
 
-            $('.multiple-select').select2({
-                placeholder: "Select categories",
-                allowClear: true
-            });
-            var MultiSlectCounter = 0;
-            $('.multiple-select').on('select2:select', function(e) {
-                console.log(e.params.data.id);
-                if (MultiSlectCounter == 0) {
-                    $('#HiddenCategoyID').append(e.params.data.id);
-                } else {
-                    $('#HiddenCategoyID').append("," + e.params.data.id);
-                }
-
-                MultiSlectCounter += 1;
-            });
-            $('.multiple-select').on('select2:unselecting', function(e) {
-                console.log(e.params.args.data.id);
-                var str = $('#HiddenCategoyID').val();
-                var res = str.replace(e.params.args.data.id, "");
-                $('#HiddenCategoyID').empty();
-                $('#HiddenCategoyID').append(res);
-            });
-
-
-            //multiselect start
-
-            $('#my_multi_select1').multiSelect();
-            $('#my_multi_select2').multiSelect({
-                selectableOptgroup: true
-            });
-
-            $('#my_multi_select3').multiSelect({
-                selectableHeader: "<input type='text' class='form-control search-input' autocomplete='off' placeholder='search...'>",
-                selectionHeader: "<input type='text' class='form-control search-input' autocomplete='off' placeholder='search...'>",
-                afterInit: function(ms) {
-                    var that = this,
-                        $selectableSearch = that.$selectableUl.prev(),
-                        $selectionSearch = that.$selectionUl.prev(),
-                        selectableSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selectable:not(.ms-selected)',
-                        selectionSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selection.ms-selected';
-
-                    that.qs1 = $selectableSearch.quicksearch(selectableSearchString)
-                        .on('keydown', function(e) {
-                            if (e.which === 40) {
-                                that.$selectableUl.focus();
-                                return false;
-                            }
-                        });
-
-                    that.qs2 = $selectionSearch.quicksearch(selectionSearchString)
-                        .on('keydown', function(e) {
-                            if (e.which == 40) {
-                                that.$selectionUl.focus();
-                                return false;
-                            }
-                        });
-                },
-                afterSelect: function() {
-                    this.qs1.cache();
-                    this.qs2.cache();
-                },
-                afterDeselect: function() {
-                    this.qs1.cache();
-                    this.qs2.cache();
-                }
-            });
-
-            $('.custom-header').multiSelect({
-                selectableHeader: "<div class='custom-header'>Selectable items</div>",
-                selectionHeader: "<div class='custom-header'>Selection items</div>",
-                selectableFooter: "<div class='custom-header'>Selectable footer</div>",
-                selectionFooter: "<div class='custom-header'>Selection footer</div>"
-            });
-
-
+        $('.multiple-select').select2({
+            placeholder: "Select categories",
+            allowClear: true
         });
-</script> 
+        var MultiSlectCounter = 0;
+        $('.multiple-select').on('select2:select', function(e) {
+            console.log(e.params.data.id);
+            if (MultiSlectCounter == 0) {
+                $('#HiddenCategoyID').append(e.params.data.id);
+            } else {
+                $('#HiddenCategoyID').append("," + e.params.data.id);
+            }
+
+            MultiSlectCounter += 1;
+        });
+        $('.multiple-select').on('select2:unselecting', function(e) {
+            console.log(e.params.args.data.id);
+            var str = $('#HiddenCategoyID').val();
+            var res = str.replace(e.params.args.data.id, "");
+            $('#HiddenCategoyID').empty();
+            $('#HiddenCategoyID').append(res);
+        });
+
+
+        //multiselect start
+
+        $('#my_multi_select1').multiSelect();
+        $('#my_multi_select2').multiSelect({
+            selectableOptgroup: true
+        });
+
+        $('#my_multi_select3').multiSelect({
+            selectableHeader: "<input type='text' class='form-control search-input' autocomplete='off' placeholder='search...'>",
+            selectionHeader: "<input type='text' class='form-control search-input' autocomplete='off' placeholder='search...'>",
+            afterInit: function(ms) {
+                var that = this,
+                    $selectableSearch = that.$selectableUl.prev(),
+                    $selectionSearch = that.$selectionUl.prev(),
+                    selectableSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selectable:not(.ms-selected)',
+                    selectionSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selection.ms-selected';
+
+                that.qs1 = $selectableSearch.quicksearch(selectableSearchString)
+                    .on('keydown', function(e) {
+                        if (e.which === 40) {
+                            that.$selectableUl.focus();
+                            return false;
+                        }
+                    });
+
+                that.qs2 = $selectionSearch.quicksearch(selectionSearchString)
+                    .on('keydown', function(e) {
+                        if (e.which == 40) {
+                            that.$selectionUl.focus();
+                            return false;
+                        }
+                    });
+            },
+            afterSelect: function() {
+                this.qs1.cache();
+                this.qs2.cache();
+            },
+            afterDeselect: function() {
+                this.qs1.cache();
+                this.qs2.cache();
+            }
+        });
+
+        $('.custom-header').multiSelect({
+            selectableHeader: "<div class='custom-header'>Selectable items</div>",
+            selectionHeader: "<div class='custom-header'>Selection items</div>",
+            selectableFooter: "<div class='custom-header'>Selectable footer</div>",
+            selectionFooter: "<div class='custom-header'>Selection footer</div>"
+        });
+
+
+    });
+</script>
 @endsection
