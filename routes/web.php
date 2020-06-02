@@ -64,8 +64,8 @@ Route::get('org/podcasts/{podcastid}', 'org\PodcastsController@edit');
 Route::post('org/podcasts/edit/{podcastid}', 'org\PodcastsController@update');
 Route::post('deletePodcast', 'org\PodcastsController@destroy');
 
-// Route::get('org/contacts', 'org\ContactsController@index');
-Route::get('org/contacts/{tabe_ids?}', 'org\ContactsController@index');
+Route::get('org/contacts', 'org\ContactsController@index');
+// Route::get('org/contacts/{tabe_ids?}', 'org\ContactsController@index');
 
 Route::get('org/contacts/new', 'org\ContactsController@create');
 Route::post('org/contacts/store', 'org\ContactsController@store');
@@ -78,9 +78,11 @@ Route::post('getCity', 'org\EventsController@getCity');
 
 Route::post('org/csv/import', 'org\CsvImportController@store');
 
-Route::get('profile', function () {
-    return view('profile');
-});
+// Route::get('org/profile', function () {
+//     return view('org/profile');
+// });
+Route::get('org/profile','org\ProfileController@index');
+Route::post('org/profile/update', 'org\ProfileController@update');
 
 Route::get('account', function () {
     return view('account');

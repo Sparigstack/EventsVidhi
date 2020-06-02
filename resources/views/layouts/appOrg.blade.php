@@ -216,7 +216,7 @@
                                 <li class="dropdown-divider"></li>
                                 <li class="dropdown-item"><i class="icon-wallet mr-2"></i> Account</li>
                                 <li class="dropdown-divider"></li> -->
-                            <li class="dropdown-item"><i class="icon-settings mr-2"></i> Profile</li>
+                            <li class="dropdown-item"><a style="color:inherit" href="{{url('org/profile')}}"><i class="icon-settings mr-2"></i> Profile</a></li>
                             <li class="dropdown-divider"></li>
                             <li class="dropdown-item"><a style="color:inherit" href="{{url('account')}}"><i class="icon-wallet mr-2"></i> Account</a></li>
                             <li class="dropdown-divider"></li>

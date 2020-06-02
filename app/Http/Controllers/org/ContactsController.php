@@ -32,9 +32,18 @@ class ContactsController extends Controller
         
         if($tage_ids == 0){
             $contacts = $user->contacts;
-        } else{
+        } 
+        else{
             $tab_ids = $tage_ids;
-            $contactsQuery = "select c.*, t.* from contact_tag ct join contacts c on c.id=ct.contact_id join tags t on t.id=ct.tag_id where ct.tag_id IN(" . $tab_ids .  ")";
+            // return array($tab_ids);
+            // $contactsQuery = "select c.*, t.* from contact_tag ct join contacts c on c.id=ct.contact_id join tags t on t.id=ct.tag_id where ct.tag_id IN(" . $tab_ids .  ")";
+            $contacts = $user->contacts;
+            foreach($contacts as $contacts1){
+                $contactTags = $contacts1->tags()->whereIn('contact_tag.tag_id', array($tab_ids))->get();
+                // echo $contactTags; return;
+            }
+            // return $contactTags;
+            
             // $contactsQuery = DB::table("contact_tag as ct")
             //     ->join('contacts as c', 'c.id', '=', 'ct.contact_id')
             //     ->join('tags as t', 't.id', '=', 'ct.tag_id')
@@ -45,15 +54,16 @@ class ContactsController extends Controller
              // $contactsQuery = Contact::with(['tags' => function ($query) {
              //        $query->whereIn('id', $tab_ids);
              //    }])->get();
-            $contacts = DB::select(DB::raw($contactsQuery));
+            // $contacts = DB::select(DB::raw($contactsQuery));
             // $ids = "";
             // foreach($contacts as $contact){
             //     $ids .= $contact->id . ',';
             // }
-            $contacts = $user->contacts()->tags()->whereIn('id', array($tab_ids))->get();
-            var_dump($contacts);return;
+            // $contacts = $user->contacts()->tags()->whereIn('id', array($tab_ids))->get();
+            // $contacts = $user->contacts()->tags()->whereIn('id', array($tab_ids))->get();
+            // var_dump($contacts);return;
         }
-        return view('org/contacts', compact('contacts', 'tagList'));
+        return view('org/contacts', compact('contacts', 'tagList', 'tage_ids'));
     }
 
     /**
