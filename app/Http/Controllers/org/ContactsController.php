@@ -134,7 +134,7 @@ class ContactsController extends Controller
             $NewcustomField->contact_id = $contact->id;
             $NewcustomField->customfield_id = $customField->id;
             $name = $customField->name;
-            $ConvertedName= str_replace(' ', '', $customField->name);
+            $ConvertedName = str_replace(' ', '', $customField->name);
             $value = $request->$ConvertedName;
             if ($customField->type == 1) {
                 $NewcustomField->string_value = $value;
@@ -227,14 +227,15 @@ class ContactsController extends Controller
         $customFields = CustomField::where('user_id', $user->id)->get();
         foreach ($customFields as $customField) {
             $NewcustomField = ContactCustomField::where('contact_id', $id)->where('customfield_id', $customField->id)->first();
-            // $NewcustomField->contact_id = $contact->id;
-            // $NewcustomField->customfield_id = $customField->id;
+            if ($NewcustomField==null) {
+                $NewcustomField = new ContactCustomField;
+                $NewcustomField->contact_id = $contact->id;
+                $NewcustomField->customfield_id = $customField->id;
+            }
+
             $name = $customField->name;
-            $ConvertedName= str_replace(' ', '', $customField->name);
+            $ConvertedName = str_replace(' ', '', $customField->name);
             $value = $request->$ConvertedName;
-        //    if($NewcustomField->customfield_id==9){
-        //        return $request->$name;
-        //    }
             if ($customField->type == 1) {
                 $NewcustomField->string_value = $value;
             } elseif ($customField->type == 2) {
@@ -244,7 +245,7 @@ class ContactsController extends Controller
                 $DateValue = new DateTime($DateTime);
                 $NewcustomField->date_value = $DateValue;
             }
-           
+
             $NewcustomField->save();
         }
 
