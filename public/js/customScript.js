@@ -1,40 +1,40 @@
 $(document).ready(function () {
-    // setEventDateAndTime();
-    var table = $('#default-datatable').DataTable({
-        columnDefs: [
-            {orderable: false, targets: 4},
-        ]
-    });
+    setEventDateAndTime();
+    // var table = $('#default-datatable').DataTable({
+    //     columnDefs: [
+    //         {orderable: false, targets: 4},
+    //     ]
+    // });
 
-    var videosTable = $('#default-datatable-videos').DataTable({
-        columnDefs: [
-            {orderable: false, targets: 2},
-        ]
-    });
+    // var videosTable = $('#default-datatable-videos').DataTable({
+    //     columnDefs: [
+    //         {orderable: false, targets: 2},
+    //     ]
+    // });
 
-    var podcastsTable = $('#default-datatable-podcasts').DataTable({
-        columnDefs: [
-            {orderable: false, targets: 2},
-        ]
-    });
+    // var podcastsTable = $('#default-datatable-podcasts').DataTable({
+    //     columnDefs: [
+    //         {orderable: false, targets: 2},
+    //     ]
+    // });
 
-    var contactsTable = $('#default-datatable-contacts').DataTable({
-        columnDefs: [
-            {orderable: false, targets: 4},
-        ]
-    });
+    // var contactsTable = $('#default-datatable-contacts').DataTable({
+    //     columnDefs: [
+    //         {orderable: false, targets: 4},
+    //     ]
+    // });
 
-    $('#profileImg').change(function () {
-        $('.textForProfile').remove();
-        document.getElementById('profileImgSrc').src = window.URL.createObjectURL(this.files[0]);
-        document.getElementById('profileImgSrc').classList.remove('d-none');
-    });
+    // $('#profileImg').change(function () {
+    //     $('.textForProfile').remove();
+    //     document.getElementById('profileImgSrc').src = window.URL.createObjectURL(this.files[0]);
+    //     document.getElementById('profileImgSrc').classList.remove('d-none');
+    // });
 
-    $('#profileBannerImage').change(function () {
-        $('#textForProfileBanner').remove();
-        document.getElementById('profileBannerImageSrc').src = window.URL.createObjectURL(this.files[0]);
-        document.getElementById('profileBannerImageSrc').classList.remove('d-none');
-    });
+    // $('#profileBannerImage').change(function () {
+    //     $('#textForProfileBanner').remove();
+    //     document.getElementById('profileBannerImageSrc').src = window.URL.createObjectURL(this.files[0]);
+    //     document.getElementById('profileBannerImageSrc').classList.remove('d-none');
+    // });
 
     // // $('#tagsForm').on('submit', function (event) {
     // $('#tagsForm').keydown(function (event){
@@ -189,30 +189,6 @@ function findParent(element) {
     }
 }
 
-function IsOnlineEvent(element) {
-    if ($(element).is(":checked")) {
-        $('#Address1').attr('disabled', true);
-        $('#Address2').attr('disabled', true);
-        $('#PostalCode').attr('disabled', true);
-        $('#city').attr('disabled', true);
-        $('#country').attr('disabled', true);
-        $('#state').attr('disabled', true);
-        $('#EventUrl').removeClass('d-none');
-    } else {
-        $('#EventUrl').addClass('d-none');
-        if ($("#city option[value='-1']").length != 0) {
-            $('#Address1').attr('disabled', false);
-            $('#Address2').attr('disabled', false);
-            $('#PostalCode').attr('disabled', false);
-            $('#city').attr('disabled', false);
-        }
-        if ($("#state option[value='-1']").length != 0) {
-            $('#state').attr('disabled', false);
-        }
-        $('#country').attr('disabled', false);
-    }
-}
-
 function setEventDateAndTime() {
     $('.date').each(function () {
         var defaultdate;
@@ -252,43 +228,84 @@ function setEventDateAndTime() {
 
 }
 
-function deleteEvent(element) {
-    var confirmDelete = confirm("Are you sure you want to delete this event?");
-    if (!confirmDelete)
-        return;
-    var parent = findParent(element);
-    var eventDeleteId = $(element).attr('db-delete-id');
-    var CSRF_TOKEN = $('.csrf-token').val();
-    var urlString = $('.deleteEvent').val();
-    $.ajax({
-        url: urlString,
-        type: 'post',
-        data: {_token: CSRF_TOKEN, eventDeleteId: eventDeleteId},
-        success: function (response) {
-            // console.log(response);
-            location.reload();
-        }
-    });
+function LoaderStart() {
+    $('#pageloader-overlay').css('display', 'block');
+}
+function LoaderStop() {
+    $('#pageloader-overlay').css('display', 'none');
 }
 
-function deleteContact(element) {
-    var confirmDelete = confirm("Are you sure you want to delete this contact?");
-    if (!confirmDelete)
-        return;
-    var parent = findParent(element);
-    var contactDeleteId = $(element).attr('db-delete-id');
-    var CSRF_TOKEN = $('.csrf-token').val();
-    var urlString = $('.deleteContact').val();
-    $.ajax({
-        url: urlString,
-        type: 'post',
-        data: {_token: CSRF_TOKEN, contactDeleteId: contactDeleteId},
-        success: function (response) {
-            // console.log(response);
-            location.reload();
-        }
-    });
+function showInputLoader(element) {
+    var parent = $(element).parent();
+    $(parent).find('.loader-icon').removeClass('d-none');
 }
+
+function hideInputLoader(element) {
+    var parent = $(element).parent();
+    $(parent).find('.loader-icon').addClass('d-none');
+}
+
+// function IsOnlineEvent(element) {
+//     if ($(element).is(":checked")) {
+//         $('#Address1').attr('disabled', true);
+//         $('#Address2').attr('disabled', true);
+//         $('#PostalCode').attr('disabled', true);
+//         $('#city').attr('disabled', true);
+//         $('#country').attr('disabled', true);
+//         $('#state').attr('disabled', true);
+//         $('#EventUrl').removeClass('d-none');
+//     } else {
+//         $('#EventUrl').addClass('d-none');
+//         if ($("#city option[value='-1']").length != 0) {
+//             $('#Address1').attr('disabled', false);
+//             $('#Address2').attr('disabled', false);
+//             $('#PostalCode').attr('disabled', false);
+//             $('#city').attr('disabled', false);
+//         }
+//         if ($("#state option[value='-1']").length != 0) {
+//             $('#state').attr('disabled', false);
+//         }
+//         $('#country').attr('disabled', false);
+//     }
+// }
+
+// function deleteEvent(element) {
+//     var confirmDelete = confirm("Are you sure you want to delete this event?");
+//     if (!confirmDelete)
+//         return;
+//     var parent = findParent(element);
+//     var eventDeleteId = $(element).attr('db-delete-id');
+//     var CSRF_TOKEN = $('.csrf-token').val();
+//     var urlString = $('.deleteEvent').val();
+//     $.ajax({
+//         url: urlString,
+//         type: 'post',
+//         data: {_token: CSRF_TOKEN, eventDeleteId: eventDeleteId},
+//         success: function (response) {
+//             // console.log(response);
+//             location.reload();
+//         }
+//     });
+// }
+
+// function deleteContact(element) {
+//     var confirmDelete = confirm("Are you sure you want to delete this contact?");
+//     if (!confirmDelete)
+//         return;
+//     var parent = findParent(element);
+//     var contactDeleteId = $(element).attr('db-delete-id');
+//     var CSRF_TOKEN = $('.csrf-token').val();
+//     var urlString = $('.deleteContact').val();
+//     $.ajax({
+//         url: urlString,
+//         type: 'post',
+//         data: {_token: CSRF_TOKEN, contactDeleteId: contactDeleteId},
+//         success: function (response) {
+//             // console.log(response);
+//             location.reload();
+//         }
+//     });
+// }
 
 // function UploadVideoBox(element) {
 //     var field = $(element).parent().parent().parent();
@@ -410,36 +427,36 @@ function deleteContact(element) {
 //     }
 //     // $('.uploadVideo').removeClass('d-none');
 // }
-function UpdateEventStatus(element) {
-    var URL = $('.PostUrl').val();
-    $id = $(element).attr('data-id');
-    $status = $(element).attr('status');
-    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr("content");
+// function UpdateEventStatus(element) {
+//     var URL = $('.PostUrl').val();
+//     $id = $(element).attr('data-id');
+//     $status = $(element).attr('status');
+//     var CSRF_TOKEN = $('meta[name="csrf-token"]').attr("content");
 
-    $.ajax({
-        url: URL,
-        type: "post",
-        data: {_token: CSRF_TOKEN, 'id': $id, 'status': $status},
-        success: function (response) {
-            // console.log(response);
-            if ($status == '1') {
-                $(element).attr('status', '2');
-                $(element).text('Resume');
-            }
-            if ($status == '2') {
-                $(element).attr('status', '1');
-                $(element).text('Pause');
-            }
-            if ($status == '3') {
-                $(".pauseButton").addClass('d-none');
-                $(".cancelButton").addClass('d-none');
-            }
-        },
-        error: function (response) {
-            console.log(response);
-        }
-    });
-}
+//     $.ajax({
+//         url: URL,
+//         type: "post",
+//         data: {_token: CSRF_TOKEN, 'id': $id, 'status': $status},
+//         success: function (response) {
+//             // console.log(response);
+//             if ($status == '1') {
+//                 $(element).attr('status', '2');
+//                 $(element).text('Resume');
+//             }
+//             if ($status == '2') {
+//                 $(element).attr('status', '1');
+//                 $(element).text('Pause');
+//             }
+//             if ($status == '3') {
+//                 $(".pauseButton").addClass('d-none');
+//                 $(".cancelButton").addClass('d-none');
+//             }
+//         },
+//         error: function (response) {
+//             console.log(response);
+//         }
+//     });
+// }
 
 // function getState(element) {
 //     var parent = findParent(element);
@@ -485,12 +502,6 @@ function UpdateEventStatus(element) {
 //     $('#Address2').attr('disabled', false);
 //     $('#PostalCode').attr('disabled', false);
 // }
-function LoaderStart() {
-    $('#pageloader-overlay').css('display', 'block');
-}
-function LoaderStop() {
-    $('#pageloader-overlay').css('display', 'none');
-}
 
 // function RemoveSingleVideo(element) {
 //     LoaderStart();
@@ -556,14 +567,3 @@ function LoaderStop() {
 //         }
 //     });
 // }
-
-
-function showInputLoader(element) {
-    var parent = $(element).parent();
-    $(parent).find('.loader-icon').removeClass('d-none');
-}
-
-function hideInputLoader(element) {
-    var parent = $(element).parent();
-    $(parent).find('.loader-icon').addClass('d-none');
-}

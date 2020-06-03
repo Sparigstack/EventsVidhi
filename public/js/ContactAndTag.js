@@ -1,4 +1,10 @@
 $(document).ready(function () {
+    var contactsTable = $('#default-datatable-contacts').DataTable({
+        columnDefs: [
+            {orderable: false, targets: 4},
+        ]
+    });
+
     // $('#tagsForm').on('submit', function (event) {
     $('#tagsForm').keydown(function (event) {
         if (event.keyCode == 13) {
@@ -86,6 +92,25 @@ function Approve(element){
             console.log(response);
             LoaderStop();
             // console.log(response);
+        }
+    });
+}
+
+function deleteContact(element) {
+    var confirmDelete = confirm("Are you sure you want to delete this contact?");
+    if (!confirmDelete)
+        return;
+    var parent = findParent(element);
+    var contactDeleteId = $(element).attr('db-delete-id');
+    var CSRF_TOKEN = $('.csrf-token').val();
+    var urlString = $('.deleteContact').val();
+    $.ajax({
+        url: urlString,
+        type: 'post',
+        data: {_token: CSRF_TOKEN, contactDeleteId: contactDeleteId},
+        success: function (response) {
+            // console.log(response);
+            location.reload();
         }
     });
 }

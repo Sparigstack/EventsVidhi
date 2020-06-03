@@ -95,3 +95,7 @@
 </div>
 
 @endsection
+
+@section('script')
+<script src="{{asset('/js/VideoAndPodcast.js')}}" type="text/javascript"></script>
+@endsection

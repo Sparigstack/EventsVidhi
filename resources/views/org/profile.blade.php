@@ -133,7 +133,7 @@ if(!empty($user)){
 @endsection
 
 @section('script')
-<script src="{{asset('/js/customScript.js')}}" type="text/javascript"></script>
+<script src="{{asset('/js/Profile.js')}}" type="text/javascript"></script>
 <script src="{{asset('/js/Events.js')}}" type="text/javascript"></script>
 
 @endsection

@@ -108,3 +108,7 @@
 </div>
 
 @endsection
+
+@section('script')
+<script src="{{asset('/js/Events.js')}}" type="text/javascript"></script>
+@endsection

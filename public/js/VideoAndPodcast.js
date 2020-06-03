@@ -1,4 +1,16 @@
 $(document).ready(function() {
+    var videosTable = $('#default-datatable-videos').DataTable({
+        columnDefs: [
+            {orderable: false, targets: 2},
+        ]
+    });
+
+    var podcastsTable = $('#default-datatable-podcasts').DataTable({
+        columnDefs: [
+            {orderable: false, targets: 2},
+        ]
+    });
+
     $('.dragFileForm input').change(function() {
         // $('.dragFileForm p').text(this.files.length + " file(s) selected");
         $('.dragFileForm').find('.dragFileText').text(this.files.length + " file(s) selected");

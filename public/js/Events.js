@@ -1,4 +1,10 @@
 $(document).ready(function () {
+    var table = $('#default-datatable').DataTable({
+        columnDefs: [
+            {orderable: false, targets: 4},
+        ]
+    });
+
     setEventDateAndTime();
 
     $('#SaveVideoAjax').on('submit', function (event) {
@@ -513,4 +519,54 @@ function showSpeakerListing(element){
     $("#uploadedSpeakers").find(".speakerList").removeClass('d-none');
     $(".speakerContainer").addClass('d-none');
 
+}
+
+function deleteEvent(element) {
+    var confirmDelete = confirm("Are you sure you want to delete this event?");
+    if (!confirmDelete)
+        return;
+    var parent = findParent(element);
+    var eventDeleteId = $(element).attr('db-delete-id');
+    var CSRF_TOKEN = $('.csrf-token').val();
+    var urlString = $('.deleteEvent').val();
+    $.ajax({
+        url: urlString,
+        type: 'post',
+        data: {_token: CSRF_TOKEN, eventDeleteId: eventDeleteId},
+        success: function (response) {
+            // console.log(response);
+            location.reload();
+        }
+    });
+}
+
+function UpdateEventStatus(element) {
+    var URL = $('.PostUrl').val();
+    $id = $(element).attr('data-id');
+    $status = $(element).attr('status');
+    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr("content");
+
+    $.ajax({
+        url: URL,
+        type: "post",
+        data: {_token: CSRF_TOKEN, 'id': $id, 'status': $status},
+        success: function (response) {
+            // console.log(response);
+            if ($status == '1') {
+                $(element).attr('status', '2');
+                $(element).text('Resume');
+            }
+            if ($status == '2') {
+                $(element).attr('status', '1');
+                $(element).text('Pause');
+            }
+            if ($status == '3') {
+                $(".pauseButton").addClass('d-none');
+                $(".cancelButton").addClass('d-none');
+            }
+        },
+        error: function (response) {
+            console.log(response);
+        }
+    });
 }
