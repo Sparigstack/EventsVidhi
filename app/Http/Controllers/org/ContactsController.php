@@ -28,14 +28,11 @@ class ContactsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($tag_ids = '18,30') {
+    public function index($tag_ids = '0') {
 
         $user = Auth::user();
         //$tagList = Tag::where('user_id', $user->id)->get();
         $tagList = $user->tags;
-
-
-
 
         if ($tag_ids == '0') {
             $contacts = $user->contacts;
@@ -49,13 +46,13 @@ class ContactsController extends Controller
                     ->where('contacts.user_id', $user->id)
                     ->whereIn('tags.id', $tag_arr)
                     ->get()->toArray();
-            return $contact_ids;
-            //$contact_arr = $contact_ids->to
-            
-            $contacts = Contact::whereIn('id', [31])->get();
-            return $contacts;
+            $ids = [];
+            foreach($contact_ids as $cid){
+                $ids[] = $cid->id;
+            }
+            $contacts = Contact::whereIn('id', $ids)->get();            
         }
-        return view('org/contacts', compact('contacts', 'tagList', 'tage_ids'));
+        return view('org/contacts', compact('contacts', 'tagList', 'tag_ids'));
     }
 
     /**
