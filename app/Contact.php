@@ -18,6 +18,10 @@ class Contact extends Model
         //return $this->belongsToMany('App\Tag', 'contact_tag', 'contact_id', 'tag_id');
         return $this->belongsToMany('App\Tag');
     }
+    public function customfields(){
+        //return $this->belongsToMany('App\Tag', 'contact_tag', 'contact_id', 'tag_id');
+        return $this->belongsToMany('App\ContactCustomField');
+    }
     
     
 }

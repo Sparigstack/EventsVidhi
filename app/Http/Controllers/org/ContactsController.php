@@ -5,10 +5,13 @@ namespace App\Http\Controllers\org;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Contact;
+use App\ContactCustomField;
 use App\ContactTag;
+use App\CustomField;
 use App\Tag;
 use Exception;
 use DB;
+use DateTime;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -25,25 +28,24 @@ class ContactsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($tage_ids=0)
+    public function index($tage_ids = 0)
     {
         $user = Auth::user();
         $tagList = Tag::where('user_id', $user->id)->get();
-        
-        if($tage_ids == 0){
+
+        if ($tage_ids == 0) {
             $contacts = $user->contacts;
-        } 
-        else{
+        } else {
             $tab_ids = $tage_ids;
             // return array($tab_ids);
             // $contactsQuery = "select c.*, t.* from contact_tag ct join contacts c on c.id=ct.contact_id join tags t on t.id=ct.tag_id where ct.tag_id IN(" . $tab_ids .  ")";
             $contacts = $user->contacts;
-            foreach($contacts as $contacts1){
+            foreach ($contacts as $contacts1) {
                 $contactTags = $contacts1->tags()->whereIn('contact_tag.tag_id', array($tab_ids))->get();
                 // echo $contactTags; return;
             }
             // return $contactTags;
-            
+
             // $contactsQuery = DB::table("contact_tag as ct")
             //     ->join('contacts as c', 'c.id', '=', 'ct.contact_id')
             //     ->join('tags as t', 't.id', '=', 'ct.tag_id')
@@ -51,9 +53,9 @@ class ContactsController extends Controller
             //     ->whereIn('ct.tag_id', array($tab_ids))
             //     ->with('tags')
             //     ->get();
-             // $contactsQuery = Contact::with(['tags' => function ($query) {
-             //        $query->whereIn('id', $tab_ids);
-             //    }])->get();
+            // $contactsQuery = Contact::with(['tags' => function ($query) {
+            //        $query->whereIn('id', $tab_ids);
+            //    }])->get();
             // $contacts = DB::select(DB::raw($contactsQuery));
             // $ids = "";
             // foreach($contacts as $contact){
@@ -77,7 +79,8 @@ class ContactsController extends Controller
         $contacts = Contact::all();
         // $tags = Tag::all();
         $tagsData = Tag::where('user_id', $user->id)->get();
-        return view('org/createContact', compact('contacts', 'tagsData'));
+        $customFields = CustomField::where('user_id', $user->id)->get();
+        return view('org/createContact', compact('contacts', 'tagsData', 'customFields'));
     }
 
     /**
@@ -108,6 +111,9 @@ class ContactsController extends Controller
         $contact->email = $request->emailAddress;
         $contact->contact_number = $request->ContactNumber;
         $contact->user_id = $user->id;
+        if ($user->auto_approve_follower == 1) {
+            $contact->is_approved = 1;
+        }
         $contact->save();
 
 
@@ -122,7 +128,25 @@ class ContactsController extends Controller
             }
         } catch (Exception $e) {
         }
-
+        $customFields = CustomField::where('user_id', $user->id)->get();
+        foreach ($customFields as $customField) {
+            $NewcustomField = new ContactCustomField;
+            $NewcustomField->contact_id = $contact->id;
+            $NewcustomField->customfield_id = $customField->id;
+            $name = $customField->name;
+            $ConvertedName= str_replace(' ', '', $customField->name);
+            $value = $request->$ConvertedName;
+            if ($customField->type == 1) {
+                $NewcustomField->string_value = $value;
+            } elseif ($customField->type == 2) {
+                $NewcustomField->int_value = $value;
+            } else {
+                $DateTime = $value;
+                $DateValue = new DateTime($DateTime);
+                $NewcustomField->date_value = $DateValue;
+            }
+            $NewcustomField->save();
+        }
 
         return redirect('org/contacts');
     }
@@ -150,8 +174,10 @@ class ContactsController extends Controller
         $contact = Contact::findOrFail($id);
         $contact_tag = ContactTag::where('contact_id', $contact->id)->get();
         $tagsData = Tag::where('user_id', $user->id)->get();
+        $customFields = CustomField::where('user_id', $user->id)->get();
+        $ContactCustomFields = ContactCustomField::where('contact_id', $contact->id)->get();
 
-        return view('org/createContact', compact('contact', 'contact_tag', 'tagsData'));
+        return view('org/createContact', compact('contact', 'contact_tag', 'tagsData', 'customFields', 'ContactCustomFields'));
     }
 
     /**
@@ -186,19 +212,42 @@ class ContactsController extends Controller
         $contact->save();
 
         // try {
-            $string = $request->HiddenCategoyID;
-            $tagIDS = preg_split("/\,/", $string);
-            ContactTag::where('contact_id', $contact->id)->delete();
-            foreach ($tagIDS as $tagID) {
-                if($tagID != ''){
-                    $ContactTag = new ContactTag;
-                    $ContactTag->contact_id = $contact->id;
-                    $ContactTag->tag_id = (int)$tagID;
-                    $ContactTag->save();
-                }
+        $string = $request->HiddenCategoyID;
+        $tagIDS = preg_split("/\,/", $string);
+        ContactTag::where('contact_id', $contact->id)->delete();
+        foreach ($tagIDS as $tagID) {
+            if ($tagID != '') {
+                $ContactTag = new ContactTag;
+                $ContactTag->contact_id = $contact->id;
+                $ContactTag->tag_id = (int) $tagID;
+                $ContactTag->save();
             }
-        // } catch (Exception $e) {
-        // }
+        }
+
+        $customFields = CustomField::where('user_id', $user->id)->get();
+        foreach ($customFields as $customField) {
+            $NewcustomField = ContactCustomField::where('contact_id', $id)->where('customfield_id', $customField->id)->first();
+            // $NewcustomField->contact_id = $contact->id;
+            // $NewcustomField->customfield_id = $customField->id;
+            $name = $customField->name;
+            $ConvertedName= str_replace(' ', '', $customField->name);
+            $value = $request->$ConvertedName;
+        //    if($NewcustomField->customfield_id==9){
+        //        return $request->$name;
+        //    }
+            if ($customField->type == 1) {
+                $NewcustomField->string_value = $value;
+            } elseif ($customField->type == 2) {
+                $NewcustomField->int_value = $value;
+            } else {
+                $DateTime = $value;
+                $DateValue = new DateTime($DateTime);
+                $NewcustomField->date_value = $DateValue;
+            }
+           
+            $NewcustomField->save();
+        }
+
         return redirect('org/contacts');
     }
 
@@ -216,7 +265,7 @@ class ContactsController extends Controller
     public function approve($id)
     {
         $contact = Contact::findOrFail($id);
-        $contact->is_approved=1;
+        $contact->is_approved = 1;
         $contact->save();
         return "success";
     }
