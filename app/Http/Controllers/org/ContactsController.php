@@ -28,42 +28,32 @@ class ContactsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($tage_ids = 0)
-    {
-        $user = Auth::user();
-        $tagList = Tag::where('user_id', $user->id)->get();
+    public function index($tag_ids = '18,30') {
 
-        if ($tage_ids == 0) {
+        $user = Auth::user();
+        //$tagList = Tag::where('user_id', $user->id)->get();
+        $tagList = $user->tags;
+
+
+
+
+        if ($tag_ids == '0') {
             $contacts = $user->contacts;
         } else {
-            $tab_ids = $tage_ids;
-            // return array($tab_ids);
-            // $contactsQuery = "select c.*, t.* from contact_tag ct join contacts c on c.id=ct.contact_id join tags t on t.id=ct.tag_id where ct.tag_id IN(" . $tab_ids .  ")";
-            $contacts = $user->contacts;
-            foreach ($contacts as $contacts1) {
-                $contactTags = $contacts1->tags()->whereIn('contact_tag.tag_id', array($tab_ids))->get();
-                // echo $contactTags; return;
-            }
-            // return $contactTags;
+            //$tag_ids='23,30';
+            $tag_arr = explode(',', $tag_ids);
 
-            // $contactsQuery = DB::table("contact_tag as ct")
-            //     ->join('contacts as c', 'c.id', '=', 'ct.contact_id')
-            //     ->join('tags as t', 't.id', '=', 'ct.tag_id')
-            //     ->select('c.*', 't.*')
-            //     ->whereIn('ct.tag_id', array($tab_ids))
-            //     ->with('tags')
-            //     ->get();
-            // $contactsQuery = Contact::with(['tags' => function ($query) {
-            //        $query->whereIn('id', $tab_ids);
-            //    }])->get();
-            // $contacts = DB::select(DB::raw($contactsQuery));
-            // $ids = "";
-            // foreach($contacts as $contact){
-            //     $ids .= $contact->id . ',';
-            // }
-            // $contacts = $user->contacts()->tags()->whereIn('id', array($tab_ids))->get();
-            // $contacts = $user->contacts()->tags()->whereIn('id', array($tab_ids))->get();
-            // var_dump($contacts);return;
+            $contact_ids = DB::table('contacts')->select('contacts.id')->distinct()
+                    ->join('contact_tag', 'contacts.id', '=', 'contact_tag.contact_id')
+                    ->join('tags', 'contact_tag.tag_id', '=', 'tags.id')
+                    ->where('contacts.user_id', $user->id)
+                    ->whereIn('tags.id', $tag_arr)
+                    ->get()->toArray();
+            return $contact_ids;
+            //$contact_arr = $contact_ids->to
+            
+            $contacts = Contact::whereIn('id', [31])->get();
+            return $contacts;
         }
         return view('org/contacts', compact('contacts', 'tagList', 'tage_ids'));
     }

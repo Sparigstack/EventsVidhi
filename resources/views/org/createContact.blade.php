@@ -100,8 +100,10 @@
                             <small class="text-danger">{{ $errors->first('tags') }}</small>
                             <textarea id="HiddenCategoyID" name="HiddenCategoyID" required class="form-controld d-none" title="HiddenCategoyID" placeholder="HiddenCategoyID" autocomplete="off" rows="4">{{ old('HiddenCategoyID', $MultSelectTags) }} </textarea>
                         </div>
-
+                        <?php if(!empty($customFields)){?>
                         <label class="InnerHeader">Custom Fields </label>
+                        <?php } ?>
+                        
                         <?php $value=""; foreach ($customFields as $customField) { $ConvertedName= str_replace(' ', '', $customField->name);
                            if(!empty($ContactCustomFields)){
                             foreach($ContactCustomFields as $ContactCustomField){
