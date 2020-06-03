@@ -9,7 +9,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'PanelHive - Event Management System') }}</title>
-
+    @yield('css')
     <!-- Scripts -->
     <!-- <script src="{{ asset('js/app.js') }}" defer></script> -->
 
@@ -38,15 +38,15 @@
     <!--Custom Style-->
     <link href="{{ asset('assets/css/app-style.css') }}" rel="stylesheet">
     <!--Bootstrap date picker-->
-    <link href="{{ asset('assets/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
+    <!-- <link href="{{ asset('assets/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet"> -->
 
     <!-- Data Tables -->
     <link href="{{ asset('assets/plugins/bootstrap-datatable/css/buttons.bootstrap4.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/plugins/bootstrap-datatable/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
-    <!--multi select-->
-    <link href="{{ asset('assets/plugins/jquery-multi-select/multi-select.css') }}" rel="stylesheet" type="text/css">
-    <!--Select Plugins-->
-    <link href="{{ asset('assets/plugins/select2/css/select2.min.css') }}" rel="stylesheet" />
+
+    <!-- <link href="{{ asset('assets/plugins/jquery-multi-select/multi-select.css') }}" rel="stylesheet" type="text/css">
+
+    <link href="{{ asset('assets/plugins/select2/css/select2.min.css') }}" rel="stylesheet" /> -->
 
 
 </head>
@@ -250,21 +250,21 @@
     <!-- Data Tables -->
     <script src="{{ asset('assets/plugins/bootstrap-datatable/js/jquery.dataTables.min.js') }}"></script>
     <!-- <script src="{{ asset('assets/plugins/bootstrap-datatable/js/buttons.bootstrap4.min.js') }}"></script> -->
-    <script src="{{ asset('assets/plugins/bootstrap-datatable/js/buttons.colVis.min.js') }}"></script>
-    <script src="{{ asset('assets/plugins/bootstrap-datatable/js/buttons.html5.min.js') }}"></script>
-    <script src="{{ asset('assets/plugins/bootstrap-datatable/js/buttons.print.min.js') }}"></script>
+    <!-- <script src="{{ asset('assets/plugins/bootstrap-datatable/js/buttons.colVis.min.js') }}"></script> -->
+    <!-- <script src="{{ asset('assets/plugins/bootstrap-datatable/js/buttons.html5.min.js') }}"></script> -->
+    <!-- <script src="{{ asset('assets/plugins/bootstrap-datatable/js/buttons.print.min.js') }}"></script> -->
     <script src="{{ asset('assets/plugins/bootstrap-datatable/js/dataTables.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/bootstrap-datatable/js/dataTables.buttons.min.js') }}"></script>
-    <script src="{{ asset('assets/plugins/bootstrap-datatable/js/jszip.min.js') }}"></script>
-    <script src="{{asset('assets/plugins/bootstrap-datatable/js/pdfmake.min.js')}}"></script>
+    <!-- <script src="{{ asset('assets/plugins/bootstrap-datatable/js/jszip.min.js') }}"></script> -->
+    <!-- <script src="{{asset('assets/plugins/bootstrap-datatable/js/pdfmake.min.js')}}"></script> -->
     <script src="{{asset('assets/plugins/bootstrap-datatable/js/vfs_fonts.js')}}"></script>
     <!-- datetimepicker -->
     <script src="{{ asset('assets/plugins/datetimepicker-master/jquery.datetimepicker.js') }}"></script>
     <!--Multi Select Js-->
-    <script src="{{ asset('assets/plugins/jquery-multi-select/jquery.multi-select.js') }}"></script>
+    <!-- <script src="{{ asset('assets/plugins/jquery-multi-select/jquery.multi-select.js') }}"></script> -->
     <script src="{{ asset('assets/plugins/jquery-multi-select/jquery.quicksearch.js') }}"></script>
     <!--Select Plugins Js-->
-    <script src="{{ asset('assets/plugins/select2/js/select2.min.js') }}"></script>
+    <!-- <script src="{{ asset('assets/plugins/select2/js/select2.min.js') }}"></script> -->
     <script>
         // $(document).ready(function() {
         //     $('.single-select').select2();

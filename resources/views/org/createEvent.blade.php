@@ -1,5 +1,8 @@
 @extends('layouts.appOrg')
-
+@section('css')
+<link href="{{ asset('assets/plugins/jquery-multi-select/multi-select.css') }}" rel="stylesheet" type="text/css">
+<link href="{{ asset('assets/plugins/select2/css/select2.min.css') }}" rel="stylesheet" />
+@endsection
 @section('content')
 <div class="container-fluid mt-3 createEventContainer">
     <?php
@@ -454,9 +457,11 @@
                                                         </div><br>
                                                         <div class="form-group col-lg-12">
                                                             <label for="title">Human friendly event url</label>
-                                                            <?php $IsReadOnly=""; if(Auth()->user()->username==null || Auth()->user()->username=="" || Auth()->user()->username==" "){ $IsReadOnly="disabled" ?>
+                                                            <?php $IsReadOnly = "";
+                                                            if (Auth()->user()->username == null || Auth()->user()->username == "" || Auth()->user()->username == " ") {
+                                                                $IsReadOnly = "disabled" ?>
                                                                 <p style="color:green;">Please click <a href="{{url('settings')}}">here</a> to set username and be able to enter human friendly url.
-                                                                
+
                                                                 </p>
                                                             <?php } ?>
                                                             <div class="p-1">{{env('APP_URL')}}</div>
@@ -781,6 +786,8 @@
 
 @section('script')
 <script src="{{asset('/js/Events.js')}}" type="text/javascript"></script>
+<script src="{{ asset('assets/plugins/jquery-multi-select/jquery.multi-select.js') }}"></script> -->
+<script src="{{ asset('assets/plugins/select2/js/select2.min.js') }}"></script>
 <script>
     $(document).ready(function() {
         $('.single-select').select2();

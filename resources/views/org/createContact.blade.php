@@ -1,5 +1,8 @@
 @extends('layouts.appOrg')
-
+@section('css')
+<link href="{{ asset('assets/plugins/jquery-multi-select/multi-select.css') }}" rel="stylesheet" type="text/css">
+<link href="{{ asset('assets/plugins/select2/css/select2.min.css') }}" rel="stylesheet" />
+@endsection
 @section('content')
 <div class="container-fluid">
     <?php
@@ -249,15 +252,9 @@
 
 @section('script')
 <script src="{{asset('/js/VideoAndContact.js')}}" type="text/javascript"></script>
-<!-- <script>
-    $(document).ready(function() {
-        $('.dragFileForm input').change(function() {
-            $('.dragFileForm p').text(this.files.length + " file(s) selected");
-        });
-        UploadContactVideoBox();
-        showHideLinkEvent();
-    });
-</script> -->
+
+<script src="{{ asset('assets/plugins/jquery-multi-select/jquery.multi-select.js') }}"></script> -->
+<script src="{{ asset('assets/plugins/select2/js/select2.min.js') }}"></script>
 
 <script>
     (function() {
