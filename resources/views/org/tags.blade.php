@@ -2,7 +2,6 @@
 @section('css')
 <link href="{{ asset('assets/plugins/jquery-multi-select/multi-select.css') }}" rel="stylesheet" type="text/css">
 <link href="{{ asset('assets/plugins/select2/css/select2.min.css') }}" rel="stylesheet" />
-@endsection
 <style>
 .select2-dropdown {
     display: none !important;
@@ -15,6 +14,7 @@
     height: auto !important;
 }
 </style>
+@endsection
 @section('content')
 
 <div class="container-fluid">
@@ -70,7 +70,7 @@
 @section('script')
 
 <script src="{{asset('/js/ContactAndTag.js')}}" type="text/javascript"></script>
-<script src="{{ asset('assets/plugins/jquery-multi-select/jquery.multi-select.js') }}"></script> -->
+<script src="{{ asset('assets/plugins/jquery-multi-select/jquery.multi-select.js') }}"></script>
 <script src="{{ asset('assets/plugins/select2/js/select2.min.js') }}"></script>
 <script>
     $(document).ready(function() {
@@ -84,6 +84,7 @@
             placeholder: "Select tags",
             allowClear: true
         });
+        
         var MultiSlectCounter = 0;
         $('.multiple-select').on('select2:select', function(e) {
             // console.log(e.params.data.id);

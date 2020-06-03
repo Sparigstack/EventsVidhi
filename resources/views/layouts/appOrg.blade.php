@@ -18,7 +18,7 @@
     <!-- <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet"> -->
 
     <!-- datetimepicker -->
-    <link href="{{ asset('assets/plugins/datetimepicker-master/jquery.datetimepicker.css') }}" rel="stylesheet">
+    <!-- <link href="{{ asset('assets/plugins/datetimepicker-master/jquery.datetimepicker.css') }}" rel="stylesheet"> -->
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <!-- Font -->
@@ -41,8 +41,8 @@
     <!-- <link href="{{ asset('assets/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet"> -->
 
     <!-- Data Tables -->
-    <link href="{{ asset('assets/plugins/bootstrap-datatable/css/buttons.bootstrap4.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/plugins/bootstrap-datatable/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+    <!-- <link href="{{ asset('assets/plugins/bootstrap-datatable/css/buttons.bootstrap4.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/plugins/bootstrap-datatable/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet"> -->
 
     <!-- <link href="{{ asset('assets/plugins/jquery-multi-select/multi-select.css') }}" rel="stylesheet" type="text/css">
 
@@ -248,18 +248,21 @@
     <script src="{{ asset('assets/plugins/jquery-knob/jquery.knob.js') }}"></script>
     <script src="{{asset('/js/customScript.js?v='.$v)}}" type="text/javascript"></script>
     <!-- Data Tables -->
-    <script src="{{ asset('assets/plugins/bootstrap-datatable/js/jquery.dataTables.min.js') }}"></script>
+    <!-- <script src="{{ asset('assets/plugins/bootstrap-datatable/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/bootstrap-datatable/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/bootstrap-datatable/js/dataTables.buttons.min.js') }}"></script>
+    <script src="{{asset('assets/plugins/bootstrap-datatable/js/vfs_fonts.js')}}"></script> -->
+
+
+    
     <!-- <script src="{{ asset('assets/plugins/bootstrap-datatable/js/buttons.bootstrap4.min.js') }}"></script> -->
     <!-- <script src="{{ asset('assets/plugins/bootstrap-datatable/js/buttons.colVis.min.js') }}"></script> -->
     <!-- <script src="{{ asset('assets/plugins/bootstrap-datatable/js/buttons.html5.min.js') }}"></script> -->
     <!-- <script src="{{ asset('assets/plugins/bootstrap-datatable/js/buttons.print.min.js') }}"></script> -->
-    <script src="{{ asset('assets/plugins/bootstrap-datatable/js/dataTables.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('assets/plugins/bootstrap-datatable/js/dataTables.buttons.min.js') }}"></script>
     <!-- <script src="{{ asset('assets/plugins/bootstrap-datatable/js/jszip.min.js') }}"></script> -->
     <!-- <script src="{{asset('assets/plugins/bootstrap-datatable/js/pdfmake.min.js')}}"></script> -->
-    <script src="{{asset('assets/plugins/bootstrap-datatable/js/vfs_fonts.js')}}"></script>
     <!-- datetimepicker -->
-    <script src="{{ asset('assets/plugins/datetimepicker-master/jquery.datetimepicker.js') }}"></script>
+    <!-- <script src="{{ asset('assets/plugins/datetimepicker-master/jquery.datetimepicker.js') }}"></script> -->
     <!--Multi Select Js-->
     <!-- <script src="{{ asset('assets/plugins/jquery-multi-select/jquery.multi-select.js') }}"></script> -->
     <script src="{{ asset('assets/plugins/jquery-multi-select/jquery.quicksearch.js') }}"></script>

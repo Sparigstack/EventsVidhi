@@ -2,6 +2,8 @@
 @section('css')
 <link href="{{ asset('assets/plugins/jquery-multi-select/multi-select.css') }}" rel="stylesheet" type="text/css">
 <link href="{{ asset('assets/plugins/select2/css/select2.min.css') }}" rel="stylesheet" />
+<!-- datetimepicker -->
+<link href="{{ asset('assets/plugins/datetimepicker-master/jquery.datetimepicker.css') }}" rel="stylesheet">
 @endsection
 @section('content')
 <div class="container-fluid mt-3 createEventContainer">
@@ -786,8 +788,10 @@
 
 @section('script')
 <script src="{{asset('/js/Events.js')}}" type="text/javascript"></script>
-<script src="{{ asset('assets/plugins/jquery-multi-select/jquery.multi-select.js') }}"></script> -->
+<script src="{{ asset('assets/plugins/jquery-multi-select/jquery.multi-select.js') }}"></script>
 <script src="{{ asset('assets/plugins/select2/js/select2.min.js') }}"></script>
+<!-- datetimepicker -->
+<script src="{{ asset('assets/plugins/datetimepicker-master/jquery.datetimepicker.js') }}"></script>
 <script>
     $(document).ready(function() {
         $('.single-select').select2();

@@ -1,7 +1,20 @@
 @extends('layouts.appOrg')
+@section('css')
+<link href="{{ asset('assets/plugins/jquery-multi-select/multi-select.css') }}" rel="stylesheet" type="text/css">
+<link href="{{ asset('assets/plugins/select2/css/select2.min.css') }}" rel="stylesheet" />
+<!-- Data Tables -->
+<link href="{{ asset('assets/plugins/bootstrap-datatable/css/buttons.bootstrap4.min.css') }}" rel="stylesheet">
+<link href="{{ asset('assets/plugins/bootstrap-datatable/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+@endsection
 @section('content')
 
 <div class="container-fluid">
+<?php
+$checkCount = "no";
+$IsSelected = "";
+$MultSelectTags = "";
+// $ActionCall = url('org/contacts/' . $tag_ids);
+?>
     <div class="Data-Table">
 
         <div class="row">
@@ -13,26 +26,50 @@
                         <!-- <button id="" class="btn m-1 pull-right" style="border:1px solid transparent;"><a href="{{url("org/events/new")}}">Add New Event</a></button> -->
                     </div>
                     <div class="card-body">
+                        <input type="hidden" class="urlString" value="{{url('org/contacts')}}">
 
-                        <form method="" action="contacts/1">
+                        <!-- <form action=""> -->
                             <!-- {{ csrf_field() }} -->
                             <div class="row p-1 mb-3">
                                 <div class="col-sm-12 col-lg-6 col-md-6">
                                     <!-- <label>Search Tags</label> -->
 
                                     <select class="form-control multiple-select" name="tagSelection[]" id="tagSelection" multiple="multiple">
-                                        <?php foreach ($tagList as $tagLists) {  ?>
-                                            <option value="{{$tagLists->id}}">{{$tagLists->name}}</option>
+                                        <?php $tagIdsArr = explode(',', $tag_ids);
+                                        foreach ($tagList as $tagLists) {  ?>
+
+                                      <?php  foreach ($tagIdsArr as $tag_id) {
+
+                                            if ($tag_id == $tagLists->id) {
+                                                $IsSelected = "selected";
+                                                if ($checkCount == "no") {
+                                                    $MultSelectTags .= strval($tagLists->id);
+                                                } else {
+                                                    $MultSelectTags .= "," . $tagLists->id;
+                                                }
+                                                $checkCount = "yes";
+                                            } else {
+                                                $IsSelected = "";
+                                            }
+
+                                ?>
+                                            <option value="{{$tagLists->id}}" {{$IsSelected}} @if ($tagIdsArr==$tagLists->id) selected="selected" @endif>{{$tagLists->name}}</option>
+
+                                        <?php } ?>
+                                            
                                         <?php } ?>
                                     </select>
+
+                                    <textarea id="HiddenCategoyID" name="HiddenCategoyID" required class="form-controld d-none" title="HiddenCategoyID" placeholder="HiddenCategoyID" autocomplete="off" rows="4">{{$MultSelectTags}} </textarea>
                                     <!-- <input type="text" class="form-control" placeholder="" value="" name="search" id="search"> -->
                                 </div>
 
                                 <div class="col-sm-12 col-lg-4 col-md-4">
-                                    <button type="submit" class="btn btn-primary">Search Tags</button>
+                                    <!-- <button type="submit" class="btn btn-primary">Search Tags</button> -->
+                                    <button onclick="tagsSelect(this);" class="btn btn-primary">Search Tags</button>
                                 </div>
                             </div>
-                        </form>
+                        <!-- </form> -->
 
 
                         <div class="table-responsive" id="default-datatable_wrapper">
@@ -101,12 +138,38 @@
 
 @section('script')
 <script src="{{asset('/js/ContactAndTag.js')}}" type="text/javascript"></script>
+<script src="{{ asset('assets/plugins/jquery-multi-select/jquery.multi-select.js') }}"></script>
+<script src="{{ asset('assets/plugins/select2/js/select2.min.js') }}"></script>
+<!-- Data Tables -->
+    <script src="{{ asset('assets/plugins/bootstrap-datatable/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/bootstrap-datatable/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/bootstrap-datatable/js/dataTables.buttons.min.js') }}"></script>
+    <script src="{{asset('assets/plugins/bootstrap-datatable/js/vfs_fonts.js')}}"></script>
 <script>
     $(document).ready(function() {
 
         $('.multiple-select').select2({
             placeholder: "Select tags",
             allowClear: true
+        });
+
+        var MultiSlectCounter = 0;
+        $('.multiple-select').on('select2:select', function(e) {
+            console.log(e.params.data.id);
+            if (MultiSlectCounter == 0) {
+                $('#HiddenCategoyID').append(e.params.data.id);
+            } else {
+                $('#HiddenCategoyID').append("," + e.params.data.id);
+            }
+
+            MultiSlectCounter += 1;
+        });
+        $('.multiple-select').on('select2:unselecting', function(e) {
+            console.log(e.params.args.data.id);
+            var str = $('#HiddenCategoyID').val();
+            var res = str.replace(e.params.args.data.id, "");
+            $('#HiddenCategoyID').empty();
+            $('#HiddenCategoyID').append(res);
         });
 
         $('.custom-header').multiSelect({

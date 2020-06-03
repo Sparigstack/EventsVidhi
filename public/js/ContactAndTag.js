@@ -114,3 +114,11 @@ function deleteContact(element) {
         }
     });
 }
+
+function tagsSelect(element){
+    var urlString = $(".urlString").val();
+    var tagsHiddenText = $("#HiddenCategoyID").text();
+    var tagsHiddenTrim = $.trim(tagsHiddenText);
+    var tagsHidden = tagsHiddenTrim.replace(' ', ',');
+    window.location.href = urlString += '/' + tagsHidden;
+}
