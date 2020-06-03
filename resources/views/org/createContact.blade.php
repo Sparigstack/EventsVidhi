@@ -10,8 +10,8 @@
     $lastname = "";
     $email = "";
     $contactNumber = "";
-    $IsSelected="";
-    $MultSelectTags="";
+    $IsSelected = "";
+    $MultSelectTags = "";
     if (!empty($contact)) {
         $ActionCall = url('org/contacts/edit/' . $contact->id);
         $CardTitle = "Edit Contact";
@@ -62,11 +62,11 @@
                             <select class="form-control multiple-select" multiple="multiple" name="tags" id="tags">
                                 <?php if (!empty($contact)) {
                                     $IsSelected = "";
-                                    
-                                    
-                                        foreach ($tagsData as $contact_tags) {
 
-                                            foreach ($contact->tags as $contacts) {
+
+                                    foreach ($tagsData as $contact_tags) {
+
+                                        foreach ($contact->tags as $contacts) {
 
                                             if ($contact_tags->id == $contacts->id) {
                                                 $IsSelected = "selected";
@@ -82,23 +82,52 @@
                                             }
 
                                 ?>
-                                <option value="{{old('tags',$contact_tags->id)}}" {{$IsSelected}} @if (old('tags')==$contact_tags->id) selected="selected" @endif ><?php echo $contact_tags->name; ?> </option>
-                                            
+                                            <option value="{{old('tags',$contact_tags->id)}}" {{$IsSelected}} @if (old('tags')==$contact_tags->id) selected="selected" @endif ><?php echo $contact_tags->name; ?> </option>
+
                                         <?php } ?>
-                                        
-                                  <?php  }
+
+                                    <?php  }
                                 } else {
                                     foreach ($tagsData as $contact_tags) {
-                                        ?>
+                                    ?>
                                         <option value="{{old('tags',$contact_tags->id)}}" {{$IsSelected}} @if (old('tags')==$contact_tags->id) selected="selected" @endif ><?php echo $contact_tags->name; ?> </option>
                                 <?php }
                                 } ?>
-                            
+
 
                             </select>
                             <small class="text-danger">{{ $errors->first('tags') }}</small>
                             <textarea id="HiddenCategoyID" name="HiddenCategoyID" required class="form-controld d-none" title="HiddenCategoyID" placeholder="HiddenCategoyID" autocomplete="off" rows="4">{{ old('HiddenCategoyID', $MultSelectTags) }} </textarea>
                         </div>
+
+                        <label class="InnerHeader">Custom Fields </label>
+                        <?php $value=""; foreach ($customFields as $customField) { $ConvertedName= str_replace(' ', '', $customField->name);
+                           if(!empty($ContactCustomFields)){
+                            foreach($ContactCustomFields as $ContactCustomField){
+                                if($ContactCustomField->customfield_id==$customField->id){
+                                    if($customField->type==1){
+                                        $value=$ContactCustomField->string_value;
+                                    }elseif($customField->type==2){
+                                        $value=$ContactCustomField->int_value;
+                                    } else{
+                                        $value=$ContactCustomField->date_value;
+                                    }
+                                }
+                            }
+                           }
+                           
+                            ?>
+                            <div class='form-group'>
+                                <label for=''>{{$customField->name}}</label>
+                                <?php if ($customField->type == 3) { ?>
+                                    <input type='text' value="{{$value}}" placeholder="05/16/2020 10:28 AM" class="form-control date" autocomplete="off" name="{{$ConvertedName}}" id="{{$ConvertedName}}" />
+                                <?php } else { ?>
+                                    <input type="text" class="form-control" id="{{$ConvertedName}}" name="{{$ConvertedName}}" value="{{$value}}" placeholder="Enter {{$customField->name}}">
+                                <?php } ?>
+
+                            </div>
+                        <?php } ?>
+
 
 
                         <button class="btn btn-primary px-5 pull-right" type="submit">Save Contact</button>
@@ -265,83 +294,84 @@
     })();
 
     $(document).ready(function() {
-            $('.single-select').select2();
+        setEventDateAndTime();
+        $('.single-select').select2();
 
-            $('.multiple-select').select2({
-                placeholder: "Select tags",
-                allowClear: true
-            });
-            var MultiSlectCounter = 0;
-            $('.multiple-select').on('select2:select', function(e) {
-                console.log(e.params.data.id);
-                if (MultiSlectCounter == 0) {
-                    $('#HiddenCategoyID').append(e.params.data.id);
-                } else {
-                    $('#HiddenCategoyID').append("," + e.params.data.id);
-                }
-
-                MultiSlectCounter += 1;
-            });
-            $('.multiple-select').on('select2:unselecting', function(e) {
-                console.log(e.params.args.data.id);
-                var str = $('#HiddenCategoyID').val();
-                var res = str.replace(e.params.args.data.id, "");
-                $('#HiddenCategoyID').empty();
-                $('#HiddenCategoyID').append(res);
-            });
-
-
-            //multiselect start
-
-            $('#my_multi_select1').multiSelect();
-            $('#my_multi_select2').multiSelect({
-                selectableOptgroup: true
-            });
-
-            $('#my_multi_select3').multiSelect({
-                selectableHeader: "<input type='text' class='form-control search-input' autocomplete='off' placeholder='search...'>",
-                selectionHeader: "<input type='text' class='form-control search-input' autocomplete='off' placeholder='search...'>",
-                afterInit: function(ms) {
-                    var that = this,
-                        $selectableSearch = that.$selectableUl.prev(),
-                        $selectionSearch = that.$selectionUl.prev(),
-                        selectableSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selectable:not(.ms-selected)',
-                        selectionSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selection.ms-selected';
-
-                    that.qs1 = $selectableSearch.quicksearch(selectableSearchString)
-                        .on('keydown', function(e) {
-                            if (e.which === 40) {
-                                that.$selectableUl.focus();
-                                return false;
-                            }
-                        });
-
-                    that.qs2 = $selectionSearch.quicksearch(selectionSearchString)
-                        .on('keydown', function(e) {
-                            if (e.which == 40) {
-                                that.$selectionUl.focus();
-                                return false;
-                            }
-                        });
-                },
-                afterSelect: function() {
-                    this.qs1.cache();
-                    this.qs2.cache();
-                },
-                afterDeselect: function() {
-                    this.qs1.cache();
-                    this.qs2.cache();
-                }
-            });
-
-            $('.custom-header').multiSelect({
-                selectableHeader: "<div class='custom-header'>Selectable items</div>",
-                selectionHeader: "<div class='custom-header'>Selection items</div>",
-                selectableFooter: "<div class='custom-header'>Selectable footer</div>",
-                selectionFooter: "<div class='custom-header'>Selection footer</div>"
-            });
-
-
+        $('.multiple-select').select2({
+            placeholder: "Select tags",
+            allowClear: true
         });
+        var MultiSlectCounter = 0;
+        $('.multiple-select').on('select2:select', function(e) {
+            console.log(e.params.data.id);
+            if (MultiSlectCounter == 0) {
+                $('#HiddenCategoyID').append(e.params.data.id);
+            } else {
+                $('#HiddenCategoyID').append("," + e.params.data.id);
+            }
+
+            MultiSlectCounter += 1;
+        });
+        $('.multiple-select').on('select2:unselecting', function(e) {
+            console.log(e.params.args.data.id);
+            var str = $('#HiddenCategoyID').val();
+            var res = str.replace(e.params.args.data.id, "");
+            $('#HiddenCategoyID').empty();
+            $('#HiddenCategoyID').append(res);
+        });
+
+
+        //multiselect start
+
+        $('#my_multi_select1').multiSelect();
+        $('#my_multi_select2').multiSelect({
+            selectableOptgroup: true
+        });
+
+        $('#my_multi_select3').multiSelect({
+            selectableHeader: "<input type='text' class='form-control search-input' autocomplete='off' placeholder='search...'>",
+            selectionHeader: "<input type='text' class='form-control search-input' autocomplete='off' placeholder='search...'>",
+            afterInit: function(ms) {
+                var that = this,
+                    $selectableSearch = that.$selectableUl.prev(),
+                    $selectionSearch = that.$selectionUl.prev(),
+                    selectableSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selectable:not(.ms-selected)',
+                    selectionSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selection.ms-selected';
+
+                that.qs1 = $selectableSearch.quicksearch(selectableSearchString)
+                    .on('keydown', function(e) {
+                        if (e.which === 40) {
+                            that.$selectableUl.focus();
+                            return false;
+                        }
+                    });
+
+                that.qs2 = $selectionSearch.quicksearch(selectionSearchString)
+                    .on('keydown', function(e) {
+                        if (e.which == 40) {
+                            that.$selectionUl.focus();
+                            return false;
+                        }
+                    });
+            },
+            afterSelect: function() {
+                this.qs1.cache();
+                this.qs2.cache();
+            },
+            afterDeselect: function() {
+                this.qs1.cache();
+                this.qs2.cache();
+            }
+        });
+
+        $('.custom-header').multiSelect({
+            selectableHeader: "<div class='custom-header'>Selectable items</div>",
+            selectionHeader: "<div class='custom-header'>Selection items</div>",
+            selectableFooter: "<div class='custom-header'>Selectable footer</div>",
+            selectionFooter: "<div class='custom-header'>Selection footer</div>"
+        });
+
+
+    });
 </script>
 @endsection
