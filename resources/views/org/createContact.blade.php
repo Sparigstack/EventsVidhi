@@ -12,6 +12,7 @@
     $contactNumber = "";
     $IsSelected = "";
     $MultSelectTags = "";
+    $checkCount = "no";
     if (!empty($contact)) {
         $ActionCall = url('org/contacts/edit/' . $contact->id);
         $CardTitle = "Edit Contact";
@@ -70,7 +71,6 @@
 
                                             if ($contact_tags->id == $contacts->id) {
                                                 $IsSelected = "selected";
-                                                $checkCount = "yes";
                                                 if ($checkCount == "no") {
                                                     $MultSelectTags .= strval($contacts->id);
                                                 } else {
@@ -82,9 +82,10 @@
                                             }
 
                                 ?>
-                                            <option value="{{old('tags',$contact_tags->id)}}" {{$IsSelected}} @if (old('tags')==$contact_tags->id) selected="selected" @endif ><?php echo $contact_tags->name; ?> </option>
+                                            
 
                                         <?php } ?>
+                                        <option value="{{old('tags',$contact_tags->id)}}" {{$IsSelected}} @if (old('tags')==$contact_tags->id) selected="selected" @endif ><?php echo $contact_tags->name; ?> </option>
 
                                     <?php  }
                                 } else {
