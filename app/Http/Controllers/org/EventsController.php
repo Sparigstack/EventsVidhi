@@ -397,7 +397,6 @@ class EventsController extends Controller {
         }
 
         $event = Event::findOrFail($id);
-        return $event->categories;
         $speakers = Speaker::where('event_id', $event->id)->get();
         $categories = Category::all();
         $cities = City::all();
