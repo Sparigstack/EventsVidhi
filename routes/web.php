@@ -65,7 +65,7 @@ Route::post('org/podcasts/edit/{podcastid}', 'org\PodcastsController@update');
 Route::post('deletePodcast', 'org\PodcastsController@destroy');
 
 // Route::get('org/contacts', 'org\ContactsController@index');
-Route::get('org/contacts/{tag_ids?}', 'org\ContactsController@index');
+Route::get('org/my_contacts/{tag_ids?}', 'org\ContactsController@index');
 
 Route::get('org/contacts/new', 'org\ContactsController@create');
 Route::post('org/contacts/store', 'org\ContactsController@store');

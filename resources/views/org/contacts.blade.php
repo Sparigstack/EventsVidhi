@@ -25,7 +25,7 @@ $MultSelectTags = "";
                         <!-- <button id="" class="btn m-1 pull-right" style="border:1px solid transparent;"><a href="{{url("org/events/new")}}">Add New Event</a></button> -->
                     </div>
                     <div class="card-body">
-                        <input type="hidden" class="urlString" value="{{url('org/contacts')}}">
+                        <input type="hidden" class="urlString" value="{{url('org/my_contacts')}}">
 
                         <!-- <form action=""> -->
                             <!-- {{ csrf_field() }} -->
