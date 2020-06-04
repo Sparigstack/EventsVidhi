@@ -11,7 +11,6 @@
 <div class="container-fluid">
 <?php
 $checkCount = "no";
-$IsSelected = "";
 $MultSelectTags = "";
 // $ActionCall = url('org/contacts/' . $tag_ids);
 ?>
@@ -36,26 +35,29 @@ $MultSelectTags = "";
 
                                     <select class="form-control multiple-select" name="tagSelection[]" id="tagSelection" multiple="multiple">
                                         <?php $tagIdsArr = explode(',', $tag_ids);
-                                        foreach ($tagList as $tagLists) {  ?>
+                                        foreach ($tagList as $tag) {
+                                        $IsSelected = "";  ?>
 
-                                      <?php  foreach ($tagIdsArr as $tag_id) {
+                                        <?php  foreach ($tagIdsArr as $tag_id) {
 
-                                            if ($tag_id == $tagLists->id) {
+                                            if ($tag_id == $tag->id) {
                                                 $IsSelected = "selected";
                                                 if ($checkCount == "no") {
-                                                    $MultSelectTags .= strval($tagLists->id);
+                                                    $MultSelectTags .= strval($tag->id);
                                                 } else {
-                                                    $MultSelectTags .= "," . $tagLists->id;
+                                                    $MultSelectTags .= "," . $tag->id;
                                                 }
                                                 $checkCount = "yes";
-                                            } else {
-                                                $IsSelected = "";
                                             }
 
                                 ?>
-                                            <option value="{{$tagLists->id}}" {{$IsSelected}} @if ($tagIdsArr==$tagLists->id) selected="selected" @endif>{{$tagLists->name}}</option>
 
                                         <?php } ?>
+
+                                      
+
+                                        <option value="{{$tag->id}}" {{$IsSelected}}>{{$tag->name}}</option>
+
                                             
                                         <?php } ?>
                                     </select>
@@ -66,7 +68,8 @@ $MultSelectTags = "";
 
                                 <div class="col-sm-12 col-lg-4 col-md-4">
                                     <!-- <button type="submit" class="btn btn-primary">Search Tags</button> -->
-                                    <button onclick="tagsSelect(this);" class="btn btn-primary">Search Tags</button>
+                                    <!-- <button onclick="tagsSelect(this);" class="btn btn-primary">Search Tags</button> -->
+                                    <button onclick="tagsSelect(this);" class="btn m-1" aria-hidden="true" style="background-color:#6c757d29;"></i>Search Tags</button>
                                 </div>
                             </div>
                         <!-- </form> -->
