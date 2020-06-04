@@ -39,7 +39,7 @@ class Event extends Model
 //    }
     
     public function categories() {
-        return $this->belongsToMany('App\Category', 'event_categories');
+        return $this->belongsToMany('App\EventCategory', 'event_categories');
     }
     
     public function Videos() {

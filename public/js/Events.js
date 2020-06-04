@@ -223,30 +223,30 @@ function IsOnlineEvent(element) {
         $('#state').removeAttr('required');
         
         $('#EventUrl').removeClass('d-none');
-        $('#EventUrl').attr('required');
+        $('#EventUrl').attr('required','required');
     } else {
         $('#EventUrl').addClass('d-none');
         $('#EventUrl').removeAttr('required');
         
-        if ($("#city option[value='-1']").length != 0) {
+        if ($("#city option[PresenceCheck='-1']").length != 0) {
             $('#Address1').attr('disabled', false);
-            $('#Address1').attr('required', true);
+            $('#Address1').attr('required', 'required');
             
             $('#Address2').attr('disabled', false);
             
             $('#PostalCode').attr('disabled', false);
-            $('#PostalCode').attr('required');
+            $('#PostalCode').attr('required', 'required');
             
             $('#city').attr('disabled', false);
-            $('#city').attr('required');
+            $('#city').attr('required', 'required');
         }
-        if ($("#state option[value='-1']").length != 0) {
+        if ($("#state option[PresenceCheck='-1']").length != 0) {
             $('#state').attr('disabled', false);
-            $('#state').attr('required');
+            $('#state').attr('required', 'required');
         }
         
         $('#country').attr('disabled', false);
-        $('#country').attr('required');
+        $('#country').attr('required', 'required');
         
     }
 }
@@ -341,6 +341,7 @@ function getState(element) {
             $('#state').attr('disabled', false);
             $('#state').empty();
             $('#state').append(response);
+            $('#state').attr('required', 'required');
             // console.log(response);
         }
     });
@@ -361,6 +362,7 @@ function getCity(element) {
             $('#city').attr('disabled', false);
             $('#city').empty();
             $('#city').append(response);
+            $('#city').attr('required', 'required');
         }
     });
 }
@@ -596,4 +598,9 @@ function ValidateEventForm(element){
     if (!$(IsOnline).is(':checked')) {
         
     }
+}
+function ChangeCustomUrl(element){
+var currentText=$(element).val();
+var actualUrl=$('#HumanFriendlyUrl').attr('data');
+$('#HumanFriendlyUrl').text(actualUrl +'/'+ currentText);
 }
