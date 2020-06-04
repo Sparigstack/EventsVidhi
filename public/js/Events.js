@@ -230,7 +230,7 @@ function IsOnlineEvent(element) {
         
         if ($("#city option[value='-1']").length != 0) {
             $('#Address1').attr('disabled', false);
-            $('#Address1').attr('required');
+            $('#Address1').attr('required', true);
             
             $('#Address2').attr('disabled', false);
             

@@ -17,7 +17,7 @@
     $MultSelectTags = "";
     $checkCount = "no";
     if (!empty($contact)) {
-        $ActionCall = url('org/contacts/edit/' . $contact->id);
+        $ActionCall = url('org/contacts/update/' . $contact->id);
         $CardTitle = "Edit Contact";
         $firstname = $contact->first_name;
         $lastname = $contact->last_name;

@@ -69,8 +69,8 @@ Route::get('org/contacts/{tag_ids?}', 'org\ContactsController@index');
 
 Route::get('org/contacts/new', 'org\ContactsController@create');
 Route::post('org/contacts/store', 'org\ContactsController@store');
-Route::get('org/contacts/{contactid}', 'org\ContactsController@edit');
-Route::post('org/contacts/edit/{contactid}', 'org\ContactsController@update');
+Route::get('org/contacts/edit/{contactid}', 'org\ContactsController@edit');
+Route::post('org/contacts/update/{contactid}', 'org\ContactsController@update');
 Route::post('deleteContact', 'org\ContactsController@destroy');
 Route::post('org/contact/approve/{id}', 'org\ContactsController@approve');
 
