@@ -43,8 +43,10 @@
     $IsLive = "";
     $activeClass = "active";
     $activeShow = "show";
+    $event_id = 0;
 
     if (!empty($event)) {
+        $event_id = $event->id;
         $ActionCall = url('org/events/edit/' . $event->id);
         $CardTitle = "Edit Event";
         $title = $event->title;
@@ -207,7 +209,7 @@
                                                 <input type="text" class="form-control" id="title" value="{{ old('title',$title) }}" name="title" placeholder="Enter Event Title" required>
                                                 <small class="text-danger">{{ $errors->first('title') }}</small>
                                                 <label for="EventSelection" class="mt-4 pt-2">Event Type</label>
-                                                <select autocomplete="off" value="{{ old('eventType') }}" name="eventType" id="eventType" class=" custom-select">
+                                                <select required autocomplete="off" value="{{ old('eventType') }}" name="eventType" id="eventType" class=" custom-select">
                                                     <option value>Select Event Type</option>
                                                     <?php foreach ($eventTypes as $eventType) {
                                                         $IsSelected = "";
@@ -217,18 +219,19 @@
                                                             }
                                                         }
                                                     ?>
-                                                        <option value="{{$eventType->id}}" {{$IsSelected}} @if (old('eventType')==$eventType->id) selected="selected" @endif ><?php echo $eventType->name; ?> </option>
+                                                        <option  value="{{$eventType->id}}" {{$IsSelected}} @if (old('eventType')==$eventType->id) selected="selected" @endif ><?php echo $eventType->name; ?> </option>
                                                     <?php } ?>
 
                                                 </select>
 
                                                 <label class="mt-4 pt-2">Select Categories</label>
                                                 <select class="form-control multiple-select" multiple="multiple" name="category" id="category" required>
-                                                    <?php if (!empty($event)) {
-                                                        $IsSelected = "";
+                                                    <?php $IsSelected = "";
+                                                    if (!empty($event)) {                                                        
                                                         foreach ($categories as $category) {
 
                                                             // foreach ($event->eventCategory as $EventCategory) {
+                                                            $IsSelected = "";
 
                                                             foreach ($event->categories as $EventCategory) {
 
@@ -240,8 +243,6 @@
                                                                         $MultSelectTags .= "," . $category->id;
                                                                     }
                                                                     $checkCount = "yes";
-                                                                } else {
-                                                                    $IsSelected = "";
                                                                 }
 
                                                     ?>
@@ -251,7 +252,7 @@
                                                     } else {
                                                         foreach ($categories as $category) {
                                                             ?>
-                                                            <option value="{{old('category',$category->id)}}" {{$IsSelected}} @if (old('category')==$category->id) selected="selected" @endif ><?php echo $category->name; ?> </option>
+                                                            <option value="{{old('category',$category->id)}}"  @if (old('category')==$category->id) selected="selected" @endif ><?php echo $category->name; ?> </option>
                                                     <?php }
                                                     } ?>
                                                 </select>
@@ -268,6 +269,13 @@
                                             <textarea id="Description" name="Description" required class="form-control" title="Description" placeholder="Description" autocomplete="off" rows="4">{{ old('Description', $desription) }}</textarea>
                                             <small class="text-danger">{{ $errors->first('Description') }}</small>
                                         </div>
+                                        <?php $isPhysicalAddressReq = "required";
+                                        $isOnlineUrlReq = "";
+                                        if($event_id != 0 && $IsOnline == "checked"){
+                                                $isPhysicalAddressReq = "";
+                                                $isOnlineUrlReq = "required";                                            
+                                        }
+                                        ?>
 
                                         <div class="col-lg-6">
                                             <div class="card">
@@ -283,15 +291,14 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group col-lg-12">
-
-                                                        <input type="text" id="EventUrl" value="{{  old('EventUrl', $EventUrl) }}" name="EventUrl" class="form-control {{$HiddenEventUrl}}" title="Event Url" placeholder="Online Event Url" autocomplete="off" rows="0" value="">
+                                                        <input {{$isOnlineUrlReq}} type="text" id="EventUrl" value="{{  old('EventUrl', $EventUrl) }}" name="EventUrl" class="form-control {{$HiddenEventUrl}}" title="Event Url" placeholder="Online Event Url" autocomplete="off" rows="0" value="">
                                                     </div>
 
                                                     <div class="form-group col-lg-12">
                                                         <input type="hidden" class="getState" value="{{url('getState')}}">
-                                                        <label for="selectionCategory">Country</label>
-                                                        <select autocomplete="off" value="{{ old('country') }}" name="country" id="country" class=" custom-select" {{$disabled}} onchange="getState(this);">
-                                                            <option value="0">Select Country</option>
+                                                        <label for="country">Country</label>
+                                                        <select {{$isPhysicalAddressReq}} autocomplete="off" value="{{ old('country') }}" name="country" id="country" class=" custom-select" {{$disabled}} onchange="getState(this);">
+                                                            <option>Select Country</option>
                                                             <?php foreach ($countries as $country) {
                                                                 $IsSelected = "";
                                                                 if ($country->id == $countryId) {
@@ -307,8 +314,8 @@
 
                                                     <div class="form-group col-lg-12">
                                                         <input type="hidden" class="getCity" value="{{url('getCity')}}">
-                                                        <label for="selectionCategory">State</label>
-                                                        <select autocomplete="off" value="{{ old('state') }}" disabled name="state" id="state" class=" custom-select" {{$disabled}} onchange="getCity(this);">
+                                                        <label for="state">State</label>
+                                                        <select {{$isPhysicalAddressReq}} autocomplete="off" value="{{ old('state') }}" disabled name="state" id="state" class=" custom-select" {{$disabled}} onchange="getCity(this);">
                                                             <option value>Select State</option>
 
 
@@ -317,8 +324,8 @@
                                                     </div>
 
                                                     <div class="form-group col-lg-12">
-                                                        <label for="selectionCategory">City</label>
-                                                        <select autocomplete="off" value="{{ old('city') }}" name="city" id="city" disabled class="custom-select" {{$disabled}} onchange="ShowAddressFields(this);">
+                                                        <label for="city">City</label>
+                                                        <select {{$isPhysicalAddressReq}} autocomplete="off" value="{{ old('city') }}" name="city" id="city" disabled class="custom-select" {{$disabled}} onchange="ShowAddressFields(this);">
                                                             <option>Select City</option>
                                                             <?php if (!empty($event)) {
                                                                 foreach ($cities as $city) {
@@ -380,9 +387,9 @@
                                                     </div>
 
                                                     <div class="form-group col-lg-12">
-                                                        <label for="cityTimezone mb-0">Timezone</label>
-                                                        <select autocomplete="off" value="{{ old('cityTimezone') }}" name="cityTimezone" id="cityTimezone" class=" custom-select">
-                                                            <option value="0">Select Timezone</option>
+                                                        <label for="cityTimezone mb-0">Time zone</label>
+                                                        <select required autocomplete="off" value="{{ old('cityTimezone') }}" name="cityTimezone" id="cityTimezone" class=" custom-select">
+                                                            <option value>Select Time Zone</option>
                                                             <?php
                                                             foreach ($cityTimeZones as $timeZones) {
                                                                 $IsSelected = "";
@@ -781,9 +788,9 @@
 
     </div>
 </div>
+<!--</div>
 </div>
-</div>
-</div>
+</div>-->
 @endsection
 
 @section('script')
@@ -822,53 +829,53 @@
 
         //multiselect start
 
-        $('#my_multi_select1').multiSelect();
-        $('#my_multi_select2').multiSelect({
-            selectableOptgroup: true
-        });
-
-        $('#my_multi_select3').multiSelect({
-            selectableHeader: "<input type='text' class='form-control search-input' autocomplete='off' placeholder='search...'>",
-            selectionHeader: "<input type='text' class='form-control search-input' autocomplete='off' placeholder='search...'>",
-            afterInit: function(ms) {
-                var that = this,
-                    $selectableSearch = that.$selectableUl.prev(),
-                    $selectionSearch = that.$selectionUl.prev(),
-                    selectableSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selectable:not(.ms-selected)',
-                    selectionSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selection.ms-selected';
-
-                that.qs1 = $selectableSearch.quicksearch(selectableSearchString)
-                    .on('keydown', function(e) {
-                        if (e.which === 40) {
-                            that.$selectableUl.focus();
-                            return false;
-                        }
-                    });
-
-                that.qs2 = $selectionSearch.quicksearch(selectionSearchString)
-                    .on('keydown', function(e) {
-                        if (e.which == 40) {
-                            that.$selectionUl.focus();
-                            return false;
-                        }
-                    });
-            },
-            afterSelect: function() {
-                this.qs1.cache();
-                this.qs2.cache();
-            },
-            afterDeselect: function() {
-                this.qs1.cache();
-                this.qs2.cache();
-            }
-        });
-
-        $('.custom-header').multiSelect({
-            selectableHeader: "<div class='custom-header'>Selectable items</div>",
-            selectionHeader: "<div class='custom-header'>Selection items</div>",
-            selectableFooter: "<div class='custom-header'>Selectable footer</div>",
-            selectionFooter: "<div class='custom-header'>Selection footer</div>"
-        });
+//        $('#my_multi_select1').multiSelect();
+//        $('#my_multi_select2').multiSelect({
+//            selectableOptgroup: true
+//        });
+//
+//        $('#my_multi_select3').multiSelect({
+//            selectableHeader: "<input type='text' class='form-control search-input' autocomplete='off' placeholder='search...'>",
+//            selectionHeader: "<input type='text' class='form-control search-input' autocomplete='off' placeholder='search...'>",
+//            afterInit: function(ms) {
+//                var that = this,
+//                    $selectableSearch = that.$selectableUl.prev(),
+//                    $selectionSearch = that.$selectionUl.prev(),
+//                    selectableSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selectable:not(.ms-selected)',
+//                    selectionSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selection.ms-selected';
+//
+//                that.qs1 = $selectableSearch.quicksearch(selectableSearchString)
+//                    .on('keydown', function(e) {
+//                        if (e.which === 40) {
+//                            that.$selectableUl.focus();
+//                            return false;
+//                        }
+//                    });
+//
+//                that.qs2 = $selectionSearch.quicksearch(selectionSearchString)
+//                    .on('keydown', function(e) {
+//                        if (e.which == 40) {
+//                            that.$selectionUl.focus();
+//                            return false;
+//                        }
+//                    });
+//            },
+//            afterSelect: function() {
+//                this.qs1.cache();
+//                this.qs2.cache();
+//            },
+//            afterDeselect: function() {
+//                this.qs1.cache();
+//                this.qs2.cache();
+//            }
+//        });
+//
+//        $('.custom-header').multiSelect({
+//            selectableHeader: "<div class='custom-header'>Selectable items</div>",
+//            selectionHeader: "<div class='custom-header'>Selection items</div>",
+//            selectableFooter: "<div class='custom-header'>Selectable footer</div>",
+//            selectionFooter: "<div class='custom-header'>Selection footer</div>"
+//        });
 
 
     });

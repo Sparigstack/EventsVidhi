@@ -1,9 +1,5 @@
 $(document).ready(function () {
-    var table = $('#default-datatable').DataTable({
-        columnDefs: [
-            {orderable: false, targets: 4},
-        ]
-    });
+    
 
     setEventDateAndTime();
 
@@ -210,24 +206,48 @@ $(document).ready(function () {
 function IsOnlineEvent(element) {
     if ($(element).is(":checked")) {
         $('#Address1').attr('disabled', true);
+        $('#Address1').removeAttr('required');
+        
         $('#Address2').attr('disabled', true);
+        
         $('#PostalCode').attr('disabled', true);
+        $('#PostalCode').removeAttr('required');
+        
         $('#city').attr('disabled', true);
+        $('#city').removeAttr('required');
+        
         $('#country').attr('disabled', true);
+        $('#country').removeAttr('required');
+        
         $('#state').attr('disabled', true);
+        $('#state').removeAttr('required');
+        
         $('#EventUrl').removeClass('d-none');
+        $('#EventUrl').attr('required');
     } else {
         $('#EventUrl').addClass('d-none');
+        $('#EventUrl').removeAttr('required');
+        
         if ($("#city option[value='-1']").length != 0) {
             $('#Address1').attr('disabled', false);
+            $('#Address1').attr('required');
+            
             $('#Address2').attr('disabled', false);
+            
             $('#PostalCode').attr('disabled', false);
+            $('#PostalCode').attr('required');
+            
             $('#city').attr('disabled', false);
+            $('#city').attr('required');
         }
         if ($("#state option[value='-1']").length != 0) {
             $('#state').attr('disabled', false);
+            $('#state').attr('required');
         }
+        
         $('#country').attr('disabled', false);
+        $('#country').attr('required');
+        
     }
 }
 
@@ -569,4 +589,11 @@ function UpdateEventStatus(element) {
             console.log(response);
         }
     });
+}
+
+function ValidateEventForm(element){
+    var IsOnline = $(element).find("#IsOnline");
+    if (!$(IsOnline).is(':checked')) {
+        
+    }
 }

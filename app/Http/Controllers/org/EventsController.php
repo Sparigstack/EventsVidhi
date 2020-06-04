@@ -23,11 +23,9 @@ use File;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 
-class EventsController extends Controller
-{
+class EventsController extends Controller {
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->middleware('verified');
     }
 
@@ -36,19 +34,17 @@ class EventsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index() {
         $user = Auth::user();
         $events = Event::where('user_id', $user->id)->where('date_time', '>=', date('Y-m-d', strtotime(now())))
-            ->get();
+                ->get();
         return view('org/events', compact('events'));
     }
 
-    public function pastEvents()
-    {
+    public function pastEvents() {
         $user = Auth::user();
         $events = Event::where('user_id', $user->id)->where('date_time', '<=', date('Y-m-d', strtotime(now())))
-            ->get();
+                ->get();
         return view('org/pastEvents', compact('events'));
     }
 
@@ -57,8 +53,7 @@ class EventsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
         $IsNew = true;
         $categories = Category::all();
         $cities = City::all();
@@ -76,21 +71,20 @@ class EventsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         $validator = Validator::make($request->all(), [
-            'EventBannerImage' => 'image|mimes:jpeg,bmp,png,jpg,gif,spg|dimensions:max_width=845,max_height=445',
-            'EventThumbnailImage' => 'image|mimes:jpeg,bmp,png,jpg|dimensions:max_width=420,max_height=360',
-            'title' => 'required',
-            'category' => 'required',
-            'Description' => 'required',
-            'EventDateTime' => 'required',
+                    'EventBannerImage' => 'image|mimes:jpeg,bmp,png,jpg,gif,spg|dimensions:max_width=845,max_height=445',
+                    'EventThumbnailImage' => 'image|mimes:jpeg,bmp,png,jpg|dimensions:max_width=420,max_height=360',
+                    'title' => 'required',
+                    'category' => 'required',
+                    'Description' => 'required',
+                    'EventDateTime' => 'required',
         ]);
 
         if ($validator->fails()) {
             return redirect('org/events/new')
-                ->withErrors($validator)
-                ->withInput();
+                            ->withErrors($validator)
+                            ->withInput();
         }
 
         $bannerUrl = "";
@@ -160,14 +154,16 @@ class EventsController extends Controller
 
         $events->save();
 
-        $string = $request->HiddenCategoyID;
-        $EventCategorieIds = preg_split("/\,/", $string);
+        $category_ids = $request->HiddenCategoyID;
+        $EventCategorieIds = explode(",", $category_ids);
 
         foreach ($EventCategorieIds as $categoryID) {
-            $eventCategory = new EventCategory;
-            $eventCategory->event_id = $events->id;
-            $eventCategory->category_id = number_format($categoryID);
-            $eventCategory->save();
+            if (!empty($categoryID)) {
+                $eventCategory = new EventCategory;
+                $eventCategory->event_id = $events->id;
+                $eventCategory->category_id = number_format($categoryID);
+                $eventCategory->save();
+            }
         }
         return redirect("org/events/" . $events->id . "/1");
     }
@@ -178,27 +174,26 @@ class EventsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id) {
+        
     }
 
-    public function storeVideo(Request $request)
-    {
+    public function storeVideo(Request $request) {
         $validator = null;
         if (isset($request->IsUploadVideo)) {
             $validator = Validator::make($request->all(), [
-                'input_title' => 'required',
-                'video_file' => 'required|mimes:mov,mp4,wmv,flv,avi'
+                        'input_title' => 'required',
+                        'video_file' => 'required|mimes:mov,mp4,wmv,flv,avi'
             ]);
         } else {
             $validator = Validator::make($request->all(), [
-                'input_title' => 'required',
-                'input_url' => 'required',
+                        'input_title' => 'required',
+                        'input_url' => 'required',
             ]);
         }
         if ($validator->fails()) {
             return response()->json([
-                'error' => $validator->errors(),
+                        'error' => $validator->errors(),
             ]);
         }
         $video = new Video;
@@ -233,38 +228,37 @@ class EventsController extends Controller
         $video->url = $UrlToSave;
         $video->save();
         $videoUrlLink = "";
-        if($video->url_type == 1){
-            $videoUrlLink = env('AWS_URL').$UrlToSave;
-        }else{
+        if ($video->url_type == 1) {
+            $videoUrlLink = env('AWS_URL') . $UrlToSave;
+        } else {
             $videoUrlLink = $UrlToSave;
         }
         return response()->json([
-            'videoUrl' => $videoUrlLink,
-            'videoTitle' => $video->title,
-            'videoID' => $video->id,
-            'urlType' => $video->url_type,
-            'error' => ''
+                    'videoUrl' => $videoUrlLink,
+                    'videoTitle' => $video->title,
+                    'videoID' => $video->id,
+                    'urlType' => $video->url_type,
+                    'error' => ''
         ]);
     }
 
-    public function storePodcast(Request $request)
-    {
+    public function storePodcast(Request $request) {
         $validator = null;
         if (isset($request->IsUploadPodCast)) {
             $validator = Validator::make($request->all(), [
-                'input_title' => 'required',
-                'podcast_video_file' => 'required|mimes:mpga,m4a,wma'
+                        'input_title' => 'required',
+                        'podcast_video_file' => 'required|mimes:mpga,m4a,wma'
             ]);
         } else {
             $validator = Validator::make($request->all(), [
-                'input_title' => 'required',
-                'input_url' => 'required',
+                        'input_title' => 'required',
+                        'input_url' => 'required',
             ]);
         }
 
         if ($validator->fails()) {
             return response()->json([
-                'error' => $validator->errors(),
+                        'error' => $validator->errors(),
             ]);
         }
 
@@ -300,37 +294,36 @@ class EventsController extends Controller
         $podcast->save();
 
         $podcastVideoUrlLink = "";
-        if($podcast->url_type == 1){
-            $podcastVideoUrlLink = env('AWS_URL').$UrlToSave;
-        }else{
+        if ($podcast->url_type == 1) {
+            $podcastVideoUrlLink = env('AWS_URL') . $UrlToSave;
+        } else {
             $podcastVideoUrlLink = $UrlToSave;
         }
         return response()->json([
-            'videoUrl' => $podcastVideoUrlLink,
-            'videoTitle' => $podcast->title,
-            'videoID' => $podcast->id,
-            'urlType' => $podcast->url_type,
-            'error' => ''
+                    'videoUrl' => $podcastVideoUrlLink,
+                    'videoTitle' => $podcast->title,
+                    'videoID' => $podcast->id,
+                    'urlType' => $podcast->url_type,
+                    'error' => ''
         ]);
     }
 
-    public function storeSpeaker(Request $request)
-    {
+    public function storeSpeaker(Request $request) {
         //         return response()->json([
         //             'eventid' =>  $request->EventToLinkId,
         //         ]);
 
         $validator = null;
         $validator = Validator::make($request->all(), [
-            'speakerTitle' => 'required',
-            'speakerFirstName' => 'required',
-            'speakerLastName' => 'required',
-            'speakerOrganization' => 'required',
+                    'speakerTitle' => 'required',
+                    'speakerFirstName' => 'required',
+                    'speakerLastName' => 'required',
+                    'speakerOrganization' => 'required',
         ]);
 
         if ($validator->fails()) {
             return response()->json([
-                'error' => $validator->errors(),
+                        'error' => $validator->errors(),
             ]);
         }
 
@@ -371,13 +364,13 @@ class EventsController extends Controller
         }
 
         return response()->json([
-            'profilePicImage' => $profileUrl,
-            'speakerFirstName' => $speaker->first_name,
-            'speakerLastName' => $speaker->last_name,
-            'speakerOrganization' => $speaker->organization,
-            'speakerDesc' => $speaker->description,
-            'id' => $speaker->id,
-            'error' => ''
+                    'profilePicImage' => $profileUrl,
+                    'speakerFirstName' => $speaker->first_name,
+                    'speakerLastName' => $speaker->last_name,
+                    'speakerOrganization' => $speaker->organization,
+                    'speakerDesc' => $speaker->description,
+                    'id' => $speaker->id,
+                    'error' => ''
         ]);
     }
 
@@ -387,8 +380,7 @@ class EventsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id, $tabe = 0)
-    {
+    public function edit($id, $tabe = 0) {
         $IsNew = false;
         $ids = explode(',', $id);
         $count = 0;
@@ -421,8 +413,7 @@ class EventsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id) {
         $user = Auth::user();
         $events = Event::findOrFail($id);
 
@@ -461,7 +452,8 @@ class EventsController extends Controller
         $events->user_id = $user->id;
 
         $StartDateTime = $request->EventDateTime;
-        $events->date_time = new DateTime($StartDateTime);;
+        $events->date_time = new DateTime($StartDateTime);
+        ;
 
         $EndDateTime = $request->EventEndDateTime;
         $events->end_date_time = new DateTime($EndDateTime);
@@ -519,13 +511,12 @@ class EventsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request)
-    {
+    public function destroy(Request $request) {
         //
         $event = Event::find($request->eventDeleteId)->delete();
     }
-    public function destroyVideo($id, $Type, $UrlType)
-    {
+
+    public function destroyVideo($id, $Type, $UrlType) {
         if ($Type == "speaker") {
             $speaker = Speaker::find($id);
             if (!empty($speaker->profile_pic)) {
@@ -550,8 +541,7 @@ class EventsController extends Controller
         return "success";
     }
 
-    public function UpdateEventStatus(Request $request)
-    {
+    public function UpdateEventStatus(Request $request) {
         $id = $request->id;
         $events = Event::findOrFail($id);
         if ($request->status == '1') {
@@ -567,8 +557,7 @@ class EventsController extends Controller
         $events->save();
     }
 
-    public function getState(Request $request)
-    {
+    public function getState(Request $request) {
 
         $states = State::where('country_id', $request->countryId)->get();
         $stateOptions = "<option value='-1'>Select State</option>";
@@ -578,8 +567,7 @@ class EventsController extends Controller
         return $stateOptions;
     }
 
-    public function getCity(Request $request)
-    {
+    public function getCity(Request $request) {
 
         $citys = City::where('state_id', $request->cityId)->get();
 
@@ -590,8 +578,7 @@ class EventsController extends Controller
         return $cityOptions;
     }
 
-    public function deleteProfilePic(Request $request)
-    {
+    public function deleteProfilePic(Request $request) {
         if ($request->dataPic) {
             Storage::disk('s3')->delete($request->dataPic);
             $speaker = Speaker::findOrFail($request->id);
@@ -600,33 +587,31 @@ class EventsController extends Controller
         }
     }
 
-    public function editSpeaker(Request $request, $id)
-    {
+    public function editSpeaker(Request $request, $id) {
         $speakers = Speaker::findOrFail($request->id);
         $FinalUrl = env('AWS_URL');
         $FinalUrl .= $speakers->profile_pic;
-        if($speakers->profile_pic != ''){
+        if ($speakers->profile_pic != '') {
             $speakers->profile_pic = $FinalUrl;
-        } else{
+        } else {
             $speakers->profile_pic = '';
         }
         // $speakers->profile_pic = $FinalUrl;
         return $speakers;
     }
 
-    public function updateSpeaker(Request $request, $id)
-    {
+    public function updateSpeaker(Request $request, $id) {
         $validator = null;
         $validator = Validator::make($request->all(), [
-            'speakerTitle' => 'required',
-            'speakerFirstName' => 'required',
-            'speakerLastName' => 'required',
-            'speakerOrganization' => 'required',
+                    'speakerTitle' => 'required',
+                    'speakerFirstName' => 'required',
+                    'speakerLastName' => 'required',
+                    'speakerOrganization' => 'required',
         ]);
 
         if ($validator->fails()) {
             return response()->json([
-                'error' => $validator->errors(),
+                        'error' => $validator->errors(),
             ]);
         }
 
@@ -639,9 +624,9 @@ class EventsController extends Controller
         $speaker->linkedin_url = $request->speakerLinkedinUrl;
         $userId = Auth::id();
         $UrlToSave = "";
-        $FinalUrl =$speaker->profile_pic ;
+        $FinalUrl = $speaker->profile_pic;
         if ($request->hasFile('profilePicImageUpload')) {
-            $FinalUrl='';
+            $FinalUrl = '';
             Storage::disk('s3')->delete($speaker->profile_pic);
 
             $file = $request->file('profilePicImageUpload');
@@ -665,13 +650,14 @@ class EventsController extends Controller
         }
 
         return response()->json([
-            'profilePicImage' => $profileUrl,
-            'speakerFirstName' => $speaker->first_name,
-            'speakerLastName' => $speaker->last_name,
-            'speakerOrganization' => $speaker->organization,
-            'speakerDesc' => $speaker->description,
-            'id' => $speaker->id,
-            'error' => ''
+                    'profilePicImage' => $profileUrl,
+                    'speakerFirstName' => $speaker->first_name,
+                    'speakerLastName' => $speaker->last_name,
+                    'speakerOrganization' => $speaker->organization,
+                    'speakerDesc' => $speaker->description,
+                    'id' => $speaker->id,
+                    'error' => ''
         ]);
     }
+
 }
