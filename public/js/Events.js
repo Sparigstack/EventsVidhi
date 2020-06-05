@@ -605,3 +605,10 @@ var currentText=$(element).val();
 var actualUrl=$('#HumanFriendlyUrl').attr('data');
 $('#HumanFriendlyUrl').text(actualUrl +'/'+ currentText);
 }
+
+function copyHumanFriendlyUrl(element) {
+    // $("#CustomUrl").focus();
+    $("#CustomUrl").select();
+    document.execCommand('copy');
+    // $(".copied").text("Copied to clipboard").show().fadeOut(1200);
+}

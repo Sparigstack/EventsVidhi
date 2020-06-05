@@ -482,7 +482,20 @@
                                                             <?php } ?>
                                                            
                                                             <input type="text" class="form-control" value="{{$CustomHumanReadableUrl}}" onkeyup="ChangeCustomUrl(this);" id="CustomUrl" name="CustomUrl" autocomplete="off" placeholder="Human friendly event url" {{$IsReadOnly}}>
-                                                            <div class="p-1" id="HumanFriendlyUrl" data="{{env('APP_URL_Custom')."/".Auth()->user()->username}}">{{$FinalUrl}}</div>
+                                                            <div class="p-1" id="HumanFriendlyUrl" data="{{env('APP_URL_Custom')."/".Auth()->user()->username}}" value="{{$FinalUrl}}">{{$FinalUrl}}
+
+                                                                <a onclick="copyHumanFriendlyUrl(this);"><i style="cursor:pointer; margin-left:5px;font-size:20px;" class="fa fa-copy" title="Copy to Clipboard"></i></a>
+
+                                                            </div>
+
+                                                            <?php if(!empty($CustomHumanReadableUrl)){ ?>
+                                                            <div class="pull-right">
+                                                                <a><i style="cursor:pointer; margin-left:5px;font-size:20px;" class="fa fa-facebook-official" title=""></i></a>
+                                                                <a><i style="cursor:pointer; margin-left:5px;font-size:20px;" class="fa fa-twitter" title=""></i></a>
+                                                                <a><i style="cursor:pointer; margin-left:5px;font-size:20px;" class="fa fa-linkedin" title=""></i></a>
+                                                            </div>
+                                                    <?php    } ?>
+
                                                         </div>
                                                     </div>
                                                 </div>
