@@ -114,7 +114,10 @@ $(document).ready(function () {
             success: function (response) {
 
                 console.log(response);
-
+                if(speakerId != ""){
+                    $('.CurrentlyUpdatingThis').remove();
+                }
+                
                 var HtmlContent = '<ul class="list-group parent list-group-flush speakerList mb-2"><li class="list-group-item"><div class="media align-items-center"><img src="' + response.profilePicImage + '" alt="user avatar" class="customer-img rounded" height="100" width="100"><div class="media-body ml-3"><h6 class="mb-0">' + response.speakerFirstName + ' ' + response.speakerLastName + '</h6><small class="small-font">' + response.speakerOrganization + ' - ' + response.speakerDesc + '</small></div><div data-id="' + response.id + '" onclick="EditSingleSpeaker(this);" Type="file UrlType="" class="mr-2"><i class="fa icon fas fa-edit clickable" style="font-size: 22px;cursor: pointer;"></i></div><div data-id="' + response.id + '" onclick="RemoveSingleSpeaker(this);" type="file" urltype="" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor:pointer;"></i></div></li></ul>';
                 $('#uploadedSpeakers').append(HtmlContent);
                 $('.speakerContainer').addClass('d-none');
@@ -305,7 +308,9 @@ function uploadSpeaker(element) {
         if($('.TempTextPic').hasClass('d-none')){
             $('.TempTextPic').removeClass('d-none');
         }  
-        
+        if($('.SpeakerProfilePicDiv').find('#TempTextThumb').length==0){
+            $('.SpeakerProfilePicDiv').append('<p id="TempTextThumb" class="TempTextPic">Drop your image here or click to upload.</p>');
+        }
         $('.speakerContainer').removeClass('d-none');
         $("#speakerTitle").val('');
         $("#speakerFirstName").val('');
@@ -443,7 +448,7 @@ function EditSingleSpeaker(element) {
     // var type = $(element).attr('Type');
     // var urltype = $(element).attr('urltype');
     var Field = findParent(element);
-    
+    $(Field).addClass('CurrentlyUpdatingThis');
     var urlString = $('.editEventSpeakers').val();
     urlString += "/" + id;
     var CSRF_TOKEN = $('.csrf-token').val();
@@ -541,6 +546,7 @@ function removeOldProfilePic(element) {
 function showSpeakerListing(element){
     $("#uploadedSpeakers").find(".speakerList").removeClass('d-none');
     $(".speakerContainer").addClass('d-none');
+    $(".CurrentlyUpdatingThis").removeClass('CurrentlyUpdatingThis');
 
 }
 

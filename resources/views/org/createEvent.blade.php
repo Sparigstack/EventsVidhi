@@ -714,7 +714,7 @@
                                                 <div class="form-group col-lg-12 row">
                                                     <div class="form-group col-lg-6">
                                                         <label for="profilePicImage">Profile Pic</label>
-                                                        <div class="dragFileContainer thumbNailContainer" style="display: flex;justify-content: center;">
+                                                        <div class="dragFileContainer thumbNailContainer SpeakerProfilePicDiv" style="display: flex;justify-content: center;">
                                                             <input type="file" accept="image/*" id="EventProfilePicImage" name="profilePicImageUpload" class="form-control files" picvalue="">
                                                             <img id="profilePicImage" src="" class="d-none imageRadius w-100 {{$profilePicHidden}}" alt="your image" width="100" value="">
                                                             <p id="TempTextThumb" class="TempTextPic">Drop your image here or click to upload.</p>
