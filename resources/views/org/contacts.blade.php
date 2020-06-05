@@ -105,13 +105,13 @@ $MultSelectTags = "";
                                             <td>
                                                 <i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-edit" title="Edit Contact" onclick="window.location='{{ url("org/contacts/edit/".$contact->id) }}'"></i>
                                                 <a onclick="deleteContact(this);" db-delete-id="{{$contact->id}}"><i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-trash" title="Delete Contact"></i></a>
-                                                <?php
-                                                if (Auth()->user()->auto_approve_follower != 1 && $contact->is_approved != 1) { ?>
+                                                <?php if(Auth()->user()->auto_approve_follower != 1 ){
+                                                if ($contact->is_approved != 1) { ?>
                                                     <a onclick="Approve(this);" data-id="{{$contact->id}}"><i style="font-family:fontawesome;font-style:normal;cursor:pointer;margin-left:5px;" class="fa fa-square-o" title="Approve"></i> </a>
                                                 <?php }else { ?>
                                                     <a onclick="" data-id="{{$contact->id}}"><i style="font-family:fontawesome;font-style:normal;margin-left:5px;" class="fas fa-check-square" title="Approved"></i> </a>
 
-                                                <?php } ?>
+                                                <?php }} ?>
 
                                             </td>
                                         </tr>
