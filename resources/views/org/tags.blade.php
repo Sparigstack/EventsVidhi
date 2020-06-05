@@ -72,6 +72,8 @@
 <script src="{{asset('/js/ContactAndTag.js')}}" type="text/javascript"></script>
 <script src="{{ asset('assets/plugins/jquery-multi-select/jquery.multi-select.js') }}"></script>
 <script src="{{ asset('assets/plugins/select2/js/select2.min.js') }}"></script>
+<!-- Data Tables -->
+<script src="{{ asset('assets/plugins/bootstrap-datatable/js/jquery.dataTables.min.js') }}"></script>
 <script>
     $(document).ready(function() {
         $('.single-select').select2();

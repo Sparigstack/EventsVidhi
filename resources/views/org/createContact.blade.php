@@ -14,7 +14,7 @@
     $lastname = "";
     $email = "";
     $contactNumber = "";
-    $IsSelected = "";
+    // $IsSelected = "";
     $MultSelectTags = "";
     $checkCount = "no";
     if (!empty($contact)) {
@@ -66,10 +66,11 @@
                             <label class="">Select Tags</label>
                             <select class="form-control multiple-select" multiple="multiple" name="tags" id="tags">
                                 <?php if (!empty($contact)) {
-                                    $IsSelected = "";
+                                    
 
 
                                     foreach ($tagsData as $contact_tags) {
+                                        $IsSelected = "";
 
                                         foreach ($contact->tags as $contacts) {
 
@@ -81,8 +82,6 @@
                                                     $MultSelectTags .= "," . $contacts->id;
                                                 }
                                                 $checkCount = "yes";
-                                            } else {
-                                                $IsSelected = "";
                                             }
 
                                 ?>
@@ -95,7 +94,7 @@
                                 } else {
                                     foreach ($tagsData as $contact_tags) {
                                     ?>
-                                        <option value="{{old('tags',$contact_tags->id)}}" {{$IsSelected}} @if (old('tags')==$contact_tags->id) selected="selected" @endif ><?php echo $contact_tags->name; ?> </option>
+                                        <option value="{{old('tags',$contact_tags->id)}}" @if (old('tags')==$contact_tags->id) selected="selected" @endif ><?php echo $contact_tags->name; ?> </option>
                                 <?php }
                                 } ?>
 
@@ -252,11 +251,13 @@
 @endsection
 
 @section('script')
-<script src="{{asset('/js/VideoAndContact.js')}}" type="text/javascript"></script>
+<script src="{{asset('/js/ContactAndTag.js')}}" type="text/javascript"></script>
 
-<script src="{{ asset('assets/plugins/jquery-multi-select/jquery.multi-select.js') }}"></script> -->
+<script src="{{ asset('assets/plugins/jquery-multi-select/jquery.multi-select.js') }}"></script>
 <script src="{{ asset('assets/plugins/select2/js/select2.min.js') }}"></script>
 <script src="{{ asset('assets/plugins/datetimepicker-master/jquery.datetimepicker.js') }}"></script>
+<!-- Data Tables -->
+<script src="{{ asset('assets/plugins/bootstrap-datatable/js/jquery.dataTables.min.js') }}"></script>
 <script>
     (function() {
 

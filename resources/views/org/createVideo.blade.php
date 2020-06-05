@@ -267,6 +267,8 @@
 
 @section('script')
 <script src="{{asset('/js/VideoAndPodcast.js')}}" type="text/javascript"></script>
+<!-- Data Tables -->
+<script src="{{ asset('assets/plugins/bootstrap-datatable/js/jquery.dataTables.min.js') }}"></script>
 <script>
     (function() {
 
