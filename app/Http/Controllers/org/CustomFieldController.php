@@ -17,6 +17,10 @@ use Illuminate\Support\Facades\Redirect;
 
 class CustomFieldController extends Controller
 {
+    public function __construct() {
+        $this->middleware('verified');
+    }
+    
     public function index()
     {
         $user = Auth::user();

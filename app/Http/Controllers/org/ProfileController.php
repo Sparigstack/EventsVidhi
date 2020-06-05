@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
+    public function __construct() {
+        $this->middleware('verified');
+    }
+    
     public function index()
     {
         $user = Auth::user();

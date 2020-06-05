@@ -95,8 +95,8 @@
         }
         if (!empty($event->custom_url)) {
             $CustomHumanReadableUrl = $event->custom_url;
-            $FinalUrl=env('APP_URL_Custom')."/".Auth()->user()->username."/".$CustomHumanReadableUrl;
-           // $CustomHumanReadableUrl=str_replace($removeThis,"",$CustomHumanReadableUrl);
+            $FinalUrl=env('APP_URL_Custom')."/".Auth()->user()->username."/".$event->custom_url;
+           
         }
        
     }
@@ -482,20 +482,28 @@
                                                             <?php } ?>
                                                            
                                                             <input type="text" class="form-control" value="{{$CustomHumanReadableUrl}}" onkeyup="ChangeCustomUrl(this);" id="CustomUrl" name="CustomUrl" autocomplete="off" placeholder="Human friendly event url" {{$IsReadOnly}}>
-                                                            <div class="p-1" id="HumanFriendlyUrl" data="{{env('APP_URL_Custom')."/".Auth()->user()->username}}" value="{{$FinalUrl}}">{{$FinalUrl}}
 
-                                                                <a onclick="copyHumanFriendlyUrl(this);"><i style="cursor:pointer; margin-left:5px;font-size:20px;" class="fa fa-copy" title="Copy to Clipboard"></i></a>
+                                                            <div class="row form-group pl-3">
+                                                            <div class="col-lg-10 p-1" id="HumanFriendlyUrl" data="{{env('APP_URL_Custom')."/".Auth()->user()->username}}" value="{{$FinalUrl}}">
+                                                            {{$FinalUrl}}
 
                                                             </div>
+
+                                                            <div class="col-lg-2 pt-1">
+                                                            <a onclick="copyHumanFriendlyUrl(this);"><i style="cursor:pointer; margin-left:5px;font-size:20px;" class="fa fa-copy" title="Copy to Clipboard"></i></a>
+                                                        </div>
+
+                                                        <div class='copied'></div>
+
+                                                        </div>
 
                                                             <?php if(!empty($CustomHumanReadableUrl)){ ?>
                                                             <div class="pull-right">
-                                                                <a><i style="cursor:pointer; margin-left:5px;font-size:20px;" class="fa fa-facebook-official" title=""></i></a>
-                                                                <a><i style="cursor:pointer; margin-left:5px;font-size:20px;" class="fa fa-twitter" title=""></i></a>
-                                                                <a><i style="cursor:pointer; margin-left:5px;font-size:20px;" class="fa fa-linkedin" title=""></i></a>
+                                                                <a target="_blank" href="https://facebook.com"><i style="cursor:pointer; margin-left:5px;font-size:20px;color:#656464;" class="fa fa-facebook-official" title=""></i></a>
+                                                                <a target="_blank" href="https://twitter.com/"><i style="cursor:pointer; margin-left:5px;font-size:20px;color:#656464;" class="fa fa-twitter" title=""></i></a>
+                                                                <a target="_blank" href="https://www.linkedin.com/"><i style="cursor:pointer; margin-left:5px;font-size:20px;color:#656464;" class="fa fa-linkedin" title=""></i></a>
                                                             </div>
                                                     <?php    } ?>
-
                                                         </div>
                                                     </div>
                                                 </div>
@@ -727,7 +735,7 @@
                                                 <div class="form-group col-lg-12 row">
                                                     <div class="form-group col-lg-6">
                                                         <label for="profilePicImage">Profile Pic</label>
-                                                        <div class="dragFileContainer thumbNailContainer" style="display: flex;justify-content: center;">
+                                                        <div class="dragFileContainer thumbNailContainer SpeakerProfilePicDiv" style="display: flex;justify-content: center;">
                                                             <input type="file" accept="image/*" id="EventProfilePicImage" name="profilePicImageUpload" class="form-control files" picvalue="">
                                                             <img id="profilePicImage" src="" class="d-none imageRadius w-100 {{$profilePicHidden}}" alt="your image" width="100" value="">
                                                             <p id="TempTextThumb" class="TempTextPic">Drop your image here or click to upload.</p>
