@@ -368,6 +368,7 @@ function getCity(element) {
 }
 function ShowAddressFields(element) {
     $('#Address1').attr('disabled', false);
+    $('#Address1').attr('required', 'required');
     $('#Address2').attr('disabled', false);
     $('#PostalCode').attr('disabled', false);
 }

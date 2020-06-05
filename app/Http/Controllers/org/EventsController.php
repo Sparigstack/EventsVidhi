@@ -132,7 +132,7 @@ class EventsController extends Controller {
         $events->end_date_time = new DateTime($EndDateTime);
         $events->timezone_id = $request->cityTimezone;
         if(!empty($request->CustomUrl)){
-            $events->custom_url=env('APP_URL_Custom')."/".Auth()->user()->username."/".$request->CustomUrl;
+            $events->custom_url=$request->CustomUrl;
         }
        
         $events->thumbnail = $thumbNailUrl;
@@ -464,7 +464,7 @@ class EventsController extends Controller {
         $events->end_date_time = new DateTime($EndDateTime);
         $events->timezone_id = $request->cityTimezone;
         if(!empty($request->CustomUrl)){
-            $events->custom_url=env('APP_URL_Custom')."/".Auth()->user()->username."/".$request->CustomUrl;
+            $events->custom_url=$request->CustomUrl;
         }
         
         
