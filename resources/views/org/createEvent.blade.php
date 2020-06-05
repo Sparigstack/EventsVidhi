@@ -95,8 +95,8 @@
         }
         if (!empty($event->custom_url)) {
             $CustomHumanReadableUrl = $event->custom_url;
-            $FinalUrl=env('APP_URL_Custom')."/".Auth()->user()->username."/".$CustomHumanReadableUrl;
-           // $CustomHumanReadableUrl=str_replace($removeThis,"",$CustomHumanReadableUrl);
+            $FinalUrl=env('APP_URL_Custom')."/".Auth()->user()->username."/".$event->custom_url;
+           
         }
        
     }
@@ -481,7 +481,7 @@
                                                                 </p>
                                                             <?php } ?>
                                                            
-                                                            <input type="text" class="form-control" value="{{$CustomHumanReadableUrl}}" onkeyup="ChangeCustomUrl(this);" id="CustomUrl" name="CustomUrl" autocomplete="off" placeholder="Human friendly event url" {{$IsReadOnly}}>
+                                                            <input type="text"  class="form-control" value="{{$CustomHumanReadableUrl}}" onkeyup="ChangeCustomUrl(this);" id="CustomUrl" name="CustomUrl" autocomplete="off" placeholder="Human friendly event url" {{$IsReadOnly}}>
                                                             <div class="p-1" id="HumanFriendlyUrl" data="{{env('APP_URL_Custom')."/".Auth()->user()->username}}">{{$FinalUrl}}</div>
                                                         </div>
                                                     </div>
