@@ -45,7 +45,7 @@
     $activeShow = "show";
     $event_id = 0;
     $CustomHumanReadableUrl = "";
-    $FinalUrl=env('APP_URL_Custom')."/".Auth()->user()->username;
+    $FinalUrl = env('APP_URL_Custom') . "/" . Auth()->user()->username;
     if (!empty($event)) {
         $event_id = $event->id;
         $ActionCall = url('org/events/edit/' . $event->id);
@@ -95,10 +95,8 @@
         }
         if (!empty($event->custom_url)) {
             $CustomHumanReadableUrl = $event->custom_url;
-            $FinalUrl=env('APP_URL_Custom')."/".Auth()->user()->username."/".$event->custom_url;
-           
+            $FinalUrl = env('APP_URL_Custom') . "/" . Auth()->user()->username . "/" . $event->custom_url;
         }
-       
     }
 
     if (!empty($speaker)) {
@@ -128,6 +126,12 @@
                         } ?>
                         " data-toggle="tab" href="#tabe-14"><span class="hidden-xs">Media</span></a>
                     </li>
+                    <?php if (!empty($event) && $event->is_paid == 1) { ?>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#TicketsTab"><span class="hidden-xs">Tickets</span></a>
+                        </li>
+                    <?php    } ?>
+
                     <li class="nav-item">
                         <a class="nav-link" data-toggle="tab" href="#tabe-15"><span class="hidden-xs">Participants</span></a>
                     </li>
@@ -226,7 +230,7 @@
                                                             }
                                                         }
                                                     ?>
-                                                        <option  value="{{$eventType->id}}" {{$IsSelected}} @if (old('eventType')==$eventType->id) selected="selected" @endif ><?php echo $eventType->name; ?> </option>
+                                                        <option value="{{$eventType->id}}" {{$IsSelected}} @if (old('eventType')==$eventType->id) selected="selected" @endif ><?php echo $eventType->name; ?> </option>
                                                     <?php } ?>
 
                                                 </select>
@@ -234,14 +238,14 @@
                                                 <label class="mt-4 pt-2">Select Categories</label>
                                                 <select class="form-control multiple-select" multiple="multiple" name="category" id="category" required>
                                                     <?php $IsSelected = "";
-                                                    if (!empty($event)) {                                                        
+                                                    if (!empty($event)) {
                                                         foreach ($categories as $category) {
 
                                                             // foreach ($event->eventCategory as $EventCategory) {
                                                             $IsSelected = "";
 
                                                             foreach ($event->categories as $EventCategory) {
-                                                                
+
                                                                 if ($category->id == $EventCategory->category_id) {
                                                                     $IsSelected = "selected";
                                                                     if ($checkCount == "no") {
@@ -254,12 +258,12 @@
                                                             }
 
                                                     ?>
-                                                                <option value="{{old('category',$category->id)}}" {{$IsSelected}} @if (old('category')==$category->id) selected="selected" @endif ><?php echo $category->name; ?> </option>
-                                                            <?php }
+                                                            <option value="{{old('category',$category->id)}}" {{$IsSelected}} @if (old('category')==$category->id) selected="selected" @endif ><?php echo $category->name; ?> </option>
+                                                        <?php }
                                                     } else {
                                                         foreach ($categories as $category) {
-                                                            ?>
-                                                            <option value="{{old('category',$category->id)}}"  @if (old('category')==$category->id) selected="selected" @endif ><?php echo $category->name; ?> </option>
+                                                        ?>
+                                                            <option value="{{old('category',$category->id)}}" @if (old('category')==$category->id) selected="selected" @endif ><?php echo $category->name; ?> </option>
                                                     <?php }
                                                     } ?>
                                                 </select>
@@ -278,9 +282,9 @@
                                         </div>
                                         <?php $isPhysicalAddressReq = "required";
                                         $isOnlineUrlReq = "";
-                                        if($event_id != 0 && $IsOnline == "checked"){
-                                                $isPhysicalAddressReq = "";
-                                                $isOnlineUrlReq = "required";                                            
+                                        if ($event_id != 0 && $IsOnline == "checked") {
+                                            $isPhysicalAddressReq = "";
+                                            $isOnlineUrlReq = "required";
                                         }
                                         ?>
 
@@ -453,24 +457,32 @@
                                                         <div class="form-group col-lg-12">
                                                             <label for="BlankLabel">Is this event free or paid?</label><br>
                                                             <div class="icheck-material-primary icheck-inline">
-                                                                <input type="radio" id="ItIsFree" value="true" name="IsFree" <?php if (!empty($event)) {
-                                                                                                                                    if ($event->is_paid == 0) {
-                                                                                                                                        echo "checked";
-                                                                                                                                    }
-                                                                                                                                } else {
-                                                                                                                                    echo "checked";
-                                                                                                                                } ?>>
+                                                                <input type="radio" id="ItIsFree" onclick="IsPaidAlert(this);" value="true" name="IsFree" <?php if (!empty($event)) {
+                                                                                                                                                                if ($event->is_paid == 0) {
+                                                                                                                                                                    echo "checked";
+                                                                                                                                                                }
+                                                                                                                                                            } else {
+                                                                                                                                                                echo "checked";
+                                                                                                                                                            } ?>>
                                                                 <label for="ItIsFree">Free</label>
                                                             </div>
                                                             <div class="icheck-material-primary icheck-inline">
-                                                                <input type="radio" id="ItIsPaid" value="false" name="IsFree" <?php if (!empty($event)) {
-                                                                                                                                    if ($event->is_paid == 1) {
-                                                                                                                                        echo "checked";
-                                                                                                                                    }
-                                                                                                                                } ?>>
+                                                                <input type="radio" onclick="IsPaidAlert(this);" id="ItIsPaid" value="false" name="IsFree" <?php if (!empty($event)) {
+                                                                                                                                                                if ($event->is_paid == 1) {
+                                                                                                                                                                    echo "checked";
+                                                                                                                                                                }
+                                                                                                                                                            } ?>>
                                                                 <label for="ItIsPaid">Paid</label>
                                                             </div>
-                                                        </div><br>
+                                                        </div>
+                                                        <?php if (empty($event)) { ?>
+                                                            <div class="alert alert-info m-0 PaidAlertBox d-none" role="alert">
+                                                                <div class="alert-message pt-1 pb-1">
+                                                                    <span>You will get options for setting price tiers with Tickets once you save changes for this Event.</span>
+                                                                </div>
+                                                            </div>
+                                                        <?php } ?>
+                                                        <br>
                                                         <div class="form-group col-lg-12">
                                                             <label for="title">Human friendly event url</label>
                                                             <?php $IsReadOnly = "";
@@ -480,30 +492,30 @@
 
                                                                 </p>
                                                             <?php } ?>
-                                                           
+
                                                             <input type="text" class="form-control" value="{{$CustomHumanReadableUrl}}" onkeyup="ChangeCustomUrl(this);" id="CustomUrl" name="CustomUrl" autocomplete="off" placeholder="Human friendly event url" {{$IsReadOnly}}>
 
                                                             <div class="row form-group pl-3">
-                                                            <div class="col-lg-10 p-1" id="HumanFriendlyUrl" data="{{env('APP_URL_Custom')."/".Auth()->user()->username}}" value="{{$FinalUrl}}">
-                                                            {{$FinalUrl}}
+                                                                <div class="col-lg-10 p-1" id="HumanFriendlyUrl" data="{{env('APP_URL_Custom')."/".Auth()->user()->username}}" value="{{$FinalUrl}}">
+                                                                    {{$FinalUrl}}
+
+                                                                </div>
+
+                                                                <div class="col-lg-2 pt-1">
+                                                                    <a onclick="copyHumanFriendlyUrl(this);"><i style="cursor:pointer; margin-left:5px;font-size:20px;" class="fa fa-copy" title="Copy to Clipboard"></i></a>
+                                                                </div>
+
+                                                                <div class='copied'></div>
 
                                                             </div>
 
-                                                            <div class="col-lg-2 pt-1">
-                                                            <a onclick="copyHumanFriendlyUrl(this);"><i style="cursor:pointer; margin-left:5px;font-size:20px;" class="fa fa-copy" title="Copy to Clipboard"></i></a>
-                                                        </div>
-
-                                                        <div class='copied'></div>
-
-                                                        </div>
-
-                                                            <?php if(!empty($CustomHumanReadableUrl)){ ?>
-                                                            <div class="pull-right">
-                                                                <a target="_blank" href="https://facebook.com"><i style="cursor:pointer; margin-left:5px;font-size:20px;color:#656464;" class="fa fa-facebook-official" title=""></i></a>
-                                                                <a target="_blank" href="https://twitter.com/"><i style="cursor:pointer; margin-left:5px;font-size:20px;color:#656464;" class="fa fa-twitter" title=""></i></a>
-                                                                <a target="_blank" href="https://www.linkedin.com/"><i style="cursor:pointer; margin-left:5px;font-size:20px;color:#656464;" class="fa fa-linkedin" title=""></i></a>
-                                                            </div>
-                                                    <?php    } ?>
+                                                            <?php if (!empty($CustomHumanReadableUrl)) { ?>
+                                                                <div class="pull-right">
+                                                                    <a target="_blank" href="https://facebook.com"><i style="cursor:pointer; margin-left:5px;font-size:20px;color:#656464;" class="fa fa-facebook-official" title=""></i></a>
+                                                                    <a target="_blank" href="https://twitter.com/"><i style="cursor:pointer; margin-left:5px;font-size:20px;color:#656464;" class="fa fa-twitter" title=""></i></a>
+                                                                    <a target="_blank" href="https://www.linkedin.com/"><i style="cursor:pointer; margin-left:5px;font-size:20px;color:#656464;" class="fa fa-linkedin" title=""></i></a>
+                                                                </div>
+                                                            <?php    } ?>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -678,6 +690,98 @@
                             <div class="text-center m-4"><label class="">Please save basic details to add media</label></div>
                         <?php } ?>
                     </div>
+
+                    <?php if (!empty($event) && $event->is_paid == 1) { ?>
+                        <div class="parent row tab-pane " id="TicketsTab">
+                            <div class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-body row">
+                                    <div id="uploadedTickets" class="col-lg-12 m-auto p-0">
+                                            <?php
+                                            foreach ($event->tickets as $ticket) { ?>
+                                                <div class="parent">
+                                                    <ul class="list-group parent list-group-flush TicketList mb-2 col-lg-8">
+                                                        <li class="list-group-item">
+                                                            <div class="media align-items-center">
+                                                                
+                                                                <div class="media-body ml-3">
+                                                                    <h6 class="mb-0">{{$ticket->name}}</h6>
+                                                                    <?php 
+                                                                    $old_date = $ticket->sales_end;              
+                                                                    $old_date_timestamp = strtotime($old_date);
+                                                                    $new_date = date('l, F d y h:i:s', $old_date_timestamp); 
+                                                                    ?>
+                                                                    <small class="small-font">End's on - {{$new_date}}</small>
+
+                                                                </div>
+                                                                <div data-id="<?php echo $ticket->id ?>" onclick="EditSingleTicket(this);" Type="file" UrlType="" class="mr-2"><i class="fa icon fas fa-edit clickable" style="font-size: 22px;cursor: pointer;"></i></div>
+                                                                <div data-id="<?php echo $ticket->id ?>" onclick="RemoveSingleTicket(this);" Type="file" UrlType="" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+
+                                                </div>
+                                            <?php } ?>
+                                        </div>
+
+                                        <div class="col-lg-8 m-auto">
+                                            <div class="card AddTicketContainer">
+                                                <div class="card-header">Add Ticket</div>
+                                                <div class="card-body">
+                                                    <form class="AddTicketForm row" method="post" enctype="multipart/form-data">
+                                                        {{ csrf_field() }}
+                                                        <input type="hidden" class="AddTicketUrl d-none" value="{{url('org/events/ticket/store')}}">
+                                                        <input type="hidden" class="UpdateTicketID" value="" name="UpdateSpeakerID">
+                                                        <input type="text" class="TicketEventID d-none" id="TicketEventID" name="TicketEventID" value="{{$event->id}}">
+                                                        <div class="form-group col-lg-12">
+                                                            <label for="TicketName">Name</label>
+                                                            <input type="text" class="form-control" id="TicketName" value="" name="TicketName" placeholder="Name" required>
+                                                            <small class="text-danger"></small>
+                                                        </div>
+                                                        <div class="form-group col-lg-6">
+                                                            <label for="TicketQuantity">Quantity</label>
+                                                            <input type="number" class="form-control" id="TicketQuantity" value="" name="TicketQuantity" placeholder="Quantity" required>
+                                                            <small class="text-danger"></small>
+                                                        </div>
+                                                        <div class="form-group col-lg-6">
+                                                            <label for="TicketPrice">Price</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text">$</span>
+                                                                </div>
+                                                                <input type="number" class="form-control" id="TicketPrice" value="" step="0.01" name="TicketPrice" placeholder="Price" required>
+
+                                                            </div>
+                                                            <small class="text-danger"></small>
+                                                        </div>
+                                                        <div class="form-group col-lg-6">
+                                                            <label for="SalesStart">Sale's Start Date &amp; Time</label>
+                                                            <div class="input-group" id="">
+                                                                <input type="text" value="" placeholder="05/16/2020 10:28 AM" class="form-control date" autocomplete="off" name="SalesStart" id="SalesStart" required>
+
+                                                            </div>
+                                                            <small class="text-danger"></small>
+                                                        </div>
+                                                        <div class="form-group col-lg-6">
+                                                            <label for="SalesEnd">Sale's End Date &amp; Time</label>
+                                                            <div class="input-group" id="">
+                                                                <input type="text" value="" placeholder="05/16/2020 10:28 AM" class="form-control date" autocomplete="off" name="SalesEnd" id="SalesEnd" required>
+
+                                                            </div>
+                                                            <small class="text-danger"></small>
+                                                        </div>
+                                                        <div class="col-lg-12"><button type="submit" class="btn btn-primary pull-right m-2 AddSpeakerSubmitButton" data-id="">Save</button>
+                                                            <div class="btn btn-primary m-2 pull-right">Cancel</div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php    } ?>
 
 
 
@@ -858,53 +962,53 @@
 
         //multiselect start
 
-//        $('#my_multi_select1').multiSelect();
-//        $('#my_multi_select2').multiSelect({
-//            selectableOptgroup: true
-//        });
-//
-//        $('#my_multi_select3').multiSelect({
-//            selectableHeader: "<input type='text' class='form-control search-input' autocomplete='off' placeholder='search...'>",
-//            selectionHeader: "<input type='text' class='form-control search-input' autocomplete='off' placeholder='search...'>",
-//            afterInit: function(ms) {
-//                var that = this,
-//                    $selectableSearch = that.$selectableUl.prev(),
-//                    $selectionSearch = that.$selectionUl.prev(),
-//                    selectableSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selectable:not(.ms-selected)',
-//                    selectionSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selection.ms-selected';
-//
-//                that.qs1 = $selectableSearch.quicksearch(selectableSearchString)
-//                    .on('keydown', function(e) {
-//                        if (e.which === 40) {
-//                            that.$selectableUl.focus();
-//                            return false;
-//                        }
-//                    });
-//
-//                that.qs2 = $selectionSearch.quicksearch(selectionSearchString)
-//                    .on('keydown', function(e) {
-//                        if (e.which == 40) {
-//                            that.$selectionUl.focus();
-//                            return false;
-//                        }
-//                    });
-//            },
-//            afterSelect: function() {
-//                this.qs1.cache();
-//                this.qs2.cache();
-//            },
-//            afterDeselect: function() {
-//                this.qs1.cache();
-//                this.qs2.cache();
-//            }
-//        });
-//
-//        $('.custom-header').multiSelect({
-//            selectableHeader: "<div class='custom-header'>Selectable items</div>",
-//            selectionHeader: "<div class='custom-header'>Selection items</div>",
-//            selectableFooter: "<div class='custom-header'>Selectable footer</div>",
-//            selectionFooter: "<div class='custom-header'>Selection footer</div>"
-//        });
+        //        $('#my_multi_select1').multiSelect();
+        //        $('#my_multi_select2').multiSelect({
+        //            selectableOptgroup: true
+        //        });
+        //
+        //        $('#my_multi_select3').multiSelect({
+        //            selectableHeader: "<input type='text' class='form-control search-input' autocomplete='off' placeholder='search...'>",
+        //            selectionHeader: "<input type='text' class='form-control search-input' autocomplete='off' placeholder='search...'>",
+        //            afterInit: function(ms) {
+        //                var that = this,
+        //                    $selectableSearch = that.$selectableUl.prev(),
+        //                    $selectionSearch = that.$selectionUl.prev(),
+        //                    selectableSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selectable:not(.ms-selected)',
+        //                    selectionSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selection.ms-selected';
+        //
+        //                that.qs1 = $selectableSearch.quicksearch(selectableSearchString)
+        //                    .on('keydown', function(e) {
+        //                        if (e.which === 40) {
+        //                            that.$selectableUl.focus();
+        //                            return false;
+        //                        }
+        //                    });
+        //
+        //                that.qs2 = $selectionSearch.quicksearch(selectionSearchString)
+        //                    .on('keydown', function(e) {
+        //                        if (e.which == 40) {
+        //                            that.$selectionUl.focus();
+        //                            return false;
+        //                        }
+        //                    });
+        //            },
+        //            afterSelect: function() {
+        //                this.qs1.cache();
+        //                this.qs2.cache();
+        //            },
+        //            afterDeselect: function() {
+        //                this.qs1.cache();
+        //                this.qs2.cache();
+        //            }
+        //        });
+        //
+        //        $('.custom-header').multiSelect({
+        //            selectableHeader: "<div class='custom-header'>Selectable items</div>",
+        //            selectionHeader: "<div class='custom-header'>Selection items</div>",
+        //            selectableFooter: "<div class='custom-header'>Selectable footer</div>",
+        //            selectionFooter: "<div class='custom-header'>Selection footer</div>"
+        //        });
 
 
     });

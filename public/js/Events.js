@@ -133,6 +133,51 @@ $(document).ready(function () {
         });
     });
 
+    $('.AddTicketForm').on('submit', function (event) {
+        LoaderStart();
+        event.preventDefault();
+        var CurentForm = $(this);
+        // var urlStringSpeaker = $('.addSpeakers').val();
+        var urlString = $('.AddTicketUrl').val();
+        // var speakerId = $("#UpdateSpeakerID").attr('data-id');
+        // if (speakerId != "") {
+        //     urlString = $('.updateTicket').val();
+        //     urlString += "/" + speakerId;
+
+        // } else {
+        //     urlString =  $('.AddTicketUrl').val();
+        // }
+
+        $.ajax({
+            url: urlString,
+            method: "post",
+            data: new FormData(this),
+            dataType: 'JSON',
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function (response) {
+
+               // console.log("Success: "+ response);
+                // if(speakerId != ""){
+                //     $('.CurrentlyUpdatingThis').remove();
+                // }
+                
+                // var HtmlContent = '<ul class="list-group parent list-group-flush TicketList mb-2 col-lg-8"><li class="list-group-item"><div class="media align-items-center"><div class="media-body ml-3"><h6 class="mb-0">'+response.name+'</h6><small class="small-font">Ends on - '+response.endDate+'</small></div><div data-id="'+response.id+'" onclick="EditSingleTicket(this);" type="file" urltype="" class="mr-2"><i class="fa icon fas fa-edit clickable" style="font-size: 22px;cursor: pointer;"></i></div><div data-id="1" onclick="RemoveSingleTicket(this);" type="file" urltype="" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div></div></li></ul>';
+                // $('#uploadedTickets').append(HtmlContent);
+                // // $('.AddTicketContainer').addClass('d-none');
+                // $(CurentForm).parent().addClass('d-none');
+                // $("#AddSpeakerSubmitButton").attr('data-id', '');
+                // $("#UpdateSpeakerID").val('');
+                LoaderStop();
+            },
+            error: function (err) {
+                console.log(err);
+                LoaderStop();
+            }
+        });
+    });
+
     $('#EventDateTime').change(function (time) {
         var dateRi = $(this).val();
         var defaultdate;
@@ -619,4 +664,16 @@ function copyHumanFriendlyUrl(element) {
     document.execCommand('copy');
     $(".copied").text("Copied to clipboard").show().fadeOut(1200);
     $temp.remove();
+}
+function IsPaidAlert(element){
+var val=$(element).val();
+if(val=="false"){
+    if($('.PaidAlertBox').hasClass('d-none')){
+        $('.PaidAlertBox').removeClass('d-none');
+    }
+}else{
+    if(!$('.PaidAlertBox').hasClass('d-none')){
+        $('.PaidAlertBox').addClass('d-none');
+    }
+}
 }
