@@ -17,6 +17,10 @@ use Illuminate\Support\Facades\Storage;
 
 class CsvImportController extends Controller
 {
+    public function __construct() {
+        $this->middleware('verified');
+    }
+    
     public function index(){
         $userId = Auth::id();
         $customFields=CustomField::where('user_id',$userId)->orderBy('id', 'ASC')->get();

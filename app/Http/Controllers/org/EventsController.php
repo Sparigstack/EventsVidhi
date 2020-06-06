@@ -131,7 +131,10 @@ class EventsController extends Controller {
         $EndDateTime = $request->EventEndDateTime;
         $events->end_date_time = new DateTime($EndDateTime);
         $events->timezone_id = $request->cityTimezone;
-
+        if(!empty($request->CustomUrl)){
+            $events->custom_url=$request->CustomUrl;
+        }
+       
         $events->thumbnail = $thumbNailUrl;
         $events->banner = $bannerUrl;
         if (isset($request->IsPublish)) {
@@ -426,6 +429,7 @@ class EventsController extends Controller {
 
             Storage::disk('s3')->put($filePath, file_get_contents($file), 'public');
             $bannerUrl = $filePath;
+            $events->banner = $bannerUrl;
             if (!empty($events->banner)) {
                 Storage::disk('s3')->delete($events->banner);
             }
@@ -439,6 +443,7 @@ class EventsController extends Controller {
 
             Storage::disk('s3')->put($thumbnailfilePath, file_get_contents($thumbnailfile), 'public');
             $thumbNailUrl = $thumbnailfilePath;
+            $events->thumbnail = $thumbNailUrl;
             if (!empty($events->thumbnail)) {
                 Storage::disk('s3')->delete($events->thumbnail);
             }
@@ -458,9 +463,11 @@ class EventsController extends Controller {
         $EndDateTime = $request->EventEndDateTime;
         $events->end_date_time = new DateTime($EndDateTime);
         $events->timezone_id = $request->cityTimezone;
-
-        $events->thumbnail = $thumbNailUrl;
-        $events->banner = $bannerUrl;
+        if(!empty($request->CustomUrl)){
+            $events->custom_url=$request->CustomUrl;
+        }
+        
+        
         if (isset($request->IsOnline)) {
             $events->is_online = '1';
             $events->city_id = null;
@@ -560,7 +567,7 @@ class EventsController extends Controller {
     public function getState(Request $request) {
 
         $states = State::where('country_id', $request->countryId)->get();
-        $stateOptions = "<option value='-1'>Select State</option>";
+        $stateOptions = "<option PresenceCheck='-1' value>Select State</option>";
         foreach ($states as $state) {
             $stateOptions .= "<option value='" . $state->id . "' >" . $state->name . "</option>";
         }
@@ -571,7 +578,7 @@ class EventsController extends Controller {
 
         $citys = City::where('state_id', $request->cityId)->get();
 
-        $cityOptions = "<option value='-1'>Select City</option>";
+        $cityOptions = "<option PresenceCheck='-1' value>Select City</option>";
         foreach ($citys as $city) {
             $cityOptions .= "<option value='" . $city->id . "' >" . $city->name . "</option>";
         }

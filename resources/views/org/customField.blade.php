@@ -76,7 +76,7 @@
                                                     echo "Date";
                                                 } ?></td>
                                             <td>
-                                                <i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-edit" title="Edit Custom Field"></i>
+                                                <!-- <i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-edit" title="Edit Custom Field"></i> -->
                                                 <a ><i db-delete-id="{{$customField->id}}" onclick="DeleteCustomField(this);" style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-trash" title="Delete Custom Field"></i></a>
                                             </td>
                                         </tr>

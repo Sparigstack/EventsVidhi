@@ -44,7 +44,8 @@
     $activeClass = "active";
     $activeShow = "show";
     $event_id = 0;
-
+    $CustomHumanReadableUrl = "";
+    $FinalUrl=env('APP_URL_Custom')."/".Auth()->user()->username;
     if (!empty($event)) {
         $event_id = $event->id;
         $ActionCall = url('org/events/edit/' . $event->id);
@@ -92,6 +93,12 @@
         if ($event->is_live == 1) {
             $IsLive = "checked";
         }
+        if (!empty($event->custom_url)) {
+            $CustomHumanReadableUrl = $event->custom_url;
+            $FinalUrl=env('APP_URL_Custom')."/".Auth()->user()->username."/".$event->custom_url;
+           
+        }
+       
     }
 
     if (!empty($speaker)) {
@@ -234,7 +241,7 @@
                                                             $IsSelected = "";
 
                                                             foreach ($event->categories as $EventCategory) {
-
+                                                                
                                                                 if ($category->id == $EventCategory->category_id) {
                                                                     $IsSelected = "selected";
                                                                     if ($checkCount == "no") {
@@ -244,11 +251,11 @@
                                                                     }
                                                                     $checkCount = "yes";
                                                                 }
+                                                            }
 
                                                     ?>
                                                                 <option value="{{old('category',$category->id)}}" {{$IsSelected}} @if (old('category')==$category->id) selected="selected" @endif ><?php echo $category->name; ?> </option>
                                                             <?php }
-                                                        }
                                                     } else {
                                                         foreach ($categories as $category) {
                                                             ?>
@@ -298,7 +305,7 @@
                                                         <input type="hidden" class="getState" value="{{url('getState')}}">
                                                         <label for="country">Country</label>
                                                         <select {{$isPhysicalAddressReq}} autocomplete="off" value="{{ old('country') }}" name="country" id="country" class=" custom-select" {{$disabled}} onchange="getState(this);">
-                                                            <option>Select Country</option>
+                                                            <option value>Select Country</option>
                                                             <?php foreach ($countries as $country) {
                                                                 $IsSelected = "";
                                                                 if ($country->id == $countryId) {
@@ -469,12 +476,34 @@
                                                             <?php $IsReadOnly = "";
                                                             if (Auth()->user()->username == null || Auth()->user()->username == "" || Auth()->user()->username == " ") {
                                                                 $IsReadOnly = "disabled" ?>
-                                                                <p style="color:green;">Please click <a href="{{url('settings')}}">here</a> to set username and be able to enter human friendly url.
+                                                                <p style="color:green;">Please click <a href="{{url('org/settings')}}">here</a> to set username and be able to enter human friendly url.
 
                                                                 </p>
                                                             <?php } ?>
-                                                            <div class="p-1">{{env('APP_URL')}}</div>
-                                                            <input type="text" class="form-control" id="CustomUrl" name="CustomUrl" placeholder="Human friendly event url" {{$IsReadOnly}}>
+                                                           
+                                                            <input type="text" class="form-control" value="{{$CustomHumanReadableUrl}}" onkeyup="ChangeCustomUrl(this);" id="CustomUrl" name="CustomUrl" autocomplete="off" placeholder="Human friendly event url" {{$IsReadOnly}}>
+
+                                                            <div class="row form-group pl-3">
+                                                            <div class="col-lg-10 p-1" id="HumanFriendlyUrl" data="{{env('APP_URL_Custom')."/".Auth()->user()->username}}" value="{{$FinalUrl}}">
+                                                            {{$FinalUrl}}
+
+                                                            </div>
+
+                                                            <div class="col-lg-2 pt-1">
+                                                            <a onclick="copyHumanFriendlyUrl(this);"><i style="cursor:pointer; margin-left:5px;font-size:20px;" class="fa fa-copy" title="Copy to Clipboard"></i></a>
+                                                        </div>
+
+                                                        <div class='copied'></div>
+
+                                                        </div>
+
+                                                            <?php if(!empty($CustomHumanReadableUrl)){ ?>
+                                                            <div class="pull-right">
+                                                                <a target="_blank" href="https://facebook.com"><i style="cursor:pointer; margin-left:5px;font-size:20px;color:#656464;" class="fa fa-facebook-official" title=""></i></a>
+                                                                <a target="_blank" href="https://twitter.com/"><i style="cursor:pointer; margin-left:5px;font-size:20px;color:#656464;" class="fa fa-twitter" title=""></i></a>
+                                                                <a target="_blank" href="https://www.linkedin.com/"><i style="cursor:pointer; margin-left:5px;font-size:20px;color:#656464;" class="fa fa-linkedin" title=""></i></a>
+                                                            </div>
+                                                    <?php    } ?>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -706,7 +735,7 @@
                                                 <div class="form-group col-lg-12 row">
                                                     <div class="form-group col-lg-6">
                                                         <label for="profilePicImage">Profile Pic</label>
-                                                        <div class="dragFileContainer thumbNailContainer" style="display: flex;justify-content: center;">
+                                                        <div class="dragFileContainer thumbNailContainer SpeakerProfilePicDiv" style="display: flex;justify-content: center;">
                                                             <input type="file" accept="image/*" id="EventProfilePicImage" name="profilePicImageUpload" class="form-control files" picvalue="">
                                                             <img id="profilePicImage" src="" class="d-none imageRadius w-100 {{$profilePicHidden}}" alt="your image" width="100" value="">
                                                             <p id="TempTextThumb" class="TempTextPic">Drop your image here or click to upload.</p>

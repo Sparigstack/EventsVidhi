@@ -114,7 +114,10 @@ $(document).ready(function () {
             success: function (response) {
 
                 console.log(response);
-
+                if(speakerId != ""){
+                    $('.CurrentlyUpdatingThis').remove();
+                }
+                
                 var HtmlContent = '<ul class="list-group parent list-group-flush speakerList mb-2"><li class="list-group-item"><div class="media align-items-center"><img src="' + response.profilePicImage + '" alt="user avatar" class="customer-img rounded" height="100" width="100"><div class="media-body ml-3"><h6 class="mb-0">' + response.speakerFirstName + ' ' + response.speakerLastName + '</h6><small class="small-font">' + response.speakerOrganization + ' - ' + response.speakerDesc + '</small></div><div data-id="' + response.id + '" onclick="EditSingleSpeaker(this);" Type="file UrlType="" class="mr-2"><i class="fa icon fas fa-edit clickable" style="font-size: 22px;cursor: pointer;"></i></div><div data-id="' + response.id + '" onclick="RemoveSingleSpeaker(this);" type="file" urltype="" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor:pointer;"></i></div></li></ul>';
                 $('#uploadedSpeakers').append(HtmlContent);
                 $('.speakerContainer').addClass('d-none');
@@ -223,30 +226,30 @@ function IsOnlineEvent(element) {
         $('#state').removeAttr('required');
         
         $('#EventUrl').removeClass('d-none');
-        $('#EventUrl').attr('required');
+        $('#EventUrl').attr('required','required');
     } else {
         $('#EventUrl').addClass('d-none');
         $('#EventUrl').removeAttr('required');
         
-        if ($("#city option[value='-1']").length != 0) {
+        if ($("#city option[PresenceCheck='-1']").length != 0) {
             $('#Address1').attr('disabled', false);
-            $('#Address1').attr('required', true);
+            $('#Address1').attr('required', 'required');
             
             $('#Address2').attr('disabled', false);
             
             $('#PostalCode').attr('disabled', false);
-            $('#PostalCode').attr('required');
+            $('#PostalCode').attr('required', 'required');
             
             $('#city').attr('disabled', false);
-            $('#city').attr('required');
+            $('#city').attr('required', 'required');
         }
-        if ($("#state option[value='-1']").length != 0) {
+        if ($("#state option[PresenceCheck='-1']").length != 0) {
             $('#state').attr('disabled', false);
-            $('#state').attr('required');
+            $('#state').attr('required', 'required');
         }
         
         $('#country').attr('disabled', false);
-        $('#country').attr('required');
+        $('#country').attr('required', 'required');
         
     }
 }
@@ -305,7 +308,9 @@ function uploadSpeaker(element) {
         if($('.TempTextPic').hasClass('d-none')){
             $('.TempTextPic').removeClass('d-none');
         }  
-        
+        if($('.SpeakerProfilePicDiv').find('#TempTextThumb').length==0){
+            $('.SpeakerProfilePicDiv').append('<p id="TempTextThumb" class="TempTextPic">Drop your image here or click to upload.</p>');
+        }
         $('.speakerContainer').removeClass('d-none');
         $("#speakerTitle").val('');
         $("#speakerFirstName").val('');
@@ -341,6 +346,7 @@ function getState(element) {
             $('#state').attr('disabled', false);
             $('#state').empty();
             $('#state').append(response);
+            $('#state').attr('required', 'required');
             // console.log(response);
         }
     });
@@ -361,11 +367,13 @@ function getCity(element) {
             $('#city').attr('disabled', false);
             $('#city').empty();
             $('#city').append(response);
+            $('#city').attr('required', 'required');
         }
     });
 }
 function ShowAddressFields(element) {
     $('#Address1').attr('disabled', false);
+    $('#Address1').attr('required', 'required');
     $('#Address2').attr('disabled', false);
     $('#PostalCode').attr('disabled', false);
 }
@@ -440,7 +448,7 @@ function EditSingleSpeaker(element) {
     // var type = $(element).attr('Type');
     // var urltype = $(element).attr('urltype');
     var Field = findParent(element);
-    
+    $(Field).addClass('CurrentlyUpdatingThis');
     var urlString = $('.editEventSpeakers').val();
     urlString += "/" + id;
     var CSRF_TOKEN = $('.csrf-token').val();
@@ -538,6 +546,7 @@ function removeOldProfilePic(element) {
 function showSpeakerListing(element){
     $("#uploadedSpeakers").find(".speakerList").removeClass('d-none');
     $(".speakerContainer").addClass('d-none');
+    $(".CurrentlyUpdatingThis").removeClass('CurrentlyUpdatingThis');
 
 }
 
@@ -596,4 +605,18 @@ function ValidateEventForm(element){
     if (!$(IsOnline).is(':checked')) {
         
     }
+}
+function ChangeCustomUrl(element){
+var currentText=$(element).val();
+var actualUrl=$('#HumanFriendlyUrl').attr('data');
+$('#HumanFriendlyUrl').text(actualUrl +'/'+ currentText);
+}
+
+function copyHumanFriendlyUrl(element) {
+    var $temp = $("<input>");
+    $("body").append($temp);
+    $temp.val($("#HumanFriendlyUrl").text()).select();
+    document.execCommand('copy');
+    $(".copied").text("Copied to clipboard").show().fadeOut(1200);
+    $temp.remove();
 }

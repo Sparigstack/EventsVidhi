@@ -135,7 +135,7 @@ class ContactsController extends Controller
             $NewcustomField->save();
         }
 
-        return redirect('org/contacts');
+        return redirect('org/my_contacts');
     }
 
     /**
@@ -236,7 +236,7 @@ class ContactsController extends Controller
             $NewcustomField->save();
         }
 
-        return redirect('org/contacts');
+        return redirect('org/my_contacts');
     }
 
     /**

@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\Validator;
 
 class TagsController extends Controller
 {
+    public function __construct() {
+        $this->middleware('verified');
+    }
+    
     public function show(){
         $user = Auth::id();
         $tags = Tag::where('user_id',$user)->get();
