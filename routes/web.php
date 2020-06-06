@@ -45,6 +45,7 @@ Route::post('org/events/updateSpeaker/{id}', 'org\EventsController@updateSpeaker
 Route::post('org/events/speaker/deleteProfilePic', 'org\EventsController@deleteProfilePic');
 Route::post('org/events/podcast/store', 'org\EventsController@storePodcast');
 Route::post('org/events/ticket/store', 'org\EventsController@storeTicket');
+Route::post('copyEvent', 'org\EventsController@copyEvent');
 
 Route::get('org/videos', 'org\VideosController@index');
 Route::get('org/videos/new', 'org\VideosController@create');

@@ -714,4 +714,182 @@ class EventsController extends Controller
         //     'error' => ''
         // ]);
     }
+    public function copyEvent(Request $request){
+        $eventDetails = Event::where('id', $request->eventId)->get();
+
+        $user = Auth::user();
+        foreach($eventDetails as $eventData){
+            $events = new Event;
+            $events->title = $eventData->title;
+            $events->description = $eventData->description;
+            $events->category_id = $eventData->category_id;
+            $events->event_type_id = $eventData->event_type_id;
+            $events->user_id = $user->id;
+            if (isset($eventData->is_online)) {
+                $events->is_online = '1';
+                $events->online_event_url = $eventData->online_event_url;
+            } else {
+                $events->city_id = $eventData->city_id;
+                $events->address = $eventData->address;
+                $events->address_line2 = $eventData->address_line2;
+                $events->postal_code = $eventData->postal_code;
+                $events->is_online = '0';
+            }
+            $events->date_time = $eventData->date_time;
+            $events->end_date_time = $eventData->end_date_time;
+            $events->timezone_id = $eventData->timezone_id;
+            if(!empty($eventData->custom_url)){
+                $events->custom_url=$eventData->custom_url;
+            }
+       
+            $events->is_live = $eventData->is_live;
+            $events->is_public = $eventData->is_public;
+            $events->is_paid = $eventData->is_paid;
+
+            $bannerUrl = "";
+            if (!empty($eventData->banner)) {
+                $bannerFile = $eventData->banner;
+                $bannerFileArr = explode('/', $bannerFile);
+                $fileName = "";
+                foreach ($bannerFileArr as $bannerFileName) {
+                     $fileName = $bannerFileName;
+                 } 
+                 $bannerfilePath = 'org_' . $user->id  . '/' . time(). $fileName;
+               
+                $getBannerFile = Storage::disk('s3')->get($bannerFile);
+                Storage::disk('s3')->put($bannerfilePath, $getBannerFile, 'public');
+                
+                $bannerUrl = $bannerfilePath;
+            }
+
+            $thumbnailUrl = "";
+            if (!empty($eventData->thumbnail)) {
+                $thumbnailfile = $eventData->thumbnail;
+                $thumbnailFileArr = explode('/', $thumbnailfile);
+                $fileName = "";
+                foreach ($thumbnailFileArr as $thumbnailFileName) {
+                     $fileName = $thumbnailFileName;
+                 } 
+                 $thumbnailfilePath = 'org_' . $user->id . '/Thumbnail/' . time(). $fileName;
+               
+                $getFile = Storage::disk('s3')->get($thumbnailfile);
+                Storage::disk('s3')->put($thumbnailfilePath, $getFile, 'public');
+                
+                $thumbnailUrl = $thumbnailfilePath;
+            }
+
+            $events->banner = $bannerUrl;
+            $events->thumbnail = $thumbnailUrl;
+            $events->save();
+        }
+        
+        $eventCategories = EventCategory::where('event_id',$request->eventId)->get();
+        foreach ($eventCategories as $categoryDetail) {
+            if (!empty($categoryDetail)) {
+                $eventCategory = new EventCategory;
+                $eventCategory->event_id = $events->id;
+                $eventCategory->category_id = $categoryDetail->category_id;
+                $eventCategory->save();
+            }
+        }
+
+        // $eventVideos = Video::where('event_id',$request->eventId)->get();
+        // foreach($eventVideos as $eventVideo){
+        //     if(!empty($eventVideo)){
+        //         $video = new Video;
+        //         $video->title = $eventVideo->title;
+        //         $userId = Auth::id();
+        //         $video->user_id = $userId;
+        //         $UrlToSave = "";
+        //         $FinalUrl = "";
+        //         if (isset($request->IsUploadVideo)) {
+        //             if ($request->hasFile('video_file')) {
+        //                 $file = $request->file('video_file');
+        //                 $name = time() . $file->getClientOriginalName();
+        //                 $userId = Auth::id();
+        //                 $filePath = 'org_' . $userId . '/Video';
+        //                 $fileLocation = Storage::disk('s3')->put($filePath, $request->file('video_file'));
+        //                 $UrlToSave = $fileLocation;
+        //                 $FinalUrl .= $UrlToSave;
+        //                 $video->url_type = 1;
+        //                 $size = $request->file('video_file')->getSize();
+        //                 $video->file_size = $size;
+        //             }
+        //         } else {
+        //             $UrlToSave = $request->input_url;
+        //             $FinalUrl = $UrlToSave;
+        //             $video->url_type = 0;
+        //         }
+
+        //         $video->event_id = $events->id;
+        //         $video->url = $UrlToSave;
+        //         $video->save();
+        //     }
+        // }
+
+        // $eventPodcasts = Podcast::where('event_id',$request->eventId)->get();
+        // foreach($eventPodcasts as $eventPodcast){
+        //     if(!empty($eventPodcast)){
+        //         $podcast = new Podcast;
+        //         $podcast->title = $eventPodcast->title;
+        //         $userId = Auth::id();
+        //         $podcast->user_id = $userId;
+        //         $UrlToSave = "";
+        //         $FinalUrl = "";
+        //         if (isset($request->IsUploadPodCast)) {
+        //             if ($request->hasFile('podcast_video_file')) {
+        //                 $file = $request->file('podcast_video_file');
+        //                 $name = time() . $file->getClientOriginalName();
+        //                 $userId = Auth::id();
+        //                 $filePath = 'org_' . $userId . '/Podcast/' . $name;
+        //                 Storage::disk('s3')->put($filePath, file_get_contents($file));
+        //                 $UrlToSave = $filePath;
+        //                 $FinalUrl .= $UrlToSave;
+        //                 $podcast->url_type = 1;
+        //                 $size = $request->file('podcast_video_file')->getSize();
+        //                 $podcast->file_size = $size;
+        //             }
+        //         } else {
+        //             $UrlToSave = $request->input_url;
+        //             $FinalUrl = $UrlToSave;
+        //             $podcast->url_type = 0;
+        //         }
+
+        //         $podcast->event_id = $events->id;
+        //         $podcast->url = $UrlToSave;
+        //         $podcast->save();
+        //     }
+        // }
+
+        // $eventSpeakers =  Speaker::where('event_id',$request->eventId)->get();
+        // foreach($eventSpeakers as $eventSpeaker){
+        //     if(!empty($eventSpeaker)){
+        //         $speaker = new Speaker;
+        //         $speaker->title = $eventSpeaker->title;
+        //         $speaker->first_name = $eventSpeaker->first_name;
+        //         $speaker->last_name = $eventSpeaker->last_name;
+        //         $speaker->description = $eventSpeaker->description;
+        //         $speaker->organization = $eventSpeaker->organization;
+        //         $speaker->linkedin_url = $eventSpeaker->linkedin_url;
+        //         $userId = Auth::id();
+        //         $UrlToSave = "";
+        //         $FinalUrl = "";
+        //         if ($request->hasFile('profilePicImageUpload')) {
+        //             $file = $request->file('profilePicImageUpload');
+        //             $name = time() . $file->getClientOriginalName();
+        //             $userId = Auth::id();
+        //             $filePath = 'org_' . $userId . '/Speaker/' . $name;
+        //             Storage::disk('s3')->put($filePath, file_get_contents($file));
+        //             $UrlToSave = $filePath;
+        //             $FinalUrl .= $UrlToSave;
+        //         }
+
+        //         $speaker->profile_pic = $FinalUrl;
+        //         $speaker->event_id = $events->id;
+        //         $speaker->save();
+        //     }
+        // }
+
+    }
+
 }

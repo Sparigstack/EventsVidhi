@@ -35,6 +35,7 @@
                                         <tr class="parent">
                                     <input class="csrf-token" type="hidden" value="{{ csrf_token() }}">
                                     <input type="hidden" class="deleteEvent" value="{{url('deleteEvent')}}">
+                                    <input type="hidden" class="copyEvent" value="{{url('copyEvent')}}">
                                     <?php
                                     $logoUrl = $AwsUrl . 'no-image-logo.jpg';
                                     if (!empty($event->thumbnail)) {
@@ -73,6 +74,7 @@
                                     <td class="max-w-table-100 text-center p-1 align-middle">
                                         <button  onclick="window.location ='{{ url("org/events/$event->id") }}'" type="button" class="btn btn-outline-success waves-effect waves-light secondary "> Edit </button>
                                         <button onclick="deleteEvent(this);" db-delete-id="{{$event->id}}"type="button" class="btn btn-outline-danger waves-effect waves-light secondary"> Delete </button>
+                                        <button onclick="copyEvent(this);" db-event-id="{{$event->id}}"type="button" class="btn btn-outline-success waves-effect waves-light secondary"> Copy </button>
 
                                         <?php if ($event->is_live != 0) { ?>
                                             <button type="button" onclick="UpdateEventStatus(this);" data-id="{{$event->id}}" status={{$event->is_live}} class="btn btn-outline-primary waves-effect waves-light secondary pauseButton"> Pause </button>
