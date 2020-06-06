@@ -294,7 +294,7 @@
                         clearInterval(interval);
                         window.location.href = $('#hdnRedirect').val();
                         LoaderStop();
-                    }, 2000);
+                    }, 5000);
                     // window.location.href = $('#hdnRedirect').val();
                 }
                 // LoaderStart();
