@@ -45,5 +45,10 @@ class Event extends Model
     public function Videos() {
         return $this->hasMany('App\Video');
     }
+    
+    
+    public function tickets(){
+        return $this->hasMany('App\Ticket');
+    }
 
 }

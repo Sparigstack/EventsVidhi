@@ -16,16 +16,18 @@ class MoveFileToS3 implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $filename;
+    protected $file;
     
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($filename)
+    public function __construct($filename, $file)
     {
         //$this->filename = $filename . '.enc';
         $this->filename = $filename;
+        $this->file = $file;
     }
 
     /**
