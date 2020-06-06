@@ -622,6 +622,9 @@ function copyHumanFriendlyUrl(element) {
 }
 
 function copyEvent(element) {
+    var confirmCopy = confirm("Are you sure you want to copy this event details?");
+    if (!confirmCopy)
+        return;
     var parent = findParent(element);
     var eventId = $(element).attr('db-event-id');
     var CSRF_TOKEN = $('.csrf-token').val();
@@ -634,7 +637,7 @@ function copyEvent(element) {
         success: function (response) {
             console.log(response);
             LoaderStop();
-            // location.reload();
+            location.reload();
         },
          error: function (err) {
                 console.log(err);
