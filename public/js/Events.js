@@ -620,3 +620,25 @@ function copyHumanFriendlyUrl(element) {
     $(".copied").text("Copied to clipboard").show().fadeOut(1200);
     $temp.remove();
 }
+
+function copyEvent(element) {
+    var parent = findParent(element);
+    var eventId = $(element).attr('db-event-id');
+    var CSRF_TOKEN = $('.csrf-token').val();
+    var urlString = $('.copyEvent').val();
+    LoaderStart();
+    $.ajax({
+        url: urlString,
+        type: 'post',
+        data: {_token: CSRF_TOKEN, eventId: eventId},
+        success: function (response) {
+            console.log(response);
+            LoaderStop();
+            // location.reload();
+        },
+         error: function (err) {
+                console.log(err);
+                LoaderStop();
+        }
+    });
+}

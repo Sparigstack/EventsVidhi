@@ -88,7 +88,10 @@
     max-width: 100px!important;
     white-space: normal!important;
 }
-table .max-w-table-100 .btn{margin: 10px auto;min-width: 60px;}
+table .max-w-table-100 .btn{margin: 10px auto;
+    /*min-width: 60px;*/
+    min-width: 50px;
+}
 .greenFont{color:green;}
 .max-w-table-200{
     max-width: 200px!important;
