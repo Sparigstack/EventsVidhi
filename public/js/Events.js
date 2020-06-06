@@ -676,6 +676,7 @@ if(val=="false"){
         $('.PaidAlertBox').addClass('d-none');
     }
 }
+}
 
 function copyEvent(element) {
     var confirmCopy = confirm("Are you sure you want to copy this event details?");
