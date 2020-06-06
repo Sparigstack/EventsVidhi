@@ -110,27 +110,17 @@ class VideosController extends Controller {
 
         if (isset($request->IsUploadVideo)) {
             if ($request->hasFile('input_vidfile')) {
-                $videoupdate = Video::findOrFail($video->id);
-
-                $filename = "";
-                if ($request->hasFile('input_vidfile') && $request->file('input_vidfile')->isValid()) {
-                    $filename = Storage::disk('local')->putFile('org_' . auth()->user()->id . '/video', $request->file('input_vidfile'));
-                    $videoupdate->url = $filename;
-
-                    // check if we have a valid file uploaded
-                    if ($filename) {
-//                        EncryptFile::withChain([
-//                            new MoveFileToS3($filename),
-//                        ])->dispatch($filename);
-
-                        MoveFileToS3::dispatch($filename);
-                    }
-                }
-
+                $videoupdate=Video::findOrFail($video->id);
+                $file = $request->file('input_vidfile');
+               // $name = time() . $file->getClientOriginalName();
                 $userId = Auth::id();
+                // $filePath = 'org_' . $userId . '/Video/' . $name;
+                $filePath = 'org_' . $userId . '/Video';
+                $fileLocation = Storage::disk('s3')->put($filePath, $request->file('input_vidfile'));
+                // $size = Storage::disk('s3')->size($filePath);
                 $size = $request->file('input_vidfile')->getSize();
                 $videoupdate->file_size = $size;
-
+                $videoupdate->url = $fileLocation;
                 $videoupdate->save();
             }
         }
