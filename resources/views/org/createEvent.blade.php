@@ -475,13 +475,13 @@
                                                                 <label for="ItIsPaid">Paid</label>
                                                             </div>
                                                         </div>
-                                                        <?php if (empty($event)) { ?>
+                                                       
                                                             <div class="alert alert-info m-0 PaidAlertBox d-none" role="alert">
                                                                 <div class="alert-message pt-1 pb-1">
                                                                     <span>You will get options for setting price tiers with Tickets once you save changes for this Event.</span>
                                                                 </div>
                                                             </div>
-                                                        <?php } ?>
+                                                       
                                                         <br>
                                                         <div class="form-group col-lg-12">
                                                             <label for="title">Human friendly event url</label>
