@@ -55,7 +55,7 @@ class VideosController extends Controller {
     public function create() {
         $user = Auth::user();
         $events = $user->events->sortBy('created_at');
-        $RecentVideos=Video::where('user_id', $user->id)->take(8)->get();
+        $RecentVideos=Video::where('user_id', $user->id)->take(7)->get();
         return view('org/createVideo', compact('events','RecentVideos'));
         //return view('org/createVideo_t');
     }
