@@ -246,7 +246,7 @@
 
                                                             foreach ($event->categories as $EventCategory) {
 
-                                                                if ($category->id == $EventCategory->category_id) {
+                                                                if ($category->id == $EventCategory->id) {
                                                                     $IsSelected = "selected";
                                                                     if ($checkCount == "no") {
                                                                         $MultSelectTags .= strval($category->id);

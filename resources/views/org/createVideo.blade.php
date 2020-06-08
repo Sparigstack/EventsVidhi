@@ -3,6 +3,9 @@
 @section('content')
 <div class="container-fluid">
     <?php
+
+    use App\Video;
+
     $CardTitle = "Add New Video";
     $ActionCall = url('org/videos/store');
     $RedirectCall = url('org/videos');
@@ -200,7 +203,7 @@
                 </div>
 
                 <ul class="list-group list-group-flush shadow-none">
-                    <li class="list-group-item">
+                    <!-- <li class="list-group-item">
                         <div class="media align-items-center">
                             <img src="https://via.placeholder.com/110x110" alt="user avatar" class="customer-img rounded">
                             <div class="media-body ml-3">
@@ -208,55 +211,36 @@
                                 <small class="small-font">$810,000 . 04 Beds . 03 Baths</small>
                             </div>
                         </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="media align-items-center">
-                            <img src="https://via.placeholder.com/110x110" alt="user avatar" class="customer-img rounded">
-                            <div class="media-body ml-3">
-                                <h6 class="mb-0">Lorem ipsum dolor sitamet consectetur adipiscing</h6>
-                                <small class="small-font">$2,560,000 . 08 Beds . 07 Baths</small>
+                    </li> -->
+                    <?php foreach ($RecentVideos as $Video) { ?>
+                        <li class="list-group-item">
+                            <div class="media align-items-center">
+                                <?php $a = 'http';
+                                $videoUrl = $Video->url;
+                               
+                                if (strpos($videoUrl, $a) !== false) {
+                                    $actualUrl = $videoUrl; ?>
+                                    <iframe width="200" src="{{$actualUrl}}">
+                                    </iframe>
+                                    <?php }else{ $actualUrl = env('AWS_URL') . $videoUrl; ?>
+                                        <video width="200" controls="">
+                                        <source src="{{$actualUrl}}" type="video/mp4">
+                                        Your browser does not support HTML video.
+                                    </video>
+                                    <?php } ?>
+                                    
+
+
+                                    <div class="media-body ml-3">
+                                        <h6 class="mb-0">{{$Video->title}}</h6>
+                                        <small class="small-font">{{$Video->description}}</small>
+                                    </div>
                             </div>
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="media align-items-center">
-                            <img src="https://via.placeholder.com/110x110" alt="user avatar" class="customer-img rounded">
-                            <div class="media-body ml-3">
-                                <h6 class="mb-0">Lorem ipsum dolor sitamet consectetur adipiscing</h6>
-                                <small class="small-font">$910,300 . 03 Beds . 02 Baths</small>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="media align-items-center">
-                            <img src="https://via.placeholder.com/110x110" alt="user avatar" class="customer-img rounded">
-                            <div class="media-body ml-3">
-                                <h6 class="mb-0">Lorem ipsum dolor sitamet consectetur adipiscing</h6>
-                                <small class="small-font">$1,140,650 . 06 Beds . 03 Baths</small>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="media align-items-center">
-                            <img src="https://via.placeholder.com/110x110" alt="user avatar" class="customer-img rounded">
-                            <div class="media-body ml-3">
-                                <h6 class="mb-0">Lorem ipsum dolor sitamet consectetur adipiscing</h6>
-                                <small class="small-font">$1,140,650 . 06 Beds . 03 Baths</small>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="media align-items-center">
-                            <img src="https://via.placeholder.com/110x110" alt="user avatar" class="customer-img rounded">
-                            <div class="media-body ml-3">
-                                <h6 class="mb-0">Lorem ipsum dolor sitamet consectetur adipiscing</h6>
-                                <small class="small-font">$910,300 . 03 Beds . 02 Baths</small>
-                            </div>
-                        </div>
-                    </li>
+                        </li>
+                    <?php } ?>
                 </ul>
                 <div class="card-footer text-center bg-transparent border-0">
-                    <a href="javascript:void();">View all Videos</a>
+                    <a href="{{url('org/videos')}}">View all Videos</a>
                 </div>
 
             </div>
