@@ -248,8 +248,10 @@ class ContactsController extends Controller
     public function destroy(Request $request)
     {
         $contact_tags = ContactTag::where('contact_id', $request->contactDeleteId)->delete();
+        $customField = ContactCustomField::where('contact_id', $request->contactDeleteId)->delete();
         $contact = Contact::find($request->contactDeleteId)->delete();
     }
+    
     public function approve($id)
     {
         $contact = Contact::findOrFail($id);

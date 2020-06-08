@@ -712,6 +712,8 @@ class EventsController extends Controller
 
         return response()->json([
             'name' => $ticket->name,
+            'quantity' => $ticket->quantity,
+            'price' => $ticket->price,
             'id' => $ticket->id,
             'endDate' => $new_date,
             'error' => ''
@@ -755,6 +757,8 @@ class EventsController extends Controller
         return response()->json([
             'name' => $ticket->name,
             'id' => $ticket->id,
+            'quantity' => $ticket->quantity,
+            'price' => $ticket->price,
             'endDate' => $new_date,
             'error' => ''
         ]);

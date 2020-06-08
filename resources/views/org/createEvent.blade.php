@@ -705,7 +705,7 @@
                                                             <div class="media align-items-center">
                                                                 
                                                                 <div class="media-body ml-3">
-                                                                    <h6 class="mb-0">{{$ticket->name}}</h6>
+                                                                    <h6 class="mb-0">{{$ticket->name}} -- {{$ticket->quantity}} tickets, ${{$ticket->price}}/ticket</h6>
                                                                     <?php 
                                                                     $old_date = $ticket->sales_end;              
                                                                     $old_date_timestamp = strtotime($old_date);
