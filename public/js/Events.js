@@ -137,19 +137,17 @@ $(document).ready(function () {
         LoaderStart();
         event.preventDefault();
         var CurentForm = $(this);
-        // var urlStringSpeaker = $('.addSpeakers').val();
-        var urlString = $('.AddTicketUrl').val();
-        // var speakerId = $("#UpdateSpeakerID").attr('data-id');
-        // if (speakerId != "") {
-        //     urlString = $('.updateTicket').val();
-        //     urlString += "/" + speakerId;
-
-        // } else {
-        //     urlString =  $('.AddTicketUrl').val();
-        // }
+        var urlStringTicket = "";
+        var ticketId = $("#AddTicketSubmitButton").attr('data-id');
+        if (ticketId != "") {
+            urlStringTicket = $('.updateTicket').val();
+            urlStringTicket += "/" + ticketId;
+        } else {
+            urlStringTicket =  $('.AddTicketUrl').val();
+        }
 
         $.ajax({
-            url: urlString,
+            url: urlStringTicket,
             method: "post",
             data: new FormData(this),
             dataType: 'JSON',
@@ -157,18 +155,17 @@ $(document).ready(function () {
             cache: false,
             processData: false,
             success: function (response) {
-
-               // console.log("Success: "+ response);
-                // if(speakerId != ""){
-                //     $('.CurrentlyUpdatingThis').remove();
-                // }
+                // console.log("Success: "+ response);
+                if(ticketId != ""){
+                    $('.CurrentlyUpdatingTicket').remove();
+                }
                 
-                // var HtmlContent = '<ul class="list-group parent list-group-flush TicketList mb-2 col-lg-8"><li class="list-group-item"><div class="media align-items-center"><div class="media-body ml-3"><h6 class="mb-0">'+response.name+'</h6><small class="small-font">Ends on - '+response.endDate+'</small></div><div data-id="'+response.id+'" onclick="EditSingleTicket(this);" type="file" urltype="" class="mr-2"><i class="fa icon fas fa-edit clickable" style="font-size: 22px;cursor: pointer;"></i></div><div data-id="1" onclick="RemoveSingleTicket(this);" type="file" urltype="" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div></div></li></ul>';
-                // $('#uploadedTickets').append(HtmlContent);
-                // // $('.AddTicketContainer').addClass('d-none');
+                var HtmlContent = '<ul class="list-group parent list-group-flush TicketList mb-2 col-lg-8"><li class="list-group-item"><div class="media align-items-center"><div class="media-body ml-3"><h6 class="mb-0">'+response.name+'</h6><small class="small-font">Ends on - '+response.endDate+'</small></div><div data-id="'+response.id+'" onclick="EditSingleTicket(this);" type="file" urltype="" class="mr-2"><i class="fa icon fas fa-edit clickable" style="font-size: 22px;cursor: pointer;"></i></div><div data-id="1" onclick="RemoveSingleTicket(this);" type="file" urltype="" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div></div></li></ul>';
+                $('#uploadedTickets').append(HtmlContent);
+                $('.AddTicketContainer').addClass('d-none');
                 // $(CurentForm).parent().addClass('d-none');
-                // $("#AddSpeakerSubmitButton").attr('data-id', '');
-                // $("#UpdateSpeakerID").val('');
+                $("#AddTicketSubmitButton").attr('data-id', '');
+                $("#ticketId").val('');
                 LoaderStop();
             },
             error: function (err) {
@@ -595,6 +592,12 @@ function showSpeakerListing(element){
 
 }
 
+function showTicketListing(element){
+    $("#uploadedTickets").find(".TicketList").removeClass('d-none');
+    $(".AddTicketContainer").addClass('d-none');
+    $(".CurrentlyUpdatingTicket").removeClass('CurrentlyUpdatingTicket');
+}
+
 function deleteEvent(element) {
     var confirmDelete = confirm("Are you sure you want to delete this event?");
     if (!confirmDelete)
@@ -701,4 +704,103 @@ function copyEvent(element) {
                 LoaderStop();
         }
     });
+}
+
+function uploadTicket(element) {
+    if ($(element).attr('id') == 'ticketButton') {
+        $('.AddTicketContainer').removeClass('d-none');
+        $("#TicketName").val('');
+        $("#TicketQuantity").val('');
+        $("#TicketPrice").val('');
+        $("#SalesStart").val('');
+        $("#SalesEnd").val('');
+        $("#AddTicketSubmitButton").attr('data-id', '');
+        $("#ticketId").val('');
+
+        if($("#uploadedTickets").find(".TicketList").hasClass('d-none')){
+            $("#uploadedTickets").find(".TicketList").removeClass('d-none');
+        }
+
+    }
+}
+
+function EditSingleTicket(element) {
+    LoaderStart();
+    $('.AddTicketContainer').removeClass('d-none');
+
+    event.preventDefault();
+    var id = $(element).attr('data-id');
+    var Field = findParent(element);
+    $(Field).addClass('CurrentlyUpdatingTicket');
+    var urlString = $('.editEventTickets').val();
+    urlString += "/" + id;
+    var CSRF_TOKEN = $('.csrf-token').val();
+    var countryId = $(element).val();
+
+    if(!$(".AddTicketContainer").hasClass('d-none')){
+        $(".AddTicketContainer").addClass('d-none');
+    }
+    if($("#uploadedTickets").find(".TicketList").hasClass('d-none')){
+        $("#uploadedTickets").find(".TicketList").removeClass('d-none');
+    }
+
+    $.ajax({
+        url: urlString,
+        type: 'post',
+        data: { _token: CSRF_TOKEN, id: id },
+        success: function (response) {
+            // $(".speakerContainer").removeClass('d-none');
+            $("#TicketName").val(response.name);
+            $("#TicketQuantity").val(response.quantity);
+            $("#TicketPrice").val(response.price);
+            $("#SalesStart").val(response.sales_start);
+            $("#SalesEnd").val(response.sales_end);
+            $("#AddTicketSubmitButton").attr('data-id', response.id);
+            $("#ticketId").val(response.id);
+
+            $('html, body').animate({
+                'scrollTop' : $(".AddTicketForm").position().top
+            });
+            $(Field).addClass('d-none');
+            $(".AddTicketContainer").removeClass('d-none');
+
+            LoaderStop();
+            // console.log(response);
+        },
+        error: function (error) {
+            alert('An Error Occured');
+            LoaderStop();
+            console.log(error);
+        }
+    });
+
+}
+
+function RemoveSingleTicket(element) {
+    LoaderStart();
+    var id = $(element).attr('data-id');
+    // var type = $(element).attr('Type');
+    // var urltype = $(element).attr('urltype');
+    var Field = findParent(element);
+    var urlString = $('.removeEventTickets').val();
+    urlString += "/" + id + "/ticket/blank";
+    var CSRF_TOKEN = $('.csrf-token').val();
+    // var countryId = $(element).val();
+
+    $.ajax({
+        url: urlString,
+        type: 'post',
+        data: { _token: CSRF_TOKEN, id: id },
+        success: function (response) {
+            $(Field).remove();
+            LoaderStop();
+            // console.log(response);
+        },
+        error: function (error) {
+            alert('An Error Occured');
+            LoaderStop();
+            console.log(error);
+        }
+    });
+
 }

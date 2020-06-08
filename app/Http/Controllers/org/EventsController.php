@@ -543,6 +543,8 @@ class EventsController extends Controller
                 Storage::disk('s3')->delete($speaker->profile_pic);
             }
             Speaker::find($id)->delete();
+        } else if ($Type == "ticket") {
+            Ticket::find($id)->delete();
         } else if ($Type == "podcast") {
             // $event = Podcast::find($id)->delete();
             $media = Podcast::find($id);
@@ -704,16 +706,60 @@ class EventsController extends Controller
         $ticket->save();
 
         // $old_date =$ticket->$request->SalesEnd;
-        // $old_date_timestamp = strtotime($old_date);
-        // $new_date = date('l, F d y h:i:s', $old_date_timestamp);
+        $old_date =$request->SalesEnd;
+        $old_date_timestamp = strtotime($old_date);
+        $new_date = date('l, F d y h:i:s', $old_date_timestamp);
 
-        // return response()->json([
-        //     'name' => $ticket->name,
-        //     'id' => $ticket->id,
-        //     'endDate' => $new_date,
-        //     'error' => ''
-        // ]);
+        return response()->json([
+            'name' => $ticket->name,
+            'id' => $ticket->id,
+            'endDate' => $new_date,
+            'error' => ''
+        ]);
     }
+
+    public function editTicket(Request $request, $id)
+    {
+        $tickets = Ticket::findOrFail($request->id);
+        $startDate = strtotime($tickets->sales_start);
+        $tickets->sales_start = date('m/d/Y h:i A', $startDate);
+
+        $endDate = strtotime($tickets->sales_end);
+        $tickets->sales_end = date('m/d/Y h:i A', $endDate);
+        
+        return $tickets;
+    }
+
+    public function updateTicket(Request $request, $id)
+    {
+        $ticket = Ticket::findOrFail($id);
+        $ticket->name = $request->TicketName;
+        $ticket->quantity = $request->TicketQuantity;
+        $ticket->price = $request->TicketPrice;
+
+        $StartDateTime = $request->SalesStart;
+        $ticket->sales_start = new DateTime($StartDateTime);
+
+        $EndDateTime = $request->SalesEnd;
+        $ticket->sales_end = new DateTime($EndDateTime);
+
+        $ticket->event_id = $request->TicketEventID;
+
+        $ticket->save();
+
+        // $old_date =$ticket->$request->SalesEnd;
+        $old_date =$request->SalesEnd;
+        $old_date_timestamp = strtotime($old_date);
+        $new_date = date('l, F d y h:i:s', $old_date_timestamp);
+
+        return response()->json([
+            'name' => $ticket->name,
+            'id' => $ticket->id,
+            'endDate' => $new_date,
+            'error' => ''
+        ]);
+    }
+
     public function copyEvent(Request $request){
         $eventDetails = Event::where('id', $request->eventId)->get();
 
@@ -800,24 +846,21 @@ class EventsController extends Controller
         //         $video->title = $eventVideo->title;
         //         $userId = Auth::id();
         //         $video->user_id = $userId;
+
         //         $UrlToSave = "";
         //         $FinalUrl = "";
-        //         if (isset($request->IsUploadVideo)) {
-        //             if ($request->hasFile('video_file')) {
-        //                 $file = $request->file('video_file');
-        //                 $name = time() . $file->getClientOriginalName();
-        //                 $userId = Auth::id();
-        //                 $filePath = 'org_' . $userId . '/Video';
-        //                 $fileLocation = Storage::disk('s3')->put($filePath, $request->file('video_file'));
-        //                 $UrlToSave = $fileLocation;
-        //                 $FinalUrl .= $UrlToSave;
-        //                 $video->url_type = 1;
-        //                 $size = $request->file('video_file')->getSize();
-        //                 $video->file_size = $size;
-        //             }
+        //         if ($eventVideo->url_type == '1') {
+        //             $videofile = $eventVideo->url;
+        //             $videofilePath = 'org_' . $user->id . '/Video';
+        //             $getVideoFile = Storage::disk('s3')->get($videofile);
+        //             $videoFileLocation =Storage::disk('s3')->put($videofilePath, $getVideoFile);
+        //             $UrlToSave = $videoFileLocation;
+        //             //$FinalUrl .= $UrlToSave;
+        //             $video->url_type = 1;
+        //             $video->file_size = $eventVideo->file_size;
         //         } else {
-        //             $UrlToSave = $request->input_url;
-        //             $FinalUrl = $UrlToSave;
+        //             $UrlToSave = $eventVideo->url;
+        //             //$FinalUrl = $UrlToSave;
         //             $video->url_type = 0;
         //         }
 
@@ -836,22 +879,23 @@ class EventsController extends Controller
         //         $podcast->user_id = $userId;
         //         $UrlToSave = "";
         //         $FinalUrl = "";
-        //         if (isset($request->IsUploadPodCast)) {
-        //             if ($request->hasFile('podcast_video_file')) {
-        //                 $file = $request->file('podcast_video_file');
-        //                 $name = time() . $file->getClientOriginalName();
-        //                 $userId = Auth::id();
-        //                 $filePath = 'org_' . $userId . '/Podcast/' . $name;
-        //                 Storage::disk('s3')->put($filePath, file_get_contents($file));
-        //                 $UrlToSave = $filePath;
-        //                 $FinalUrl .= $UrlToSave;
-        //                 $podcast->url_type = 1;
-        //                 $size = $request->file('podcast_video_file')->getSize();
-        //                 $podcast->file_size = $size;
+        //         if ($eventPodcast->url_type == '1') {
+        //             $podcastVideofile = $eventPodcast->url;
+        //             $podcastVideofileArr = explode('/', $podcastVideofile);
+        //             $fileName = "";
+        //             foreach ($podcastVideofileArr as $podcastVideofileName) {
+        //                 $fileName = $podcastVideofileName;
         //             }
+        //             $podcastVideoFilePath = 'org_' . $user->id . '/Podcast/' . time(). $fileName; 
+        //             $getPodcastFile = Storage::disk('s3')->get($podcastVideofile);
+        //             $podcastVideoFileLocation =Storage::disk('s3')->put($podcastVideoFilePath, $getPodcastFile);
+        //             $UrlToSave = $podcastVideoFilePath;
+        //             //$FinalUrl .= $UrlToSave;
+        //             $podcast->url_type = 1;
+        //             $podcast->file_size = $eventPodcast->file_size;
         //         } else {
-        //             $UrlToSave = $request->input_url;
-        //             $FinalUrl = $UrlToSave;
+        //             $UrlToSave = $eventPodcast->url;
+        //             //$FinalUrl = $UrlToSave;
         //             $podcast->url_type = 0;
         //         }
 
@@ -872,15 +916,22 @@ class EventsController extends Controller
         //         $speaker->organization = $eventSpeaker->organization;
         //         $speaker->linkedin_url = $eventSpeaker->linkedin_url;
         //         $userId = Auth::id();
+
         //         $UrlToSave = "";
         //         $FinalUrl = "";
-        //         if ($request->hasFile('profilePicImageUpload')) {
-        //             $file = $request->file('profilePicImageUpload');
-        //             $name = time() . $file->getClientOriginalName();
-        //             $userId = Auth::id();
-        //             $filePath = 'org_' . $userId . '/Speaker/' . $name;
-        //             Storage::disk('s3')->put($filePath, file_get_contents($file));
-        //             $UrlToSave = $filePath;
+        //         if (!empty($eventSpeaker->profile_pic)) {
+        //             $profilePicFile = $eventSpeaker->profile_pic;
+        //             $profilePicFileArr = explode('/', $profilePicFile);
+        //             $fileName = "";
+        //             foreach ($profilePicFileArr as $profilePicFileName) {
+        //                 $fileName = $profilePicFileName;
+        //             } 
+        //             $profilePicFilePath = 'org_' . $user->id . '/Speaker/' . time(). $fileName;
+               
+        //             $getProfilePicFile = Storage::disk('s3')->get($profilePicFile);
+        //             Storage::disk('s3')->put($profilePicFilePath, $getProfilePicFile, 'public');
+                
+        //             $UrlToSave = $profilePicFilePath;
         //             $FinalUrl .= $UrlToSave;
         //         }
 

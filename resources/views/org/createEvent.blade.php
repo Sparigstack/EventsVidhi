@@ -725,14 +725,17 @@
                                         </div>
 
                                         <div class="col-lg-8 m-auto">
-                                            <div class="card AddTicketContainer">
-                                                <div class="card-header">Add Ticket</div>
+                                            <div class="card AddTicketContainer d-none">
+                                                <!-- <div class="card-header">Add Ticket</div> -->
                                                 <div class="card-body">
                                                     <form class="AddTicketForm row" method="post" enctype="multipart/form-data">
                                                         {{ csrf_field() }}
                                                         <input type="hidden" class="AddTicketUrl d-none" value="{{url('org/events/ticket/store')}}">
-                                                        <input type="hidden" class="UpdateTicketID" value="" name="UpdateSpeakerID">
+                                                        <input type="hidden" class="editEventTickets" value="{{url('org/events/editTicket')}}">
+                                                        <input type="hidden" class="updateTicket" value="{{url('org/events/updateTicket')}}" name="updateTicket">
                                                         <input type="text" class="TicketEventID d-none" id="TicketEventID" name="TicketEventID" value="{{$event->id}}">
+                                                        <input type="hidden" class="ticketId" value="" name="ticketId">
+                                                        <input type="hidden" class="removeEventTickets" value="{{url('org/events/deleteTicket')}}">
                                                         <div class="form-group col-lg-12">
                                                             <label for="TicketName">Name</label>
                                                             <input type="text" class="form-control" id="TicketName" value="" name="TicketName" placeholder="Name" required>
@@ -770,11 +773,16 @@
                                                             </div>
                                                             <small class="text-danger"></small>
                                                         </div>
-                                                        <div class="col-lg-12"><button type="submit" class="btn btn-primary pull-right m-2 AddSpeakerSubmitButton" data-id="">Save</button>
-                                                            <div class="btn btn-primary m-2 pull-right">Cancel</div>
+                                                        <div class="col-lg-12"><button type="submit" id="AddTicketSubmitButton" data-id="" class="btn btn-primary pull-right mr-2 AddTicketSubmitButton" >Save Ticket</button>
+                                                            <!-- <div class="btn btn-primary m-2 pull-right">Cancel</div> -->
+                                                        <input type="button" id="ticketCancelButton" data-id="" class="btn btn-primary pull-right mr-2" value="Cancel" onclick="showTicketListing(this);">
                                                         </div>
                                                     </form>
                                                 </div>
+
+                                            </div>
+                                            <div class="text-center col-lg-12 mt-4">
+                                                <button type="button" id="ticketButton" class="btn btn-outline-primary btn-round waves-effect waves-light m-1" onclick="uploadTicket(this);">Add Ticket</button>
                                             </div>
                                         </div>
                                     </div>
