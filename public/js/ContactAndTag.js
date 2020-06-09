@@ -12,11 +12,6 @@ $(document).ready(function () {
                             text: 'export to csv',
                             exportOptions: {
                             columns: [0, 1, 2, 3, 4]
-                    }}, {
-                    extend: 'pdf',
-                            text: 'export to pdf',
-                            exportOptions: {
-                                columns: [0, 1, 2, 3, 4]
                     }}, ],
     });
     contactsTable.buttons().container().appendTo('#default-datatable-contacts_wrapper .col-md-6:eq(0)');
