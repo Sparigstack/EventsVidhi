@@ -6,12 +6,12 @@ $(document).ready(function () {
         buttons: [{extend: 'excel',
                                 text: 'export to excel',
                                 exportOptions: {
-                                columns: [0, 1, 2, 3, 4]
+                                columns: [0, 1, 2, 3]
                     }}, {
                     extend: 'csv',
                             text: 'export to csv',
                             exportOptions: {
-                            columns: [0, 1, 2, 3, 4]
+                            columns: [0, 1, 2, 3]
                     }}, ],
     });
     contactsTable.buttons().container().appendTo('#default-datatable-contacts_wrapper .col-md-6:eq(0)');
