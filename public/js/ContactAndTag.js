@@ -2,8 +2,25 @@ $(document).ready(function () {
     var contactsTable = $('#default-datatable-contacts').DataTable({
         columnDefs: [
             {orderable: false, targets: 4},
-        ]
+        ],
+        buttons: [{extend: 'excel',
+                                text: 'export to excel',
+                                exportOptions: {
+                                columns: [0, 1, 2, 3, 4]
+                    }}, {
+                    extend: 'csv',
+                            text: 'export to csv',
+                            exportOptions: {
+                            columns: [0, 1, 2, 3, 4]
+                    }}, {
+                    extend: 'pdf',
+                            text: 'export to pdf',
+                            exportOptions: {
+                                columns: [0, 1, 2, 3, 4]
+                    }}, ],
     });
+    contactsTable.buttons().container().appendTo('#default-datatable-contacts_wrapper .col-md-6:eq(0)');
+                                            
 
     // $('#tagsForm').on('submit', function (event) {
     $('#tagsForm').keydown(function (event) {
