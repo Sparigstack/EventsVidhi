@@ -190,3 +190,6 @@ table .max-w-table-100 .btn{margin: 10px auto;
 .listItemsBottomBorder{
     border: 1px solid rgba(0, 0, 0, .125) !important;
 }
+.uploadPodcastBox .dragFileContainer input {
+    height: 20%;
+}

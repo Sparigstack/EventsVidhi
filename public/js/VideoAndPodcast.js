@@ -19,11 +19,31 @@ $(document).ready(function () {
         var vidFile = this.files;
         if (vidFile.length > 0) {
             $(parent).find("#btnSaveVideo").removeClass('d-none');
-            $(parent).find("#btnCancelVideo").removeClass('d-none');
+            // $(parent).find("#btnCancelVideo").removeClass('d-none');
+            $("#btnCancelVideo").removeClass('d-none');
             $(parent).find("#btnSaveVideo").text('Upload & Save');            
         } else {
             $(parent).find("#btnSaveVideo").addClass('d-none');
-            $(parent).find("#btnCancelVideo").addClass('d-none');
+            // $(parent).find("#btnCancelVideo").addClass('d-none');
+            $("#btnCancelVideo").addClass('d-none');
+        }
+    });
+
+    $('.dragFileForm #input_podfile').change(function () {
+        // $('.dragFileForm p').text(this.files.length + " file(s) selected");
+        $('.dragFileForm').find('.dragFileText').text(this.files.length + " file(s) selected");
+
+        var parent = findParentForm(this);
+        var podFile = this.files;
+        if (podFile.length > 0) {
+            $(parent).find("#btnSavePodcast").removeClass('d-none');
+            // $(parent).find("#btnCancelPodcast").removeClass('d-none');
+            $("#btnCancelPodcast").removeClass('d-none');
+            $(parent).find("#btnSavePodcast").text('Upload & Save');            
+        } else {
+            $(parent).find("#btnSavePodcast").addClass('d-none');
+            // $(parent).find("#btnCancelPodcast").addClass('d-none');
+            $("#btnCancelPodcast").addClass('d-none');
         }
     });
     UploadPodcastVideoBox();
@@ -92,13 +112,22 @@ function UploadPodcastVideoBox() {
         $('#input_url').attr('readonly', false);
         $("#input_url").prop('required', true);
         $("#input_podfile").prop('required', false);
+
+        $("#input_podfile").val('');
+        $('#input_podfile').trigger('onchange');
+
         $('.uploadPodcastBox').addClass('d-none');
-        $('.podcastProgressBar').addClass('d-none');
+        // $('.podcastProgressBar').addClass('d-none');
+        $('.uploadPodcastBox').find(".dragFileText").text('Drag your podcast file here or click in this area.');
     } else {
         $('.uploadPodcastBox').removeClass('d-none');
-        $('.podcastProgressBar').removeClass('d-none');
+        // $('.podcastProgressBar').removeClass('d-none');
         $('#input_url').attr('readonly', true);
         $("#input_url").prop('required', false);
+
+        $('#input_url').val('');
+        $('#input_url').trigger('onchange');
+
         $("#input_podfile").prop('required', true);
     }
 }
@@ -130,10 +159,26 @@ function videoUrlCheck(element) {
     var vidUrl = $(element).val();
     if (vidUrl != null && vidUrl != "") {
         $(parent).find("#btnSaveVideo").removeClass('d-none');
-        $(parent).find("#btnCancelVideo").removeClass('d-none');
+        // $(parent).find("#btnCancelVideo").removeClass('d-none');
+        $("#btnCancelVideo").removeClass('d-none');
     } else {
         $(parent).find("#btnSaveVideo").addClass('d-none');
-        $(parent).find("#btnCancelVideo").addClass('d-none');
+        // $(parent).find("#btnCancelVideo").addClass('d-none');
+        $("#btnCancelVideo").addClass('d-none');
+    }
+}
+
+function pocastUrlCheck(element) {
+    var parent = findParent(element);
+    var podcastUrl = $(element).val();
+    if (podcastUrl != null && podcastUrl != "") {
+        $(parent).find("#btnSavePodcast").removeClass('d-none');
+        // $(parent).find("#btnCancelPodcast").removeClass('d-none');
+        $("#btnCancelPodcast").removeClass('d-none');
+    } else {
+        $(parent).find("#btnSavePodcast").addClass('d-none');
+        // $(parent).find("#btnCancelPodcast").addClass('d-none');
+        $("#btnCancelPodcast").addClass('d-none');
     }
 }
 

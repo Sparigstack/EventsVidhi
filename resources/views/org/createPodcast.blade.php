@@ -48,54 +48,19 @@
                     </div>
                     @endif
 
-                    <form class="dragFileForm" action="{{$ActionCall}}" method="POST" enctype="multipart/form-data">
+                    <form class="dragFileForm parent" action="{{$ActionCall}}" method="POST" enctype="multipart/form-data">
                     {{ csrf_field() }}
                     <input type="hidden" id="hdnRedirect" value="{{$RedirectCall}}" />
                         <div class='form-group'>
                             <label for='input_title'>Podcast Title</label>
                             <input type="text" class="form-control" id="input_title" name='input_title' value="{{  old('input_title', $title) }}" placeholder="Enter Podcast Title" required>
                         </div>
-                        <div class='form-group'>
-                            <label for='input_url'>Podcast URL</label>
-                            <input type="text" class="form-control" id="input_url" name="input_url"  value="{{  old('input_url', $desription) }}" placeholder="Enter Podcast URL" required>
-                        </div>
-
+                        <hr class="mt-5 mb-5">
                         <div class="form-group">
-                                <label for="BlankLabel"></label>
-                                <div class="icheck-material-primary">
-                                    <input onclick="UploadPodcastVideoBox()" type="checkbox" id="IsUploadPodcast" name="IsUploadPodcast" @if(old('IsUploadPodcast')) checked @endif>
-                                    <label for="IsUploadPodcast">Or upload podcast</label>
-                                </div>
-                            </div>
-
-                        <div class='parent' style='width: 100%;'>
-                            <div class='form-group  d-none uploadPodcastBox'>
-                                <label for='input_podfile'>Upload Podcast</label>
-                                <div class='dragFileContainer'>
-                                    <input type="file" id='input_podfile' name='input_podfile' value="{{  old('input_podfile') }}" >
-                                    <p class="dragFileText">Drag your podcast here or click to upload</p>
-                                </div>
-                                <small class="text-danger">{{ $errors->first('input_podfile') }}</small>
-                            </div>
-                            <div class="form-group podcastProgressBar d-none">
-                                <div class="progress_upload">
-                                    <div class="bar_upload"></div >
-                                    <div class="percent_upload">0%</div >
-                                </div>
-                            </div>
-                            <!-- <div class="form-group">
-                                <label for="BlankLabel"></label>
-                                <input type="hidden" class="linkedEvent" name="linkedEvent" value="">
-                                <div class="icheck-material-primary">
-                                    <input onchange='showHideLinkEvent(this);' type="checkbox" id="IsLinkedEvent" name="IsLinkedEvent" @if(old('IsLinkedEvent', $linkedEventCheckced)) checked @endif>
-                                    <label for="IsLinkedEvent"> Do you want to link this podcast with any Event?</label>
-                                </div>
-                            </div> -->
-
-                            <div class="form-group">
                                     <label for="BlankLabel"></label>
                                 <input type="hidden" class="linkedEvent" name="linkedEvent" value="">
-                                    <p> Do you want to link this podcast with any Event?</p>
+                                    <!-- <p> Do you want to link this podcast with any Event?</p> -->
+                                    <label> Do you want to link this podcast with any Event?</label>
                                     <div class="row pl-3">
                                     <div class="icheck-material-primary">
                                         <input onchange='showHideLinkEvent(this);' type="radio" class="" id="yesEventLinked" name="IsLinkedEvent" @if(old('IsLinkedEvent', $linkedEventCheckced)) checked @endif>
@@ -114,13 +79,13 @@
                                 </div>
                             </div>
 
-                             <div class="form-group descriptionDiv">
-                                            <label for="Description">Podcast Description</label>
+                        <div class="form-group descriptionDiv">
+                                            <!-- <label for="Description">Podcast Description</label> -->
+                                            <p for="Description">Podcast Description</p>
                                             <textarea id="Description" name="Description" class="form-control" title="Description" placeholder="Description" autocomplete="off" rows="4">{{ old('Description', $podcastvideoDescription) }}</textarea>
-                            </div>
+                        </div>
 
-
-                            <div id='linkEvent' class="form-group EventSelectionBox d-none">
+                        <div id='linkEvent' class="form-group EventSelectionBox d-none">
                                 <label for="EventToLink mb-0">Link To Event</label>
                                 <select autocomplete="off" value="" name="EventToLink" id="EventToLink" class=" custom-select">
                                     <option value="">Select Event To Link</option>
@@ -142,11 +107,113 @@
 
                                 </select>
                             </div>
+
+                        <hr class="mt-5 mb-5">
+                        <div class="form-group">
+                            <label> You can either save your Youtube or Vimeo podcast URL OR you can upload your own podcast.</label>
+                        </div>
+                        <div class="form-group">
+                            <p for='input_url' class="float-left">Podcast URL</p><span style="font-size: 11px;font-weight: 600;">&nbsp;&nbsp;(YouTube or Vimeo url)</span>
+                            <input type="text" class="form-control" id="input_url" onkeyup="pocastUrlCheck(this);" onchange="pocastUrlCheck(this);" name="input_url" value="{{  old('input_url', $desription) }}" placeholder="Enter Podcast URL" required>
+                            <!-- <label> You can either save your Youtube or Vimeo podcast URL OR you can upload your own podcast.</label> -->
+                        </div>
+
+                        <!-- <div class='form-group'>
+                            <label for='input_url'>Podcast URL</label>
+                            <input type="text" class="form-control" id="input_url" name="input_url"  value="{{  old('input_url', $desription) }}" placeholder="Enter Podcast URL" required>
+                        </div> -->
+
+                        <div class="form-group">
+                                <label for="BlankLabel"></label>
+                                <div class="icheck-material-primary">
+                                    <input onclick="UploadPodcastVideoBox()" type="checkbox" id="IsUploadPodcast" name="IsUploadPodcast" @if(old('IsUploadPodcast')) checked @endif>
+                                    <label for="IsUploadPodcast">Or upload your own podcast</label>
+                                </div>
+                            </div>
+
+                        <div class='parent' style='width: 100%;'>
+                            <div class='form-group  d-none uploadPodcastBox'>
+                                <!-- <label for='input_podfile'>Upload Podcast</label> -->
+                                <p for='input_podfile'>Select Podcast</p>
+                                <div class='dragFileContainer'>
+                                    <input type="file" id='input_podfile' name='input_podfile' value="{{  old('input_podfile') }}" >
+                                    <p class="dragFileText">Drag your podcast file here or click to upload</p>
+                                </div>
+                                <small class="text-danger">{{ $errors->first('input_podfile') }}</small>
+                            </div>
+                            <div class="form-group podcastProgressBar d-none">
+                                <div class="progress_upload">
+                                    <div class="bar_upload"></div >
+                                    <div class="percent_upload">0%</div >
+                                </div>
+                            </div>
+                            <!-- <div class="form-group">
+                                <label for="BlankLabel"></label>
+                                <input type="hidden" class="linkedEvent" name="linkedEvent" value="">
+                                <div class="icheck-material-primary">
+                                    <input onchange='showHideLinkEvent(this);' type="checkbox" id="IsLinkedEvent" name="IsLinkedEvent" @if(old('IsLinkedEvent', $linkedEventCheckced)) checked @endif>
+                                    <label for="IsLinkedEvent"> Do you want to link this podcast with any Event?</label>
+                                </div>
+                            </div> -->
+
+                            <!-- <div class="form-group">
+                                    <label for="BlankLabel"></label>
+                                <input type="hidden" class="linkedEvent" name="linkedEvent" value="">
+                                    <p> Do you want to link this podcast with any Event?</p>
+                                    <div class="row pl-3">
+                                    <div class="icheck-material-primary">
+                                        <input onchange='showHideLinkEvent(this);' type="radio" class="" id="yesEventLinked" name="IsLinkedEvent" @if(old('IsLinkedEvent', $linkedEventCheckced)) checked @endif>
+                                            <label for="yesEventLinked">Yes</label>
+                                    </div>
+                                    <div class="icheck-material-primary pl-2">
+                                        <?php 
+                                            $checkedRadio = "checked";
+                                            if($podcastVideoEventId != 0){
+                                                $checkedRadio = "";
+                                            }
+                                        ?>
+                                        <input onchange='showHideLinkEvent(this);' type="radio" id="noEventLinked" name="IsLinkedEvent" {{$checkedRadio}}>
+                                        <label for="noEventLinked">No</label>
+                                    </div>
+                                </div>
+                            </div> -->
+
+                             <!-- <div class="form-group descriptionDiv">
+                                            <label for="Description">Podcast Description</label>
+                                            <textarea id="Description" name="Description" class="form-control" title="Description" placeholder="Description" autocomplete="off" rows="4">{{ old('Description', $podcastvideoDescription) }}</textarea>
+                            </div> -->
+
+
+                            <!-- <div id='linkEvent' class="form-group EventSelectionBox d-none">
+                                <label for="EventToLink mb-0">Link To Event</label>
+                                <select autocomplete="off" value="" name="EventToLink" id="EventToLink" class=" custom-select">
+                                    <option value="">Select Event To Link</option>
+                                    <?php
+                                    foreach ($events as $event) {
+                                        $IsSelected = "";
+                                        if (!empty($podcast)) {
+                                            if ($event->id == $podcastVideoEventId) {
+                                                $IsSelected = "selected";
+                                            }
+                                        }
+                                        //                                        $IsSelected = "";
+                                        //                                        if ($event->id == $eventId) {
+                                        //                                            $IsSelected = "selected";
+                                        //                                        }
+                                    ?>
+                                        <option value="{{$event->id}}" {{$IsSelected}}  @if (old('EventToLink')==$event->id) selected="selected" @endif ><?php echo $event->title; ?> </option>
+                                    <?php } ?>
+
+                                </select>
+                            </div> -->
                         </div>
 
 
-                        <button class="btn btn-primary px-5 pull-right" type="submit">Save Podcast</button>
+                        <!-- <button class="btn btn-primary px-5 pull-right" type="submit">Save Podcast</button> -->
+                        <button id="btnSavePodcast" class="d-none btn btn-primary px-5 pull-right" type="submit">Save Podcast</button>
                     </form>
+
+                    <a href="{{url('org/podcasts')}}"><button id="btnCancelPodcast" class="d-none btn btn-light float-left">Cancel</button></a>
 
                     <!--                    <form class="row" method="post" action="{{$ActionCall}}" enctype="multipart/form-data">
                                             {{ csrf_field() }}
@@ -211,7 +278,7 @@
                                     $AwsUrl = env('AWS_URL');
                                         $videoPodcastUrl = "";
                                         if (!empty($Podcast->url)) {
-                                            if($Podcast->url_type == '1'){
+                                            if(substr($Podcast->url, 0, 8 ) != "https://"){
                                                 $videoPodcastUrl = $AwsUrl . $Podcast->url;
                                             }
                                             else{
@@ -282,9 +349,10 @@
 
         $('.dragFileForm').ajaxForm({
             beforeSend: function () {
+                $('.dragFileForm').find('.podcastProgressBar').removeClass('d-none');
                 //status.empty();
                 var percentVal = '0%';
-                var posterValue = $('input[name=input_podfile]').fieldValue();
+                // var posterValue = $('input[name=input_podfile]').fieldValue();
                 bar.width(percentVal)
                 percent.html(percentVal);                
             },
@@ -292,20 +360,28 @@
                 var percentVal = percentComplete + '%';
                 bar.width(percentVal);
                 percent.html(percentVal);
-                LoaderStart();
-            },
-            success: function () {
-                LoaderStop();
-                var percentVal = 'Redirecting..';
-                bar.width(percentVal);
-                percent.html(percentVal);
-            },
-            complete: function (xhr) {
-                //status.html(xhr.responseText);
-                //alert('Uploaded Successfully');
-
-                window.location.href = $('#hdnRedirect').val();
+                if (percentComplete == 100) {
+                                                    LoaderStart();
+                                                    var interval = setInterval(function mak() {
+                                                        clearInterval(interval);
+                                                        window.location.href = $('#hdnRedirect').val();
+                                                        LoaderStop();
+                                                    }, 5000);
+                // LoaderStart();
             }
+            },
+            // success: function () {
+            //     LoaderStop();
+            //     var percentVal = 'Redirecting..';
+            //     bar.width(percentVal);
+            //     percent.html(percentVal);
+            // },
+            // complete: function (xhr) {
+            //     //status.html(xhr.responseText);
+            //     //alert('Uploaded Successfully');
+
+            //     window.location.href = $('#hdnRedirect').val();
+            // }
         });
 
     })();

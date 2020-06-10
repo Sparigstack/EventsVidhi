@@ -159,9 +159,11 @@ $CardTitle = "Add New Video";
 
 
                         </div>
-                        <button id="btnCancelVideo" class="d-none btn btn-light px-5 float-left" type="submit">Cancel</button>
+                        <!-- <button id="btnCancelVideo" class="d-none btn btn-light px-5 float-left" type="submit">Cancel</button> -->
                         <button id="btnSaveVideo" class="d-none btn btn-primary px-5 pull-right" type="submit">Save Video</button>
                     </form>
+
+                    <a href="{{url('org/videos')}}"><button id="btnCancelVideo" class="d-none btn btn-light float-left">Cancel</button></a>
 
                     <!--                    <form class="row" method="post" action="{{$ActionCall}}" enctype="multipart/form-data">
                                             {{ csrf_field() }}
@@ -191,8 +193,8 @@ $CardTitle = "Add New Video";
         </div>
         <div class="col-lg-6">
             <div class="card">
-                <div class="card-header">Recently Added Videos
-                    <div class="card-action">
+                <div class="card-header listItemsBottomBorder border-bottom-0">Recently Added Videos
+                    <!-- <div class="card-action">
                         <div class="dropdown">
                             <a href="javascript:void();" class="dropdown-toggle dropdown-toggle-nocaret" data-toggle="dropdown">
                                 <i class="icon-options"></i>
@@ -205,7 +207,7 @@ $CardTitle = "Add New Video";
                                 <a class="dropdown-item" href="javascript:void();">Separated link</a>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
 
                 <ul class="list-group list-group-flush shadow-none">
@@ -219,34 +221,49 @@ $CardTitle = "Add New Video";
                         </div>
                     </li> -->
                     <?php foreach ($RecentVideos as $Video) { ?>
-                        <li class="list-group-item">
+                        <li class="list-group-item listItemsBottomBorder">
                             <div class="media align-items-center">
                                 <?php
-                                $a = 'http';
-                                $videoUrl = $Video->url;
-
-                                if (strpos($videoUrl, $a) !== false) {
-                                    $actualUrl = $videoUrl;
-                                    ?>
-                                    <iframe width="200" src="{{$actualUrl}}">
-                                    </iframe>
-    <?php } else {
-        $actualUrl = env('AWS_URL') . $videoUrl; ?>
-                                    <video width="200" controls="">
-                                        <source src="{{$actualUrl}}" type="video/mp4">
-                                        Your browser does not support HTML video.
-                                    </video>
-    <?php } ?>
-
-
+                                    $AwsUrl = env('AWS_URL');
+                                        $videoUrl = "";
+                                        if (!empty($Video->url)) {
+                                            if(substr($Video->url, 0, 8 ) != "https://"){
+                                                $videoUrl = $AwsUrl . $Video->url;
+                                            }
+                                            else{
+                                                $videoUrl = $Video->url;
+                                            }
+                                        }
+                                ?>
+                                    
+                                <a href="{{$videoUrl}}" target="_blank"><img src="{{asset('assets/images/video-icon.png')}}" alt="user avatar" class="customer-img rounded"></a>
 
                                 <div class="media-body ml-3">
                                     <h6 class="mb-0">{{$Video->title}}</h6>
-                                    <small class="small-font">{{$Video->description}}</small>
+                                    <?php 
+                                    $eventDesc = "";
+                                    $eventPrefix = "";
+                                    $eventLink = "";
+                                    $desc = "";
+                                    if(isset($Video->event)){
+                                        $eventPrefix = "Event :";
+                                        $eventDesc = $Video->event->title;
+                                    }else{
+                                        $desc = $Video->description;
+                                    } 
+
+                                    if(!empty($eventDesc)){
+                                        $eventId = $Video->event->id;
+                                    ?>
+                                    <small class="small-font"><b>{{$eventPrefix}}</b><a target="_blank" href="{{url('org/events/'.$eventId)}}"> {{$eventDesc}}</a></small>
+                                    <?php } else { ?>
+                                    <small class="small-font">{{$desc}}</small>
+                                    <?php } ?>
                                 </div>
+
                             </div>
                         </li>
-<?php } ?>
+                    <?php } ?>
                 </ul>
                 <div class="card-footer text-center bg-transparent border-0">
                     <a href="{{url('org/videos')}}">View all Videos</a>
