@@ -131,10 +131,10 @@ return [
 
     'custom' => [
         'EventBannerImage' => [
-            'dimensions' => 'The image dimensions must be less than 468px width & 200px height',
+            'dimensions' => 'The image dimensions must be less than 845px width & 445px height',
         ],
         'EventThumbnailImage' => [
-            'dimensions' => 'The image dimensions must be less than 1280px width & 720px height',
+            'dimensions' => 'The image dimensions must be less than 420px width & 360px height',
         ],
     ],
 

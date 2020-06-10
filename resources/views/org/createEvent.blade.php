@@ -17,7 +17,7 @@
     $PostalCode = "";
     $cityID = 0;
     $countryId = 0;
-    $stateId = 0;
+    // $stateId = 0;
     $timezoneId = 0;
     $EventDate = "";
     $EventEndDate = "";
@@ -45,7 +45,9 @@
     $activeShow = "show";
     $event_id = 0;
     $CustomHumanReadableUrl = "";
-    $FinalUrl = env('APP_URL_Custom') . "/" . Auth()->user()->username;
+    $city = "";
+    $state = "";
+    $FinalUrl = "";
     if (!empty($event)) {
         $event_id = $event->id;
         $ActionCall = url('org/events/edit/' . $event->id);
@@ -75,6 +77,10 @@
             $readonly = "readonly='true'";
             $HiddenEventUrl = "";
             $EventUrl = $event->online_event_url;;
+        } else {
+            $countryId = $event->country_id;
+            $city = $event->city;
+            $state = $event->state;
         }
         if ($event->is_paid) {
             $IsPaid = "checked";
@@ -95,10 +101,13 @@
         }
         if (!empty($event->custom_url)) {
             $CustomHumanReadableUrl = $event->custom_url;
-            $FinalUrl = env('APP_URL_Custom') . "/" . Auth()->user()->username . "/" . $event->custom_url;
+            $FinalUrl = env('APP_URL_Custom'). $event->custom_url;
         }
     }
-
+    $IsLocationFields = "disabled";
+    if ($IsOnline != "checked") {
+        $IsLocationFields = "";
+    }
     if (!empty($speaker)) {
         if (!empty($speaker->profilePic)) {
             $profilePicUrl = $AwsUrl . $speaker->profilePic;
@@ -113,7 +122,7 @@
             <div class="card-body">
                 <ul class="nav nav-tabs nav-tabs-info nav-justified">
                     <li class="nav-item">
-                        <a class="nav-link 
+                        <a class="nav-link
                         <?php if ($tabe == 0) {
                             echo "active";
                         } ?>
@@ -145,7 +154,7 @@
                 </ul>
 
                 <div class="tab-content">
-                    <div class="row tab-pane 
+                    <div class="row tab-pane
                     <?php
                     if ($tabe == 0) {
                         echo "active";
@@ -194,26 +203,6 @@
                                         </div>
 
                                         <div class="form-group col-lg-12 row">
-                                            <div class="form-group col-lg-6">
-                                                <label for="EventThumbnailImage">Thumbnail Image (optional)</label>
-                                                <p style="font-size: .7pc;">Preferred image size is 420 &#10005; 360 px and maximum 4MB allowed.</p>
-                                                <!-- <input type="file" accept="image/*" id="EventThumbnailImage" name="EventThumbnailImage" class="form-control files" onchange="document.getElementById('thumbnailImage').src = window.URL.createObjectURL(this.files[0]);document.getElementById('thumbnailImage').classList.remove('d-none');"> -->
-
-                                                <div class="dragFileContainer thumbNailContainer" style="display: flex;justify-content: center;">
-                                                    <input type="file" accept="image/*" id="EventThumbnailImage" name="EventThumbnailImage" class="form-control files">
-                                                    <img id="thumbnailImage" src="{{$ThumnailUrl}}" class="{{$ThumbNailHidden}} imageRadius" alt="your image" width="100" />
-
-                                                    <?php
-                                                    if (empty($ThumnailUrl)) { ?>
-                                                        <p id="TempTextThumb">Drop your image here or click to upload.</p>
-                                                    <?php } ?>
-                                                </div>
-
-                                                <small class="text-danger">{{ $errors->first('EventThumbnailImage') }}</small>
-                                                <div class="text-danger d-none SizeError" id='SizeErrorBannerImage'>Image size must be less than or eqaul to 4MB</div>
-
-                                            </div>
-
 
                                             <div class="form-group col-lg-6">
                                                 <label for="title">Title</label>
@@ -270,6 +259,27 @@
                                                 <small class="text-danger">{{ $errors->first('category') }}</small>
                                                 <textarea id="HiddenCategoyID" name="HiddenCategoyID" required class="form-controld d-none" title="HiddenCategoyID" placeholder="HiddenCategoyID" autocomplete="off" rows="4">{{ old('HiddenCategoyID', $MultSelectTags) }} </textarea>
                                             </div>
+
+                                            <div class="form-group col-lg-6">
+                                                <label for="EventThumbnailImage">Thumbnail Image (optional)</label>
+                                                <p style="font-size: .7pc;">Preferred image size is 420 &#10005; 360 px and maximum 4MB allowed.</p>
+                                                <!-- <input type="file" accept="image/*" id="EventThumbnailImage" name="EventThumbnailImage" class="form-control files" onchange="document.getElementById('thumbnailImage').src = window.URL.createObjectURL(this.files[0]);document.getElementById('thumbnailImage').classList.remove('d-none');"> -->
+
+                                                <div class="dragFileContainer thumbNailContainer m-auto" style="display: flex;justify-content: center;">
+                                                    <input type="file" accept="image/*" id="EventThumbnailImage" name="EventThumbnailImage" class="form-control files">
+                                                    <img id="thumbnailImage" src="{{$ThumnailUrl}}" class="{{$ThumbNailHidden}} imageRadius" alt="your image" width="100" />
+
+                                                    <?php
+                                                    if (empty($ThumnailUrl)) { ?>
+                                                        <p id="TempTextThumb">Drop your image here or click to upload.</p>
+                                                    <?php } ?>
+                                                </div>
+
+                                                <small class="text-danger">{{ $errors->first('EventThumbnailImage') }}</small>
+                                                <div class="text-danger d-none SizeError" id='SizeErrorBannerImage'>Image size must be less than or eqaul to 4MB</div>
+
+                                            </div>
+
                                         </div>
 
 
@@ -306,9 +316,35 @@
                                                     </div>
 
                                                     <div class="form-group col-lg-12">
+                                                        <label for="Address1">Address Line 1</label>
+                                                        <input type="text" id="Address1" {{$disabled}} name="Address1" class="form-control" title="Address Line 1" placeholder="Address Line 1" autocomplete="off" rows="0" value="{{  old('Address1', $address) }}">
+                                                    </div>
+
+                                                    <div class="form-group col-lg-12">
+                                                        <label for="Address2">Address Line 2</label>
+                                                        <input type="text" id="Address2" {{$disabled}} name="Address2" class="form-control" title="Address Line 2" placeholder="Address Line 2" autocomplete="off" rows="0" value="{{  old('Address2', $address2) }}">
+                                                    </div>
+
+                                                    <div class="form-group col-lg-12">
+                                                        <label for="city">City</label>
+                                                        <input type="text" {{$isPhysicalAddressReq}} autocomplete="off" value="{{  old('city', $city) }}" name="city" id="city" class="form-control" {{$disabled}} placeholder="Enter City" />
+                                                    </div>
+
+                                                    <div class="form-group col-lg-12">
+                                                        <input type="hidden" class="getCity" value="{{url('getCity')}}">
+                                                        <label for="state">State</label>
+                                                        <input type="text" {{$isPhysicalAddressReq}} autocomplete="off" value="{{ old('state',$state) }}" name="state" id="state" class="form-control" {{$disabled}} placeholder="Enter State" />
+                                                    </div>
+
+                                                    <div class="form-group col-lg-12">
+                                                        <label for="PostalCode">Postal code</label>
+                                                        <input type="text" id="PostalCode" {{$disabled}} name="PostalCode" class="form-control" title="Postal Code" placeholder="Postal Code" autocomplete="off" rows="0" value="{{  old('PostalCode', $PostalCode) }}">
+                                                    </div>
+
+                                                    <div class="form-group col-lg-12">
                                                         <input type="hidden" class="getState" value="{{url('getState')}}">
                                                         <label for="country">Country</label>
-                                                        <select {{$isPhysicalAddressReq}} autocomplete="off" value="{{ old('country') }}" name="country" id="country" class=" custom-select" {{$disabled}} onchange="getState(this);">
+                                                        <select {{$isPhysicalAddressReq}} autocomplete="off" value="{{ old('country') }}" name="country" id="country" class=" custom-select" {{$disabled}}>
                                                             <option value>Select Country</option>
                                                             <?php foreach ($countries as $country) {
                                                                 $IsSelected = "";
@@ -321,52 +357,6 @@
 
                                                         </select>
                                                         <img src="{{ asset('assets/images/busy.gif') }}" class="loader-icon float-right d-none" alt="logo icon">
-                                                    </div>
-
-                                                    <div class="form-group col-lg-12">
-                                                        <input type="hidden" class="getCity" value="{{url('getCity')}}">
-                                                        <label for="state">State</label>
-                                                        <select {{$isPhysicalAddressReq}} autocomplete="off" value="{{ old('state') }}" disabled name="state" id="state" class=" custom-select" {{$disabled}} onchange="getCity(this);">
-                                                            <option value>Select State</option>
-
-
-                                                        </select>
-                                                        <img src="{{ asset('assets/images/busy.gif') }}" class="loader-icon float-right d-none" alt="logo icon">
-                                                    </div>
-
-                                                    <div class="form-group col-lg-12">
-                                                        <label for="city">City</label>
-                                                        <select {{$isPhysicalAddressReq}} autocomplete="off" value="{{ old('city') }}" name="city" id="city" disabled class="custom-select" {{$disabled}} onchange="ShowAddressFields(this);">
-                                                            <option>Select City</option>
-                                                            <?php if (!empty($event)) {
-                                                                foreach ($cities as $city) {
-                                                                    $IsSelected = "";
-                                                                    if ($city->id == $cityID) {
-                                                                        $IsSelected = "selected";
-                                                                    }
-                                                            ?>
-                                                                    <option value="{{$city->id}}" {{$IsSelected}} @if (old('city')==$city->id) selected="selected" @endif ><?php echo $city->name; ?> </option>
-                                                            <?php }
-                                                            } ?>
-
-                                                        </select>
-                                                    </div>
-
-
-                                                    <div class="form-group col-lg-12">
-                                                        <label for="Address1">Address Line 1</label>
-                                                        <input type="text" id="Address1" disabled name="Address1" {{$readonly}} class="form-control" title="Address Line 1" placeholder="Address Line 1" autocomplete="off" rows="0" value="{{  old('Address1', $address) }}">
-                                                    </div>
-
-                                                    <div class="form-group col-lg-12">
-                                                        <label for="Address2">Address Line 2</label>
-                                                        <input type="text" id="Address2" disabled name="Address2" {{$readonly}} class="form-control" title="Address Line 2" placeholder="Address Line 2" autocomplete="off" rows="0" value="{{  old('Address2', $address2) }}">
-                                                    </div>
-
-
-                                                    <div class="form-group col-lg-12">
-                                                        <label for="PostalCode">Postal code</label>
-                                                        <input type="text" id="PostalCode" disabled name="PostalCode" {{$readonly}} class="form-control" title="Postal Code" placeholder="Postal Code" autocomplete="off" rows="0" value="{{  old('PostalCode', $PostalCode) }}">
                                                     </div>
 
                                                 </div>
@@ -475,29 +465,25 @@
                                                                 <label for="ItIsPaid">Paid</label>
                                                             </div>
                                                         </div>
-                                                       
-                                                            <div class="alert alert-info m-0 PaidAlertBox d-none" role="alert">
-                                                                <div class="alert-message pt-1 pb-1">
-                                                                    <span>You will get options for setting price tiers with Tickets once you save changes for this Event.</span>
-                                                                </div>
+
+                                                        <div class="alert alert-info m-0 PaidAlertBox d-none" role="alert">
+                                                            <div class="alert-message pt-1 pb-1">
+                                                                <span>You will get options for setting price tiers with Tickets once you save changes for this Event.</span>
                                                             </div>
-                                                       
+                                                        </div>
+
                                                         <br>
                                                         <div class="form-group col-lg-12">
-                                                            <label for="title">Human friendly event url</label>
-                                                            <?php $IsReadOnly = "";
-                                                            if (Auth()->user()->username == null || Auth()->user()->username == "" || Auth()->user()->username == " ") {
-                                                                $IsReadOnly = "disabled" ?>
-                                                                <p style="color:green;">Please click <a href="{{url('org/settings')}}">here</a> to set username and be able to enter human friendly url.
+                                                            <label for="title">Custom URL</label>
+                                                            <div class="form-control" style="display: flex;align-items:center;height:54px;">
+                                                                <span style="display: flex;align-items: center;">{{env('APP_URL_Custom')}}</span>
+                                                                <input type="text" class="form-control p-0 " style="border:none;" value="{{$CustomHumanReadableUrl}}" onkeyup="ChangeCustomUrl(this);" id="CustomUrl" name="CustomUrl" autocomplete="off">
+                                                            </div>
 
-                                                                </p>
-                                                            <?php } ?>
-
-                                                            <input type="text" class="form-control" value="{{$CustomHumanReadableUrl}}" onkeyup="ChangeCustomUrl(this);" id="CustomUrl" name="CustomUrl" autocomplete="off" placeholder="Human friendly event url" {{$IsReadOnly}}>
 
                                                             <div class="row form-group pl-3">
-                                                                <div class="col-lg-10 p-1" id="HumanFriendlyUrl" data="{{env('APP_URL_Custom')."/".Auth()->user()->username}}" value="{{$FinalUrl}}">
-                                                                    {{$FinalUrl}}
+                                                                <div class="col-lg-10 p-1" id="HumanFriendlyUrl" data="{{env('APP_URL_Custom')}}">
+                                                                     {{$FinalUrl}}
 
                                                                 </div>
 
@@ -696,20 +682,20 @@
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-body row">
-                                    <div id="uploadedTickets" class="col-lg-12 m-auto p-0">
+                                        <div id="uploadedTickets" class="col-lg-12 m-auto p-0">
                                             <?php
                                             foreach ($event->tickets as $ticket) { ?>
                                                 <div class="parent">
                                                     <ul class="list-group parent list-group-flush TicketList mb-2 col-lg-8">
                                                         <li class="list-group-item">
                                                             <div class="media align-items-center">
-                                                                
+
                                                                 <div class="media-body ml-3">
                                                                     <h6 class="mb-0">{{$ticket->name}} -- {{$ticket->quantity}} tickets, ${{$ticket->price}}/ticket</h6>
-                                                                    <?php 
-                                                                    $old_date = $ticket->sales_end;              
+                                                                    <?php
+                                                                    $old_date = $ticket->sales_end;
                                                                     $old_date_timestamp = strtotime($old_date);
-                                                                    $new_date = date('l, F d y h:i:s', $old_date_timestamp); 
+                                                                    $new_date = date('l, F d y h:i:s', $old_date_timestamp);
                                                                     ?>
                                                                     <small class="small-font">End's on - {{$new_date}}</small>
 
@@ -773,9 +759,9 @@
                                                             </div>
                                                             <small class="text-danger"></small>
                                                         </div>
-                                                        <div class="col-lg-12"><button type="submit" id="AddTicketSubmitButton" data-id="" class="btn btn-primary pull-right mr-2 AddTicketSubmitButton" >Save Ticket</button>
+                                                        <div class="col-lg-12"><button type="submit" id="AddTicketSubmitButton" data-id="" class="btn btn-primary pull-right mr-2 AddTicketSubmitButton">Save Ticket</button>
                                                             <!-- <div class="btn btn-primary m-2 pull-right">Cancel</div> -->
-                                                        <input type="button" id="ticketCancelButton" data-id="" class="btn btn-primary pull-right mr-2" value="Cancel" onclick="showTicketListing(this);">
+                                                            <input type="button" id="ticketCancelButton" data-id="" class="btn btn-primary pull-right mr-2" value="Cancel" onclick="showTicketListing(this);">
                                                         </div>
                                                     </form>
                                                 </div>

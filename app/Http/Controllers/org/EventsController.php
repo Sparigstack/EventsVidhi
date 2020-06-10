@@ -127,8 +127,10 @@ class EventsController extends Controller
             $events->is_online = '1';
             $events->online_event_url = $request->EventUrl;
         } else {
-            $events->city_id = $request->city;
+            $events->city = $request->city;
+            $events->state = $request->state;
             $events->address = $request->Address1;
+            $events->country_id = $request->country;
             $events->address_line2 = $request->Address2;
             $events->postal_code = $request->PostalCode;
             $events->is_online = '0';
@@ -482,13 +484,22 @@ class EventsController extends Controller
 
         if (isset($request->IsOnline)) {
             $events->is_online = '1';
-            $events->city_id = null;
+            $events->city = "";
             $events->address = "";
+            $events->state = "";
+            $events->country_id = null;
+            $events->address_line2 = "";
+            $events->postal_code = "";
             $events->online_event_url = $request->EventUrl;
         } else {
             $events->is_online = '0';
-            $events->city_id = $request->city;
+            $events->city = $request->city;
             $events->address = $request->Address;
+            $events->state = $request->state;
+            $events->address = $request->Address1;
+            $events->country_id = $request->country;
+            $events->address_line2 = $request->Address2;
+            $events->postal_code = $request->PostalCode;
         }
 
         if (isset($request->IsPublish)) {

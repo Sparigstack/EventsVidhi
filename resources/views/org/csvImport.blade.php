@@ -104,6 +104,7 @@
                 error: function (response) {
                     LoaderStop();
                     console.log(response);
+                    alert('Some error occured please notify administrator!');
                 }
             });
 

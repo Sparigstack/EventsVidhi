@@ -13,4 +13,11 @@ class City extends Model
      public function events() {
          return $this->hasMany('App\Event');
      }
+
+     public function state() {
+        return $this->belongsTo('App\State');
+    }
+    public function country() {
+        return $this->belongsTo('App\Country');
+    }
 }

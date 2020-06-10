@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    
+
 
     setEventDateAndTime();
 
@@ -114,10 +114,10 @@ $(document).ready(function () {
             success: function (response) {
 
                 console.log(response);
-                if(speakerId != ""){
+                if (speakerId != "") {
                     $('.CurrentlyUpdatingThis').remove();
                 }
-                
+
                 var HtmlContent = '<ul class="list-group parent list-group-flush speakerList mb-2"><li class="list-group-item"><div class="media align-items-center"><img src="' + response.profilePicImage + '" alt="user avatar" class="customer-img rounded" height="100" width="100"><div class="media-body ml-3"><h6 class="mb-0">' + response.speakerFirstName + ' ' + response.speakerLastName + '</h6><small class="small-font">' + response.speakerOrganization + ' - ' + response.speakerDesc + '</small></div><div data-id="' + response.id + '" onclick="EditSingleSpeaker(this);" Type="file UrlType="" class="mr-2"><i class="fa icon fas fa-edit clickable" style="font-size: 22px;cursor: pointer;"></i></div><div data-id="' + response.id + '" onclick="RemoveSingleSpeaker(this);" type="file" urltype="" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor:pointer;"></i></div></li></ul>';
                 $('#uploadedSpeakers').append(HtmlContent);
                 $('.speakerContainer').addClass('d-none');
@@ -143,7 +143,7 @@ $(document).ready(function () {
             urlStringTicket = $('.updateTicket').val();
             urlStringTicket += "/" + ticketId;
         } else {
-            urlStringTicket =  $('.AddTicketUrl').val();
+            urlStringTicket = $('.AddTicketUrl').val();
         }
 
         $.ajax({
@@ -156,11 +156,11 @@ $(document).ready(function () {
             processData: false,
             success: function (response) {
                 // console.log("Success: "+ response);
-                if(ticketId != ""){
+                if (ticketId != "") {
                     $('.CurrentlyUpdatingTicket').remove();
                 }
-                
-                var HtmlContent = '<ul class="list-group parent list-group-flush TicketList mb-2 col-lg-8"><li class="list-group-item"><div class="media align-items-center"><div class="media-body ml-3"><h6 class="mb-0">'+response.name+' -- '+response.quantity+' tickets, $'+ response.price + '/ticket' +'</h6><small class="small-font">Ends on - '+response.endDate+'</small></div><div data-id="'+response.id+'" onclick="EditSingleTicket(this);" type="file" urltype="" class="mr-2"><i class="fa icon fas fa-edit clickable" style="font-size: 22px;cursor: pointer;"></i></div><div data-id="1" onclick="RemoveSingleTicket(this);" type="file" urltype="" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div></div></li></ul>';
+
+                var HtmlContent = '<ul class="list-group parent list-group-flush TicketList mb-2 col-lg-8"><li class="list-group-item"><div class="media align-items-center"><div class="media-body ml-3"><h6 class="mb-0">' + response.name + ' -- ' + response.quantity + ' tickets, $' + response.price + '/ticket' + '</h6><small class="small-font">Ends on - ' + response.endDate + '</small></div><div data-id="' + response.id + '" onclick="EditSingleTicket(this);" type="file" urltype="" class="mr-2"><i class="fa icon fas fa-edit clickable" style="font-size: 22px;cursor: pointer;"></i></div><div data-id="1" onclick="RemoveSingleTicket(this);" type="file" urltype="" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div></div></li></ul>';
                 $('#uploadedTickets').append(HtmlContent);
                 $('.AddTicketContainer').addClass('d-none');
                 // $(CurentForm).parent().addClass('d-none');
@@ -252,47 +252,45 @@ function IsOnlineEvent(element) {
     if ($(element).is(":checked")) {
         $('#Address1').attr('disabled', true);
         $('#Address1').removeAttr('required');
-        
+
         $('#Address2').attr('disabled', true);
-        
+
         $('#PostalCode').attr('disabled', true);
         $('#PostalCode').removeAttr('required');
-        
+
         $('#city').attr('disabled', true);
         $('#city').removeAttr('required');
-        
+
         $('#country').attr('disabled', true);
         $('#country').removeAttr('required');
-        
+
         $('#state').attr('disabled', true);
         $('#state').removeAttr('required');
-        
+
         $('#EventUrl').removeClass('d-none');
-        $('#EventUrl').attr('required','required');
+        $('#EventUrl').attr('required', 'required');
     } else {
         $('#EventUrl').addClass('d-none');
         $('#EventUrl').removeAttr('required');
-        
-        if ($("#city option[PresenceCheck='-1']").length != 0) {
-            $('#Address1').attr('disabled', false);
-            $('#Address1').attr('required', 'required');
-            
-            $('#Address2').attr('disabled', false);
-            
-            $('#PostalCode').attr('disabled', false);
-            $('#PostalCode').attr('required', 'required');
-            
-            $('#city').attr('disabled', false);
-            $('#city').attr('required', 'required');
-        }
-        if ($("#state option[PresenceCheck='-1']").length != 0) {
-            $('#state').attr('disabled', false);
-            $('#state').attr('required', 'required');
-        }
-        
+
+        $('#Address1').attr('disabled', false);
+        $('#Address1').attr('required', 'required');
+
+        $('#Address2').attr('disabled', false);
+
+        $('#PostalCode').attr('disabled', false);
+        $('#PostalCode').attr('required', 'required');
+
+        $('#city').attr('disabled', false);
+        $('#city').attr('required', 'required');
+
+        $('#state').attr('disabled', false);
+        $('#state').attr('required', 'required');
+
+
         $('#country').attr('disabled', false);
         $('#country').attr('required', 'required');
-        
+
     }
 }
 
@@ -347,10 +345,10 @@ function uploadVideo(element) {
 
 function uploadSpeaker(element) {
     if ($(element).attr('id') == 'speakerButton') {
-        if($('.TempTextPic').hasClass('d-none')){
+        if ($('.TempTextPic').hasClass('d-none')) {
             $('.TempTextPic').removeClass('d-none');
-        }  
-        if($('.SpeakerProfilePicDiv').find('#TempTextThumb').length==0){
+        }
+        if ($('.SpeakerProfilePicDiv').find('#TempTextThumb').length == 0) {
             $('.SpeakerProfilePicDiv').append('<p id="TempTextThumb" class="TempTextPic">Drop your image here or click to upload.</p>');
         }
         $('.speakerContainer').removeClass('d-none');
@@ -360,12 +358,12 @@ function uploadSpeaker(element) {
         $("#speakerDesc").val('');
         $("#speakerOrganization").val('');
         $("#speakerLinkedinUrl").val('');
-        $("#profilePicImage").attr('src','');
+        $("#profilePicImage").attr('src', '');
         $("#profilePicImage").addClass('d-none');
         $("#speakerSubmitButton").attr('data-id', '');
         $("#speakerId").val('');
 
-        if($("#uploadedSpeakers").find(".speakerList").hasClass('d-none')){
+        if ($("#uploadedSpeakers").find(".speakerList").hasClass('d-none')) {
             $("#uploadedSpeakers").find(".speakerList").removeClass('d-none');
         }
 
@@ -496,10 +494,10 @@ function EditSingleSpeaker(element) {
     var CSRF_TOKEN = $('.csrf-token').val();
     var countryId = $(element).val();
 
-    if(!$(".speakerContainer").hasClass('d-none')){
+    if (!$(".speakerContainer").hasClass('d-none')) {
         $(".speakerContainer").addClass('d-none');
     }
-    if($("#uploadedSpeakers").find(".speakerList").hasClass('d-none')){
+    if ($("#uploadedSpeakers").find(".speakerList").hasClass('d-none')) {
         $("#uploadedSpeakers").find(".speakerList").removeClass('d-none');
     }
 
@@ -519,16 +517,16 @@ function EditSingleSpeaker(element) {
             $("#speakerSubmitButton").attr('data-id', response.id);
             $("#speakerId").val(response.id);
 
-            if(response.profile_pic != ""){
+            if (response.profile_pic != "") {
                 $("#profilePicImage").removeClass('d-none');
                 $(".TempTextPic").addClass('d-none');
-            } else{
+            } else {
                 $("#profilePicImage").addClass('d-none');
                 $(".TempTextPic").removeClass('d-none');
             }
 
             $('html, body').animate({
-                'scrollTop' : $("#SaveSpeaker").position().top
+                'scrollTop': $("#SaveSpeaker").position().top
             });
             $(Field).addClass('d-none');
             $(".speakerContainer").removeClass('d-none');
@@ -585,14 +583,14 @@ function removeOldProfilePic(element) {
     });
 }
 
-function showSpeakerListing(element){
+function showSpeakerListing(element) {
     $("#uploadedSpeakers").find(".speakerList").removeClass('d-none');
     $(".speakerContainer").addClass('d-none');
     $(".CurrentlyUpdatingThis").removeClass('CurrentlyUpdatingThis');
 
 }
 
-function showTicketListing(element){
+function showTicketListing(element) {
     $("#uploadedTickets").find(".TicketList").removeClass('d-none');
     $(".AddTicketContainer").addClass('d-none');
     $(".CurrentlyUpdatingTicket").removeClass('CurrentlyUpdatingTicket');
@@ -609,7 +607,7 @@ function deleteEvent(element) {
     $.ajax({
         url: urlString,
         type: 'post',
-        data: {_token: CSRF_TOKEN, eventDeleteId: eventDeleteId},
+        data: { _token: CSRF_TOKEN, eventDeleteId: eventDeleteId },
         success: function (response) {
             // console.log(response);
             location.reload();
@@ -626,7 +624,7 @@ function UpdateEventStatus(element) {
     $.ajax({
         url: URL,
         type: "post",
-        data: {_token: CSRF_TOKEN, 'id': $id, 'status': $status},
+        data: { _token: CSRF_TOKEN, 'id': $id, 'status': $status },
         success: function (response) {
             // console.log(response);
             if ($status == '1') {
@@ -648,16 +646,16 @@ function UpdateEventStatus(element) {
     });
 }
 
-function ValidateEventForm(element){
+function ValidateEventForm(element) {
     var IsOnline = $(element).find("#IsOnline");
     if (!$(IsOnline).is(':checked')) {
-        
+
     }
 }
-function ChangeCustomUrl(element){
-var currentText=$(element).val();
-var actualUrl=$('#HumanFriendlyUrl').attr('data');
-$('#HumanFriendlyUrl').text(actualUrl +'/'+ currentText);
+function ChangeCustomUrl(element) {
+    var currentText = $(element).val();
+    var actualUrl = $('#HumanFriendlyUrl').attr('data');
+    $('#HumanFriendlyUrl').text(actualUrl + currentText);
 }
 
 function copyHumanFriendlyUrl(element) {
@@ -668,17 +666,17 @@ function copyHumanFriendlyUrl(element) {
     $(".copied").text("Copied to clipboard").show().fadeOut(1200);
     $temp.remove();
 }
-function IsPaidAlert(element){
-var val=$(element).val();
-if(val=="false"){
-    if($('.PaidAlertBox').hasClass('d-none')){
-        $('.PaidAlertBox').removeClass('d-none');
+function IsPaidAlert(element) {
+    var val = $(element).val();
+    if (val == "false") {
+        if ($('.PaidAlertBox').hasClass('d-none')) {
+            $('.PaidAlertBox').removeClass('d-none');
+        }
+    } else {
+        if (!$('.PaidAlertBox').hasClass('d-none')) {
+            $('.PaidAlertBox').addClass('d-none');
+        }
     }
-}else{
-    if(!$('.PaidAlertBox').hasClass('d-none')){
-        $('.PaidAlertBox').addClass('d-none');
-    }
-}
 }
 
 function copyEvent(element) {
@@ -693,15 +691,15 @@ function copyEvent(element) {
     $.ajax({
         url: urlString,
         type: 'post',
-        data: {_token: CSRF_TOKEN, eventId: eventId},
+        data: { _token: CSRF_TOKEN, eventId: eventId },
         success: function (response) {
             console.log(response);
             LoaderStop();
             location.reload();
         },
-         error: function (err) {
-                console.log(err);
-                LoaderStop();
+        error: function (err) {
+            console.log(err);
+            LoaderStop();
         }
     });
 }
@@ -717,7 +715,7 @@ function uploadTicket(element) {
         $("#AddTicketSubmitButton").attr('data-id', '');
         $("#ticketId").val('');
 
-        if($("#uploadedTickets").find(".TicketList").hasClass('d-none')){
+        if ($("#uploadedTickets").find(".TicketList").hasClass('d-none')) {
             $("#uploadedTickets").find(".TicketList").removeClass('d-none');
         }
 
@@ -737,10 +735,10 @@ function EditSingleTicket(element) {
     var CSRF_TOKEN = $('.csrf-token').val();
     var countryId = $(element).val();
 
-    if(!$(".AddTicketContainer").hasClass('d-none')){
+    if (!$(".AddTicketContainer").hasClass('d-none')) {
         $(".AddTicketContainer").addClass('d-none');
     }
-    if($("#uploadedTickets").find(".TicketList").hasClass('d-none')){
+    if ($("#uploadedTickets").find(".TicketList").hasClass('d-none')) {
         $("#uploadedTickets").find(".TicketList").removeClass('d-none');
     }
 
@@ -759,7 +757,7 @@ function EditSingleTicket(element) {
             $("#ticketId").val(response.id);
 
             $('html, body').animate({
-                'scrollTop' : $(".AddTicketForm").position().top
+                'scrollTop': $(".AddTicketForm").position().top
             });
             $(Field).addClass('d-none');
             $(".AddTicketContainer").removeClass('d-none');
