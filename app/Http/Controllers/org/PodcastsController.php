@@ -38,7 +38,8 @@ class PodcastsController extends Controller
     {
         $user = Auth::user();
         $events = $user->events->sortBy('created_at');
-        return view('org/createPodcast', compact('events'));
+        $RecentPodcasts=Podcast::where('user_id', $user->id)->take(7)->orderBy('id', 'DESC')->get();
+        return view('org/createPodcast', compact('events', 'RecentPodcasts'));
     }
 
     /**
@@ -131,7 +132,8 @@ class PodcastsController extends Controller
         $user = Auth::user();
         $podcast = Podcast::findOrFail($id);
         $events = $user->events->sortBy('created_at');
-        return view('org/createPodcast', compact('events','podcast'));
+        $RecentPodcasts=Podcast::where('user_id', $user->id)->take(7)->orderBy('id', 'DESC')->get();
+        return view('org/createPodcast', compact('events','podcast', 'RecentPodcasts'));
     }
 
     /**

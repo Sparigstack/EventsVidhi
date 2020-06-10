@@ -95,7 +95,7 @@ $(document).ready(function () {
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr("content");
         var speakerTitle = $("#speakerTitle").val();
         var speakerFirstName = $("#speakerFirstName").val();
-        var speakerLastName = $("#speakerLastName").val();
+        // var speakerLastName = $("#speakerLastName").val();
         var speakerDesc = $("#speakerDesc").val();
         var speakerOrganization = $("#speakerOrganization").val();
         var speakerLinkedinUrl = $("#speakerLinkedinUrl").val();
@@ -118,7 +118,7 @@ $(document).ready(function () {
                     $('.CurrentlyUpdatingThis').remove();
                 }
                 
-                var HtmlContent = '<ul class="list-group parent list-group-flush speakerList mb-2"><li class="list-group-item"><div class="media align-items-center"><img src="' + response.profilePicImage + '" alt="user avatar" class="customer-img rounded" height="100" width="100"><div class="media-body ml-3"><h6 class="mb-0">' + response.speakerFirstName + ' ' + response.speakerLastName + '</h6><small class="small-font">' + response.speakerOrganization + ' - ' + response.speakerDesc + '</small></div><div data-id="' + response.id + '" onclick="EditSingleSpeaker(this);" Type="file UrlType="" class="mr-2"><i class="fa icon fas fa-edit clickable" style="font-size: 22px;cursor: pointer;"></i></div><div data-id="' + response.id + '" onclick="RemoveSingleSpeaker(this);" type="file" urltype="" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor:pointer;"></i></div></li></ul>';
+                var HtmlContent = '<ul class="list-group parent list-group-flush speakerList mb-2"><li class="list-group-item"><div class="media align-items-center"><img src="' + response.profilePicImage + '" alt="user avatar" class="speakerImgSize rounded"><div class="media-body ml-3"><h6 class="mb-0">' + response.speakerFirstName + '</h6><small class="small-font">' + response.speakerOrganization + ' - ' + response.speakerDesc + '</small></div><div data-id="' + response.id + '" onclick="EditSingleSpeaker(this);" Type="file UrlType="" class="mr-2"><i class="fa icon fas fa-edit clickable" style="font-size: 22px;cursor: pointer;"></i></div><div data-id="' + response.id + '" onclick="RemoveSingleSpeaker(this);" type="file" urltype="" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor:pointer;"></i></div></li></ul>';
                 $('#uploadedSpeakers').append(HtmlContent);
                 $('.speakerContainer').addClass('d-none');
                 $(CurentForm).parent().addClass('d-none');
@@ -356,7 +356,7 @@ function uploadSpeaker(element) {
         $('.speakerContainer').removeClass('d-none');
         $("#speakerTitle").val('');
         $("#speakerFirstName").val('');
-        $("#speakerLastName").val('');
+        // $("#speakerLastName").val('');
         $("#speakerDesc").val('');
         $("#speakerOrganization").val('');
         $("#speakerLinkedinUrl").val('');
@@ -510,8 +510,8 @@ function EditSingleSpeaker(element) {
         success: function (response) {
             // $(".speakerContainer").removeClass('d-none');
             $("#speakerTitle").val(response.title);
-            $("#speakerFirstName").val(response.first_name);
-            $("#speakerLastName").val(response.last_name);
+            $("#speakerFirstName").val(response.name);
+            // $("#speakerLastName").val(response.last_name);
             $("#speakerDesc").val(response.description);
             $("#speakerOrganization").val(response.organization);
             $("#speakerLinkedinUrl").val(response.linkedin_url);

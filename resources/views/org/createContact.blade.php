@@ -139,6 +139,10 @@
                         <button class="btn btn-primary px-5 pull-right" type="submit">Save Contact</button>
                     </form>
 
+                    <div class="form-group">
+                    <a href="{{url('org/my_contacts')}}"><button class="btn btn-light">Cancel</button></a>
+                    </div>
+
                     <!--                    <form class="row" method="post" action="{{$ActionCall}}" enctype="multipart/form-data">
                                             {{ csrf_field() }}
                                             <div class="form-group col-lg-6">

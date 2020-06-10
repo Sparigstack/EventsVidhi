@@ -181,3 +181,12 @@ table .max-w-table-100 .btn{margin: 10px auto;
 .TicketList{
     margin: auto;
 }
+
+.speakerImgSize{
+    height: 70px;
+    width: 75px;
+}
+
+.listItemsBottomBorder{
+    border: 1px solid rgba(0, 0, 0, .125) !important;
+}

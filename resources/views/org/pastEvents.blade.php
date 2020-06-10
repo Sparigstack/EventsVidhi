@@ -77,7 +77,7 @@
                                     <?php }  ?>
                                 </tbody>
 
-                                <thead>
+                                <!-- <thead>
                                     <tr>
                                         <th>Logo</th>
                                         <th>Title</th>
@@ -85,7 +85,7 @@
                                         <th>Category</th>
                                         <th class="max-w-table-100">Action</th>
                                     </tr>
-                                </thead>
+                                </thead> -->
                             </table>
                         </div>
                     </div>  
