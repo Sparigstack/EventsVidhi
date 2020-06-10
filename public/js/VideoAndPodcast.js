@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
     var videosTable = $('#default-datatable-videos').DataTable({
         columnDefs: [
             {orderable: false, targets: 2},
@@ -11,25 +11,41 @@ $(document).ready(function() {
         ]
     });
 
-    $('.dragFileForm input').change(function() {
+    $('.dragFileForm #input_vidfile').change(function () {
         // $('.dragFileForm p').text(this.files.length + " file(s) selected");
         $('.dragFileForm').find('.dragFileText').text(this.files.length + " file(s) selected");
+
+        var parent = findParentForm(this);
+        var vidFile = this.files;
+        if (vidFile.length > 0) {
+            $(parent).find("#btnSaveVideo").removeClass('d-none');
+            $(parent).find("#btnCancelVideo").removeClass('d-none');
+            $(parent).find("#btnSaveVideo").text('Upload & Save');            
+        } else {
+            $(parent).find("#btnSaveVideo").addClass('d-none');
+            $(parent).find("#btnCancelVideo").addClass('d-none');
+        }
     });
     UploadPodcastVideoBox();
     showHideLinkEvent();
 });
-function UploadVideoBoxVideoCon() {
-    if (!$('#IsUploadVideo').is(':checked')) {
+function UploadVideoBoxVideoCon(element) {
+    if (!$(element).is(':checked')) {
         $('#input_url').attr('readonly', false);
         $("#input_url").prop('required', true);
         $("#input_vidfile").prop('required', false);
+        $("#input_vidfile").val('');
+        $('#input_vidfile').trigger('onchange');
         $('.uploadVideoBox').addClass('d-none');
-        $('.progressBar').addClass('d-none');
+        //$('.progressBar').addClass('d-none');
+        $('.uploadVideoBox').find(".dragFileText").text('Drag your video file here or click in this area.');
     } else {
         $('.uploadVideoBox').removeClass('d-none');
-        $('.progressBar').removeClass('d-none');
+        //$('.progressBar').removeClass('d-none');
         $('#input_url').attr('readonly', true);
         $("#input_url").prop('required', false);
+        $('#input_url').val('');
+        $('#input_url').trigger('onchange');
         $("#input_vidfile").prop('required', true);
     }
 }
@@ -108,3 +124,19 @@ function showHideLinkEvent() {
     }
 
 }
+
+function videoUrlCheck(element) {
+    var parent = findParent(element);
+    var vidUrl = $(element).val();
+    if (vidUrl != null && vidUrl != "") {
+        $(parent).find("#btnSaveVideo").removeClass('d-none');
+        $(parent).find("#btnCancelVideo").removeClass('d-none');
+    } else {
+        $(parent).find("#btnSaveVideo").addClass('d-none');
+        $(parent).find("#btnCancelVideo").addClass('d-none');
+    }
+}
+
+//function videoFileCheck(element) {
+//
+//}

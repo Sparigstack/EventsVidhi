@@ -189,6 +189,19 @@ function findParent(element) {
     }
 }
 
+function findParentForm(element) {
+    var parentElement = $(element).parent();
+    if ($(parentElement).is("form"))
+        return parentElement;
+    else {
+        for (var i = 0; i < 12; i++) {
+            parentElement = $(parentElement).parent();
+            if ($(parentElement).is("form"))
+                return parentElement;
+        }
+    }
+}
+
 function setEventDateAndTime() {
     $('.date').each(function () {
         var defaultdate;

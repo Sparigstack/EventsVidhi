@@ -57,6 +57,9 @@
     opacity: 0;
     cursor: pointer;
 }
+.uploadVideoBox .dragFileContainer input{
+    height: 20%;
+}
 .dragFileContainer #EventBannerImage{
     width: 94%;
     height: 75%;
