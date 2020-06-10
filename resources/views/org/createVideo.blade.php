@@ -6,7 +6,7 @@
 
     use App\Video;
 
-    $CardTitle = "Add New Video";
+$CardTitle = "Add New Video";
     $ActionCall = url('org/videos/store');
     $RedirectCall = url('org/videos');
     $title = "";
@@ -54,29 +54,83 @@
                     </div>
                     @endif
 
-                    <form class="dragFileForm" action="{{$ActionCall}}" method="POST" enctype="multipart/form-data">
+                    <form class="dragFileForm parent" action="{{$ActionCall}}" method="POST" enctype="multipart/form-data">
                         {{ csrf_field() }}
                         <input type="hidden" id="hdnRedirect" value="{{$RedirectCall}}" />
                         <div class='form-group'>
                             <label for='input_title'>Video Title</label>
                             <input type="text" class="form-control" id="input_title" name='input_title' value="{{  old('input_title', $title) }}" placeholder="Enter Video Title" required>
                         </div>
+                        <hr class="mt-5 mb-5">
+                        <div class="form-group">
+                            <label for="BlankLabel"></label>
+                            <input type="hidden" class="linkedEvent" name="linkedEvent" value="">
+                            <label> Do you want to link this video with any Event?</label>
+                            <div class="row pl-3">
+                                <div class="icheck-material-primary">
+                                    <input onchange='showHideLinkEvent(this);' type="radio" class="" id="yesEventLinked" name="IsLinkedEvent" @if(old('IsLinkedEvent', $linkedEventCheckced)) checked @endif>
+                                           <label for="yesEventLinked">Yes</label>
+                                </div>
+                                <div class="icheck-material-primary pl-2">
+                                    <?php
+                                    $checkedRadio = "checked";
+                                    if ($videoEventId != 0) {
+                                        $checkedRadio = "";
+                                    }
+                                    ?>
+                                    <input onchange='showHideLinkEvent(this);' type="radio" id="noEventLinked" name="IsLinkedEvent" {{$checkedRadio}}>
+                                    <label for="noEventLinked">No</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group descriptionDiv">
+                            <p for="Description">Video Description</p>
+                            <textarea id="Description" name="Description" class="form-control" title="Description" placeholder="Description" autocomplete="off" rows="4">{{ old('Description', $videoDescription) }}</textarea>
+                        </div>
+                        <div id='linkEvent' class="form-group EventSelectionBox d-none">
+                            <!-- <label for="EventToLink mb-0">Link To Event</label> -->
+                            <select autocomplete="off" value="" name="EventToLink" id="EventToLink" class="custom-select">
+                                <option value="">Select Event To Link</option>
+                                <?php
+                                foreach ($events as $event) {
+                                    $IsSelected = "";
+                                    if (!empty($video)) {
+                                        if ($event->id == $videoEventId) {
+                                            $IsSelected = "selected";
+                                        }
+                                    }
+                                    //                                        $IsSelected = "";
+                                    //                                        if ($event->id == $eventId) {
+                                    //                                            $IsSelected = "selected";
+                                    //                                        }
+                                    ?>
+                                    <option value="{{$event->id}}" {{$IsSelected}} @if (old('EventToLink')==$event->id) selected="selected" @endif ><?php echo $event->title; ?> </option>
+                                <?php } ?>
+
+                            </select>
+                        </div>
+                        <hr class="mt-5 mb-5">
+                        <div class="form-group">
+                            <label> You can either save your Youtube or Vimeo video URL OR you can upload your own video.</label>
+                        </div>
+                        
+
                         <div class='form-group'>
-                            <label for='input_url'>Video URL</label><span style="font-size: 11px;font-weight: 600;">&nbsp;&nbsp;(YouTube or Vimeo url)</span>
-                            <input type="text" class="form-control" id="input_url" name="input_url" value="{{  old('input_url', $desription) }}" placeholder="Enter Video URL" required>
+                            <p for='input_url' class="float-left">Video URL</p><span style="font-size: 11px;font-weight: 600;">&nbsp;&nbsp;(YouTube or Vimeo url)</span>
+                            <input type="text" class="form-control" id="input_url" onkeyup="videoUrlCheck(this);" onchange="videoUrlCheck(this);" name="input_url" value="{{  old('input_url', $desription) }}" placeholder="Enter Video URL" required>
                         </div>
 
                         <div class="form-group">
-                            <label for="BlankLabel"></label>
                             <div class="icheck-material-primary">
-                                <input onclick="UploadVideoBoxVideoCon()" type="checkbox" id="IsUploadVideo" name="IsUploadVideo" @if(old('IsUploadVideo')) checked @endif>
-                                <label for="IsUploadVideo">Or upload video</label>
+                                <input onclick="UploadVideoBoxVideoCon(this);" type="checkbox" id="IsUploadVideo" name="IsUploadVideo" @if(old('IsUploadVideo')) checked @endif>
+                                       <label for="IsUploadVideo">Or upload your own video</label>
                             </div>
                         </div>
 
                         <div class='parent' style='width: 100%;'>
                             <div class='form-group  d-none uploadVideoBox'>
-                                <label for='input_vidfile'>Upload Video</label>
+                                <p for='input_vidfile'>Select Video</p>
                                 <div class='dragFileContainer'>
                                     <input type="file" id='input_vidfile' name='input_vidfile' value="{{  old('input_vidfile') }}">
                                     <p class="dragFileText">Drag your video file here or click in this area.</p>
@@ -103,58 +157,10 @@
 
                             <!-- </div> -->
 
-                            <div class="form-group">
-                                <label for="BlankLabel"></label>
-                                <input type="hidden" class="linkedEvent" name="linkedEvent" value="">
-                                <p> Do you want to link this video with any Event?</p>
-                                <div class="row pl-3">
-                                    <div class="icheck-material-primary">
-                                        <input onchange='showHideLinkEvent(this);' type="radio" class="" id="yesEventLinked" name="IsLinkedEvent" @if(old('IsLinkedEvent', $linkedEventCheckced)) checked @endif>
-                                        <label for="yesEventLinked">Yes</label>
-                                    </div>
-                                    <div class="icheck-material-primary pl-2">
-                                        <?php
-                                        $checkedRadio = "checked";
-                                        if ($videoEventId != 0) {
-                                            $checkedRadio = "";
-                                        }
-                                        ?>
-                                        <input onchange='showHideLinkEvent(this);' type="radio" id="noEventLinked" name="IsLinkedEvent" {{$checkedRadio}}>
-                                        <label for="noEventLinked">No</label>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <div class="form-group descriptionDiv">
-                                <label for="Description">Video Description</label>
-                                <textarea id="Description" name="Description" class="form-control" title="Description" placeholder="Description" autocomplete="off" rows="4">{{ old('Description', $videoDescription) }}</textarea>
-                            </div>
-                            <div id='linkEvent' class="form-group EventSelectionBox d-none">
-                                <!-- <label for="EventToLink mb-0">Link To Event</label> -->
-                                <select autocomplete="off" value="" name="EventToLink" id="EventToLink" class="custom-select">
-                                    <option value="">Select Event To Link</option>
-                                    <?php
-                                    foreach ($events as $event) {
-                                        $IsSelected = "";
-                                        if (!empty($video)) {
-                                            if ($event->id == $videoEventId) {
-                                                $IsSelected = "selected";
-                                            }
-                                        }
-                                        //                                        $IsSelected = "";
-                                        //                                        if ($event->id == $eventId) {
-                                        //                                            $IsSelected = "selected";
-                                        //                                        }
-                                    ?>
-                                        <option value="{{$event->id}}" {{$IsSelected}} @if (old('EventToLink')==$event->id) selected="selected" @endif ><?php echo $event->title; ?> </option>
-                                    <?php } ?>
-
-                                </select>
-                            </div>
                         </div>
-
-
-                        <button class="btn btn-primary px-5 pull-right" type="submit">Save Video</button>
+                        <button id="btnCancelVideo" class="d-none btn btn-light px-5 float-left" type="submit">Cancel</button>
+                        <button id="btnSaveVideo" class="d-none btn btn-primary px-5 pull-right" type="submit">Save Video</button>
                     </form>
 
                     <!--                    <form class="row" method="post" action="{{$ActionCall}}" enctype="multipart/form-data">
@@ -215,29 +221,32 @@
                     <?php foreach ($RecentVideos as $Video) { ?>
                         <li class="list-group-item">
                             <div class="media align-items-center">
-                                <?php $a = 'http';
+                                <?php
+                                $a = 'http';
                                 $videoUrl = $Video->url;
-                               
+
                                 if (strpos($videoUrl, $a) !== false) {
-                                    $actualUrl = $videoUrl; ?>
+                                    $actualUrl = $videoUrl;
+                                    ?>
                                     <iframe width="200" src="{{$actualUrl}}">
                                     </iframe>
-                                    <?php }else{ $actualUrl = env('AWS_URL') . $videoUrl; ?>
-                                        <video width="200" controls="">
+    <?php } else {
+        $actualUrl = env('AWS_URL') . $videoUrl; ?>
+                                    <video width="200" controls="">
                                         <source src="{{$actualUrl}}" type="video/mp4">
                                         Your browser does not support HTML video.
                                     </video>
-                                    <?php } ?>
-                                    
+    <?php } ?>
 
 
-                                    <div class="media-body ml-3">
-                                        <h6 class="mb-0">{{$Video->title}}</h6>
-                                        <small class="small-font">{{$Video->description}}</small>
-                                    </div>
+
+                                <div class="media-body ml-3">
+                                    <h6 class="mb-0">{{$Video->title}}</h6>
+                                    <small class="small-font">{{$Video->description}}</small>
+                                </div>
                             </div>
                         </li>
-                    <?php } ?>
+<?php } ?>
                 </ul>
                 <div class="card-footer text-center bg-transparent border-0">
                     <a href="{{url('org/videos')}}">View all Videos</a>
@@ -254,50 +263,52 @@
 <!-- Data Tables -->
 <script src="{{ asset('assets/plugins/bootstrap-datatable/js/jquery.dataTables.min.js') }}"></script>
 <script>
-    (function() {
+                                    (function () {
 
-        var bar = $('.bar_upload');
-        var percent = $('.percent_upload');
-        //var status = $('#status');
+                                        var bar = $('.bar_upload');
+                                        var percent = $('.percent_upload');
+                                        //var status = $('#status');
 
-        $('.dragFileForm').ajaxForm({
-            beforeSend: function() {
-                //status.empty();
-                var percentVal = '0%';
-                //var posterValue = $('input[name=input_vidfile]').fieldValue();
-                bar.width(percentVal)
-                percent.html(percentVal);
-            },
-            uploadProgress: function(event, position, total, percentComplete) {
-                var percentVal = percentComplete + '%';
-                bar.width(percentVal);
-                percent.html(percentVal);
-                if (percentComplete == 100) {
-                    LoaderStart();
-                    var interval = setInterval(function mak() {
-                        clearInterval(interval);
-                        window.location.href = $('#hdnRedirect').val();
-                        LoaderStop();
-                    }, 5000);
-                    // window.location.href = $('#hdnRedirect').val();
-                }
-                // LoaderStart();
-            },
-            // success: function () {
-            //     LoaderStop();
-            //     var percentVal = 'Redirecting..';
-            //     bar.width(percentVal);
-            //     percent.html(percentVal);
-            // },
-            // complete: function (xhr) {
-            //     //status.html(xhr.responseText);
-            //     //alert('Uploaded Successfully');
+                                        $('.dragFileForm').ajaxForm({
+                                            beforeSend: function () {
+                                                $('.dragFileForm').find('.progressBar').removeClass('d-none');
+                                                //status.empty();
+                                                var percentVal = '0%';
+                                                //var posterValue = $('input[name=input_vidfile]').fieldValue();
+                                                bar.width(percentVal)
+                                                percent.html(percentVal);
+                                            },
+                                            uploadProgress: function (event, position, total, percentComplete) {
+                                                //$('.dragFileForm').find('.progressBar').removeClass('d-none');
+                                                var percentVal = percentComplete + '%';
+                                                bar.width(percentVal);
+                                                percent.html(percentVal);
+                                                if (percentComplete == 100) {
+                                                    LoaderStart();
+                                                    var interval = setInterval(function mak() {
+                                                        clearInterval(interval);
+                                                        window.location.href = $('#hdnRedirect').val();
+                                                        LoaderStop();
+                                                    }, 5000);
+                                                    // window.location.href = $('#hdnRedirect').val();
+                                                }
+                                                // LoaderStart();
+                                            },
+                                            // success: function () {
+                                            //     LoaderStop();
+                                            //     var percentVal = 'Redirecting..';
+                                            //     bar.width(percentVal);
+                                            //     percent.html(percentVal);
+                                            // },
+                                            // complete: function (xhr) {
+                                            //     //status.html(xhr.responseText);
+                                            //     //alert('Uploaded Successfully');
 
-            //     window.location.href = $('#hdnRedirect').val();
-            // }
-        });
+                                            //     window.location.href = $('#hdnRedirect').val();
+                                            // }
+                                        });
 
-    })();
+                                    })();
 </script>
 
 @endsection
