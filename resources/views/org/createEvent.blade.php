@@ -691,6 +691,11 @@
                         <?php } ?>
                     </div>
 
+                    <div class="parent row tab-pane " id="tabe-15">
+                        <div class="text-center m-4"><label class="">This feature is coming soon</label></div>
+
+                    </div>
+
                     <?php if (!empty($event) && $event->is_paid == 1) { ?>
                         <div class="parent row tab-pane " id="TicketsTab">
                             <div class="col-lg-12">
@@ -816,9 +821,9 @@
                                                                     $profileurl = "https://via.placeholder.com/110x110";
                                                                 }
                                                                 ?>
-                                                                <img src="{{$profileurl}}" alt="user avatar" class="customer-img rounded" height="100" width="100">
+                                                                <img src="{{$profileurl}}" alt="user avatar" class="speakerImgSize rounded">
                                                                 <div class="media-body ml-3">
-                                                                    <h6 class="mb-0">{{$speaker->first_name}} {{$speaker->last_name}}</h6>
+                                                                    <h6 class="mb-0">{{$speaker->name}}</h6>
                                                                     <small class="small-font">{{$speaker->organization}} - {{$speaker->description}}</small>
 
                                                                 </div>
@@ -860,13 +865,17 @@
                                                         <input type="text" class="form-control mb-2" id="speakerTitle" value="" name="speakerTitle" placeholder="Enter Title" required="">
                                                         <small class="text-danger"></small>
 
-                                                        <label for="speakerFirstName">First Name</label>
-                                                        <input type="text" class="form-control mb-2" id="speakerFirstName" value="" name="speakerFirstName" placeholder="Enter First Name" required="">
+                                                        <label for="speakerFirstName">Name</label>
+                                                        <input type="text" class="form-control mb-2" id="speakerFirstName" value="" name="speakerFirstName" placeholder="Enter Name" required="">
                                                         <small class="text-danger"></small>
 
-                                                        <label for="speakerLastName">Last Name</label>
+                                                        <label for="speakerOrganization">Organization</label>
+                                                    <input type="text" class="form-control" id="speakerOrganization" value="" name="speakerOrganization" placeholder="Enter Organization" required="">
+                                                    <small class="text-danger"></small>
+
+                                                        <!-- <label for="speakerLastName">Last Name</label>
                                                         <input type="text" class="form-control" id="speakerLastName" value="" name="speakerLastName" placeholder="Enter Last Name" required="">
-                                                        <small class="text-danger"></small>
+                                                        <small class="text-danger"></small> -->
 
                                                     </div>
                                                 </div>
@@ -877,11 +886,11 @@
                                                     <small class="text-danger"></small>
                                                 </div>
 
-                                                <div class="form-group col-lg-12">
+                                                <!-- <div class="form-group col-lg-12">
                                                     <label for="speakerOrganization">Organization</label>
                                                     <input type="text" class="form-control" id="speakerOrganization" value="" name="speakerOrganization" placeholder="Enter Organization" required="">
                                                     <small class="text-danger"></small>
-                                                </div>
+                                                </div> -->
 
                                                 <div class="form-group col-lg-12">
                                                     <label for="speakerLinkedinUrl">LinkedIn URL</label>

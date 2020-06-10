@@ -119,7 +119,7 @@ $MultSelectTags = "";
                                     <?php }  ?>
                                 </tbody>
 
-                                <thead>
+                                <!-- <thead>
                                     <tr>
                                         <th>First Name</th>
                                         <th>Last Name</th>
@@ -127,7 +127,7 @@ $MultSelectTags = "";
                                         <th>Tags</th>
                                         <th>Action</th>
                                     </tr>
-                                </thead>
+                                </thead> -->
                             </table>
                         </div>
                     </div>
