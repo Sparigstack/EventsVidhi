@@ -176,8 +176,8 @@
         </div>
         <div class="col-lg-6">
             <div class="card">
-                <div class="card-header">Recently Added Videos
-                    <div class="card-action">
+                <div class="card-header listItemsBottomBorder border-bottom-0">Recently Added Podcasts
+                    <!-- <div class="card-action">
                         <div class="dropdown">
                             <a href="javascript:void();" class="dropdown-toggle dropdown-toggle-nocaret" data-toggle="dropdown">
                                 <i class="icon-options"></i>
@@ -190,11 +190,11 @@
                                 <a class="dropdown-item" href="javascript:void();">Separated link</a>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
 
                 <ul class="list-group list-group-flush shadow-none">
-                    <li class="list-group-item">
+                    <!-- <li class="list-group-item">
                         <div class="media align-items-center">
                             <img src="https://via.placeholder.com/110x110" alt="user avatar" class="customer-img rounded">
                             <div class="media-body ml-3">
@@ -202,55 +202,55 @@
                                 <small class="small-font">$810,000 . 04 Beds . 03 Baths</small>
                             </div>
                         </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="media align-items-center">
-                            <img src="https://via.placeholder.com/110x110" alt="user avatar" class="customer-img rounded">
-                            <div class="media-body ml-3">
-                                <h6 class="mb-0">Lorem ipsum dolor sitamet consectetur adipiscing</h6>
-                                <small class="small-font">$2,560,000 . 08 Beds . 07 Baths</small>
+                    </li> -->
+                    
+                    <?php foreach ($RecentPodcasts as $Podcast) { ?>
+                        <li class="list-group-item listItemsBottomBorder">
+                            <div class="media align-items-center">
+                                <?php
+                                    $AwsUrl = env('AWS_URL');
+                                        $videoPodcastUrl = "";
+                                        if (!empty($Podcast->url)) {
+                                            if($Podcast->url_type == '1'){
+                                                $videoPodcastUrl = $AwsUrl . $Podcast->url;
+                                            }
+                                            else{
+                                                $videoPodcastUrl = $Podcast->url;
+                                            }
+                                        }
+                                ?>
+                                    
+                                <a href="{{$videoPodcastUrl}}" target="_blank"><img src="{{asset('assets/images/podcast-icon.png')}}" alt="user avatar" class="customer-img rounded"></a>
+
+                                <div class="media-body ml-3">
+                                    <h6 class="mb-0">{{$Podcast->title}}</h6>
+                                    <?php 
+                                    $eventDesc = "";
+                                    $eventPrefix = "";
+                                    $eventLink = "";
+                                    $desc = "";
+                                    if(isset($Podcast->event)){
+                                        $eventPrefix = "Event :";
+                                        $eventDesc = $Podcast->event->title;
+                                    }else{
+                                        $desc = $Podcast->description;
+                                    } 
+
+                                    if(!empty($eventDesc)){
+                                        $eventId = $Podcast->event->id;
+                                    ?>
+                                    <small class="small-font"><b>{{$eventPrefix}}</b><a target="_blank" href="{{url('org/events/'.$eventId)}}"> {{$eventDesc}}</a></small>
+                                    <?php } else { ?>
+                                    <small class="small-font">{{$desc}}</small>
+                                    <?php } ?>
+                                </div>
+
                             </div>
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="media align-items-center">
-                            <img src="https://via.placeholder.com/110x110" alt="user avatar" class="customer-img rounded">
-                            <div class="media-body ml-3">
-                                <h6 class="mb-0">Lorem ipsum dolor sitamet consectetur adipiscing</h6>
-                                <small class="small-font">$910,300 . 03 Beds . 02 Baths</small>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="media align-items-center">
-                            <img src="https://via.placeholder.com/110x110" alt="user avatar" class="customer-img rounded">
-                            <div class="media-body ml-3">
-                                <h6 class="mb-0">Lorem ipsum dolor sitamet consectetur adipiscing</h6>
-                                <small class="small-font">$1,140,650 . 06 Beds . 03 Baths</small>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="media align-items-center">
-                            <img src="https://via.placeholder.com/110x110" alt="user avatar" class="customer-img rounded">
-                            <div class="media-body ml-3">
-                                <h6 class="mb-0">Lorem ipsum dolor sitamet consectetur adipiscing</h6>
-                                <small class="small-font">$1,140,650 . 06 Beds . 03 Baths</small>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="media align-items-center">
-                            <img src="https://via.placeholder.com/110x110" alt="user avatar" class="customer-img rounded">
-                            <div class="media-body ml-3">
-                                <h6 class="mb-0">Lorem ipsum dolor sitamet consectetur adipiscing</h6>
-                                <small class="small-font">$910,300 . 03 Beds . 02 Baths</small>
-                            </div>
-                        </div>
-                    </li>
+                        </li>
+                    <?php } ?>
                 </ul>
                 <div class="card-footer text-center bg-transparent border-0">
-                    <a href="javascript:void();">View all Videos</a>
+                    <a href="{{url('org/podcasts')}}">View all Podcasts</a>
                 </div>
 
             </div>

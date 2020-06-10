@@ -83,13 +83,13 @@
                                     <?php }  ?>
                                 </tbody>
 
-                                <thead>
+                                <!-- <thead>
                                     <tr>
                                         <th>Custom Type Name</th>
                                         <th>Display Type</th>
                                         <th>Action</th>
                                     </tr>
-                                </thead>
+                                </thead> -->
                             </table>
                         </div>
                     </div>

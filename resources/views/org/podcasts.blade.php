@@ -80,15 +80,15 @@
                                     <?php }  ?>
                                 </tbody>
 
-                                <thead>
+                                <!-- <thead>
                                     <tr>
                                         <th width="42.5%">Title</th>
-                                        <th width="42.5%">Description</th>
+                                        <th width="42.5%">Description</th> -->
                                         <!-- <th class="max-w-table-200">Podcast URL</th> -->
                                         <!-- <th>Location</th> -->
-                                        <th width="15%">Action</th>
+                                        <!-- <th width="15%">Action</th>
                                     </tr>
-                                </thead>
+                                </thead> -->
                             </table>
                         </div>
                     </div>  

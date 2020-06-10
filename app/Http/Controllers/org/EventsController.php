@@ -332,7 +332,7 @@ class EventsController extends Controller
         $validator = Validator::make($request->all(), [
             'speakerTitle' => 'required',
             'speakerFirstName' => 'required',
-            'speakerLastName' => 'required',
+            // 'speakerLastName' => 'required',
             'speakerOrganization' => 'required',
         ]);
 
@@ -344,8 +344,8 @@ class EventsController extends Controller
 
         $speaker = new Speaker;
         $speaker->title = $request->speakerTitle;
-        $speaker->first_name = $request->speakerFirstName;
-        $speaker->last_name = $request->speakerLastName;
+        $speaker->name = $request->speakerFirstName;
+        // $speaker->last_name = $request->speakerLastName;
         $speaker->description = $request->speakerDesc;
         $speaker->organization = $request->speakerOrganization;
         $speaker->linkedin_url = $request->speakerLinkedinUrl;
@@ -380,8 +380,8 @@ class EventsController extends Controller
 
         return response()->json([
             'profilePicImage' => $profileUrl,
-            'speakerFirstName' => $speaker->first_name,
-            'speakerLastName' => $speaker->last_name,
+            'speakerFirstName' => $speaker->name,
+            // 'speakerLastName' => $speaker->last_name,
             'speakerOrganization' => $speaker->organization,
             'speakerDesc' => $speaker->description,
             'id' => $speaker->id,
@@ -526,7 +526,8 @@ class EventsController extends Controller
         foreach ($EventCategorieIds as $categoryID) {
             $eventCategory = new EventCategory;
             $eventCategory->event_id = $events->id;
-            $eventCategory->category_id = number_format($categoryID);
+            // $eventCategory->category_id = number_format($categoryID);
+            $eventCategory->category_id = (int) $categoryID;
             $eventCategory->save();
         }
 
@@ -645,7 +646,7 @@ class EventsController extends Controller
         $validator = Validator::make($request->all(), [
             'speakerTitle' => 'required',
             'speakerFirstName' => 'required',
-            'speakerLastName' => 'required',
+            // 'speakerLastName' => 'required',
             'speakerOrganization' => 'required',
         ]);
 
@@ -657,8 +658,8 @@ class EventsController extends Controller
 
         $speaker = Speaker::findOrFail($id);
         $speaker->title = $request->speakerTitle;
-        $speaker->first_name = $request->speakerFirstName;
-        $speaker->last_name = $request->speakerLastName;
+        $speaker->name = $request->speakerFirstName;
+        // $speaker->last_name = $request->speakerLastName;
         $speaker->description = $request->speakerDesc;
         $speaker->organization = $request->speakerOrganization;
         $speaker->linkedin_url = $request->speakerLinkedinUrl;
@@ -691,8 +692,8 @@ class EventsController extends Controller
 
         return response()->json([
             'profilePicImage' => $profileUrl,
-            'speakerFirstName' => $speaker->first_name,
-            'speakerLastName' => $speaker->last_name,
+            'speakerFirstName' => $speaker->name,
+            // 'speakerLastName' => $speaker->last_name,
             'speakerOrganization' => $speaker->organization,
             'speakerDesc' => $speaker->description,
             'id' => $speaker->id,
