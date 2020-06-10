@@ -182,12 +182,12 @@ $MultSelectTags = "";
             $('#HiddenCategoyID').append(res);
         });
 
-        $('.custom-header').multiSelect({
-            selectableHeader: "<div class='custom-header'>Selectable items</div>",
-            selectionHeader: "<div class='custom-header'>Selection items</div>",
-            selectableFooter: "<div class='custom-header'>Selectable footer</div>",
-            selectionFooter: "<div class='custom-header'>Selection footer</div>"
-        });
+        // $('.custom-header').multiSelect({
+        //     selectableHeader: "<div class='custom-header'>Selectable items</div>",
+        //     selectionHeader: "<div class='custom-header'>Selection items</div>",
+        //     selectableFooter: "<div class='custom-header'>Selectable footer</div>",
+        //     selectionFooter: "<div class='custom-header'>Selection footer</div>"
+        // });
     });
 </script>
 

@@ -66,7 +66,7 @@
                             <label class="">Select Tags</label>
                             <select class="form-control multiple-select" multiple="multiple" name="tags" id="tags">
                                 <?php if (!empty($contact)) {
-                                    
+
 
 
                                     foreach ($tagsData as $contact_tags) {
@@ -85,7 +85,7 @@
                                             }
 
                                 ?>
-                                            
+
 
                                         <?php } ?>
                                         <option value="{{old('tags',$contact_tags->id)}}" {{$IsSelected}} @if (old('tags')==$contact_tags->id) selected="selected" @endif ><?php echo $contact_tags->name; ?> </option>
@@ -103,26 +103,26 @@
                             <small class="text-danger">{{ $errors->first('tags') }}</small>
                             <textarea id="HiddenCategoyID" name="HiddenCategoyID" required class="form-controld d-none" title="HiddenCategoyID" placeholder="HiddenCategoyID" autocomplete="off" rows="4">{{ old('HiddenCategoyID', $MultSelectTags) }} </textarea>
                         </div>
-                        <?php if(!empty($customFields)){?>
-                        <label class="InnerHeader">Custom Fields </label>
-                        <?php } ?>
-                        
-                        <?php $value=""; foreach ($customFields as $customField) { $ConvertedName= str_replace(' ', '', $customField->name);
-                           if(!empty($ContactCustomFields)){
-                            foreach($ContactCustomFields as $ContactCustomField){
-                                if($ContactCustomField->customfield_id==$customField->id){
-                                    if($customField->type==1){
-                                        $value=$ContactCustomField->string_value;
-                                    }elseif($customField->type==2){
-                                        $value=$ContactCustomField->int_value;
-                                    } else{
-                                        $value=$ContactCustomField->date_value;
+
+
+                        <?php $value = "";
+                        foreach ($customFields as $customField) {
+                            $ConvertedName = str_replace(' ', '', $customField->name);
+                            if (!empty($ContactCustomFields)) {
+                                foreach ($ContactCustomFields as $ContactCustomField) {
+                                    if ($ContactCustomField->customfield_id == $customField->id) {
+                                        if ($customField->type == 1) {
+                                            $value = $ContactCustomField->string_value;
+                                        } elseif ($customField->type == 2) {
+                                            $value = $ContactCustomField->int_value;
+                                        } else {
+                                            $value = $ContactCustomField->date_value;
+                                        }
                                     }
                                 }
                             }
-                           }
-                           
-                            ?>
+
+                        ?>
                             <div class='form-group'>
                                 <label for=''>{{$customField->name}}</label>
                                 <?php if ($customField->type == 3) { ?>
@@ -138,10 +138,33 @@
 
                         <button class="btn btn-primary px-5 pull-right" type="submit">Save Contact</button>
                     </form>
-
                     <div class="form-group">
-                    <a href="{{url('org/my_contacts')}}"><button class="btn btn-light">Cancel</button></a>
+                        <a href="{{url('org/my_contacts')}}"><button class="btn btn-light">Cancel</button></a>
                     </div>
+                    <label class="mt-3" style="font-size: 14px;font-weight: bold;">Add new custom type</label>
+                    <form class="row CustomFieldForm" id="CustomFieldForm" action="{{url('org/customfield/store')}}" method="post">
+                        <input type="hidden" class="addCustomField" value="{{url('org/customfield/store')}}">
+                        {{ csrf_field() }}
+
+                        <div class='form-group col-lg-5'>
+                            <label for='tagName'>Custom Type Name</label>
+                            <input type="text" class="form-control" id="name" name='name' value="{{  old('name') }}" placeholder="Custom Type Name" required>
+                            <small class="text-danger tagInvalid"></small>
+                        </div>
+                        <div class='form-group col-lg-5'>
+                            <label for='DisplayType'>Display Type</label>
+                            <select name="DisplayType" id="DisplayType" autocomplete="off" class="custom-select">
+                                <option>Display Type</option>
+                                <option value="1">Text</option>
+                                <option value="2">Numeric</option>
+                                <option value="3">Date</option>
+                            </select>
+                            <small class="text-danger tagInvalid"></small>
+                        </div>
+                        <div class="col-lg-2 pt-4 mt-2 pl-0"><i aria-hidden="true" class="fa fa-plus-circle" style="font-size: 30px;color: green;"></i></div>
+
+                    </form>
+
 
                     <!--                    <form class="row" method="post" action="{{$ActionCall}}" enctype="multipart/form-data">
                                             {{ csrf_field() }}
@@ -329,12 +352,12 @@
 
 
 
-//        $('.custom-header').multiSelect({
-//            selectableHeader: "<div class='custom-header'>Selectable items</div>",
-//            selectionHeader: "<div class='custom-header'>Selection items</div>",
-//            selectableFooter: "<div class='custom-header'>Selectable footer</div>",
-//            selectionFooter: "<div class='custom-header'>Selection footer</div>"
-//        });
+        //        $('.custom-header').multiSelect({
+        //            selectableHeader: "<div class='custom-header'>Selectable items</div>",
+        //            selectionHeader: "<div class='custom-header'>Selection items</div>",
+        //            selectableFooter: "<div class='custom-header'>Selectable footer</div>",
+        //            selectionFooter: "<div class='custom-header'>Selection footer</div>"
+        //        });
 
 
     });
