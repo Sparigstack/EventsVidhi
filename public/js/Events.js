@@ -655,7 +655,8 @@ function ValidateEventForm(element) {
 function ChangeCustomUrl(element) {
     var currentText = $(element).val();
     var actualUrl = $('#HumanFriendlyUrl').attr('data');
-    $('#HumanFriendlyUrl').text(actualUrl + currentText);
+    // $('#HumanFriendlyUrl').text(actualUrl + currentText);
+    $('#HumanFriendlyUrl').text("Preview URL: " + "https://www.panelhive.com/" + currentText);
 }
 
 function copyHumanFriendlyUrl(element) {

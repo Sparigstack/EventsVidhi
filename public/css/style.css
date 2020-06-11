@@ -193,3 +193,10 @@ table .max-w-table-100 .btn{margin: 10px auto;
 .uploadPodcastBox .dragFileContainer input {
     height: 20%;
 }
+
+.topPosition{
+    top:0px !important;
+}
+.backColorDropdownItem:focus, .backColorDropdownItem:hover{
+    background-color: #f8f7fa !important;
+}

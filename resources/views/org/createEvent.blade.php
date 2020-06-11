@@ -162,7 +162,7 @@
                     " id="tabe-13">
                         <div class="col-lg-12">
                             <div class="card">
-                                <div class="card-body">
+                                <div class="card-body pb-0">
                                     <div class="card-title">
                                         <!-- <h5>{{$CardTitle}}</h5> -->
                                     </div>
@@ -473,7 +473,7 @@
                                                         </div>
 
                                                         <br>
-                                                        <div class="form-group col-lg-12">
+                                                        <!-- <div class="form-group col-lg-12">
                                                             <label for="title">Custom URL</label>
                                                             <div class="form-control" style="display: flex;align-items:center;height:54px;">
                                                                 <span style="display: flex;align-items: center;">{{env('APP_URL_Custom')}}</span>
@@ -502,7 +502,7 @@
                                                                     <a target="_blank" href="https://www.linkedin.com/"><i style="cursor:pointer; margin-left:5px;font-size:20px;color:#656464;" class="fa fa-linkedin" title=""></i></a>
                                                                 </div>
                                                             <?php    } ?>
-                                                        </div>
+                                                        </div> -->
                                                     </div>
                                                 </div>
                                             </div>
@@ -512,11 +512,18 @@
                                         <div class="form-group col-lg-12">
                                             <button type="submit" id="Submit" class="btn btn-primary px-5 pull-right"> Save Event</button>
                                         </div>
+
                                 </div>
+                                </form>
+                                <div class="form-group col-lg-12 pr-5">
+                                        <a class="pull-right" href="{{url('org/events')}}"><button class="btn btn-light">Cancel</button></a>
+                                    </div>
+
                             </div>
                         </div>
 
-                        </form>
+                        <!-- </form> -->
+
 
                     </div>
                     <div class="parent videos row tab-pane
