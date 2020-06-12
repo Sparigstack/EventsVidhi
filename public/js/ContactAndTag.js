@@ -4,18 +4,18 @@ $(document).ready(function () {
             {orderable: false, targets: 4},
         ],
         buttons: [{extend: 'excel',
-                                text: 'export to excel',
-                                exportOptions: {
-                                columns: [0, 1, 2, 3]
-                    }}, {
-                    extend: 'csv',
-                            text: 'export to csv',
-                            exportOptions: {
-                            columns: [0, 1, 2, 3]
-                    }}, ],
+                text: 'export to excel',
+                exportOptions: {
+                    columns: [0, 1, 2, 3]
+                }}, {
+                extend: 'csv',
+                text: 'export to csv',
+                exportOptions: {
+                    columns: [0, 1, 2, 3]
+                }}, ],
     });
     contactsTable.buttons().container().appendTo('#default-datatable-contacts_wrapper .col-md-6:eq(0)');
-                                            
+
 
     // $('#tagsForm').on('submit', function (event) {
     $('#tagsForm').keydown(function (event) {
@@ -71,7 +71,7 @@ function DeleteCustomField(element) {
     $.ajax({
         url: urlString,
         type: 'post',
-        data: { _token: CSRF_TOKEN, id: DataID },
+        data: {_token: CSRF_TOKEN, id: DataID},
         success: function (response) {
             $(parent).remove();
             LoaderStop();
@@ -79,7 +79,7 @@ function DeleteCustomField(element) {
         }
     });
 }
-function Approve(element){
+function Approve(element) {
     var confirmDelete = confirm("Appprove this contact?");
     if (!confirmDelete) {
         return false;
@@ -94,7 +94,7 @@ function Approve(element){
     $.ajax({
         url: urlString,
         type: 'post',
-        data: { _token: CSRF_TOKEN, id: DataID },
+        data: {_token: CSRF_TOKEN, id: DataID},
         success: function (response) {
             $(element).find('.fa-square-o').removeClass('fa-square-o').addClass('fa-check-square');
             LoaderStop();
@@ -127,10 +127,71 @@ function deleteContact(element) {
     });
 }
 
-function tagsSelect(element){
+function tagsSelect(element) {
     var urlString = $(".urlString").val();
     var tagsHiddenText = $("#HiddenCategoyID").text();
     var tagsHiddenTrim = $.trim(tagsHiddenText);
     var tagsHidden = tagsHiddenTrim.replace(' ', ',');
     window.location.href = urlString += '/' + tagsHidden;
+}
+
+function showNewCustomField(element) {
+    var newCustomField0 = $("#newCustomField0");
+    var newForm = $(newCustomField0).clone();
+    var number = Math.floor(Math.random() * 999);
+    $(newForm).attr('id', "newCustomField" + number);
+    $(newForm).removeClass('d-none');
+    $(element).parent().parent().prepend(newForm);
+
+
+}
+
+function saveCustomField(element) {
+    var parent = findParent(element);
+    var fieldName = $(parent).find('.fieldName').val();
+    if (fieldName == "") {
+        alert("Please provide Field Name.");
+        return;
+    }
+
+    var fieldType = $(parent).find('.fieldType').val();
+    if (fieldType == "" || fieldType == undefined || fieldType == null) {
+        alert("Please choose type for your field.");
+        return;
+    }
+    var urlString = $(parent).find('.addCustomField').val();
+    var CSRF_TOKEN = $(parent).find('input[name=_token]').val();
+    LoaderStart();
+    $.ajax({
+        url: urlString,
+        type: 'post',
+        data: {_token: CSRF_TOKEN, name: fieldName, DisplayType: fieldType},
+        success: function (response) {
+            $(parent).remove();
+            var newFieldType = "";
+            var dateClass = "";
+            var placeHolder = "Enter " + fieldName;
+            if (fieldType == 1) {
+                newFieldType = "text";
+            } else if (fieldType == 2)
+                newFieldType = "number";
+            else if (fieldType == 3){
+                newFieldType = "datetime";
+                dateClass = "date";
+            }
+                
+
+            var fieldId = fieldName.replace(/ /g, "");
+
+            var newFieldHtml = "<div class='form-group'><label for=''>" + fieldName + "</label><input type='" + newFieldType + "' placeholder='" + placeHolder + "' value='' class='form-control "+dateClass+"' autocomplete='off' name='"+fieldId+"' id='"+fieldId+"'></div>";
+            $('.newContactForm').find(".customFieldsContainer").append(newFieldHtml);
+            
+            LoaderStop();
+        }
+    });
+}
+
+function removeCustomField(element){
+    var parent = findParent(element);
+    $(parent).remove();
 }

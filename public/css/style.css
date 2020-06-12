@@ -200,3 +200,4 @@ table .max-w-table-100 .btn{margin: 10px auto;
 .backColorDropdownItem:focus, .backColorDropdownItem:hover{
     background-color: #f8f7fa !important;
 }
+.clickable{cursor: pointer;}

@@ -24,7 +24,7 @@
         $lastname = $contact->last_name;
         $email = $contact->email;
         if (!empty($contact->contact_number)) {
-            $contactNumber =  $contact->contact_number;
+            $contactNumber = $contact->contact_number;
         }
     }
     ?>
@@ -42,7 +42,7 @@
                     </div>
                     @endif
 
-                    <form class="" action="{{$ActionCall}}" method="post">
+                    <form class="newContactForm" action="{{$ActionCall}}" method="post">
                         {{ csrf_field() }}
                         <!--  <input type="hidden" id="hdnRedirect" value="{{$RedirectCall}}" /> -->
                         <div class='form-group'>
@@ -65,7 +65,8 @@
                         <div class="form-group">
                             <label class="">Select Tags</label>
                             <select class="form-control multiple-select" multiple="multiple" name="tags" id="tags">
-                                <?php if (!empty($contact)) {
+                                <?php
+                                if (!empty($contact)) {
 
 
 
@@ -83,20 +84,22 @@
                                                 }
                                                 $checkCount = "yes";
                                             }
-
-                                ?>
+                                            ?>
 
 
                                         <?php } ?>
                                         <option value="{{old('tags',$contact_tags->id)}}" {{$IsSelected}} @if (old('tags')==$contact_tags->id) selected="selected" @endif ><?php echo $contact_tags->name; ?> </option>
 
-                                    <?php  }
+                                        <?php
+                                    }
                                 } else {
                                     foreach ($tagsData as $contact_tags) {
-                                    ?>
+                                        ?>
                                         <option value="{{old('tags',$contact_tags->id)}}" @if (old('tags')==$contact_tags->id) selected="selected" @endif ><?php echo $contact_tags->name; ?> </option>
-                                <?php }
-                                } ?>
+                                        <?php
+                                    }
+                                }
+                                ?>
 
 
                             </select>
@@ -104,36 +107,37 @@
                             <textarea id="HiddenCategoyID" name="HiddenCategoyID" required class="form-controld d-none" title="HiddenCategoyID" placeholder="HiddenCategoyID" autocomplete="off" rows="4">{{ old('HiddenCategoyID', $MultSelectTags) }} </textarea>
                         </div>
 
+                        <div class="customFieldsContainer">
 
-                        <?php $value = "";
-                        foreach ($customFields as $customField) {
-                            $ConvertedName = str_replace(' ', '', $customField->name);
-                            if (!empty($ContactCustomFields)) {
-                                foreach ($ContactCustomFields as $ContactCustomField) {
-                                    if ($ContactCustomField->customfield_id == $customField->id) {
-                                        if ($customField->type == 1) {
-                                            $value = $ContactCustomField->string_value;
-                                        } elseif ($customField->type == 2) {
-                                            $value = $ContactCustomField->int_value;
-                                        } else {
-                                            $value = $ContactCustomField->date_value;
+
+                            <?php
+                            $value = "";
+                            foreach ($customFields as $customField) {
+                                $ConvertedName = str_replace(' ', '', $customField->name);
+                                if (!empty($ContactCustomFields)) {
+                                    foreach ($ContactCustomFields as $ContactCustomField) {
+                                        if ($ContactCustomField->customfield_id == $customField->id) {
+                                            if ($customField->type == 1) {
+                                                $value = $ContactCustomField->string_value;
+                                            } elseif ($customField->type == 2) {
+                                                $value = $ContactCustomField->int_value;
+                                            } else {
+                                                $value = $ContactCustomField->date_value;
+                                            }
                                         }
                                     }
                                 }
-                            }
-
-                        ?>
-                            <div class='form-group'>
-                                <label for=''>{{$customField->name}}</label>
-                                <?php if ($customField->type == 3) { ?>
-                                    <input type='text' value="{{$value}}" placeholder="05/16/2020 10:28 AM" class="form-control date" autocomplete="off" name="{{$ConvertedName}}" id="{{$ConvertedName}}" />
-                                <?php } else { ?>
-                                    <input type="text" class="form-control" id="{{$ConvertedName}}" name="{{$ConvertedName}}" value="{{$value}}" placeholder="Enter {{$customField->name}}">
-                                <?php } ?>
-
-                            </div>
-                        <?php } ?>
-
+                                ?>
+                                <div class='form-group'>
+                                    <label for=''>{{$customField->name}}</label>
+                                    <?php if ($customField->type == 3) { ?>
+                                        <input type='text' value="{{$value}}" placeholder="05/16/2020 10:28 AM" class="form-control date" autocomplete="off" name="{{$ConvertedName}}" id="{{$ConvertedName}}" />
+                                    <?php } else { ?>
+                                        <input type="text" class="form-control" id="{{$ConvertedName}}" name="{{$ConvertedName}}" value="{{$value}}" placeholder="Enter {{$customField->name}}">
+                                    <?php } ?>
+                                </div>
+                            <?php } ?>
+                        </div>
 
 
                         <button class="btn btn-primary px-5 pull-right" type="submit">Save Contact</button>
@@ -141,29 +145,38 @@
                     <div class="form-group">
                         <a href="{{url('org/my_contacts')}}"><button class="btn btn-light">Cancel</button></a>
                     </div>
-                    <label class="mt-3" style="font-size: 14px;font-weight: bold;">Add new custom type</label>
-                    <form class="row CustomFieldForm" id="CustomFieldForm" action="{{url('org/customfield/store')}}" method="post">
-                        <input type="hidden" class="addCustomField" value="{{url('org/customfield/store')}}">
-                        {{ csrf_field() }}
+                    <div class="newFieldsContainer">
+                        <div id="newCustomField0" class="row parent CustomFieldForm d-none" id="CustomFieldForm">
+                            <input type="hidden" class="addCustomField" value="{{url('org/customfield/store')}}">
+                            {{ csrf_field() }}
 
-                        <div class='form-group col-lg-5'>
-                            <label for='tagName'>Custom Type Name</label>
-                            <input type="text" class="form-control" id="name" name='name' value="{{  old('name') }}" placeholder="Custom Type Name" required>
-                            <small class="text-danger tagInvalid"></small>
-                        </div>
-                        <div class='form-group col-lg-5'>
-                            <label for='DisplayType'>Display Type</label>
-                            <select name="DisplayType" id="DisplayType" autocomplete="off" class="custom-select">
-                                <option>Display Type</option>
-                                <option value="1">Text</option>
-                                <option value="2">Numeric</option>
-                                <option value="3">Date</option>
-                            </select>
-                            <small class="text-danger tagInvalid"></small>
-                        </div>
-                        <div class="col-lg-2 pt-4 mt-2 pl-0"><i aria-hidden="true" class="fa fa-plus-circle" style="font-size: 30px;color: green;"></i></div>
+                            <div class='form-group col-lg-5'>
+                                <!--<label for='tagName'>New Field Name</label>-->
+                                <input type="text" class="form-control fieldName"  value="{{  old('name') }}" placeholder="New Field Name" required>
+                                <small class="text-danger tagInvalid"></small>
+                            </div>
+                            <div class='form-group col-lg-5'>
+                                <!--<label for='DisplayType'>Display Type</label>-->
+                                <select name="DisplayType" autocomplete="off" class="custom-select fieldType">
+                                    <option>Field Type</option>
+                                    <option value="1">Text</option>
+                                    <option value="2">Numeric</option>
+                                    <option value="3">Date</option>
+                                </select>
+                                <small class="text-danger tagInvalid"></small>
+                            </div>
+                            <i title="Save New Field" onclick="saveCustomField(this);" aria-hidden="true" class="fa fa-check-square mt-1 clickable" style="font-size: 25px;color: green;"></i>
+                            <i title="Cancel" onclick="removeCustomField(this);" aria-hidden="true" class="fa fa-trash ml-3 mt-1 clickable" style="font-size: 25px;"></i>
 
-                    </form>
+                        </div>
+                        <div class="form-group">
+                            <button type="button" class="btn btn-outline-primary waves-effect waves-light m-1" onclick="showNewCustomField(this);"> <i class="fa fa-plus-circle"></i> <span>Add New Field</span> </button>
+                        </div>
+                    </div>
+
+                    <!--                    <div class
+                                        <label class="mt-3" style="font-size: 14px;font-weight: bold;">Add new custom type</label>-->
+
 
 
                     <!--                    <form class="row" method="post" action="{{$ActionCall}}" enctype="multipart/form-data">
@@ -287,79 +300,79 @@
 <script src="{{ asset('assets/plugins/bootstrap-datatable/js/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('assets/plugins/bootstrap-datatable/js/dataTables.buttons.min.js') }}"></script>
 <script>
-    (function() {
+                                (function () {
 
-        var bar = $('.bar_upload');
-        var percent = $('.percent_upload');
-        //var status = $('#status');
+                                    var bar = $('.bar_upload');
+                                    var percent = $('.percent_upload');
+                                    //var status = $('#status');
 
-        $('.dragFileForm').ajaxForm({
-            beforeSend: function() {
-                //status.empty();
-                var percentVal = '0%';
-                var posterValue = $('input[name=input_podfile]').fieldValue();
-                bar.width(percentVal)
-                percent.html(percentVal);
-            },
-            uploadProgress: function(event, position, total, percentComplete) {
-                var percentVal = percentComplete + '%';
-                bar.width(percentVal);
-                percent.html(percentVal);
-                LoaderStart();
-            },
-            success: function() {
-                LoaderStop();
-                var percentVal = 'Redirecting..';
-                bar.width(percentVal);
-                percent.html(percentVal);
-            },
-            complete: function(xhr) {
-                //status.html(xhr.responseText);
-                //alert('Uploaded Successfully');
+                                    $('.dragFileForm').ajaxForm({
+                                        beforeSend: function () {
+                                            //status.empty();
+                                            var percentVal = '0%';
+                                            var posterValue = $('input[name=input_podfile]').fieldValue();
+                                            bar.width(percentVal)
+                                            percent.html(percentVal);
+                                        },
+                                        uploadProgress: function (event, position, total, percentComplete) {
+                                            var percentVal = percentComplete + '%';
+                                            bar.width(percentVal);
+                                            percent.html(percentVal);
+                                            LoaderStart();
+                                        },
+                                        success: function () {
+                                            LoaderStop();
+                                            var percentVal = 'Redirecting..';
+                                            bar.width(percentVal);
+                                            percent.html(percentVal);
+                                        },
+                                        complete: function (xhr) {
+                                            //status.html(xhr.responseText);
+                                            //alert('Uploaded Successfully');
 
-                window.location.href = $('#hdnRedirect').val();
-            }
-        });
+                                            window.location.href = $('#hdnRedirect').val();
+                                        }
+                                    });
 
-    })();
+                                })();
 
-    $(document).ready(function() {
-        setEventDateAndTime();
-        $('.single-select').select2();
+                                $(document).ready(function () {
+                                    setEventDateAndTime();
+                                    $('.single-select').select2();
 
-        $('.multiple-select').select2({
-            placeholder: "Select tags",
-            allowClear: true
-        });
-        var MultiSlectCounter = 0;
-        $('.multiple-select').on('select2:select', function(e) {
-            console.log(e.params.data.id);
-            if (MultiSlectCounter == 0) {
-                $('#HiddenCategoyID').append(e.params.data.id);
-            } else {
-                $('#HiddenCategoyID').append("," + e.params.data.id);
-            }
+                                    $('.multiple-select').select2({
+                                        placeholder: "Select tags",
+                                        allowClear: true
+                                    });
+                                    var MultiSlectCounter = 0;
+                                    $('.multiple-select').on('select2:select', function (e) {
+                                        console.log(e.params.data.id);
+                                        if (MultiSlectCounter == 0) {
+                                            $('#HiddenCategoyID').append(e.params.data.id);
+                                        } else {
+                                            $('#HiddenCategoyID').append("," + e.params.data.id);
+                                        }
 
-            MultiSlectCounter += 1;
-        });
-        $('.multiple-select').on('select2:unselecting', function(e) {
-            console.log(e.params.args.data.id);
-            var str = $('#HiddenCategoyID').val();
-            var res = str.replace(e.params.args.data.id, "");
-            $('#HiddenCategoyID').empty();
-            $('#HiddenCategoyID').append(res);
-        });
-
-
-
-        //        $('.custom-header').multiSelect({
-        //            selectableHeader: "<div class='custom-header'>Selectable items</div>",
-        //            selectionHeader: "<div class='custom-header'>Selection items</div>",
-        //            selectableFooter: "<div class='custom-header'>Selectable footer</div>",
-        //            selectionFooter: "<div class='custom-header'>Selection footer</div>"
-        //        });
+                                        MultiSlectCounter += 1;
+                                    });
+                                    $('.multiple-select').on('select2:unselecting', function (e) {
+                                        console.log(e.params.args.data.id);
+                                        var str = $('#HiddenCategoyID').val();
+                                        var res = str.replace(e.params.args.data.id, "");
+                                        $('#HiddenCategoyID').empty();
+                                        $('#HiddenCategoyID').append(res);
+                                    });
 
 
-    });
+
+                                    //        $('.custom-header').multiSelect({
+                                    //            selectableHeader: "<div class='custom-header'>Selectable items</div>",
+                                    //            selectionHeader: "<div class='custom-header'>Selection items</div>",
+                                    //            selectableFooter: "<div class='custom-header'>Selectable footer</div>",
+                                    //            selectionFooter: "<div class='custom-header'>Selection footer</div>"
+                                    //        });
+
+
+                                });
 </script>
 @endsection

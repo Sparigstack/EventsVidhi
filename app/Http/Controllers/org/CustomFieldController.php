@@ -37,7 +37,10 @@ class CustomFieldController extends Controller
         $userId = Auth::id();
         $customField->user_id = $userId;
         $customField->save();
-        return Redirect::back()->with('message','Operation Successful !');
+        return response()->json([
+            "status"=>"success"
+        ]);
+        //return Redirect::back()->with('message','Operation Successful !');
     }
 
     public function delete($id){
