@@ -656,7 +656,8 @@ function ChangeCustomUrl(element) {
     var currentText = $(element).val();
     var actualUrl = $('#HumanFriendlyUrl').attr('data');
     // $('#HumanFriendlyUrl').text(actualUrl + currentText);
-    $('#HumanFriendlyUrl').text("Preview URL: " + "https://www.panelhive.com/" + currentText);
+    $(".textPreview").text("Preview URL:");
+    $('#HumanFriendlyUrl').text("https://www.panelhive.com/" + currentText);
 }
 
 function copyHumanFriendlyUrl(element) {
@@ -667,6 +668,58 @@ function copyHumanFriendlyUrl(element) {
     $(".copied").text("Copied to clipboard").show().fadeOut(1200);
     $temp.remove();
 }
+
+function addCustomUrl(element){
+    var parent = findParent(element);
+    var eventTitle = $(element).attr('event-title');
+    var eventCustomUrl = $(element).parent().find('.eventCustomUrl').val();
+    $(".headerTitle").text("Set custom URL for " + eventTitle);
+    $(".textPreview").text("Preview URL:");
+    $(".eventId").val($(element).attr('db-event-id'));
+    $("#successMessage").addClass('d-none');
+    $("#customUrlDuplicate").addClass('d-none');
+    if(eventCustomUrl != ""){
+        $("#CustomUrl").val(eventCustomUrl);
+        $('#HumanFriendlyUrl').text("https://www.panelhive.com/" + eventCustomUrl);
+        $(".socialMediaLinks").removeClass('d-none');
+    } else{
+        $("#CustomUrl").val('');
+        $('#HumanFriendlyUrl').text("https://www.panelhive.com/...");
+        $(".socialMediaLinks").addClass('d-none');
+    }
+}
+
+function saveCustomUrl(element) {
+    var parent = findParent(element);
+    var eventId = $("#openCustomUrlPopup").find(".eventId").val();
+    var CustomUrl = $("#CustomUrl").val();
+    var CSRF_TOKEN = $('.csrf-token').val();
+    var urlString = $('.saveCustomUrl').val();
+    LoaderStart();
+    $.ajax({
+        url: urlString,
+        type: 'post',
+        data: { _token: CSRF_TOKEN, eventId: eventId, CustomUrl: CustomUrl },
+        success: function (response) {
+            console.log(response);
+            // var arr = response;
+            // if(arr.length > 0){
+            if(response != ""){
+                $('#customUrlDuplicate').removeClass('d-none');
+                $('#successMessage').addClass('d-none');
+            } else{
+                $('#customUrlDuplicate').addClass('d-none');
+                $('#successMessage').removeClass('d-none');
+            }
+            LoaderStop();
+            // location.reload();
+        },
+        error: function (response) {
+            console.log(response);
+        }
+    });
+}
+
 function IsPaidAlert(element) {
     var val = $(element).val();
     if (val == "false") {
