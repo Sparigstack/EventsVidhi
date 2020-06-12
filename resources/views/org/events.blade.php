@@ -15,10 +15,13 @@
 
                 <!-- Custom url popup -->
                 <div class="modal fade" id="openCustomUrlPopup" style="display:none;padding:17px!important;" aria-hidden="true">
+                    <input class="csrf-token" type="hidden" value="{{ csrf_token() }}">
+                    <input class="eventId" type="hidden" value="">
+                    <input class="saveCustomUrl" type="hidden" value="{{url("saveCustomUrl")}}">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header pb-2 pt-3" style="font-size:25px;">
-                                <label for="title">Set custom URL</label>
+                                <label for="title" class="headerTitle"></label>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span></button>
                             </div>
@@ -30,27 +33,34 @@
                                 $CustomHumanReadableUrl = "";
                                 $FinalUrl = "";  
                                 ?>
-                                <div class="col-lg-12 row">
-                                    <div class="pt-2 pr-1">
+                                <div class="col-lg-12 row pr-0">
+                                    <div class="pt-2 pr-0 col-lg-12">
                                         <!-- <span>{{env('APP_URL_Custom')}}</span> -->
-                                        <p for="custom_url" style="font-weight: 300;">https://www.panelhive.com/</p>
+                                        <p for="custom_url" class="float-left" style="font-weight: 300;margin:.3rem 0;">https://www.panelhive.com/</p>
+                                        <input type="text" class="float-left" value="" onkeyup="ChangeCustomUrl(this);" id="CustomUrl" name="CustomUrl" autocomplete="off" required="" style="padding:0.175rem .75rem;">
                                         <!-- <span></span> -->
                                         <!-- <input type="text" class="form-control p-0 " style="border:none;" value="{{$CustomHumanReadableUrl}}" onkeyup="ChangeCustomUrl(this);" id="CustomUrl" name="CustomUrl" autocomplete="off"> -->
                                     </div>
 
-                                    <div class="pl-0">
+                                    <!-- <div class="pl-0 pr-0 col-lg-4"> -->
                                         <!-- <div class="form-group col-lg-12"> -->
-                                            <input type="text" class="form-control " value="{{$CustomHumanReadableUrl}}" onkeyup="ChangeCustomUrl(this);" id="CustomUrl" name="CustomUrl" autocomplete="off">
+                                            <!-- <input type="text" class="form-control " value="" onkeyup="ChangeCustomUrl(this);" id="CustomUrl" name="CustomUrl" autocomplete="off" required=""> -->
                                         <!-- </div> -->
                                         
+                                    <!-- </div> -->
+
+                                    <div class="col-lg-12 mb-0">
+                                        <button id="" class="btn m-1 btn-primary pull-right mr-4" style="" onclick="saveCustomUrl(this);">Save</button>
                                     </div>
+
+                                    <div class="text-danger pl-2 pb-2 d-none" id='customUrlDuplicate'>Event name is already taken, please choose another.</div>
                                 </div>
 
-                                    <div class="row form-group pl-3 pt-2">
+                                    <div class="row form-group pl-3 mr-3">
                                         <!-- <div class="col-lg-10 p-1" id="HumanFriendlyUrl" data="{{env('APP_URL_Custom')}}"> -->
+                                        <div class="textPreview"> Preview URL:  </div>
                                         <div class="col-lg-10 p-1" id="HumanFriendlyUrl" data="https://www.panelhive.com/...">
-                                            Preview URL: https://www.panelhive.com/{{$FinalUrl}}
-
+                                             https://www.panelhive.com/...{{$FinalUrl}}
                                         </div>
 
                                     <div class="col-lg-2 pt-1">
@@ -61,14 +71,21 @@
 
                                 </div>
 
-                                <?php if (!empty($CustomHumanReadableUrl)) { ?>
-                                            <div class="pull-right">
-                                                <a target="_blank" href="https://facebook.com"><i style="cursor:pointer; margin-left:5px;font-size:20px;color:#656464;" class="fa fa-facebook-official" title=""></i></a>
-                                                <a target="_blank" href="https://twitter.com/"><i style="cursor:pointer; margin-left:5px;font-size:20px;color:#656464;" class="fa fa-twitter" title=""></i></a>
-                                                <a target="_blank" href="https://www.linkedin.com/"><i style="cursor:pointer; margin-left:5px;font-size:20px;color:#656464;" class="fa fa-linkedin" title=""></i></a>
+                                            <div class="col-lg-12 socialMediaLinks pull-right mb-2 mr-4 pr-4">
+                                                <a target="_blank" href="https://www.linkedin.com/" class="pull-right"><i style="cursor:pointer; margin-left:5px;font-size:20px;color:#656464;" class="fa fa-linkedin" title=""></i></a>
+                                                
+                                                <a target="_blank" href="https://twitter.com/" class="pull-right"><i style="cursor:pointer; margin-left:5px;font-size:20px;color:#656464;" class="fa fa-twitter" title=""></i></a>
+                                                
+                                                <a target="_blank" href="https://facebook.com" class="pull-right"><i style="cursor:pointer; margin-left:5px;font-size:20px;color:#656464;" class="fa fa-facebook-official" title=""></i></a>
                                             </div>
-                                <?php    } ?>
                                     <!-- </div> -->
+
+                                    <div class="greenFont pl-2 pb-2 d-none" id='successMessage'> Event URL is saved successfully, you can share it on your social media or other platforms.</div>
+
+                                    <!-- <div class="form-group">
+                                        <button id="" class="btn m-1 pull-right btn-primary" style="" onclick="saveCustomUrl(this);">Save</button>
+                                    </div> -->
+
                                 </div>
                             </div>
                         </div>
@@ -158,13 +175,15 @@
                                                 <i class="icon-options"></i>
                                                 </a>
                                                 <div class="dropdown-menu dropdown-menu-right topPosition">
+                                                    <input type="hidden" class="eventCustomUrl" value="{{$event->custom_url}}">
+
                                                     <a class="dropdown-item backColorDropdownItem" href="{{ url("org/events/$event->id") }}"> Edit </a>
 
                                                     <a class="dropdown-item backColorDropdownItem" href="javascript:void();" onclick="deleteEvent(this);" db-delete-id="{{$event->id}}"> Delete </a>
 
                                                     <a class="dropdown-item backColorDropdownItem" href="javascript:void();" onclick="copyEvent(this);" db-event-id="{{$event->id}}"> Copy </a>
 
-                                                    <a class="dropdown-item backColorDropdownItem" href="javascript:void();" data-toggle="modal" data-target="#openCustomUrlPopup"> Custom URL </a>
+                                                    <a class="dropdown-item backColorDropdownItem" href="javascript:void();" data-toggle="modal" data-target="#openCustomUrlPopup" event-title="{{$event->title}}" db-event-id="{{$event->id}}" onclick="addCustomUrl(this);"> Custom URL </a>
 
                                                     <?php if ($event->is_live != 0) { ?>
                                                     <a class="dropdown-item pauseButton backColorDropdownItem" href="javascript:void();" onclick="UpdateEventStatus(this);" data-id="{{$event->id}}" status='{{$event->is_live}}'> Pause </a>

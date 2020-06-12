@@ -960,4 +960,17 @@ class EventsController extends Controller
 
     }
 
+    public function saveCustomUrl(Request $request){
+        $existCustomUrl = Event::where('custom_url', '=', $request->CustomUrl)->first();
+        if(!empty($existCustomUrl)){
+            return $existCustomUrl;
+        } else{
+            // return 'mansi';
+            $events = Event::findOrFail($request->eventId);
+            $events->custom_url = $request->CustomUrl;
+            $events->save();
+            // return $events;
+        }
+    }
+
 }
