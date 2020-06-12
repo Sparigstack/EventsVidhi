@@ -23,6 +23,7 @@
     ?>
     <div class="Data-Table">
     <input type="hidden" id="deleteTag" class="deleteTag" value="{{url('org/tags/delete')}}" />
+    <input type="hidden" class="contactPage" value="{{url('org/my_contacts')}}" />
     <input class="csrf-token" type="hidden" value="{{ csrf_token() }}">
         <div class="row">
             <div class="col-lg-12">
@@ -87,6 +88,7 @@
             placeholder: "Select tags",
             allowClear: true
         });
+
         
         var MultiSlectCounter = 0;
         $('.multiple-select').on('select2:select', function(e) {
@@ -99,6 +101,16 @@
 
             MultiSlectCounter += 1;
         });
+
+        $('.select2-selection__choice').on('click', function(e) {
+            // console.log(e.params.args.data.id);
+            var urlString = $(".contactPage").val();
+            var tagId = $(this).attr('data-select2-id');
+            // var tagName = $(this).attr('title');
+            // $.trim(tagName);
+            window.location.href = urlString += '/' + tagId;
+        });
+
         $('.multiple-select').on('select2:unselecting', function(e) {
             var confirmDelete = confirm("Are you sure want to remove this Tag from all Contacts and delete permanently?");
             if (!confirmDelete){
