@@ -46,7 +46,7 @@
 
                                 <select multiple="multiple" class="form-control multiple-select" name="allTags" id="allTags" placeholder="">
                                     @foreach($tags as $tag)
-                                    <option value="{{$tag->id}}" selected="selected">{{$tag->name}} </option>
+                                    <option value="{{$tag->id}}" selected="selected" tagName="{{$tag->name}}">{{$tag->name}} </option>
                                     @endforeach
                                 </select>
                                 <textarea id="HiddenCategoyID" name="HiddenCategoyID" required class="form-controld d-none" title="HiddenCategoyID" placeholder="HiddenCategoyID" autocomplete="off" rows="4">{{ old('HiddenCategoyID') }} </textarea>
@@ -105,10 +105,15 @@
         $('.select2-selection__choice').on('click', function(e) {
             // console.log(e.params.args.data.id);
             var urlString = $(".contactPage").val();
-            var tagId = $(this).attr('data-select2-id');
-            // var tagName = $(this).attr('title');
-            // $.trim(tagName);
-            window.location.href = urlString += '/' + tagId;
+            var tagName = $(this).attr('title');
+            var trim = $.trim(tagName);
+            var tagId = "";
+            $('.multiple-select option').each(function() {
+                if(trim == $(this).attr("tagName")){
+                    tagId = $(this).val();
+                }
+            });
+            window.location.href = urlString + '/' + tagId;
         });
 
         $('.multiple-select').on('select2:unselecting', function(e) {
