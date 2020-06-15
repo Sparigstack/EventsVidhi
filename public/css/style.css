@@ -201,3 +201,8 @@ table .max-w-table-100 .btn{margin: 10px auto;
     background-color: #f8f7fa !important;
 }
 .clickable{cursor: pointer;}
+
+.bulkActionDropDown{
+    left:100% !important;
+    top:40px !important;
+}

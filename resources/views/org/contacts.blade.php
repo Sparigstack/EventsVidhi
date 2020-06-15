@@ -72,19 +72,32 @@ $MultSelectTags = "";
                                     <!-- <button onclick="tagsSelect(this);" class="btn btn-primary">Search Tags</button> -->
                                     <button onclick="tagsSelect(this);" class="btn m-1" aria-hidden="true" style="background-color:#6c757d29;"></i>Search Tags</button>
                                 </div>
+
+                                <!-- <div class="col-sm-12 col-lg-2 col-md-2">
+                                    <div class="dropdown">
+                                        <a href="javascript:void();" class="dropdown-toggle dropdown-toggle-nocaret" data-toggle="dropdown"><button class="btn btn-outline-primary m-1 pull-right">Bulk Actions</button></a>
+                                        <div class="dropdown-menu dropdown-menu-right bulkActionDropDown">
+                                            <a class="dropdown-item backColorDropdownItem" href="">Email</a>
+                                        </div>
+                                    </div>
+                                </div> -->
+
                             </div>
                         <!-- </form> -->
 
 
                         <div class="table-responsive" id="default-datatable_wrapper">
-                            <table id="default-datatable-contacts" class="table table-bordered">
-                                <thead>
+                            <!-- <table id="default-datatable-contacts" class="table table-bordered"> -->
+                            <table id="default-datatable-contacts" class="table" style="border-collapse: collapse !important;">
+
+                                <thead style="background-color: #6c757d29;">
                                     <tr>
+                                        <th>Profile Pic</th>
                                         <th>First Name</th>
                                         <th>Last Name</th>
                                         <th>Email Address</th>
                                         <th>Tags</th>
-                                        <th>Action</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -94,6 +107,7 @@ $MultSelectTags = "";
                                             <input class="csrf-token" type="hidden" value="{{ csrf_token() }}">
                                             <input type="hidden" class="deleteContact" value="{{url('deleteContact')}}">
                                             <input type="hidden" class="ApproveContact" value="{{url('org/contact/approve')}}">
+                                            <td><img class="speakerImgSize rounded"title="Profile Pic" src="{{env('AWS_URL') . 'no-image-logo.jpg'}}"> </td>
                                             <td>{{$contact->first_name}} </td>
                                             <td>{{$contact->last_name}}</td>
                                             <td>{{$contact->email}}</td>
@@ -104,7 +118,7 @@ $MultSelectTags = "";
                                                     echo implode(", ", $tagSplit); ?>
                                             </td>
                                             
-                                            <td>
+                                            <!-- <td>
                                                 <i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-edit" title="Edit Contact" onclick="window.location='{{ url("org/contacts/edit/".$contact->id) }}'"></i>
                                                 <a onclick="deleteContact(this);" db-delete-id="{{$contact->id}}"><i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-trash" title="Delete Contact"></i></a>
                                                 <?php if(Auth()->user()->auto_approve_follower != 1 ){
@@ -114,6 +128,32 @@ $MultSelectTags = "";
                                                     <a onclick="" data-id="{{$contact->id}}"><i style="font-family:fontawesome;font-style:normal;margin-left:5px;" class="fas fa-check-square" title="Approved"></i> </a>
 
                                                 <?php }} ?>
+
+                                            </td> -->
+
+                                            <td>
+                                                <div class="card-action float-none">
+                                            <div class="dropdown">
+                                                <a href="javascript:void();" class="dropdown-toggle dropdown-toggle-nocaret" data-toggle="dropdown" title="View More Actions">
+                                                <i class="icon-options"></i>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-right topPosition">
+
+                                                <a class="dropdown-item backColorDropdownItem" href="{{ url('org/contacts/edit/'.$contact->id) }}">Edit</a>
+
+                                                <a class="dropdown-item backColorDropdownItem" href="javascript:void();" onclick="deleteContact(this);" db-delete-id="{{$contact->id}}">Delete</a>
+
+                                                <?php if(Auth()->user()->auto_approve_follower != 1 ){
+                                                if ($contact->is_approved != 1) { ?>
+                                                    <a class="dropdown-item backColorDropdownItem" href="javascript:void();" onclick="Approve(this);" data-id="{{$contact->id}}"> Approve </a>
+                                                <?php }else { ?>
+                                                    <a class="dropdown-item backColorDropdownItem" href="javascript:void();" onclick="" data-id="{{$contact->id}}">Approved</a>
+
+                                                <?php }} ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
 
                                             </td>
                                         </tr>

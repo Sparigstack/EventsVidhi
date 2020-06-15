@@ -1,21 +1,33 @@
 $(document).ready(function () {
     var contactsTable = $('#default-datatable-contacts').DataTable({
-        columnDefs: [
-            {orderable: false, targets: 4},
+        // columnDefs: [
+        //     {orderable: false, targets: 4},
+        // ],
+        ordering: false,
+        aoColumnDefs: [
+            {
+                bSortable: false,
+                aTargets: [5]
+            }
         ],
         buttons: [{extend: 'excel',
                 text: 'export to excel',
                 exportOptions: {
-                    columns: [0, 1, 2, 3]
+                    columns: [0, 1, 2, 3, 4]
                 }}, {
                 extend: 'csv',
                 text: 'export to csv',
                 exportOptions: {
-                    columns: [0, 1, 2, 3]
+                    columns: [0, 1, 2, 3, 4]
                 }}, ],
     });
-    contactsTable.buttons().container().appendTo('#default-datatable-contacts_wrapper .col-md-6:eq(0)');
+    // contactsTable.buttons().container().appendTo('#default-datatable-contacts_wrapper .col-md-6:eq(0)');
+    contactsTable.buttons().container().appendTo('#default-datatable-contacts_wrapper .col-md-6:eq(1)');
+    $("#default-datatable-contacts_wrapper").find($(".dt-buttons")).css("float", "right");
 
+    $('.dt-buttons').each(function () {
+            $(this).append('<div class="dropdown"><a href="javascript:void();" class="dropdown-toggle dropdown-toggle-nocaret" data-toggle="dropdown"><button class="btn btn-outline-primary ml-2 pull-right">Bulk Actions</button></a><div class="dropdown-menu dropdown-menu-right bulkActionDropDown"><a class="dropdown-item backColorDropdownItem" href="">Email</a></div></div>');
+        });
 
     // $('#tagsForm').on('submit', function (event) {
     $('#tagsForm').keydown(function (event) {
@@ -80,7 +92,7 @@ function DeleteCustomField(element) {
     });
 }
 function Approve(element) {
-    var confirmDelete = confirm("Appprove this contact?");
+    var confirmDelete = confirm("Approve this contact?");
     if (!confirmDelete) {
         return false;
     }
