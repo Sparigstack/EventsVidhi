@@ -18,6 +18,52 @@ $MultSelectTags = "";
 
         <div class="row">
             <div class="col-lg-12">
+
+                <!-- Email popup -->
+                <div class="modal fade" id="openEmailPopup" style="display:none;padding:17px!important;" aria-hidden="true">
+                    <input class="csrf-token" type="hidden" value="{{ csrf_token() }}">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header pb-2 pt-3" style="font-size:25px;">
+                                <label for="title">Send Email</label>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span></button>
+                            </div>
+                            <div class="modal-body">
+
+                                <div class="col-lg-12 row mb-2">
+                                    <div class="col-lg-4 pr-0">
+                                        <label for="emailTemplate" class="mt-2"> Email Template: </label>
+                                    </div>
+                                    <div class="col-lg-8 pl-0">
+                                        <select required autocomplete="off" name="emailTemplate" id="emailTemplate" class="form-control custom-select">
+                                            <option value>Select Email Template</option>
+                                            <option value="1">Email Template 1</option>
+                                            <option value="2">Email Template 2</option>
+                                            <option value="3">Email Template 3</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12 row">
+                                    <div class="col-lg-4 pr-0">
+                                        <label for="emailSubject" class="mt-2"> Enter Subject: </label>
+                                    </div>
+                                    <div class="col-lg-8 pl-0">
+                                        <input type="text" value="" id="emailSubject" name="emailSubject" class="form-control" autocomplete="off" required="">
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12 mb-0">
+                                        <button id="" class="btn m-1 btn-primary pull-right mr-4 mt-2">Send</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Email popup -->
+
                 <div class="card">
                     <div class="card-header addNewEventButton">
                         <i class="fa fa-table pt-3"></i> All Contacts

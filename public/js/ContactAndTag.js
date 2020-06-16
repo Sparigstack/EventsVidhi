@@ -24,9 +24,10 @@ $(document).ready(function () {
     // contactsTable.buttons().container().appendTo('#default-datatable-contacts_wrapper .col-md-6:eq(0)');
     contactsTable.buttons().container().appendTo('#default-datatable-contacts_wrapper .col-md-6:eq(1)');
     $("#default-datatable-contacts_wrapper").find($(".dt-buttons")).css("float", "right");
+    $("#default-datatable-contacts_wrapper").find($(".dt-buttons")).find($(".buttons-csv")).css("border-radius", "0.25rem");
 
     $('.dt-buttons').each(function () {
-            $(this).append('<div class="dropdown"><a href="javascript:void();" class="dropdown-toggle dropdown-toggle-nocaret" data-toggle="dropdown"><button class="btn btn-outline-primary ml-2 pull-right">Bulk Actions</button></a><div class="dropdown-menu dropdown-menu-right bulkActionDropDown"><a class="dropdown-item backColorDropdownItem" href="">Email</a></div></div>');
+            $(this).append('<div class="dropdown"><a href="javascript:void();" class="dropdown-toggle dropdown-toggle-nocaret" data-toggle="dropdown"><button class="btn btn-outline-primary ml-2 pull-right">Bulk Actions</button></a><div class="dropdown-menu dropdown-menu-right bulkActionDropDown"><a class="dropdown-item backColorDropdownItem" href="javascript:void();" data-toggle="modal" data-target="#openEmailPopup">Email</a></div></div>');
         });
 
     // $('#tagsForm').on('submit', function (event) {
