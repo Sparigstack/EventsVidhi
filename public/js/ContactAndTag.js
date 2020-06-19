@@ -212,3 +212,12 @@ function removeCustomField(element){
 function AddNewTag(element){
     alert("fire event");
 }
+
+function DeleteTag(element){
+    var curentID=$(element).attr('data-id');
+    var str = $('#HiddenCategoyID').text();
+    var res = str.replace(curentID, "");
+    $('#HiddenCategoyID').empty();
+    $('#HiddenCategoyID').append(res);
+    $(element).parent().remove();
+}

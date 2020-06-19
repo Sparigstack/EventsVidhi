@@ -327,33 +327,37 @@
                 }
 
                 $('.busyIcon').removeClass('d-none');
-                    var textVal = $('#TagSelectionInput').val();
-                    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr("content");
-                    $.ajax({
-                        url: '../tags/' + textVal,
-                        type: "get",
-                        data: {
-                            _token: CSRF_TOKEN
-                        },
-                        success: function(response) {
-                            console.log(response);
-                            $('.busyIcon').addClass('d-none');
-                            if ($("[data-id=" + response.id + " ]").length > 0) {
-                                return false;
-                            }
-                            var SelectedTag = '<div class="badge shade d-flex p-2" data-id="' + response.id + '"><div class="badge_sub badge_sub_left" data-id="' + response.id + '" data-alternateid="0" data-stringvalue="">' + response.name + '</div><div class="badge_sub badge_sub_right pl-2" title="Delete" onclick="DeleteTag(this)" data-id="' + response.id + '">X</div></div>';
-                            $('.CurrentSelectedTags').append(SelectedTag);
-
-                            var SelectedTags = $('#HiddenCategoyID').val();
-                            SelectedTags += response.id + ",";
-                            $('#HiddenCategoyID').val(SelectedTags);
-                            $('#TagSelectionInput').val('');
-                        },
-                        error: function(response) {
-                            $('.busyIcon').addClass('d-none');
-                            console.log(response);
+                var textVal = $('#TagSelectionInput').val();
+                var CSRF_TOKEN = $('meta[name="csrf-token"]').attr("content");
+                $.ajax({
+                    url: '../tags/' + textVal,
+                    type: "get",
+                    data: {
+                        _token: CSRF_TOKEN
+                    },
+                    success: function(response) {
+                        console.log(response);
+                        $('.busyIcon').addClass('d-none');
+                        if ($("[data-id=" + response.id + " ]").length > 0) {
+                            return false;
                         }
-                    });
+                        var SelectedTag = '<div class="badge shade d-flex p-2" data-id="' + response.id + '"><div class="badge_sub badge_sub_left" data-id="' + response.id + '" data-alternateid="0" data-stringvalue="">' + response.name + '</div><div class="badge_sub badge_sub_right pl-2" title="Delete" onclick="DeleteTag(this)" data-id="' + response.id + '">X</div></div>';
+                        $('.CurrentSelectedTags').append(SelectedTag);
+
+                        var SelectedTags = $('#HiddenCategoyID').text();
+                        if ($.trim(SelectedTags) == "" || $.trim(SelectedTags) == null || $.trim(SelectedTags) == 'NULL') {
+                            // SelectedTags += response.id + ",";
+                            $('#HiddenCategoyID').append(response.id);
+                        } else {
+                            $('#HiddenCategoyID').append("," + response.id);
+                        }
+                        $('#TagSelectionInput').val('');
+                    },
+                    error: function(response) {
+                        $('.busyIcon').addClass('d-none');
+                        console.log(response);
+                    }
+                });
 
             }
         });
@@ -383,15 +387,6 @@
             $('#HiddenCategoyID').empty();
             $('#HiddenCategoyID').append(res);
         });
-
-
-
-        //        $('.custom-header').multiSelect({
-        //            selectableHeader: "<div class='custom-header'>Selectable items</div>",
-        //            selectionHeader: "<div class='custom-header'>Selection items</div>",
-        //            selectableFooter: "<div class='custom-header'>Selectable footer</div>",
-        //            selectionFooter: "<div class='custom-header'>Selection footer</div>"
-        //        });
 
 
     });
@@ -439,21 +434,29 @@
 
             },
             select: function(event, ui) {
-                event.stopPropagation();
+
                 console.log(ui);
                 $('.busyIcon').removeClass('d-none');
                 $('.busyIcon').addClass('d-none');
                 if ($("[data-id=" + ui.item.id + " ]").length > 0) {
-                                return false;
-                            }
+                    return false;
+                }
                 var SelectedTag = '<div class="badge shade d-flex p-2" data-id="' + ui.item.id + '"><div class="badge_sub badge_sub_left" data-id="' + ui.item.id + '" data-alternateid="0" data-stringvalue="">' + ui.item.label + '</div><div class="badge_sub badge_sub_right pl-2" title="Delete" onclick="DeleteTag(this)" data-id="' + ui.item.id + '">X</div></div>';
                 $('.CurrentSelectedTags').append(SelectedTag);
 
                 var SelectedTags = $('#HiddenCategoyID').val();
-                SelectedTags += ui.item.id + ",";
-                $('#HiddenCategoyID').val(SelectedTags);
+
+                if ($.trim(SelectedTags) == "" || $.trim(SelectedTags) == null || $.trim(SelectedTags) == 'NULL') {
+                    // SelectedTags += response.id + ",";
+                    $('#HiddenCategoyID').append(ui.item.id);
+                } else {
+                    $('#HiddenCategoyID').append("," + ui.item.id);
+                }
+
 
                 $('#TagSelectionInput').val('');
+                event.stopPropagation();
+                event.preventDefault();
                 return false;
 
             },

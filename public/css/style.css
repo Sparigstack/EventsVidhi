@@ -206,3 +206,6 @@ table .max-w-table-100 .btn{margin: 10px auto;
     left:100% !important;
     top:40px !important;
 }
+.badge_sub.badge_sub_right{
+cursor: pointer;
+}
