@@ -7,18 +7,21 @@ use Illuminate\Http\Request;
 use DB;
 use App\Tag;
 use App\ContactTag;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class TagsController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('verified');
     }
-    
-    public function show(){
+
+    public function show()
+    {
         $user = Auth::id();
-        $tags = Tag::where('user_id',$user)->get();
+        $tags = Tag::where('user_id', $user)->get();
         return view('org/tags', compact('tags'));
     }
 
@@ -46,11 +49,41 @@ class TagsController extends Controller
             'error' => ''
         ]);
     }
-    public function delete($id){
+    public function delete($id)
+    {
         $contact_tag = ContactTag::where('tag_id', $id)->delete();
         $event = Tag::find($id)->delete();
         return response()->json([
-            "status"=>"success"
+            "status" => "success"
         ]);
     }
+
+    public function GetTagsByValue($value)
+    {
+        $user = Auth::id();
+        $tags = Tag::where('user_id', $user)->where('name',$value)->first();
+       try{
+        $tagName= $tags->name;
+        return $tags;
+       }catch(Exception $e){
+        $tag = new Tag;
+        $tag->name = $value;
+        $tag->user_id = $user;
+        $tag->save();
+        return $tag;
+       }  
+    }
+
+    
+
 }
+
+class AutoCompletePackage
+{
+    public $label;
+    public $value ;
+    public $altValue;
+    public $id;
+}
+
+

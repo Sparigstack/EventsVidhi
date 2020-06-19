@@ -3,6 +3,9 @@
 <link href="{{ asset('assets/plugins/jquery-multi-select/multi-select.css') }}" rel="stylesheet" type="text/css">
 <link href="{{ asset('assets/plugins/select2/css/select2.min.css') }}" rel="stylesheet" />
 <link href="{{ asset('assets/plugins/datetimepicker-master/jquery.datetimepicker.css') }}" rel="stylesheet">
+<link href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet">
+</link>
+
 @endsection
 @section('content')
 <div class="container-fluid">
@@ -63,47 +66,16 @@
                         </div>
 
                         <div class="form-group">
+
                             <label class="">Select Tags</label>
-                            <select class="form-control multiple-select" multiple="multiple" name="tags" id="tags">
-                                <?php
-                                if (!empty($contact)) {
+                            <input type="text" id="TagSelectionInput" class="TagSelectionInput form-control" placeholder="Select Tags" />
+                            <img src="{{ asset('assets/images/busy.gif') }}" class="busyIcon d-none pull-right" alt="">
+                            <div class="CurrentSelectedTags row  ml-1 mr-1 mt-2 pb-3 pt-1" style="background-color: #cccccc42;">
 
+                            </div>
 
-
-                                    foreach ($tagsData as $contact_tags) {
-                                        $IsSelected = "";
-
-                                        foreach ($contact->tags as $contacts) {
-
-                                            if ($contact_tags->id == $contacts->id) {
-                                                $IsSelected = "selected";
-                                                if ($checkCount == "no") {
-                                                    $MultSelectTags .= strval($contacts->id);
-                                                } else {
-                                                    $MultSelectTags .= "," . $contacts->id;
-                                                }
-                                                $checkCount = "yes";
-                                            }
-                                            ?>
-
-
-                                        <?php } ?>
-                                        <option value="{{old('tags',$contact_tags->id)}}" {{$IsSelected}} @if (old('tags')==$contact_tags->id) selected="selected" @endif ><?php echo $contact_tags->name; ?> </option>
-
-                                        <?php
-                                    }
-                                } else {
-                                    foreach ($tagsData as $contact_tags) {
-                                        ?>
-                                        <option value="{{old('tags',$contact_tags->id)}}" @if (old('tags')==$contact_tags->id) selected="selected" @endif ><?php echo $contact_tags->name; ?> </option>
-                                        <?php
-                                    }
-                                }
-                                ?>
-
-
-                            </select>
                             <small class="text-danger">{{ $errors->first('tags') }}</small>
+
                             <textarea id="HiddenCategoyID" name="HiddenCategoyID" required class="form-controld d-none" title="HiddenCategoyID" placeholder="HiddenCategoyID" autocomplete="off" rows="4">{{ old('HiddenCategoyID', $MultSelectTags) }} </textarea>
                         </div>
 
@@ -127,7 +99,7 @@
                                         }
                                     }
                                 }
-                                ?>
+                            ?>
                                 <div class='form-group'>
                                     <label for=''>{{$customField->name}}</label>
                                     <?php if ($customField->type == 3) { ?>
@@ -152,7 +124,7 @@
 
                             <div class='form-group col-lg-5'>
                                 <!--<label for='tagName'>New Field Name</label>-->
-                                <input type="text" class="form-control fieldName"  value="{{  old('name') }}" placeholder="New Field Name" required>
+                                <input type="text" class="form-control fieldName" value="{{  old('name') }}" placeholder="New Field Name" required>
                                 <small class="text-danger tagInvalid"></small>
                             </div>
                             <div class='form-group col-lg-5'>
@@ -300,79 +272,222 @@
 <script src="{{ asset('assets/plugins/bootstrap-datatable/js/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('assets/plugins/bootstrap-datatable/js/dataTables.buttons.min.js') }}"></script>
 <script>
-                                (function () {
+    (function() {
 
-                                    var bar = $('.bar_upload');
-                                    var percent = $('.percent_upload');
-                                    //var status = $('#status');
+        var bar = $('.bar_upload');
+        var percent = $('.percent_upload');
+        //var status = $('#status');
 
-                                    $('.dragFileForm').ajaxForm({
-                                        beforeSend: function () {
-                                            //status.empty();
-                                            var percentVal = '0%';
-                                            var posterValue = $('input[name=input_podfile]').fieldValue();
-                                            bar.width(percentVal)
-                                            percent.html(percentVal);
-                                        },
-                                        uploadProgress: function (event, position, total, percentComplete) {
-                                            var percentVal = percentComplete + '%';
-                                            bar.width(percentVal);
-                                            percent.html(percentVal);
-                                            LoaderStart();
-                                        },
-                                        success: function () {
-                                            LoaderStop();
-                                            var percentVal = 'Redirecting..';
-                                            bar.width(percentVal);
-                                            percent.html(percentVal);
-                                        },
-                                        complete: function (xhr) {
-                                            //status.html(xhr.responseText);
-                                            //alert('Uploaded Successfully');
+        $('.dragFileForm').ajaxForm({
+            beforeSend: function() {
 
-                                            window.location.href = $('#hdnRedirect').val();
-                                        }
-                                    });
+                var percentVal = '0%';
+                var posterValue = $('input[name=input_podfile]').fieldValue();
+                bar.width(percentVal)
+                percent.html(percentVal);
+            },
+            uploadProgress: function(event, position, total, percentComplete) {
+                var percentVal = percentComplete + '%';
+                bar.width(percentVal);
+                percent.html(percentVal);
+                LoaderStart();
+            },
+            success: function() {
+                LoaderStop();
+                var percentVal = 'Redirecting..';
+                bar.width(percentVal);
+                percent.html(percentVal);
+            },
+            complete: function(xhr) {
+                //status.html(xhr.responseText);
+                //alert('Uploaded Successfully');
 
-                                })();
+                window.location.href = $('#hdnRedirect').val();
+            }
+        });
 
-                                $(document).ready(function () {
-                                    setEventDateAndTime();
-                                    $('.single-select').select2();
+    })();
 
-                                    $('.multiple-select').select2({
-                                        placeholder: "Select tags",
-                                        allowClear: true
-                                    });
-                                    var MultiSlectCounter = 0;
-                                    $('.multiple-select').on('select2:select', function (e) {
-                                        console.log(e.params.data.id);
-                                        if (MultiSlectCounter == 0) {
-                                            $('#HiddenCategoyID').append(e.params.data.id);
-                                        } else {
-                                            $('#HiddenCategoyID').append("," + e.params.data.id);
-                                        }
+    $(document).ready(function() {
 
-                                        MultiSlectCounter += 1;
-                                    });
-                                    $('.multiple-select').on('select2:unselecting', function (e) {
-                                        console.log(e.params.args.data.id);
-                                        var str = $('#HiddenCategoyID').val();
-                                        var res = str.replace(e.params.args.data.id, "");
-                                        $('#HiddenCategoyID').empty();
-                                        $('#HiddenCategoyID').append(res);
-                                    });
+        $('.newContactForm').on('keyup keypress', function(e) {
+            var keyCode = e.keyCode || e.which;
+            if (keyCode === 13) {
+                e.preventDefault();
+                return false;
+            }
+        });
+        $('#TagSelectionInput').on('keyup keypress', function(e) {
+
+            var keyCode = e.keyCode || e.which;
+            if (keyCode === 13) {
+
+                if ($('.ui-autocomplete.ui-front.ui-menu.ui-widget').css('display') != 'none') {
+                    return false;
+                }
+
+                $('.busyIcon').removeClass('d-none');
+                    var textVal = $('#TagSelectionInput').val();
+                    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr("content");
+                    $.ajax({
+                        url: '../tags/' + textVal,
+                        type: "get",
+                        data: {
+                            _token: CSRF_TOKEN
+                        },
+                        success: function(response) {
+                            console.log(response);
+                            $('.busyIcon').addClass('d-none');
+                            if ($("[data-id=" + response.id + " ]").length > 0) {
+                                return false;
+                            }
+                            var SelectedTag = '<div class="badge shade d-flex p-2" data-id="' + response.id + '"><div class="badge_sub badge_sub_left" data-id="' + response.id + '" data-alternateid="0" data-stringvalue="">' + response.name + '</div><div class="badge_sub badge_sub_right pl-2" title="Delete" onclick="DeleteTag(this)" data-id="' + response.id + '">X</div></div>';
+                            $('.CurrentSelectedTags').append(SelectedTag);
+
+                            var SelectedTags = $('#HiddenCategoyID').val();
+                            SelectedTags += response.id + ",";
+                            $('#HiddenCategoyID').val(SelectedTags);
+                            $('#TagSelectionInput').val('');
+                        },
+                        error: function(response) {
+                            $('.busyIcon').addClass('d-none');
+                            console.log(response);
+                        }
+                    });
+
+            }
+        });
+
+        setEventDateAndTime();
+        $('.single-select').select2();
+
+        $('.multiple-select').select2({
+            placeholder: "Select tags",
+            allowClear: true
+        });
+        var MultiSlectCounter = 0;
+        $('.multiple-select').on('select2:select', function(e) {
+            console.log(e.params.data.id);
+            if (MultiSlectCounter == 0) {
+                $('#HiddenCategoyID').append(e.params.data.id);
+            } else {
+                $('#HiddenCategoyID').append("," + e.params.data.id);
+            }
+
+            MultiSlectCounter += 1;
+        });
+        $('.multiple-select').on('select2:unselecting', function(e) {
+            console.log(e.params.args.data.id);
+            var str = $('#HiddenCategoyID').val();
+            var res = str.replace(e.params.args.data.id, "");
+            $('#HiddenCategoyID').empty();
+            $('#HiddenCategoyID').append(res);
+        });
 
 
 
-                                    //        $('.custom-header').multiSelect({
-                                    //            selectableHeader: "<div class='custom-header'>Selectable items</div>",
-                                    //            selectionHeader: "<div class='custom-header'>Selection items</div>",
-                                    //            selectableFooter: "<div class='custom-header'>Selectable footer</div>",
-                                    //            selectionFooter: "<div class='custom-header'>Selection footer</div>"
-                                    //        });
+        //        $('.custom-header').multiSelect({
+        //            selectableHeader: "<div class='custom-header'>Selectable items</div>",
+        //            selectionHeader: "<div class='custom-header'>Selection items</div>",
+        //            selectableFooter: "<div class='custom-header'>Selectable footer</div>",
+        //            selectionFooter: "<div class='custom-header'>Selection footer</div>"
+        //        });
 
 
-                                });
+    });
+</script>
+
+<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+<script>
+    //this will find the box loaded above and add the autocomplete functionality to it
+
+    //search is the event when the search is triggered
+    //select is when the user clicks on a value in the dropdown
+    $(function() {
+        //sets the match requirement status by adding this class
+
+        var id = $('#TagSelectionInput');
+        $(id).addClass('matchRequired');
+
+        $("#TagSelectionInput").autocomplete({
+            source: function(request, response) {
+                $('.busyIcon').removeClass('d-none');
+                console.log(request.term);
+                // alert(request.term);
+                var textVal = this.element[0].value;
+                var CSRF_TOKEN = $('meta[name="csrf-token"]').attr("content");
+
+
+                $.getJSON('../tags/' + textVal, {
+                    'fieldID': $(this.element[0]).attr('data-alternateid'),
+                    'fieldValue': this.element[0].value
+                }, function(result) {
+                    $(".ui-autocomplete").css("z-index", 10000);
+                    console.log(result);
+                    alert(result[0].label);
+                    $('.busyIcon').addClass('d-none');
+                }, response);
+            },
+            minLength: 2,
+            //triggered BEFORE search
+            search: function() {
+                // alert('searching');
+                var id = $('#TagSelectionInput');
+                $(id).attr('data-id', '');
+                $(id).css('color', 'black').css('font-style', 'italic').css('font-weight', 'normal');
+
+
+            },
+            select: function(event, ui) {
+                event.stopPropagation();
+                console.log(ui);
+                $('.busyIcon').removeClass('d-none');
+                $('.busyIcon').addClass('d-none');
+                if ($("[data-id=" + ui.item.id + " ]").length > 0) {
+                                return false;
+                            }
+                var SelectedTag = '<div class="badge shade d-flex p-2" data-id="' + ui.item.id + '"><div class="badge_sub badge_sub_left" data-id="' + ui.item.id + '" data-alternateid="0" data-stringvalue="">' + ui.item.label + '</div><div class="badge_sub badge_sub_right pl-2" title="Delete" onclick="DeleteTag(this)" data-id="' + ui.item.id + '">X</div></div>';
+                $('.CurrentSelectedTags').append(SelectedTag);
+
+                var SelectedTags = $('#HiddenCategoyID').val();
+                SelectedTags += ui.item.id + ",";
+                $('#HiddenCategoyID').val(SelectedTags);
+
+                $('#TagSelectionInput').val('');
+                return false;
+
+            },
+
+            //html: true, // optional (jquery.ui.autocomplete.html.js required)
+
+            // optional (if other layers overlap autocomplete list)
+            open: function(event, ui) {
+                $(".ui-autocomplete").css("z-index", 10000);
+            },
+            response: function(event, ui) {
+
+            }
+        });
+
+    });
+</script>
+<script>
+    $(function() {
+        var availableTags = [
+            <?php
+            foreach ($tagsData as $contact_tags) {
+                echo "{ label:'" . $contact_tags->name . "',value:'" . $contact_tags->name . "',id:" . $contact_tags->id . "},";
+            }
+            ?>
+        ];
+        //var availableTags = new Array();
+        // var availableTags = [ { label: "Choice1", value: "value1",id:1 }, { label: "Choice2", value: "value2",id:3 }];
+
+
+
+        $("#TagSelectionInput").autocomplete({
+            source: availableTags
+        });
+    });
 </script>
 @endsection

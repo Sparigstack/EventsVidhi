@@ -208,3 +208,7 @@ function removeCustomField(element){
     var parent = findParent(element);
     $(parent).remove();
 }
+
+function AddNewTag(element){
+    alert("fire event");
+}
