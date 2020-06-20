@@ -78,6 +78,11 @@ class ContactsController extends Controller
      */
     public function store(Request $request)
     {
+        // $value= $request->RehersalDate;
+        // $DateTime = $value;
+       
+        // $DateValue = new DateTime($DateTime);
+        // return $DateValue;
         $validator = Validator::make($request->all(), [
             'firstName' => 'required',
             'lastName' => 'required',
@@ -128,9 +133,11 @@ class ContactsController extends Controller
             } elseif ($customField->type == 2) {
                 $NewcustomField->int_value = $value;
             } else {
-                $DateTime = $value;
-                $DateValue = new DateTime($DateTime);
-                $NewcustomField->date_value = $DateValue;
+                if(!empty($value) || $value!="" || $value!=null){
+                    $DateTime = $value;
+                    $DateValue = new DateTime($DateTime);
+                    $NewcustomField->date_value = $DateValue;
+                }
             }
             $NewcustomField->save();
         }
