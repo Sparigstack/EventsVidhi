@@ -548,10 +548,8 @@
                                                 <ul class="list-group parent list-group-flush mb-2">
                                                     <li class="list-group-item">
                                                         <div class="media align-items-center">
-                                                            <div class="media-body ml-3">
-                                                                <h6 class="mb-0"><?php echo $video->title ?></h6>
-                                                                <small class="small-font">
-                                                                    <?php $AwsUrl = env('AWS_URL');
+                                                            <div class="media-body ml-3 d-flex" style="align-items: center;">
+                                                                <?php $AwsUrl = env('AWS_URL');
                                                                     $videoUrl = "";
                                                                     if (!empty($video->url_type)) {
                                                                         if ($video->url_type == 1) {
@@ -560,7 +558,13 @@
                                                                             $videoUrl = $video->url;
                                                                         }
                                                                     } ?>
-                                                                    {{$videoUrl}}</small>
+                                                                <a class="pull-left" href="{{$videoUrl}}" target="_blank"><video class="pull-left" src="{{$videoUrl}}" width="100px" height="100px"></video></a>
+                                                                
+                                                                <h6 class="pull-left ml-3" class="mb-0"><?php echo $video->title ?></h6>
+                                                                
+<!--                                                                <small class="small-font">
+                                                                    
+                                                                    {{$videoUrl}}</small>-->
                                                             </div>
                                                             <div data-id="<?php echo $video->id ?>" onclick="RemoveSingleVideo(this);" Type="video" UrlType="<?php echo $video->url_type ?>" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div>
                                                         </div>
@@ -573,10 +577,8 @@
                                                 <ul class="list-group parent list-group-flush mb-2">
                                                     <li class="list-group-item">
                                                         <div class="media align-items-center">
-                                                            <div class="media-body ml-3">
-                                                                <h6 class="mb-0"><?php echo $podcast->title ?></h6>
-                                                                <small class="small-font">
-                                                                    <?php $AwsUrl = env('AWS_URL');
+                                                            <div class="media-body ml-3 d-flex" style="align-items: center;">
+                                                                <?php $AwsUrl = env('AWS_URL');
                                                                     $podcastvideoUrl = "";
                                                                     if (!empty($podcast->url_type)) {
                                                                         if ($podcast->url_type == 1) {
@@ -585,7 +587,16 @@
                                                                             $podcastvideoUrl = $podcast->url;
                                                                         }
                                                                     } ?>
-                                                                    {{$podcastvideoUrl}}</small>
+                                                                
+<!--                                                                <h6 class="mb-0"><?php echo $podcast->title ?></h6>
+                                                                <small class="small-font">
+                                                                    
+                                                                    {{$podcastvideoUrl}}</small>-->
+                                                                
+                                                                <a class="pull-left" href="{{$podcastvideoUrl}}" target="_blank"><audio controls><source src="{{$podcastvideoUrl}}" type="audio/ogg"></audio>
+                                                                    </a>
+                                                                
+                                                                <h6 class="pull-left ml-3" class="mb-0"><?php echo $podcast->title ?></h6>
                                                             </div>
                                                             <div data-id="<?php echo $podcast->id ?>" onclick="RemoveSingleVideo(this);" Type="podcast" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div>
                                                         </div>
