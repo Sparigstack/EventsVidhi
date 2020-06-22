@@ -511,13 +511,14 @@
 
                                         <div class="form-group col-lg-12">
                                             <button type="submit" id="Submit" class="btn btn-primary px-5 pull-right"> Save Event</button>
+                                            <a class="pull-right" href="{{url('org/events')}}"><button type="button" class="btn btn-light mr-2">Cancel</button></a>
                                         </div>
 
                                 </div>
                                 </form>
-                                <div class="form-group col-lg-12 pr-5">
+                                <!-- <div class="form-group col-lg-12 pr-5">
                                         <a class="pull-right" href="{{url('org/events')}}"><button class="btn btn-light">Cancel</button></a>
-                                    </div>
+                                    </div> -->
 
                             </div>
                         </div>
@@ -551,14 +552,23 @@
                                                             <div class="media-body ml-3 d-flex" style="align-items: center;">
                                                                 <?php $AwsUrl = env('AWS_URL');
                                                                     $videoUrl = "";
-                                                                    if (!empty($video->url_type)) {
+                                                                    $url = "";
+                                                                    $explodeUrl = "";
+                                                                    $getLastWord = "";
+                                                                    if (!is_null($video->url_type)) {
                                                                         if ($video->url_type == 1) {
-                                                                            $videoUrl = $AwsUrl . $video->url;
-                                                                        } else {
-                                                                            $videoUrl = $video->url;
-                                                                        }
+                                                                            $videoUrl = $AwsUrl . $video->url; ?>
+                                                                            <a class="pull-left" href="{{$videoUrl}}" target="_blank"><video class="pull-left" src="{{$videoUrl}}" width="100px" height="100px"></video></a>
+                                                                    <?php    } else {
+                                                                            $url = $video->url;
+                                                                            $explodeUrl = explode('/', $url);
+                                                $getLastWord = array_pop($explodeUrl);
+                                                // $a = substr($videoUrl, strpos($videoUrl, '/') + 11);
+                                                $videoUrl = "https://www.youtube.com/embed/" . $getLastWord; ?>
+                                                <a class="pull-left" href="{{$videoUrl}}" target="_blank"><iframe width="100" height="100" src="{{$videoUrl}}" class="pull-left"></iframe></a>
+                                                                      <?php  }
                                                                     } ?>
-                                                                <a class="pull-left" href="{{$videoUrl}}" target="_blank"><video class="pull-left" src="{{$videoUrl}}" width="100px" height="100px"></video></a>
+                                                                <!-- <a class="pull-left" href="{{$videoUrl}}" target="_blank"><video class="pull-left" src="{{$videoUrl}}" width="100px" height="100px"></video></a> -->
                                                                 
                                                                 <h6 class="pull-left ml-3" class="mb-0"><?php echo $video->title ?></h6>
                                                                 
@@ -576,6 +586,9 @@
 
                                                 <ul class="list-group parent list-group-flush mb-2">
                                                     <li class="list-group-item">
+                                                        <div class = "media align-items-center">
+                                                            <h6 class="ml-3 col-lg-12 text-left" class="mb-0"><?php echo $podcast->title ?></h6>
+                                                        </div>
                                                         <div class="media align-items-center">
                                                             <div class="media-body ml-3 d-flex" style="align-items: center;">
                                                                 <?php $AwsUrl = env('AWS_URL');
@@ -596,7 +609,7 @@
                                                                 <a class="pull-left" href="{{$podcastvideoUrl}}" target="_blank"><audio controls><source src="{{$podcastvideoUrl}}" type="audio/ogg"></audio>
                                                                     </a>
                                                                 
-                                                                <h6 class="pull-left ml-3" class="mb-0"><?php echo $podcast->title ?></h6>
+                                                                <!-- <h6 class="pull-left ml-3" class="mb-0"><?php echo $podcast->title ?></h6> -->
                                                             </div>
                                                             <div data-id="<?php echo $podcast->id ?>" onclick="RemoveSingleVideo(this);" Type="podcast" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div>
                                                         </div>
@@ -650,11 +663,11 @@
                                                 <button class="btn btn-primary d-none RemoveVideo" style="position: absolute;right: -132px;top:29px;">Remove Video</button>
                                                 <div class='form-group  videoTitle'>
                                                     <label for='input_title'>Podcast Title</label>
-                                                    <input type="text" class="form-control" id="input_title" name='input_title' value="{{  old('input_title') }}" placeholder="Enter Video Title" required>
+                                                    <input type="text" class="form-control" id="input_title" name='input_title' value="{{  old('input_title') }}" placeholder="Enter Podcast Title" required>
                                                 </div>
                                                 <div class='form-group videoUrl'>
                                                     <label for='input_url'>Podcast URL</label><span style="font-size: 11px;font-weight: 600;">&nbsp;&nbsp;(YouTube or Vimeo url)</span>
-                                                    <input type="text" class="form-control" id="input_url" name="input_url" value="{{  old('input_url') }}" placeholder="Enter Video URL" required>
+                                                    <input type="text" class="form-control" id="input_url" name="input_url" value="{{  old('input_url') }}" placeholder="Enter Podcast URL" required>
                                                 </div>
                                                 <div class="form-group videoUploadBox">
                                                     <label for="BlankLabel"></label>

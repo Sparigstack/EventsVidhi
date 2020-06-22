@@ -227,16 +227,25 @@ $CardTitle = "Add New Video";
                                     $AwsUrl = env('AWS_URL');
                                         $videoUrl = "";
                                         if (!empty($Video->url)) {
-                                            if(substr($Video->url, 0, 8 ) != "https://"){
-                                                $videoUrl = $AwsUrl . $Video->url;
-                                            }
+                                            if($Video->url_type == 1){
+                                                $videoUrl = $AwsUrl . $Video->url; ?>
+                                                <a href="{{$videoUrl}}" target="_blank"><video class="" src="{{$videoUrl}}" width="100px" height="100px"></video></a>
+                                         <?php   }
                                             else{
-                                                $videoUrl = $Video->url;
-                                            }
+                                                $videoUrl = $Video->url; 
+                                                $explodeUrl = explode('/', $videoUrl);
+                                                $getLastWord = array_pop($explodeUrl);
+                                                // $a = substr($videoUrl, strpos($videoUrl, '/') + 11);
+                                                $url = "https://www.youtube.com/embed/" . $getLastWord;
+                                                ?>
+                                                <a href="{{$url}}" target="_blank"><iframe width="100" height="100" src="{{$url}}"></iframe></a>
+                                          <?php  }
                                         }
                                 ?>
                                     
-                                <a href="{{$videoUrl}}" target="_blank"><img src="{{asset('assets/images/video-icon.png')}}" alt="user avatar" class="customer-img rounded"></a>
+                                <!-- <a href="{{$videoUrl}}" target="_blank"><img src="{{asset('assets/images/video-icon.png')}}" alt="user avatar" class="customer-img rounded"></a> -->
+
+                                
 
                                 <div class="media-body ml-3">
                                     <h6 class="mb-0">{{$Video->title}}</h6>

@@ -18,14 +18,14 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive" id="default-datatable_wrapper">
-                            <table id="default-datatable" class="table table-bordered">
-                                <thead>
+                            <table id="default-datatable" class="table" style="border-collapse: collapse !important;">
+                                <thead style="background-color: #6c757d29;">
                                     <tr>
-                                        <th>Logo</th>
+                                        <th style="width:80px;">Logo</th>
                                         <th>Title</th>
-                                        <th class="max-w-table-100">Date & Time</th>
+                                        <!-- <th class="max-w-table-100">Date & Time</th> -->
                                         <th>Category</th>
-                                        <th class="max-w-table-100">Action</th>
+                                        <th class="max-w-table-100"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -40,14 +40,14 @@
                                         $logoUrl = $AwsUrl . $event->thumbnail;
                                     }
                                     ?>
-                                    <td><img style="max-width: 75px;" title="Event Logo" src="{{$logoUrl}}" </td> <?php
+                                    <td><img class="speakerImgSize rounded" style="" title="Event Logo" src="{{$logoUrl}}" </td> <?php
                                     $titleClass = "";
                                     $draftWord = "(Draft)";
                                     if ($event->is_live == 1) {
                                         $titleClass = "greenFont";
                                         $draftWord = "";
                                     }
-                                    ?> <td class="{{$titleClass}}">{{$event->title}}{{$draftWord}} </td>
+                                    ?>
 
                                     <?php
                                     $dateStr = "";
@@ -65,14 +65,30 @@
                                         $dateStr = date("d M, yy", $sdStamp) . ' ' . $st . ' to ' . date("d M, yy", $edStamp) . ' ' . $et;
                                     }
                                     ?>
-                                    <td class="max-w-table-100">{{$dateStr}}</td>
+                                     <td class="{{$titleClass}}">{{$event->title}}{{$draftWord}} <br> {{$dateStr}} </td>
+                                    <!-- <td class="max-w-table-100">{{$dateStr}}</td> -->
                                     <td>
                                         {{$event->category->name}}
                                     </td>
-                                            <td>
-                                                <!-- <a onclick="deleteEvent(this);" db-delete-id="{{$event->id}}"><i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-trash"></i></a> -->
+                                            <!-- <td>
+                                                <a onclick="deleteEvent(this);" db-delete-id="{{$event->id}}"><i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-trash"></i></a>
                                                 <a><i style="font-family:fontawesome; font-style:normal; cursor:pointer; margin-left:5px;" class="fas fa-eye"></i></a> 
-                                            </td>
+                                            </td> -->
+
+                                            <td class="pt-4">
+                                        <div class="card-action float-none">
+                                            <div class="dropdown">
+                                                <a href="javascript:void();" class="dropdown-toggle dropdown-toggle-nocaret" data-toggle="dropdown" title="View More Actions">
+                                                <i class="icon-options"></i>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-right topPosition">
+                                                    <a class="dropdown-item backColorDropdownItem" href="javascript:void();"> Show </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+
+
                                         </tr>
                                     <?php }  ?>
                                 </tbody>
@@ -108,9 +124,17 @@
 <script>
     $(document).ready(function () {
         var table = $('#default-datatable').DataTable({
-            columnDefs: [
-                {orderable: false, targets: 4},
-            ]
+            // columnDefs: [
+            //     {orderable: false, targets: 4},
+            // ]
+            ordering: false,
+
+                aoColumnDefs: [
+                            {
+                            bSortable: false,
+                            aTargets: [3]
+                            }
+                ],
         });
     });
 </script>

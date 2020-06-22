@@ -244,7 +244,11 @@ class EventsController extends Controller
         if ($video->url_type == 1) {
             $videoUrlLink = env('AWS_URL') . $UrlToSave;
         } else {
-            $videoUrlLink = $UrlToSave;
+            $videoUrl = $UrlToSave;
+            $explodeUrl = explode('/', $videoUrl);
+            $getLastWord = array_pop($explodeUrl);
+            // $a = substr($videoUrl, strpos($videoUrl, '/') + 11);
+            $videoUrlLink = "https://www.youtube.com/embed/" . $getLastWord;
         }
         return response()->json([
             'videoUrl' => $videoUrlLink,

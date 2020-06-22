@@ -24,7 +24,11 @@ $(document).ready(function () {
                     $('.VideoInvalid').append(response.error.video_file);
                     alert(response.error.video_file);
                 } else {
-                    var HtmlContent = '<ul class="list-group parent list-group-flush mb-2"><li class="list-group-item"><div class="media align-items-center"><div class="media-body ml-3 d-flex" style="align-items: center;"><a class="pull-left" href="'+response.videoUrl+'" target="_blank"><video class="pull-left" src="'+response.videoUrl+'" width="100px" height="100px"></video></a><h6 class="mb-0">' + response.videoTitle + '</h6></div><div data-id="' + response.videoID + '" Type="video" urltype="' + response.urlType + '" onclick="RemoveSingleVideo(this);" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div></div></li>';
+                    if (response.videoUrl.indexOf('embed') > -1) {
+                        var HtmlContent = '<ul class="list-group parent list-group-flush mb-2"><li class="list-group-item"><div class="media align-items-center"><div class="media-body ml-3 d-flex" style="align-items: center;"><a class="pull-left" href="'+response.videoUrl+'" target="_blank"><iframe width="100" height="100" src="'+response.videoUrl+'" class="pull-left"></iframe></a><h6 class="mb-0 pull-left ml-3">' + response.videoTitle + '</h6></div><div data-id="' + response.videoID + '" Type="video" urltype="' + response.urlType + '" onclick="RemoveSingleVideo(this);" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div></div></li>';
+                    } else{
+                    var HtmlContent = '<ul class="list-group parent list-group-flush mb-2"><li class="list-group-item"><div class="media align-items-center"><div class="media-body ml-3 d-flex" style="align-items: center;"><a class="pull-left" href="'+response.videoUrl+'" target="_blank"><video class="pull-left" src="'+response.videoUrl+'" width="100px" height="100px"></video></a><h6 class="mb-0 pull-left ml-3">' + response.videoTitle + '</h6></div><div data-id="' + response.videoID + '" Type="video" urltype="' + response.urlType + '" onclick="RemoveSingleVideo(this);" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div></div></li>';
+                    }
                     $('#UploadedVideos').append(HtmlContent);
                     $(CurentForm).find('#input_url').val('');
                     $(CurentForm).find('#input_title').val('');
@@ -61,7 +65,7 @@ $(document).ready(function () {
                     // $(validateField).append(response.error.podcast_video_file);
                     alert(response.error.podcast_video_file);
                 } else {
-                    var HtmlContent = '<ul class="list-group parent list-group-flush mb-2"><li class="list-group-item"><div class="media align-items-center"><div class="media-body ml-3"><h6 class="mb-0">' + response.videoTitle + '</h6><small class="small-font">' + response.videoUrl + '</small></div><div data-id="' + response.videoID + '" Type="podcast" urltype="' + response.urlType + '" onclick="RemoveSingleVideo(this);" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div></div></li>';
+                    var HtmlContent = '<ul class="list-group parent list-group-flush mb-2"><li class="list-group-item"><div class = "media align-items-center"><h6 class="ml-3 col-lg-12 text-left" class="mb-0">'+ response.videoTitle +'</h6></div><div class="media align-items-center"><div class="media-body ml-3 d-flex" style="align-items: center;"><a class="pull-left" href="'+response.videoUrl+'" target="_blank"><audio controls><source src="'+response.videoUrl+'" type="audio/ogg"></audio></a>'+ '</div><div data-id="' + response.videoID + '" Type="podcast" urltype="' + response.urlType + '" onclick="RemoveSingleVideo(this);" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div></div></li>';
                     $('#UploadedVideos').append(HtmlContent);
                     $(CurentForm).find('#input_url').val('');
                     $(CurentForm).find('#input_title').val('');

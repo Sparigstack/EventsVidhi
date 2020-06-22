@@ -273,7 +273,8 @@
                     
                     <?php foreach ($RecentPodcasts as $Podcast) { ?>
                         <li class="list-group-item listItemsBottomBorder">
-                            <div class="media align-items-center">
+                            <!-- <div class="media align-items-center"> -->
+                                <div class="row align-items-center">
                                 <?php
                                     $AwsUrl = env('AWS_URL');
                                         $videoPodcastUrl = "";
@@ -287,9 +288,11 @@
                                         }
                                 ?>
                                     
-                                <a href="{{$videoPodcastUrl}}" target="_blank"><img src="{{asset('assets/images/podcast-icon.png')}}" alt="user avatar" class="customer-img rounded"></a>
+                                <!-- <a href="{{$videoPodcastUrl}}" target="_blank"><img src="{{asset('assets/images/podcast-icon.png')}}" alt="user avatar" class="customer-img rounded"></a> -->
 
-                                <div class="media-body ml-3">
+                                <a href="{{$videoPodcastUrl}}" target="_blank"><audio controls><source src="{{$videoPodcastUrl}}" type="audio/ogg" class="col-lg-7 pr-0 pl-0"></audio></a>
+
+                                <div class="media-body col-lg-5">
                                     <h6 class="mb-0">{{$Podcast->title}}</h6>
                                     <?php 
                                     $eventDesc = "";
