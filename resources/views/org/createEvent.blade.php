@@ -878,12 +878,16 @@
 
 
                                                     <div class="form-group col-lg-6">
-                                                        <label for="speakerTitle">Title</label>
+                                                        <!-- <label for="speakerTitle">Title</label>
                                                         <input type="text" class="form-control mb-2" id="speakerTitle" value="" name="speakerTitle" placeholder="Enter Title" required="">
-                                                        <small class="text-danger"></small>
+                                                        <small class="text-danger"></small> -->
 
                                                         <label for="speakerFirstName">Name</label>
                                                         <input type="text" class="form-control mb-2" id="speakerFirstName" value="" name="speakerFirstName" placeholder="Enter Name" required="">
+                                                        <small class="text-danger"></small>
+
+                                                        <label for="speakerTitle">Title</label>
+                                                        <input type="text" class="form-control mb-2" id="speakerTitle" value="" name="speakerTitle" placeholder="Enter Title" required="">
                                                         <small class="text-danger"></small>
 
                                                         <label for="speakerOrganization">Organization</label>
