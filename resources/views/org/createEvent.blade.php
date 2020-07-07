@@ -186,7 +186,8 @@
                                                 <!-- <input type="file" accept="image/*" id="EventBannerImage" name="EventBannerImage" class="form-control files" onchange="document.getElementById('bannerImage').src = window.URL.createObjectURL(this.files[0]);document.getElementById('bannerImage').classList.remove('d-none');"> -->
                                                 <div class="dragFileContainer">
                                                     <input type="file" accept="image/*" id="EventBannerImage" name="EventBannerImage" class="form-control files">
-                                                    <img id="bannerImage" src="{{$BannerUrl}}" class="{{$BannerHidden}} imageRadius w-100" alt="your image" width="100" />
+                                                    <!-- <img id="bannerImage" src="{{$BannerUrl}}" class="{{$BannerHidden}} imageRadius w-100" alt="your image" width="100" /> -->
+                                                    <img id="bannerImage" src="{{$BannerUrl}}" class="{{$BannerHidden}} bannerRadius w-100" alt="your image" width="100" />
                                                     <?php
                                                     if (empty($BannerUrl)) { ?>
                                                         <p id="TempText">Drop your image here or click to upload.</p>
@@ -631,6 +632,7 @@
                                                 <div class='form-group videoUrl'>
                                                     <label for='input_url'>Video URL</label><span style="font-size: 11px;font-weight: 600;">&nbsp;&nbsp;(YouTube or Vimeo url)</span>
                                                     <input type="text" class="form-control" id="input_url" name="input_url" value="{{  old('input_url') }}" placeholder="Enter Video URL" required>
+                                                    <small class="text-danger urlError"></small>
                                                 </div>
                                                 <div class="form-group videoUploadBox">
                                                     <label for="BlankLabel"></label>
@@ -668,6 +670,7 @@
                                                 <div class='form-group videoUrl'>
                                                     <label for='input_url'>Podcast URL</label><span style="font-size: 11px;font-weight: 600;">&nbsp;&nbsp;(YouTube or Vimeo url)</span>
                                                     <input type="text" class="form-control" id="input_url" name="input_url" value="{{  old('input_url') }}" placeholder="Enter Podcast URL" required>
+                                                    <small class="text-danger podcastUrlError"></small>
                                                 </div>
                                                 <div class="form-group videoUploadBox">
                                                     <label for="BlankLabel"></label>

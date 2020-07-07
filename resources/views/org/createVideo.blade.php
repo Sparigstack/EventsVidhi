@@ -119,6 +119,7 @@ $CardTitle = "Add New Video";
                         <div class='form-group'>
                             <p for='input_url' class="float-left">Video URL</p><span style="font-size: 11px;font-weight: 600;">&nbsp;&nbsp;(YouTube or Vimeo url)</span>
                             <input type="text" class="form-control" id="input_url" onkeyup="videoUrlCheck(this);" onchange="videoUrlCheck(this);" name="input_url" value="{{  old('input_url', $desription) }}" placeholder="Enter Video URL" required>
+                            <small class="text-danger urlError">{{ $errors->first('input_url') }}</small>
                         </div>
 
                         <div class="form-group">
@@ -135,7 +136,8 @@ $CardTitle = "Add New Video";
                                     <input type="file" id='input_vidfile' name='input_vidfile' value="{{  old('input_vidfile') }}">
                                     <p class="dragFileText">Drag your video file here or click in this area.</p>
                                 </div>
-                                <small class="text-danger">{{ $errors->first('input_vidfile') }}</small>
+                                <small class="text-danger videoFileError"></small>
+                                <!-- <small class="text-danger">{{ $errors->first('input_vidfile') }}</small> -->
                             </div>
                             <div class="form-group progressBar d-none">
                                 <div class="progress_upload">
@@ -297,18 +299,45 @@ $CardTitle = "Add New Video";
 
                                         $('.dragFileForm').ajaxForm({
                                             beforeSend: function () {
-                                                $('.dragFileForm').find('.progressBar').removeClass('d-none');
-                                                //status.empty();
-                                                var percentVal = '0%';
-                                                //var posterValue = $('input[name=input_vidfile]').fieldValue();
-                                                bar.width(percentVal)
-                                                percent.html(percentVal);
+                                                var url = $("#input_url").val();
+                                                regexp =  /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
+                                                var validExtensions = ['mov','mp4','wmv','flv','avi']; //array of valid extensions
+        var fileName = $("#input_vidfile").val();
+        var fileNameExt = fileName.substr(fileName.lastIndexOf('.') + 1);
+                                                if (regexp.test(url) || $.inArray(fileNameExt, validExtensions) != -1)
+                                                {
+                                                    $('.dragFileForm').find('.progressBar').removeClass('d-none');
+                                                    //status.empty();
+                                                    var percentVal = '0%';
+                                                    //var posterValue = $('input[name=input_vidfile]').fieldValue();
+                                                    bar.width(percentVal)
+                                                    percent.html(percentVal);
+                                                }
+                                                else
+                                                {
+                                                    if(url != ''){
+                                                        $('.urlError').text('The input url format is invalid.');
+                                                        return false;
+                                                    } else{
+                                                        $('.videoFileError').text('The video file must be a file of type: mov, mp4, wmv, flv, avi.');
+                                                        return false;
+                                                    }
+                                                    
+                                                }
+
+                                                // $('.dragFileForm').find('.progressBar').removeClass('d-none');
+                                                // //status.empty();
+                                                // var percentVal = '0%';
+                                                // //var posterValue = $('input[name=input_vidfile]').fieldValue();
+                                                // bar.width(percentVal)
+                                                // percent.html(percentVal);
                                             },
                                             uploadProgress: function (event, position, total, percentComplete) {
                                                 //$('.dragFileForm').find('.progressBar').removeClass('d-none');
                                                 var percentVal = percentComplete + '%';
                                                 bar.width(percentVal);
                                                 percent.html(percentVal);
+                                                if(!$('.dragFileForm').find('.progressBar').hasClass('d-none')){
                                                 if (percentComplete == 100) {
                                                     LoaderStart();
                                                     var interval = setInterval(function mak() {
@@ -318,6 +347,7 @@ $CardTitle = "Add New Video";
                                                     }, 5000);
                                                     // window.location.href = $('#hdnRedirect').val();
                                                 }
+                                            }
                                                 // LoaderStart();
                                             },
                                             // success: function () {

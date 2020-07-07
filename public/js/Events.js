@@ -21,8 +21,14 @@ $(document).ready(function () {
             success: function (response) {
                 // console.log(response);
                 if (response.error != '') {
-                    $('.VideoInvalid').append(response.error.video_file);
-                    alert(response.error.video_file);
+                    if(response.error.video_file){
+                        $('.VideoInvalid').append(response.error.video_file);
+                        alert(response.error.video_file);
+                    }
+                    else{
+                        $('.urlError').append(response.error.input_url);
+                    }
+                    
                 } else {
                     if (response.videoUrl.indexOf('embed') > -1) {
                         var HtmlContent = '<ul class="list-group parent list-group-flush mb-2"><li class="list-group-item"><div class="media align-items-center"><div class="media-body ml-3 d-flex" style="align-items: center;"><a class="pull-left" href="'+response.videoUrl+'" target="_blank"><iframe width="100" height="100" src="'+response.videoUrl+'" class="pull-left"></iframe></a><h6 class="mb-0 pull-left ml-3">' + response.videoTitle + '</h6></div><div data-id="' + response.videoID + '" Type="video" urltype="' + response.urlType + '" onclick="RemoveSingleVideo(this);" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div></div></li>';
@@ -61,9 +67,15 @@ $(document).ready(function () {
             processData: false,
             success: function (response) {
                 if (response.error != '') {
-                    $('.PodcastInvalid').append(response.error.podcast_video_file);
+                    if(response.error.podcast_video_file){
+                        $('.PodcastInvalid').append(response.error.podcast_video_file);
+                        alert(response.error.podcast_video_file);
+                    }
+                    else{
+                        $('.podcastUrlError').append(response.error.input_url);
+                    }
+                    
                     // $(validateField).append(response.error.podcast_video_file);
-                    alert(response.error.podcast_video_file);
                 } else {
                     var HtmlContent = '<ul class="list-group parent list-group-flush mb-2"><li class="list-group-item"><div class = "media align-items-center"><h6 class="ml-3 col-lg-12 text-left" class="mb-0">'+ response.videoTitle +'</h6></div><div class="media align-items-center"><div class="media-body ml-3 d-flex" style="align-items: center;"><a class="pull-left" href="'+response.videoUrl+'" target="_blank"><audio controls><source src="'+response.videoUrl+'" type="audio/ogg"></audio></a>'+ '</div><div data-id="' + response.videoID + '" Type="podcast" urltype="' + response.urlType + '" onclick="RemoveSingleVideo(this);" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div></div></li>';
                     $('#UploadedVideos').append(HtmlContent);

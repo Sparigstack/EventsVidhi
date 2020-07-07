@@ -115,6 +115,7 @@
                         <div class="form-group">
                             <p for='input_url' class="float-left">Podcast URL</p><span style="font-size: 11px;font-weight: 600;">&nbsp;&nbsp;(YouTube or Vimeo url)</span>
                             <input type="text" class="form-control" id="input_url" onkeyup="pocastUrlCheck(this);" onchange="pocastUrlCheck(this);" name="input_url" value="{{  old('input_url', $desription) }}" placeholder="Enter Podcast URL" required>
+                            <small class="text-danger urlError">{{ $errors->first('input_url') }}</small>
                             <!-- <label> You can either save your Youtube or Vimeo podcast URL OR you can upload your own podcast.</label> -->
                         </div>
 
@@ -139,7 +140,8 @@
                                     <input type="file" id='input_podfile' name='input_podfile' value="{{  old('input_podfile') }}" >
                                     <p class="dragFileText">Drag your podcast file here or click to upload</p>
                                 </div>
-                                <small class="text-danger">{{ $errors->first('input_podfile') }}</small>
+                                <small class="text-danger podcastFileError"></small>
+                                <!-- <small class="text-danger">{{ $errors->first('input_podfile') }}</small> -->
                             </div>
                             <div class="form-group podcastProgressBar d-none">
                                 <div class="progress_upload">
@@ -352,17 +354,45 @@
 
         $('.dragFileForm').ajaxForm({
             beforeSend: function () {
-                $('.dragFileForm').find('.podcastProgressBar').removeClass('d-none');
-                //status.empty();
-                var percentVal = '0%';
-                // var posterValue = $('input[name=input_podfile]').fieldValue();
-                bar.width(percentVal)
-                percent.html(percentVal);                
+                var url = $("#input_url").val();
+                regexp =  /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
+                var validExtensions = ['mp3','m4a','wma']; //array of valid extensions
+                var fileName = $("#input_podfile").val();
+                var fileNameExt = fileName.substr(fileName.lastIndexOf('.') + 1);
+                if (regexp.test(url) || $.inArray(fileNameExt, validExtensions) != -1)
+                {
+                    $('.dragFileForm').find('.podcastProgressBar').removeClass('d-none');
+                    //status.empty();
+                    var percentVal = '0%';
+                    //var posterValue = $('input[name=input_vidfile]').fieldValue();
+                    bar.width(percentVal)
+                    percent.html(percentVal);
+                }
+                else
+                {
+                    if(url != ''){
+                        $('.urlError').text('The input url format is invalid.');
+                        return false;
+                        
+                    } else{
+                        $('.podcastFileError').text('The podcast video file must be a file of type: mpga, m4a, wma.');
+                        return false;
+                    }
+                    // $('.urlError').text('The input url format is invalid.');
+                    // return;
+                }
+                // $('.dragFileForm').find('.podcastProgressBar').removeClass('d-none');
+                // //status.empty();
+                // var percentVal = '0%';
+                // // var posterValue = $('input[name=input_podfile]').fieldValue();
+                // bar.width(percentVal)
+                // percent.html(percentVal);                
             },
             uploadProgress: function (event, position, total, percentComplete) {
                 var percentVal = percentComplete + '%';
                 bar.width(percentVal);
                 percent.html(percentVal);
+                if(!$('.dragFileForm').find('.podcastProgressBar').hasClass('d-none')){
                 if (percentComplete == 100) {
                                                     LoaderStart();
                                                     var interval = setInterval(function mak() {
@@ -372,6 +402,7 @@
                                                     }, 5000);
                 // LoaderStart();
             }
+        }
             },
             // success: function () {
             //     LoaderStop();

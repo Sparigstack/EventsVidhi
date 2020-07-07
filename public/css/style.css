@@ -2,6 +2,11 @@
     border-radius: 8px;
     max-height: 180px;
     min-height: 180px;
+    /*max-width: 100%;*/
+}
+.bannerRadius{
+    border-radius: 8px;
+    max-width: 100%;
 }
 .customButtons .simpleButton{
     display: none;

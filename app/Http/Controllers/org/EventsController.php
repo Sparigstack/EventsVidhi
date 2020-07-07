@@ -201,7 +201,7 @@ class EventsController extends Controller
         } else {
             $validator = Validator::make($request->all(), [
                 'input_title' => 'required',
-                'input_url' => 'required',
+                'input_url' => 'required|regex:/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/',
             ]);
         }
         if ($validator->fails()) {
@@ -270,7 +270,7 @@ class EventsController extends Controller
         } else {
             $validator = Validator::make($request->all(), [
                 'input_title' => 'required',
-                'input_url' => 'required',
+                'input_url' => 'required|regex:/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/',
             ]);
         }
 
