@@ -339,7 +339,7 @@
 
                                                     <div class="form-group col-lg-12">
                                                         <label for="PostalCode">Postal code</label>
-                                                        <input type="text" id="PostalCode" {{$disabled}} name="PostalCode" class="form-control" title="Postal Code" placeholder="Postal Code" autocomplete="off" rows="0" value="{{  old('PostalCode', $PostalCode) }}">
+                                                        <input type="text" maxlength="6" id="PostalCode" {{$disabled}} name="PostalCode" class="form-control" title="Postal Code" placeholder="Postal Code" autocomplete="off" rows="0" value="{{  old('PostalCode', $PostalCode) }}">
                                                     </div>
 
                                                     <div class="form-group col-lg-12">
