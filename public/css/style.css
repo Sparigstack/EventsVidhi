@@ -214,3 +214,9 @@ table .max-w-table-100 .btn{margin: 10px auto;
 .badge_sub.badge_sub_right{
 cursor: pointer;
 }
+#EventDateTime[readonly]{
+    background:#fff !important;
+}
+#EventEndDateTime[readonly]{
+    background:#fff !important;
+}

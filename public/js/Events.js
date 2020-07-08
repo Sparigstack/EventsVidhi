@@ -206,7 +206,14 @@ $(document).ready(function () {
         minutes = minutes.length == 1 ? "0" + minutes : minutes;
         ampm = defaultdate.getHours() > 11 ? "PM" : "AM";
         defaulttime = hours + ":" + minutes + " " + ampm;
-        $("#EventEndDateTime").val(defaultdate.getMonth() + 1 + "/" + defaultdate.getDate() + "/" + defaultdate.getFullYear() + " " + defaulttime);
+
+        var displaydateandtime = defaultdate.getMonth() + 1 + "/" + defaultdate.getDate() + "/" + defaultdate.getFullYear() + " " + defaulttime;
+        $("#EventEndDateTime").val(displaydateandtime);
+       
+//         $("#EventEndDateTime").datetimepicker({
+//     
+//             minDate: new Date(defaultdate)
+//        }); 
     });
     $(".files").on("change", function (e) {
         var files = e.target.files,

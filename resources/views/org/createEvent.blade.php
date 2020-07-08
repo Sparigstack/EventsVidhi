@@ -116,6 +116,7 @@
     }
 
     ?>
+    
     <h5 class="mb-3">{{$CardTitle}}</h5>
     <div class="row">
         <div class="card w-100">
@@ -339,7 +340,7 @@
 
                                                     <div class="form-group col-lg-12">
                                                         <label for="PostalCode">Postal code</label>
-                                                        <input type="text" maxlength="6" id="PostalCode" {{$disabled}} name="PostalCode" class="form-control" title="Postal Code" placeholder="Postal Code" autocomplete="off" rows="0" value="{{  old('PostalCode', $PostalCode) }}">
+                                                        <input id="txtChar" type="text"  onkeypress="return isNumberKey(event)"  maxlength="6" id="PostalCode" {{$disabled}} name="PostalCode" class="form-control" title="Postal Code" placeholder="Postal Code" autocomplete="off" rows="0" value="{{  old('PostalCode', $PostalCode) }}">
                                                     </div>
 
                                                     <div class="form-group col-lg-12">
@@ -373,7 +374,7 @@
                                                     <div class="form-group col-lg-12">
                                                         <label for="EventDateTime">Event Start Date & Time</label>
                                                         <div class='input-group' id=''>
-                                                            <input type='text' value="{{  old('EventDateTime', $EventDate) }}" placeholder="05/16/2020 10:28 AM" class="form-control date" autocomplete="off" name="EventDateTime" id="EventDateTime" required />
+                                                            <input type='text' readonly="readonly" value="{{  old('EventDateTime', $EventDate) }}" placeholder="16/05/2020 10:28 AM" class="form-control date" autocomplete="off" name="EventDateTime" id="EventDateTime" required />
 
                                                         </div>
                                                         <small class="text-danger">{{ $errors->first('EventDateTime') }}</small>
@@ -382,7 +383,7 @@
                                                     <div class="form-group col-lg-12">
                                                         <label for="EventDateTime">Event End Date & Time</label>
                                                         <div class='input-group' id=''>
-                                                            <input type='text' value="{{  old('EventEndDateTime', $EventEndDate) }}" placeholder="05/16/2020 11:28 AM" class="form-control date" autocomplete="off" name="EventEndDateTime" id="EventEndDateTime" required />
+                                                            <input type='text'readonly="readonly" value="{{  old('EventEndDateTime', $EventEndDate) }}" placeholder="16/05/2020 11:28 AM" class="form-control date" autocomplete="off" name="EventEndDateTime" id="EventEndDateTime" required />
 
                                                         </div>
                                                         <small class="text-danger">{{ $errors->first('EventEndDateTime') }}</small>

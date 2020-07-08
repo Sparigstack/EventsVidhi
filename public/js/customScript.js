@@ -174,20 +174,37 @@ $(document).ready(function () {
     //         }
     //     }
     // });
+                
 });
 
-function findParent(element) {
-    var parentElement = $(element).parent();
-    if ($(parentElement).hasClass("parent"))
-        return parentElement;
-    else {
-        for (var i = 0; i < 12; i++) {
-            parentElement = $(parentElement).parent();
-            if ($(parentElement).hasClass("parent"))
-                return parentElement;
-        }
-    }
-}
+
+
+//function jainiltest(element){
+//    var start = document.getElementById('#EventDateTime');
+//                var end = document.getElementById('#EventEndDateTime');
+//
+//                start.addEventListener('change', function() {
+//                    if (start.value)
+//                        end.min = start.value;
+//                }, false);
+//                end.addEventLiseter('change', function() {
+//                    if (end.value)
+//                        start.max = end.value;
+//                }, false);
+//
+//    
+//}
+
+//For Postal Code Input Only Write Numbers
+function isNumberKey(evt)
+       {
+          var charCode = (evt.which) ? evt.which : evt.keyCode;
+          if (charCode != 46 && charCode > 31 
+            && (charCode < 48 || charCode > 57))
+             return false;
+
+          return true;
+       }
 
 function findParentForm(element) {
     var parentElement = $(element).parent();
@@ -203,6 +220,7 @@ function findParentForm(element) {
 }
 
 function setEventDateAndTime() {
+    
     $('.date').each(function () {
         var defaultdate;
         var defaulttime;
@@ -226,18 +244,24 @@ function setEventDateAndTime() {
         //$(this).val(defaultdate.toLocaleDateString("en-US") + " " + defaulttime);
 
         var picker = $(this);
-        $(this).datetimepicker({
+        
+           $(this).datetimepicker({
             lang: 'en',
             defaultDate: defaultdate,
             defaultTime: defaulttime,
             timepicker: $(this).attr("data-hidetimepicker") == "True" ? false : true,
-            format: $(this).attr("data-hidetimepicker") == "True" ? 'm/d/Y' : 'm/d/Y g:i A',
+            format: $(this).attr("data-hidetimepicker") == "True" ? 'd/m/Y' : 'd/m/Y g:i A',
             validateOnBlur: false,
             step: 15,
             customButtons: $(this).attr("data-setcustombuttons") == "True" ? true : false,
-            scrollInput: false
-        });
+            scrollInput: false,
+//             minDate: new Date()
+        }); 
+        
+        
     });
+    
+    
 
 }
 
@@ -580,3 +604,4 @@ function hideInputLoader(element) {
 //         }
 //     });
 // }
+
