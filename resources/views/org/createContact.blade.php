@@ -58,11 +58,11 @@
                         </div>
                         <div class='form-group'>
                             <label for='emailAddress'>Email Address</label>
-                            <input type="text" class="form-control" id="emailAddress" name="emailAddress" value="{{  old('emailAddress', $email) }}" placeholder="Enter Email Address" required>
+                            <input type="email" class="form-control" id="emailAddress" name="emailAddress" value="{{  old('emailAddress', $email) }}" placeholder="Enter Email Address" required>
                         </div>
                         <div class='form-group'>
                             <label for='ContactNumber'>Contact Number</label>
-                            <input type="text" class="form-control" id="ContactNumber" name="ContactNumber" value="{{  old('ContactNumber', $contactNumber) }}" placeholder="Enter Contact Number">
+                            <input type="text" class="form-control" id="ContactNumber" onkeypress="return isNumberKey(event)" maxlength="10" name="ContactNumber" value="{{  old('ContactNumber', $contactNumber) }}" placeholder="Enter Contact Number">
                         </div>
 
                         <div class="form-group">
@@ -186,7 +186,7 @@
             </div>
         </div>
         <div class="col-lg-6">
-            <div class="card">
+<!--            <div class="card">
                 <div class="card-header">Recently Added Videos
                     <div class="card-action">
                         <div class="dropdown">
@@ -264,7 +264,7 @@
                     <a href="javascript:void();">View all Videos</a>
                 </div>
 
-            </div>
+            </div>-->
         </div>
     </div>
 </div>

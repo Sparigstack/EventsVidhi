@@ -220,3 +220,16 @@ cursor: pointer;
 #EventEndDateTime[readonly]{
     background:#fff !important;
 }
+.removebtn{
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    align-conent:center;
+    padding:0px 12.5px;
+}
+#RemoveImgBtn{
+    float:right;
+    text-decoration:underline;
+    color:#14ABEF;
+}

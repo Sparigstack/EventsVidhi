@@ -205,6 +205,43 @@ function isNumberKey(evt)
 
           return true;
        }
+       
+         var _URL = window.URL || window.webkitURL;
+          $("#EventBannerImage").change(function(e) {
+            var file = $(this)[0].files[0];
+           if ((file = this.files[0])){
+        image = new Image();
+          image.onload = function() {
+//            alert(this.width + "@" + this.height);
+            if(this.width === 845 && this.height === 445){
+//				$('#TempText').remove();
+//        document.getElementById('bannerImage').src = window.URL.createObjectURL(this.files[0]);
+//        document.getElementById('bannerImage').classList.remove('d-none');
+                return true;
+              }else{
+                alert("Please insert image in 845 X 445 size.\n");
+                $('#bannerImage').attr("src", "");
+    $('#EventBannerImage').val("");
+    document.getElementById('bannerImage').src = "";
+        document.getElementById('bannerImage').classList.add('d-none');
+    $('#dragfile').append("<p id='TempText'>Drop your image here or click to upload.</p>");
+               
+				return true;
+            }
+        }
+        image.src = _URL.createObjectURL(file);
+    
+     }
+});
+
+$('#RemoveImgBtn').on('click', function(e){
+    $('#bannerImage').attr("src", "");
+    $('#EventBannerImage').val("");
+    document.getElementById('bannerImage').src = "";
+        document.getElementById('bannerImage').classList.add('d-none');
+    $('#dragfile').append("<p id='TempText'>Drop your image here or click to upload.</p>");
+     //<p id="TempText">Drop your image here or click to upload.</p>
+});
 
 function findParentForm(element) {
     var parentElement = $(element).parent();
@@ -232,7 +269,6 @@ function setEventDateAndTime() {
         } else {
             defaultdate = new Date();
         }
-
         hours = defaultdate.getHours() > 12 ? (defaultdate.getHours() - 12).toString() : defaultdate.getHours().toString();
         hours = hours.length == 1 ? "0" + hours : hours;
         minutes = defaultdate.getMinutes().toString();
@@ -255,15 +291,43 @@ function setEventDateAndTime() {
             step: 15,
             customButtons: $(this).attr("data-setcustombuttons") == "True" ? true : false,
             scrollInput: false,
-//             minDate: new Date()
+            minDate: new Date()
         }); 
         
         
-    });
-    
-    
-
+    });   
 }
+//$("#EventDateTime").datetimepicker({ 
+//        lang: 'en',
+//        onSelect: function(date){
+//        alert("hello");
+//        var selectedDate = new Date(date);
+//        var msecsInADay = 86400000;
+//        var endDate = new Date(selectedDate.getTime() + msecsInADay);
+//
+//       //Set Minimum Date of EndDatePicker After Selected Date of StartDatePicker
+//         $("#EventEndDateTime").datetimepicker( "option", "setDate", endDate );
+//        $("#EventEndDateTime").datetimepicker( "option", "minDate", endDate );
+//        $("#EventEndDateTime").datetimepicker( "option", "maxDate", '+2y' );
+//
+//    }
+//});
+//
+//$("#EventEndDateTime").datetimepicker({ 
+//    changeMonth: true
+//});
+////Fri Jul 10 2020 18:30:14 GMT+0530 (India Standard Time)
+// $('#EventDateTime').change(function() {
+//   var startdate = $(this).val();
+//       $("#EventEndDateTime").datetimepicker({
+//            format: $(this).attr("data-hidetimepicker") == "True" ? 'd/m/Y' : 'd/m/Y g:i A',
+//            startDate:startdate, 
+//            minDate: startdate
+//     });
+//     
+//     console.log(startdate); 
+//     console.log(new Date());
+// });
 
 function LoaderStart() {
     $('#pageloader-overlay').css('display', 'block');

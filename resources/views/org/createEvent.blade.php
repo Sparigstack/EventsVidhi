@@ -185,7 +185,7 @@
                                                 <label for="EventBannerImage">Banner Image (optional)</label>
                                                 <p style="font-size: .7pc;">Preferred image size is 845 &#10005; 445 px and maximum 4MB allowed.</p>
                                                 <!-- <input type="file" accept="image/*" id="EventBannerImage" name="EventBannerImage" class="form-control files" onchange="document.getElementById('bannerImage').src = window.URL.createObjectURL(this.files[0]);document.getElementById('bannerImage').classList.remove('d-none');"> -->
-                                                <div class="dragFileContainer">
+                                                <div class="dragFileContainer" id="dragfile">
                                                     <input type="file" accept="image/*" id="EventBannerImage" name="EventBannerImage" class="form-control files">
                                                     <!-- <img id="bannerImage" src="{{$BannerUrl}}" class="{{$BannerHidden}} imageRadius w-100" alt="your image" width="100" /> -->
                                                     <img id="bannerImage" src="{{$BannerUrl}}" class="{{$BannerHidden}} bannerRadius w-100" alt="your image" width="100" />
@@ -193,15 +193,16 @@
                                                     if (empty($BannerUrl)) { ?>
                                                         <p id="TempText">Drop your image here or click to upload.</p>
                                                     <?php } ?>
-
+                                                       
                                                 </div>
+                                                
                                                 <small class="text-danger">{{ $errors->first('EventBannerImage') }}</small>
                                                 <div class="text-danger d-none SizeError" id='SizeErrorBannerImage'>Image size must be less than or eqaul to 4MB</div>
 
 
 
                                             </div>
-
+                                                <div class="removebtn"><a type="button" id="RemoveImgBtn">Change Banner</a></div>
                                         </div>
 
                                         <div class="form-group col-lg-12 row">
