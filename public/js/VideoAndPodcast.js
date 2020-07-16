@@ -1,14 +1,28 @@
 $(document).ready(function () {
     var videosTable = $('#default-datatable-videos').DataTable({
-        columnDefs: [
-            {orderable: false, targets: 2},
-        ]
+        // columnDefs: [
+        //     {orderable: false, targets: 2},
+        // ]
+        ordering: false,
+        aoColumnDefs: [
+        {
+            bSortable: false,
+            aTargets: [2]
+        }
+        ],
     });
 
     var podcastsTable = $('#default-datatable-podcasts').DataTable({
-        columnDefs: [
-            {orderable: false, targets: 2},
-        ]
+        // columnDefs: [
+        //     {orderable: false, targets: 2},
+        // ]
+        ordering: false,
+        aoColumnDefs: [
+        {
+            bSortable: false,
+            aTargets: [2]
+        }
+        ],
     });
 
     $('.dragFileForm #input_vidfile').change(function () {
@@ -49,6 +63,18 @@ $(document).ready(function () {
     UploadPodcastVideoBox();
     showHideLinkEvent();
 });
+function findParent(element) {
+    var parentElement = $(element).parent();
+    if ($(parentElement).hasClass("parent"))
+        return parentElement;
+    else {
+        for (var i = 0; i < 24; i++) {
+            parentElement = $(parentElement).parent();
+            if ($(parentElement).hasClass("parent"))
+                return parentElement;
+        }
+    }
+}
 function UploadVideoBoxVideoCon(element) {
     if (!$(element).is(':checked')) {
         $('#input_url').attr('readonly', false);

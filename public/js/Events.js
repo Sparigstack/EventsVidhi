@@ -3,6 +3,14 @@ $(document).ready(function () {
 
     setEventDateAndTime();
 
+     if($("#EventDateTime").val() != ''){
+        $('#EventEndDateTime').removeAttr("disabled");
+    }
+
+    $(".readOnlyStartDate").keydown(function(e){
+        e.preventDefault();
+    });
+
     $('#SaveVideoAjax').on('submit', function (event) {
         LoaderStart();
         event.preventDefault();
@@ -10,7 +18,20 @@ $(document).ready(function () {
         var urlString = $('.addEventVideos').val();
         var formData = new FormData(this);
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr("content");
+        var bar = $('.progressBar').find('.bar_upload');
+        var percent = $('.progressBar').find('.percent_upload');
         $.ajax({
+            xhr: function() {
+                var xhr = new window.XMLHttpRequest();
+                xhr.upload.addEventListener("progress", function(evt) {
+                    if (evt.lengthComputable) {
+                        var percentComplete = ((evt.loaded / evt.total) * 100);
+                        bar.width(percentComplete.toFixed(0) + '%');
+                        percent.html(percentComplete.toFixed(0)+'%');
+                    }
+                }, false);
+                return xhr;
+            },
             url: urlString,
             method: "POST",
             data: new FormData(this),
@@ -18,12 +39,19 @@ $(document).ready(function () {
             contentType: false,
             cache: false,
             processData: false,
+            beforeSend: function () {
+                $('#SaveVideoAjax').find('.progressBar').removeClass('d-none');
+                var percentVal = '0%';
+                bar.width(percentVal);
+                percent.html(percentVal);
+            },
             success: function (response) {
                 // console.log(response);
                 if (response.error != '') {
                     if(response.error.video_file){
                         $('.VideoInvalid').append(response.error.video_file);
                         alert(response.error.video_file);
+                        $('#SaveVideoAjax').find('.progressBar').addClass('d-none');
                     }
                     else{
                         $('.urlError').append(response.error.input_url);
@@ -31,7 +59,9 @@ $(document).ready(function () {
                     
                 } else {
                     if (response.videoUrl.indexOf('embed') > -1) {
-                        var HtmlContent = '<ul class="list-group parent list-group-flush mb-2"><li class="list-group-item"><div class="media align-items-center"><div class="media-body ml-3 d-flex" style="align-items: center;"><a class="pull-left" href="'+response.videoUrl+'" target="_blank"><iframe width="100" height="100" src="'+response.videoUrl+'" class="pull-left"></iframe></a><h6 class="mb-0 pull-left ml-3">' + response.videoTitle + '</h6></div><div data-id="' + response.videoID + '" Type="video" urltype="' + response.urlType + '" onclick="RemoveSingleVideo(this);" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div></div></li>';
+                        var HtmlContent = '<ul class="list-group parent list-group-flush mb-2"><li class="list-group-item"><div class="media align-items-center"><div class="media-body ml-3 d-flex" style="align-items: center;"><a class="pull-left" href="'+response.videoUrl+'" target="_blank"><iframe width="100" height="70" src="'+response.videoUrl+'" class="pull-left"></iframe></a><h6 class="mb-0 pull-left ml-3">' + response.videoTitle + '</h6></div><div data-id="' + response.videoID + '" Type="video" urltype="' + response.urlType + '" onclick="RemoveSingleVideo(this);" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div></div></li>';
+                    } else if(response.videoUrl.indexOf('vimeo') > -1){
+                        var HtmlContent = '<ul class="list-group parent list-group-flush mb-2"><li class="list-group-item"><div class="media align-items-center"><div class="media-body ml-3 d-flex" style="align-items: center;"><a class="pull-left" href="'+response.videoUrl+'" target="_blank"><iframe width="100" height="70" src="'+response.videoUrl+'" class="pull-left"></iframe></a><h6 class="mb-0 pull-left ml-3">' + response.videoTitle + '</h6></div><div data-id="' + response.videoID + '" Type="video" urltype="' + response.urlType + '" onclick="RemoveSingleVideo(this);" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div></div></li>';
                     } else{
                     var HtmlContent = '<ul class="list-group parent list-group-flush mb-2"><li class="list-group-item"><div class="media align-items-center"><div class="media-body ml-3 d-flex" style="align-items: center;"><a class="pull-left" href="'+response.videoUrl+'" target="_blank"><video class="pull-left" src="'+response.videoUrl+'" width="100px" height="100px"></video></a><h6 class="mb-0 pull-left ml-3">' + response.videoTitle + '</h6></div><div data-id="' + response.videoID + '" Type="video" urltype="' + response.urlType + '" onclick="RemoveSingleVideo(this);" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div></div></li>';
                     }
@@ -40,6 +70,7 @@ $(document).ready(function () {
                     $(CurentForm).find('#input_title').val('');
                     $('.UploadVideoContainer').addClass('d-none');
                     $('.VideoInvalid').empty();
+                    $('#SaveVideoAjax').find('.progressBar').addClass('d-none');
                 }
                 LoaderStop();
             },
@@ -56,8 +87,21 @@ $(document).ready(function () {
         var CurentForm = $(this);
         var urlString = $('.addPodCastVideos').val();
         var formData = new FormData(this);
+        var bar = $('.podcastProgressBar').find('.bar_upload');
+        var percent = $('.podcastProgressBar').find('.percent_upload');
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr("content");
         $.ajax({
+            xhr: function() {
+                var xhr = new window.XMLHttpRequest();
+                xhr.upload.addEventListener("progress", function(evt) {
+                    if (evt.lengthComputable) {
+                        var percentComplete = ((evt.loaded / evt.total) * 100);
+                        bar.width(percentComplete.toFixed(0) + '%');
+                        percent.html(percentComplete.toFixed(0)+'%');
+                    }
+                }, false);
+                return xhr;
+            },
             url: urlString,
             method: "POST",
             data: new FormData(this),
@@ -65,11 +109,18 @@ $(document).ready(function () {
             contentType: false,
             cache: false,
             processData: false,
+            beforeSend: function () {
+                $('#SavePodCastAjax').find('.podcastProgressBar').removeClass('d-none');
+                var percentVal = '0%';
+                bar.width(percentVal);
+                percent.html(percentVal);
+            },
             success: function (response) {
                 if (response.error != '') {
                     if(response.error.podcast_video_file){
                         $('.PodcastInvalid').append(response.error.podcast_video_file);
                         alert(response.error.podcast_video_file);
+                        $('#SavePodCastAjax').find('.podcastProgressBar').addClass('d-none');
                     }
                     else{
                         $('.podcastUrlError').append(response.error.input_url);
@@ -83,6 +134,7 @@ $(document).ready(function () {
                     $(CurentForm).find('#input_title').val('');
                     $('.UploadPodCastContainer').addClass('d-none');
                     $('.PodcastInvalid').empty();
+                    $('#SavePodCastAjax').find('.podcastProgressBar').addClass('d-none');
                 }
                 LoaderStop();
             },
@@ -208,10 +260,11 @@ $(document).ready(function () {
         defaulttime = hours + ":" + minutes + " " + ampm;
         var displaydateandtime = defaultdate.getMonth() + 1 + "/" + defaultdate.getDate() + "/" + defaultdate.getFullYear() + " " + defaulttime;
         $("#EventEndDateTime").val(displaydateandtime);
-  
+
         $("#EventEndDateTime").datetimepicker({ 
              changeMonth: true,
-             minDate: displaydateandtime
+             // minDate: displaydateandtime
+             minDate: new Date(displaydateandtime)
         });
        
 //         $("#EventEndDateTime").datetimepicker({
@@ -274,6 +327,19 @@ $(document).ready(function () {
     });
 
 });
+
+function findParent(element) {
+    var parentElement = $(element).parent();
+    if ($(parentElement).hasClass("parent"))
+        return parentElement;
+    else {
+        for (var i = 0; i < 24; i++) {
+            parentElement = $(parentElement).parent();
+            if ($(parentElement).hasClass("parent"))
+                return parentElement;
+        }
+    }
+}
 
 function IsOnlineEvent(element) {
     if ($(element).is(":checked")) {
@@ -351,6 +417,15 @@ function UploadVideoBox(element) {
 function uploadVideo(element) {
     if ($(element).attr('id') == 'videoButton') {
         $('.UploadVideoContainer').removeClass('d-none');
+        $('#input_title').val('');
+        $('#input_url').val('');
+        $('#input_url').attr('readonly', false); 
+        $('#IsUploadVideo').prop('checked',false);
+        $(".uploadVideoBox").addClass('d-none');
+        $('#video_file').wrap('<form>').closest('form').get(0).reset();
+        $('#video_file').unwrap();
+        $(".uploadVideoBox").find('p').text("Drag your video file here or click in this area.");
+
         //   $('.videoTitle').removeClass('d-none');
         //   $('.videoUrl').removeClass('d-none');
         //   $('.videoUploadBox').removeClass('d-none'); 
@@ -360,6 +435,14 @@ function uploadVideo(element) {
         $('.UploadPodCastContainer').addClass('d-none');
     } else if ($(element).attr('id') == 'podcastVideoButton') {
         $('.UploadPodCastContainer').removeClass('d-none');
+        $('#input_title').val('');
+        $('#input_url').val('');
+        $('.PodcastUrl').find('#input_url').attr('readonly', false); 
+        $('#IsUploadPodCast').prop('checked',false);
+        $(".uploadPodcastVideo").addClass('d-none');
+        $('#podcast_video_file').wrap('<form>').closest('form').get(0).reset();
+        $('#podcast_video_file').unwrap();
+        $(".uploadPodcastVideo").find('p').text("Drag your podcast file here or click in this area.");
         // $('.videoUrl').addClass('d-none');
         // $('.videoUploadBox').addClass('d-none');
         // $('.uploadVideoBox').addClass('d-none');
@@ -882,4 +965,13 @@ function RemoveSingleTicket(element) {
         }
     });
 
+}
+
+function removeDisable(){
+    if($("#EventDateTime").val() != ''){
+        $('#EventEndDateTime').removeAttr("disabled");
+    }
+    else{
+        $('#EventEndDateTime').addAttr("disabled");
+    }
 }

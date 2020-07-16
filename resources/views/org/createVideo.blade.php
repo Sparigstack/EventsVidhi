@@ -223,7 +223,9 @@ $CardTitle = "Add New Video";
                         </div>
                     </li> -->
                     <?php foreach ($RecentVideos as $Video) { ?>
-                        <li class="list-group-item listItemsBottomBorder">
+                    <input class="csrf-token" type="hidden" value="{{ csrf_token() }}">
+                    <input type="hidden"  class="deleteVideo" value="{{url('deleteVideo')}}">
+                        <li class="list-group-item listItemsBottomBorder parent">
                             <div class="media align-items-center">
                                 <?php
                                     $AwsUrl = env('AWS_URL');
@@ -234,13 +236,18 @@ $CardTitle = "Add New Video";
                                                 <a href="{{$videoUrl}}" target="_blank"><video class="" src="{{$videoUrl}}" width="100px" height="100px"></video></a>
                                          <?php   }
                                             else{
-                                                $videoUrl = $Video->url; 
-                                                $explodeUrl = explode('/', $videoUrl);
-                                                $getLastWord = array_pop($explodeUrl);
-                                                // $a = substr($videoUrl, strpos($videoUrl, '/') + 11);
-                                                $url = "https://www.youtube.com/embed/" . $getLastWord;
+                                                $videoUrl = $Video->url;
+                                                if(strpos($videoUrl, 'youtube') !== false){
+                                                    $explodeUrl = explode('=', $videoUrl);
+                                                    $getLastWord = array_pop($explodeUrl);
+                                                    $url = "https://www.youtube.com/embed/" . $getLastWord;
+                                                }else{
+                                                    $explodeUrl = explode('/', $videoUrl);
+                                                    $getLastWord = array_pop($explodeUrl);
+                                                    $url = "https://player.vimeo.com/video/" . $getLastWord;
+                                                } 
                                                 ?>
-                                                <a href="{{$url}}" target="_blank"><iframe width="100" height="100" src="{{$url}}"></iframe></a>
+                                                <a href="{{$url}}" target="_blank"><iframe width="100" height="70" src="{{$url}}"></iframe></a>
                                           <?php  }
                                         }
                                 ?>
@@ -266,10 +273,19 @@ $CardTitle = "Add New Video";
                                     if(!empty($eventDesc)){
                                         $eventId = $Video->event->id;
                                     ?>
-                                    <small class="small-font"><b>{{$eventPrefix}}</b><a target="_blank" href="{{url('org/events/'.$eventId)}}"> {{$eventDesc}}</a></small>
+                                    <small class="small-font" style="display:block;"><b>{{$eventPrefix}}</b><a target="_blank" href="{{url('org/events/'.$eventId)}}"> {{$eventDesc}}</a></small>
                                     <?php } else { ?>
-                                    <small class="small-font">{{$desc}}</small>
+                                    <small class="small-font" style="display:block;">{{$desc}}</small>
                                     <?php } ?>
+                                    
+                                    <?php
+                                    if($Video->file_size != ''){
+                                        $DisplaySize=formatBytes($Video->file_size);  ?>
+                                        <h7 class="">File Size :  <?php echo $DisplaySize; ?></h7>
+                                   <?php } 
+                                  ?>
+
+    <i title="Remove Video" onclick="deleteVideo(this);" aria-hidden="true" class="fa fa-trash ml-3 mt-1 clickable" style="font-size: 25px;float: right;" db-delete-id="{{$Video->id}}"></i>
                                 </div>
 
                             </div>
@@ -281,6 +297,13 @@ $CardTitle = "Add New Video";
                 </div>
 
             </div>
+            <?php 
+                            function formatBytes($size, $precision = 2)
+                            {
+                                $base = log($size, 1024);
+                                $suffixes = array('B', 'KB', 'MB', 'GB', 'TB');   
+                                    return round(pow(1024, $base - floor($base)), $precision) .' '. $suffixes[floor($base)];
+                            } ?>
         </div>
     </div>
 </div>
@@ -300,12 +323,21 @@ $CardTitle = "Add New Video";
                                         $('.dragFileForm').ajaxForm({
                                             beforeSend: function () {
                                                 var url = $("#input_url").val();
-                                                regexp =  /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
+                                                // regexp =  /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
+                                                // regexp =  /https:\/\/(?:www.)?(?:(vimeo).com\/(.*)|(youtube).com\/watch\?v=(.*?)&)/;
+                                                regexp = /^(http:\/\/|https:\/\/)(vimeo\.com|youtu\.be|www\.youtube\.com)\/([\w\/]+)([\?].*)?$/;
+                                                // if(url.match(regexp)){
+                                                //     $('.urlError').text('The input url format is invalid.');
+                                                //         return false;
+                                                // }
+                                                
                                                 var validExtensions = ['mov','mp4','wmv','flv','avi']; //array of valid extensions
         var fileName = $("#input_vidfile").val();
         var fileNameExt = fileName.substr(fileName.lastIndexOf('.') + 1);
-                                                if (regexp.test(url) || $.inArray(fileNameExt, validExtensions) != -1)
-                                                {
+                                                // if (regexp.test(url) || $.inArray(fileNameExt, validExtensions) != -1)
+                                                // {
+                                                    if (url.match(regexp) || $.inArray(fileNameExt, validExtensions) != -1)
+                                                    {
                                                     $('.dragFileForm').find('.progressBar').removeClass('d-none');
                                                     //status.empty();
                                                     var percentVal = '0%';
@@ -318,7 +350,8 @@ $CardTitle = "Add New Video";
                                                     if(url != ''){
                                                         $('.urlError').text('The input url format is invalid.');
                                                         return false;
-                                                    } else{
+                                                    } 
+                                                    else{
                                                         $('.videoFileError').text('The video file must be a file of type: mov, mp4, wmv, flv, avi.');
                                                         return false;
                                                     }

@@ -61,20 +61,22 @@ class CsvImportController extends Controller
             $contact->contact_number = $data[$i][3];
             $contact->save();
 
-            $CustomCounter=4;
-            foreach($customFields as $customField){
-                $contctCustomField=new ContactCustomField;
-                $contctCustomField->contact_id=$contact->id;
-                $contctCustomField->customfield_id=$customField->id;
-                if($customField->type==1){
-                    $contctCustomField->string_value=$data[$i][$CustomCounter];
-                }elseif($customField->type==2){
-                    $contctCustomField->int_value=$data[$i][$CustomCounter];
-                }else{
-                    $contctCustomField->date_value=$data[$i][$CustomCounter];
+            if (isset($data[$i][4])) {
+                $CustomCounter = 4;
+                foreach ($customFields as $customField) {
+                    $contctCustomField = new ContactCustomField;
+                    $contctCustomField->contact_id = $contact->id;
+                    $contctCustomField->customfield_id = $customField->id;
+                    if ($customField->type == 1) {
+                        $contctCustomField->string_value = $data[$i][$CustomCounter];
+                    } elseif ($customField->type == 2) {
+                        $contctCustomField->int_value = $data[$i][$CustomCounter];
+                    } else {
+                        $contctCustomField->date_value = $data[$i][$CustomCounter];
+                    }
+                    $contctCustomField->save();
+                    $CustomCounter ++;
                 }
-                $contctCustomField->save();
-                $CustomCounter ++;
             }
 
         }

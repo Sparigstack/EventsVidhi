@@ -60,10 +60,10 @@ class PodcastsController extends Controller
         }else{
             $validator = Validator::make($request->all(), [
                 'input_title' => 'required',
-                'input_url' => 'required|regex:/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/',
+                'input_url' => 'required',
             ]);
         }
-
+        // regex:/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/
         if ($validator->fails()) {
             return redirect('org/podcasts/new')
                 ->withErrors($validator)
@@ -154,10 +154,10 @@ class PodcastsController extends Controller
         }else{
             $validator = Validator::make($request->all(), [
                 'input_title' => 'required',
-                'input_url' => 'required|regex:/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/',
+                'input_url' => 'required',
             ]);
         }
-
+        // regex:/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/
         if ($validator->fails()) {
             return redirect('org/podcasts/'. $id)
                 ->withErrors($validator)

@@ -86,6 +86,7 @@ class EventsController extends Controller
             'category' => 'required',
             'Description' => 'required',
             'EventDateTime' => 'required',
+            'EventEndDateTime' => 'date_format:m/d/Y g:i A|after_or_equal:EventDateTime',
         ]);
 
         if ($validator->fails()) {
@@ -135,10 +136,22 @@ class EventsController extends Controller
             $events->postal_code = $request->PostalCode;
             $events->is_online = '0';
         }
+
         $StartDateTime = $request->EventDateTime;
-        $events->date_time = new DateTime($StartDateTime);
+        // $customFormat=explode(' ', $StartDateTime);
+        // $arr = explode('/', $customFormat[0]);
+        // $newStartDate = $arr[2].'-'.$arr[1].'-'.$arr[0]. $customFormat[1];
+        // $events->date_time = new DateTime($newStartDate);
+        
         $EndDateTime = $request->EventEndDateTime;
+        // $customFormat1=explode(' ', $EndDateTime);
+        // $arr1 = explode('/', $customFormat1[0]);
+        // $newEndDate = $arr1[2].'-'.$arr1[1].'-'.$arr1[0]. $customFormat1[1];
+        // $events->end_date_time = new DateTime($newEndDate);
+
+        $events->date_time = new DateTime($StartDateTime);
         $events->end_date_time = new DateTime($EndDateTime);
+        
         $events->timezone_id = $request->cityTimezone;
         if (!empty($request->CustomUrl)) {
             $events->custom_url = $request->CustomUrl;
@@ -201,9 +214,11 @@ class EventsController extends Controller
         } else {
             $validator = Validator::make($request->all(), [
                 'input_title' => 'required',
-                'input_url' => 'required|regex:/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/',
+                'input_url' => 'required',
             ]);
         }
+        // required|regex:/http:\/\/(?:www.)?(?:(vimeo).com\/(.*)|(youtube).com\/watch\?v=(.*?)&)/
+        // regex:/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/
         if ($validator->fails()) {
             return response()->json([
                 'error' => $validator->errors(),
@@ -245,10 +260,15 @@ class EventsController extends Controller
             $videoUrlLink = env('AWS_URL') . $UrlToSave;
         } else {
             $videoUrl = $UrlToSave;
-            $explodeUrl = explode('/', $videoUrl);
-            $getLastWord = array_pop($explodeUrl);
-            // $a = substr($videoUrl, strpos($videoUrl, '/') + 11);
-            $videoUrlLink = "https://www.youtube.com/embed/" . $getLastWord;
+            if(strpos($videoUrl, 'youtube') !== false){
+                $explodeUrl = explode('=', $videoUrl);
+                $getLastWord = array_pop($explodeUrl);
+                $videoUrlLink = "https://www.youtube.com/embed/" . $getLastWord;
+            }else{
+                $explodeUrl = explode('/', $videoUrl);
+                $getLastWord = array_pop($explodeUrl);
+                $videoUrlLink = "https://player.vimeo.com/video/" . $getLastWord;
+            }
         }
         return response()->json([
             'videoUrl' => $videoUrlLink,
@@ -270,9 +290,10 @@ class EventsController extends Controller
         } else {
             $validator = Validator::make($request->all(), [
                 'input_title' => 'required',
-                'input_url' => 'required|regex:/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/',
+                'input_url' => 'required',
             ]);
         }
+        // regex:/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/
 
         if ($validator->fails()) {
             return response()->json([

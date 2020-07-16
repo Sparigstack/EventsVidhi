@@ -5,11 +5,18 @@ $(document).ready(function () {
         // ],
         ordering: false,
         aoColumnDefs: [
-            {
-                bSortable: false,
-                aTargets: [5]
-            }
+        {
+            bSortable: false,
+            aTargets: [5]
+        }
         ],
+        // ordering: false,
+        // aoColumnDefs: [
+        //     {
+        //         bSortable: false,
+        //         aTargets: [5]
+        //     }
+        // ],
         buttons: [{extend: 'excel',
                 text: 'export to excel',
                 exportOptions: {
@@ -22,12 +29,14 @@ $(document).ready(function () {
                 }}, ],
     });
     // contactsTable.buttons().container().appendTo('#default-datatable-contacts_wrapper .col-md-6:eq(0)');
+    // $("#default-datatable-contacts_wrapper .col-md-6:eq(0)").append('<button style="margin-bottom: 10px" class="btn btn-primary" onclick="deleteSelectedContact(this);">Delete All Selected</button>');
+    $("#default-datatable-contacts_wrapper .col-md-6:eq(0)").append('<div style="padding-top:10px;"><input type="checkbox" class="allChecked" onclick="checkedAllCheckbox(this);"> Check All</div>');
     contactsTable.buttons().container().appendTo('#default-datatable-contacts_wrapper .col-md-6:eq(1)');
     $("#default-datatable-contacts_wrapper").find($(".dt-buttons")).css("float", "right");
     $("#default-datatable-contacts_wrapper").find($(".dt-buttons")).find($(".buttons-csv")).css("border-radius", "0.25rem");
 
     $('.dt-buttons').each(function () {
-            $(this).append('<div class="dropdown"><a href="javascript:void();" class="dropdown-toggle dropdown-toggle-nocaret" data-toggle="dropdown"><button class="btn btn-outline-primary ml-2 pull-right">Bulk Actions</button></a><div class="dropdown-menu dropdown-menu-right bulkActionDropDown"><a class="dropdown-item backColorDropdownItem" href="javascript:void();" data-toggle="modal" data-target="#openEmailPopup">Email</a></div></div>');
+            $(this).append('<div class="dropdown"><a href="javascript:void();" class="dropdown-toggle dropdown-toggle-nocaret" data-toggle="dropdown"><button class="btn btn-outline-primary ml-2 pull-right">Bulk Actions</button></a><div class="dropdown-menu dropdown-menu-right bulkActionDropDown"><a class="dropdown-item backColorDropdownItem" href="javascript:void();" data-toggle="modal" data-target="#openEmailPopup">Email</a><a class="dropdown-item backColorDropdownItem" href="javascript:void();" onclick="deleteSelectedContact(this);">Delete Contact(s)</a></div></div>');
         });
 
     // $('#tagsForm').on('submit', function (event) {
@@ -68,6 +77,19 @@ $(document).ready(function () {
         }
     });
 });
+
+function findParent(element) {
+    var parentElement = $(element).parent();
+    if ($(parentElement).hasClass("parent"))
+        return parentElement;
+    else {
+        for (var i = 0; i < 24; i++) {
+            parentElement = $(parentElement).parent();
+            if ($(parentElement).hasClass("parent"))
+                return parentElement;
+        }
+    }
+}
 
 function DeleteCustomField(element) {
     var confirmDelete = confirm("Are you sure want to delete this custom field permanently?");
@@ -138,6 +160,47 @@ function deleteContact(element) {
             location.reload();
         }
     });
+}
+
+function checkedAllCheckbox(element){
+    if($('.allChecked').is(':checked',true))  
+    {
+        $(".sub_chk").prop('checked', true);  
+    } else {  
+        $(".sub_chk").prop('checked',false);  
+    } 
+}
+
+function deleteSelectedContact(element) {
+    var allVals = [];  
+    $(".sub_chk:checked").each(function() {  
+                allVals.push($(this).attr('data-id'));
+    });  
+
+    if(allVals.length <=0) {  
+        alert("Please select row.");
+        return;  
+    } else{
+        var confirmDelete = confirm("Are you sure you want to delete selected contacts?");
+        if (!confirmDelete)
+            return;
+        var join_selected_values = allVals.join(","); 
+        var CSRF_TOKEN = $('.csrf-token').val();
+        var urlString = $('.deleteSelectedContacts').val();
+        $.ajax({
+            url: urlString,
+            type: 'post',
+            data: {_token: CSRF_TOKEN, join_selected_values: join_selected_values},
+            success: function (response) {
+                // console.log(response);
+                location.reload();
+            },
+            error: function (err) {
+                    console.log(err);
+                    // LoaderStop();
+                }
+        });
+    }
 }
 
 function tagsSelect(element) {

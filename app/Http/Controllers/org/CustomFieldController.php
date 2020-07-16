@@ -43,6 +43,25 @@ class CustomFieldController extends Controller
         //return Redirect::back()->with('message','Operation Successful !');
     }
 
+    public function edit($id)
+    {
+        // return 'mansi';
+        $user = Auth::user();
+        $customFields1 = CustomField::findOrFail($id);
+        $customFields = CustomField::where('user_id', $user->id)->get();
+        // return redirect('org/customFields/edit/'. $customFields->id);
+        return view('org/customField', compact('customFields', 'customFields1'));
+    }
+
+    public function update(Request $request, $id){
+        $customFields1 = CustomField::findOrFail($id);
+        $customFields1->name = $request->name;
+        $userId = Auth::id();
+        $customFields1->user_id = $userId;
+        $customFields1->save();
+        return redirect('org/customFields');
+    }
+
     public function delete($id){
         $event = CustomField::find($id)->delete();
         return response()->json([

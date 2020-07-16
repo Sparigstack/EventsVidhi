@@ -258,6 +258,14 @@ class ContactsController extends Controller
         $customField = ContactCustomField::where('contact_id', $request->contactDeleteId)->delete();
         $contact = Contact::find($request->contactDeleteId)->delete();
     }
+
+    public function deleteSelectedContacts(Request $request)
+    {
+        $ids = $request->join_selected_values;
+        DB::table("contact_tag")->whereIn('contact_id',explode(",",$ids))->delete();
+        DB::table("contact_customfield")->whereIn('contact_id',explode(",",$ids))->delete();
+        DB::table("contacts")->whereIn('id',explode(",",$ids))->delete();
+    }
     
     public function approve($id)
     {

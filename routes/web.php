@@ -78,6 +78,7 @@ Route::post('org/contacts/store', 'org\ContactsController@store');
 Route::get('org/contacts/edit/{contactid}', 'org\ContactsController@edit');
 Route::post('org/contacts/update/{contactid}', 'org\ContactsController@update');
 Route::post('deleteContact', 'org\ContactsController@destroy');
+Route::post('deleteSelectedContacts', 'org\ContactsController@deleteSelectedContacts');
 Route::post('org/contact/approve/{id}', 'org\ContactsController@approve');
 
 
@@ -106,6 +107,8 @@ Route::get('org/tags/{value}', 'org\TagsController@GetTagsByValue');
 
 Route::get('org/customFields', 'org\CustomFieldController@Index');
 Route::post('org/customfield/store', 'org\CustomFieldController@store');
+Route::get('org/customFields/edit/{id}', 'org\CustomFieldController@edit');
+Route::post('org/customFields/update/{id}', 'org\CustomFieldController@update');
 Route::post('org/customfield/delete/{id}', 'org\CustomFieldController@delete');
 Route::post('org/setting/update', 'org\SettingController@update');
 

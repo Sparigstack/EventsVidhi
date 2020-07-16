@@ -274,7 +274,9 @@
                     </li> -->
                     
                     <?php foreach ($RecentPodcasts as $Podcast) { ?>
-                        <li class="list-group-item listItemsBottomBorder">
+                        <input class="csrf-token" type="hidden" value="{{ csrf_token() }}">
+                        <input type="hidden"  class="deletePodcast" value="{{url('deletePodcast')}}">
+                        <li class="list-group-item listItemsBottomBorder parent">
                             <!-- <div class="media align-items-center"> -->
                                 <div class="row align-items-center">
                                 <?php
@@ -311,11 +313,19 @@
                                     if(!empty($eventDesc)){
                                         $eventId = $Podcast->event->id;
                                     ?>
-                                    <small class="small-font"><b>{{$eventPrefix}}</b><a target="_blank" href="{{url('org/events/'.$eventId)}}"> {{$eventDesc}}</a></small>
+                                    <small class="small-font" style="display:block;"><b>{{$eventPrefix}}</b><a target="_blank" href="{{url('org/events/'.$eventId)}}"> {{$eventDesc}}</a></small>
                                     <?php } else { ?>
-                                    <small class="small-font">{{$desc}}</small>
+                                    <small class="small-font" style="display:block;">{{$desc}}</small>
                                     <?php } ?>
+                                    <?php
+                                    if($Podcast->file_size != ''){
+                                        $DisplaySize=formatBytes($Podcast->file_size);  ?>
+                                        <h7 class="">File Size :  <?php echo $DisplaySize; ?></h7>
+                                   <?php } 
+                                  ?>
                                 </div>
+
+                                  <i title="Remove Podcast" onclick="deletePodcast(this);" aria-hidden="true" class="fa fa-trash ml-3 mt-1 clickable" style="font-size: 25px;float: right;" db-delete-id="{{$Podcast->id}}"></i>
 
                             </div>
                         </li>
@@ -327,6 +337,13 @@
 
             </div>
         </div>
+        <?php 
+                            function formatBytes($size, $precision = 2)
+                            {
+                                $base = log($size, 1024);
+                                $suffixes = array('B', 'KB', 'MB', 'GB', 'TB');   
+                                    return round(pow(1024, $base - floor($base)), $precision) .' '. $suffixes[floor($base)];
+                            } ?>
     </div>
 </div>
 @endsection
@@ -355,11 +372,12 @@
         $('.dragFileForm').ajaxForm({
             beforeSend: function () {
                 var url = $("#input_url").val();
-                regexp =  /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
+                // regexp =  /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
                 var validExtensions = ['mp3','m4a','wma']; //array of valid extensions
                 var fileName = $("#input_podfile").val();
                 var fileNameExt = fileName.substr(fileName.lastIndexOf('.') + 1);
-                if (regexp.test(url) || $.inArray(fileNameExt, validExtensions) != -1)
+                // if (regexp.test(url) || $.inArray(fileNameExt, validExtensions) != -1)
+                if ($.inArray(fileNameExt, validExtensions) != -1)
                 {
                     $('.dragFileForm').find('.podcastProgressBar').removeClass('d-none');
                     //status.empty();

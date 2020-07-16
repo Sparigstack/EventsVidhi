@@ -133,11 +133,13 @@ $MultSelectTags = "";
 
 
                         <div class="table-responsive" id="default-datatable_wrapper">
+                            <input class="csrf-token" type="hidden" value="{{ csrf_token() }}">
                             <!-- <table id="default-datatable-contacts" class="table table-bordered"> -->
                             <table id="default-datatable-contacts" class="table" style="border-collapse: collapse !important;">
 
                                 <thead style="background-color: #6c757d29;">
                                     <tr>
+                                        <th><!-- <button style="margin-bottom: 10px" class="btn btn-primary" data-url="{{url('deleteSelectedContacts')}}" onclick="deleteSelectedContact(this);">Delete All Selected</button> --></th>
                                         <th>Profile Pic</th>
                                         <th>First Name</th>
                                         <th>Last Name</th>
@@ -153,6 +155,8 @@ $MultSelectTags = "";
                                             <input class="csrf-token" type="hidden" value="{{ csrf_token() }}">
                                             <input type="hidden" class="deleteContact" value="{{url('deleteContact')}}">
                                             <input type="hidden" class="ApproveContact" value="{{url('org/contact/approve')}}">
+                                            <input type="hidden" class="deleteSelectedContacts" value="{{url('deleteSelectedContacts')}}">
+                                            <td style="padding-top:40px;"><input type="checkbox" class="sub_chk" data-id="{{$contact->id}}"></td>
                                             <td><img class="speakerImgSize rounded"title="Profile Pic" src="{{env('AWS_URL') . 'no-image-logo.jpg'}}"> </td>
                                             <td>{{$contact->first_name}} </td>
                                             <td>{{$contact->last_name}}</td>

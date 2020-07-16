@@ -213,18 +213,26 @@ function isNumberKey(evt)
         image = new Image();
           image.onload = function() {
 //            alert(this.width + "@" + this.height);
-            if(this.width === 845 && this.height === 445){
+            // if(this.width === 845 && this.height === 445){
 //				$('#TempText').remove();
 //        document.getElementById('bannerImage').src = window.URL.createObjectURL(this.files[0]);
 //        document.getElementById('bannerImage').classList.remove('d-none');
+                // return true;
+              // }
+            if(this.width< 845 && this.height < 445){
+                $("#bannerImage").addClass("SmallImages");
+                $(".removebtn").removeClass("d-none");
                 return true;
-              }else{
-                alert("Please insert image in 845 X 445 size.\n");
+            }else if(this.width === 845 && this.height === 445){
+                $(".removebtn").removeClass("d-none");
+                return true;
+            }else{
+                alert("Maximum image dimension allowed is : 845x445 pixels.");
                 $('#bannerImage').attr("src", "");
-    $('#EventBannerImage').val("");
-    document.getElementById('bannerImage').src = "";
-        document.getElementById('bannerImage').classList.add('d-none');
-    $('#dragfile').append("<p id='TempText'>Drop your image here or click to upload.</p>");
+                $('#EventBannerImage').val("");
+                document.getElementById('bannerImage').src = "";
+                document.getElementById('bannerImage').classList.add('d-none');
+                $('#dragfile').append("<p id='TempText'>Drop your image here or click to upload.</p>");
                
 				return true;
             }
@@ -237,10 +245,59 @@ function isNumberKey(evt)
 $('#RemoveImgBtn').on('click', function(e){
     $('#bannerImage').attr("src", "");
     $('#EventBannerImage').val("");
+    $(".removebtn").addClass("d-none");
     document.getElementById('bannerImage').src = "";
         document.getElementById('bannerImage').classList.add('d-none');
     $('#dragfile').append("<p id='TempText'>Drop your image here or click to upload.</p>");
+    $("#bannerImage").removeClass("SmallImages");
      //<p id="TempText">Drop your image here or click to upload.</p>
+});
+
+var _URL = window.URL || window.webkitURL;
+          $("#EventThumbnailImage").change(function(e) {
+            var file = $(this)[0].files[0];
+           if ((file = this.files[0])){
+        image = new Image();
+          image.onload = function() {
+//            alert(this.width + "@" + this.height);
+            // if(this.width === 845 && this.height === 445){
+//              $('#TempText').remove();
+//        document.getElementById('bannerImage').src = window.URL.createObjectURL(this.files[0]);
+//        document.getElementById('bannerImage').classList.remove('d-none');
+                // return true;
+              // }
+            if(this.width< 420 && this.height < 360){
+                $("#thumbnailImage").addClass("SmallImages");
+                $(".removethumbnail").removeClass("d-none");
+                return true;
+            }else if(this.width === 420 && this.height === 360){
+                $(".removethumbnail").removeClass("d-none");
+                return true;
+            }else{
+                alert("Maximum image dimension allowed is : 420x360 pixels.");
+                $('#thumbnailImage').attr("src", "");
+                $('#EventThumbnailImage').val("");
+                $(".removethumbnail").addClass("d-none");
+                document.getElementById('thumbnailImage').src = "";
+                document.getElementById('thumbnailImage').classList.add('d-none');
+                $('.thumbNailContainer').append("<p id='TempTextThumb'>Drop your image here or click to upload.</p>");
+               
+                return true;
+            }
+        }
+        image.src = _URL.createObjectURL(file);
+    
+     }
+});
+
+$('#RemoveThumbnailBtn').on('click', function(e){
+    $('#EventThumbnailImage').attr("src", "");
+    $('#EventThumbnailImage').val("");
+    $(".removethumbnail").addClass("d-none");
+    document.getElementById('EventThumbnailImage').src = "";
+        document.getElementById('thumbnailImage').classList.add('d-none');
+    $('.thumbNailContainer').append("<p id='TempTextThumb'>Drop your image here or click to upload.</p>");
+     //<p id="TempTextThumb">Drop your image here or click to upload.</p>
 });
 
 function findParentForm(element) {
@@ -286,7 +343,8 @@ function setEventDateAndTime() {
             defaultDate: defaultdate,
             defaultTime: defaulttime,
             timepicker: $(this).attr("data-hidetimepicker") == "True" ? false : true,
-            format: $(this).attr("data-hidetimepicker") == "True" ? 'd/m/Y' : 'd/m/Y g:i A',
+            // format: $(this).attr("data-hidetimepicker") == "True" ? 'd/m/Y' : 'd/m/Y g:i A',
+            format: $(this).attr("data-hidetimepicker") == "True" ? 'm/d/Y' : 'm/d/Y g:i A',
             validateOnBlur: false,
             step: 15,
             customButtons: $(this).attr("data-setcustombuttons") == "True" ? true : false,

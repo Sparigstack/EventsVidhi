@@ -185,7 +185,7 @@
                                                 <label for="EventBannerImage">Banner Image (optional)</label>
                                                 <p style="font-size: .7pc;">Preferred image size is 845 &#10005; 445 px and maximum 4MB allowed.</p>
                                                 <!-- <input type="file" accept="image/*" id="EventBannerImage" name="EventBannerImage" class="form-control files" onchange="document.getElementById('bannerImage').src = window.URL.createObjectURL(this.files[0]);document.getElementById('bannerImage').classList.remove('d-none');"> -->
-                                                <div class="dragFileContainer" id="dragfile">
+                                                <div class="dragFileContainer" id="dragfile" style="text-align:center;">
                                                     <input type="file" accept="image/*" id="EventBannerImage" name="EventBannerImage" class="form-control files">
                                                     <!-- <img id="bannerImage" src="{{$BannerUrl}}" class="{{$BannerHidden}} imageRadius w-100" alt="your image" width="100" /> -->
                                                     <img id="bannerImage" src="{{$BannerUrl}}" class="{{$BannerHidden}} bannerRadius w-100" alt="your image" width="100" />
@@ -202,7 +202,7 @@
 
 
                                             </div>
-                                                <div class="removebtn"><a type="button" id="RemoveImgBtn">Change Banner</a></div>
+                                                <div class="removebtn d-none"><a type="button" id="RemoveImgBtn">Remove Banner</a></div>
                                         </div>
 
                                         <div class="form-group col-lg-12 row">
@@ -280,6 +280,7 @@
 
                                                 <small class="text-danger">{{ $errors->first('EventThumbnailImage') }}</small>
                                                 <div class="text-danger d-none SizeError" id='SizeErrorBannerImage'>Image size must be less than or eqaul to 4MB</div>
+                                                <div class="removethumbnail d-none"><a type="button" id="RemoveThumbnailBtn">Remove Thumbnail</a></div>
 
                                             </div>
 
@@ -375,7 +376,7 @@
                                                     <div class="form-group col-lg-12">
                                                         <label for="EventDateTime">Event Start Date & Time</label>
                                                         <div class='input-group' id=''>
-                                                            <input type='text' readonly="readonly" value="{{  old('EventDateTime', $EventDate) }}" placeholder="16/05/2020 10:28 AM" class="form-control date" autocomplete="off" name="EventDateTime" id="EventDateTime" required />
+                                                            <input type='text'  value="{{  old('EventDateTime', $EventDate) }}" placeholder="16/05/2020 10:28 AM" class="form-control date readOnlyStartDate" required autocomplete="off" name="EventDateTime" id="EventDateTime" onchange="removeDisable();" />
 
                                                         </div>
                                                         <small class="text-danger">{{ $errors->first('EventDateTime') }}</small>
@@ -384,7 +385,7 @@
                                                     <div class="form-group col-lg-12">
                                                         <label for="EventDateTime">Event End Date & Time</label>
                                                         <div class='input-group' id=''>
-                                                            <input type='text'readonly="readonly" value="{{  old('EventEndDateTime', $EventEndDate) }}" placeholder="16/05/2020 11:28 AM" class="form-control date" autocomplete="off" name="EventEndDateTime" id="EventEndDateTime" required />
+                                                            <input type='text'readonly="readonly" value="{{  old('EventEndDateTime', $EventEndDate) }}" placeholder="16/05/2020 11:28 AM" class="form-control date" autocomplete="off" name="EventEndDateTime" id="EventEndDateTime" required disabled="" />
 
                                                         </div>
                                                         <small class="text-danger">{{ $errors->first('EventEndDateTime') }}</small>
@@ -564,22 +565,31 @@
                                                                             <a class="pull-left" href="{{$videoUrl}}" target="_blank"><video class="pull-left" src="{{$videoUrl}}" width="100px" height="100px"></video></a>
                                                                     <?php    } else {
                                                                             $url = $video->url;
+                                                                            if(strpos($url, 'youtube') !== false){
+                                                                                $explodeUrl = explode('=', $url);
+                                                                            }else{
                                                                             $explodeUrl = explode('/', $url);
+                                                                            }
+                                                                             
                                                 $getLastWord = array_pop($explodeUrl);
-                                                // $a = substr($videoUrl, strpos($videoUrl, '/') + 11);
-                                                $videoUrl = "https://www.youtube.com/embed/" . $getLastWord; ?>
-                                                <a class="pull-left" href="{{$videoUrl}}" target="_blank"><iframe width="100" height="100" src="{{$videoUrl}}" class="pull-left"></iframe></a>
+                                                if(strpos($url, 'youtube') !== false){
+                                                    $videoUrl = "https://www.youtube.com/embed/" . $getLastWord;
+                                                }else{
+                                                    $videoUrl = "https://player.vimeo.com/video/" . $getLastWord;
+                                                }
+                                                ?>
+                                                <a class="pull-left" href="{{$videoUrl}}" target="_blank"><iframe width="100" height="70" src="{{$videoUrl}}" class="pull-left"></iframe></a>
                                                                       <?php  }
                                                                     } ?>
                                                                 <!-- <a class="pull-left" href="{{$videoUrl}}" target="_blank"><video class="pull-left" src="{{$videoUrl}}" width="100px" height="100px"></video></a> -->
                                                                 
-                                                                <h6 class="pull-left ml-3" class="mb-0"><?php echo $video->title ?></h6>
+                                                                <h6 class="pull-left ml-3" class="mb-0"><?php echo $video->title; ?></h6>
                                                                 
 <!--                                                                <small class="small-font">
                                                                     
                                                                     {{$videoUrl}}</small>-->
                                                             </div>
-                                                            <div data-id="<?php echo $video->id ?>" onclick="RemoveSingleVideo(this);" Type="video" UrlType="<?php echo $video->url_type ?>" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div>
+                                                            <div data-id="<?php echo $video->id; ?>" onclick="RemoveSingleVideo(this);" Type="video" UrlType="<?php echo $video->url_type; ?>" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div>
                                                         </div>
                                                     </li>
                                                 </ul>
@@ -590,7 +600,7 @@
                                                 <ul class="list-group parent list-group-flush mb-2">
                                                     <li class="list-group-item">
                                                         <div class = "media align-items-center">
-                                                            <h6 class="ml-3 col-lg-12 text-left" class="mb-0"><?php echo $podcast->title ?></h6>
+                                                            <h6 class="ml-3 col-lg-12 text-left" class="mb-0"><?php echo $podcast->title; ?></h6>
                                                         </div>
                                                         <div class="media align-items-center">
                                                             <div class="media-body ml-3 d-flex" style="align-items: center;">
@@ -614,7 +624,7 @@
                                                                 
                                                                 <!-- <h6 class="pull-left ml-3" class="mb-0"><?php echo $podcast->title ?></h6> -->
                                                             </div>
-                                                            <div data-id="<?php echo $podcast->id ?>" onclick="RemoveSingleVideo(this);" Type="podcast" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div>
+                                                            <div data-id="<?php echo $podcast->id; ?>" onclick="RemoveSingleVideo(this);" Type="podcast" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div>
                                                         </div>
                                                     </li>
                                                 </ul>
@@ -654,6 +664,13 @@
                                                     <small class="text-danger VideoInvalid"></small>
                                                 </div>
 
+                                                <div class="form-group progressBar d-none">
+                                                    <div class="progress_upload">
+                                                        <div class="bar_upload"></div>
+                                                        <div class="percent_upload">0%</div>
+                                                    </div>
+                                                </div>
+
                                                 <div class="col-lg-12">
                                                     <button type="submit" id="videoSubmitButton" data-id="{{$event->id}}" class="btn btn-primary px-5 pull-right"> Save Video</button>
                                                 </div>
@@ -669,7 +686,7 @@
                                                     <label for='input_title'>Podcast Title</label>
                                                     <input type="text" class="form-control" id="input_title" name='input_title' value="{{  old('input_title') }}" placeholder="Enter Podcast Title" required>
                                                 </div>
-                                                <div class='form-group videoUrl'>
+                                                <div class='form-group videoUrl PodcastUrl'>
                                                     <label for='input_url'>Podcast URL</label><span style="font-size: 11px;font-weight: 600;">&nbsp;&nbsp;(YouTube or Vimeo url)</span>
                                                     <input type="text" class="form-control" id="input_url" name="input_url" value="{{  old('input_url') }}" placeholder="Enter Podcast URL" required>
                                                     <small class="text-danger podcastUrlError"></small>
@@ -691,6 +708,14 @@
                                                         </div>
                                                         <small class="text-danger PodcastInvalid"></small>
                                                     </div>
+
+                                                    <div class="form-group podcastProgressBar d-none">
+                                                    <div class="progress_upload">
+                                                        <div class="bar_upload"></div>
+                                                        <div class="percent_upload">0%</div>
+                                                    </div>
+                                                </div>
+
                                                 </div>
 
                                                 <div class="col-lg-12">
@@ -741,8 +766,8 @@
                                                                     <small class="small-font">End's on - {{$new_date}}</small>
 
                                                                 </div>
-                                                                <div data-id="<?php echo $ticket->id ?>" onclick="EditSingleTicket(this);" Type="file" UrlType="" class="mr-2"><i class="fa icon fas fa-edit clickable" style="font-size: 22px;cursor: pointer;"></i></div>
-                                                                <div data-id="<?php echo $ticket->id ?>" onclick="RemoveSingleTicket(this);" Type="file" UrlType="" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div>
+                                                                <div data-id="<?php echo $ticket->id; ?>" onclick="EditSingleTicket(this);" Type="file" UrlType="" class="mr-2"><i class="fa icon fas fa-edit clickable" style="font-size: 22px;cursor: pointer;"></i></div>
+                                                                <div data-id="<?php echo $ticket->id; ?>" onclick="RemoveSingleTicket(this);" Type="file" UrlType="" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div>
                                                             </div>
                                                         </li>
                                                     </ul>
@@ -849,8 +874,8 @@
                                                                     <small class="small-font">{{$speaker->organization}} - {{$speaker->description}}</small>
 
                                                                 </div>
-                                                                <div data-id="<?php echo $speaker->id ?>" onclick="EditSingleSpeaker(this);" Type="file" UrlType="" class="mr-2"><i class="fa icon fas fa-edit clickable" style="font-size: 22px;cursor: pointer;"></i></div>
-                                                                <div data-id="<?php echo $speaker->id ?>" onclick="RemoveSingleSpeaker(this);" Type="file" UrlType="" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div>
+                                                                <div data-id="<?php echo $speaker->id; ?>" onclick="EditSingleSpeaker(this);" Type="file" UrlType="" class="mr-2"><i class="fa icon fas fa-edit clickable" style="font-size: 22px;cursor: pointer;"></i></div>
+                                                                <div data-id="<?php echo $speaker->id; ?>" onclick="RemoveSingleSpeaker(this);" Type="file" UrlType="" class=""><i class="fa icon fa-trash-o clickable" style="font-size: 22px;cursor: pointer;"></i></div>
                                                             </div>
                                                         </li>
                                                     </ul>
