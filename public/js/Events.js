@@ -756,11 +756,37 @@ function UpdateEventStatus(element) {
     });
 }
 
-function ValidateEventForm(element) {
-    var IsOnline = $(element).find("#IsOnline");
-    if (!$(IsOnline).is(':checked')) {
+function doConfirm(msg, yesFn, noFn) {
+    var confirmBox = $("#confirmBox");
+    confirmBox.find(".message").text(msg);
+    confirmBox.find(".yes,.no").unbind().click(function () {
+        confirmBox.hide();
+    });
+    confirmBox.find(".yes").click(yesFn);
+    confirmBox.find(".no").click(noFn);
+    confirmBox.show();
+}
 
+function ValidateEventForm(element) {
+    // var IsOnline = $(element).find("#IsOnline");
+    // if (!$(IsOnline).is(':checked')) {
+
+    // }
+    var checkUrl = window.location.href;
+    var eventPageUrl = $(".eventsPage").val();
+    if(checkUrl.includes('new')== false){
+        event.preventDefault();
+        doConfirm("Do you want to inform all attendees about this change?", function yes() {
+            return false;
+            // return;
+        }, function no() {
+            $(element).unbind('submit').submit();
+            // window.location.href = eventPageUrl;
+        });
+    }else{
+        // $(element).unbind('submit').submit();
     }
+
 }
 function ChangeCustomUrl(element) {
     var currentText = $(element).val();

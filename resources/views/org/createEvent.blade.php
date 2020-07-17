@@ -174,6 +174,7 @@
                                     </div>
                                     @endif
                                     <form class="row" ID="EventSaveForm" name="EventSaveForm" onsubmit="return ValidateEventForm(this)" method="post" action="{{$ActionCall}}" enctype="multipart/form-data">
+                                        <input type="hidden" class="eventsPage" value="{{url('org/events')}}">
                                         <!-- <input type="text" value="{{$ActionCall}}"> -->
                                         {{ csrf_field() }}
                                         <div class="basicDetails col-lg-12">
@@ -520,6 +521,11 @@
 
                                 </div>
                                 </form>
+                                <div id="confirmBox">
+    <div class="message"></div>
+    <span class="button yes">Yes</span>
+    <span class="button no">No</span>
+</div>
                                 <!-- <div class="form-group col-lg-12 pr-5">
                                         <a class="pull-right" href="{{url('org/events')}}"><button class="btn btn-light">Cancel</button></a>
                                     </div> -->
@@ -988,6 +994,7 @@
 
 
     </div>
+
 </div>
 <!--</div>
 </div>
