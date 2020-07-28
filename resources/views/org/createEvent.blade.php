@@ -48,6 +48,7 @@
     $city = "";
     $state = "";
     $FinalUrl = "";
+    $timezoneChangeId = 0;
     if (!empty($event)) {
         $event_id = $event->id;
         $ActionCall = url('org/events/edit/' . $event->id);
@@ -62,6 +63,9 @@
         // $countryId = $event->country_id;
         // $stateId = $event->state_id;
         $timezoneId = $event->timezone_id;
+        if(!empty($timezoneId)){
+            $timezoneChangeId = $event->timezone->id;
+        }
         if (!empty($event->address_line2)) {
             $address2 = $event->address_line2;
         }
@@ -385,6 +389,10 @@
                                                     <div class="eventSchedule col-lg-12 mt-3">
                                                         <h5> Event Schedule </h5>
                                                     </div>
+
+                                                    <input type="hidden" class="eventStartDateChange" value="{{$EventDate}}">
+                                                    <input type="hidden" class="eventEndDateChange" value="{{$EventEndDate}}">
+                                                    <input type="hidden" class="eventTimezoneChange" value="{{$timezoneChangeId}}">
 
                                                     <div class="form-group col-lg-12">
                                                         <label for="EventDateTime">Event Start Date & Time</label>

@@ -272,6 +272,38 @@ $(document).ready(function () {
 //             minDate: defaultdate
 //       }); 
     });
+
+    var eventDateTime = new Date($("#EventDateTime").val());
+    $("#SalesStart").datetimepicker({ 
+             defaultDate: new Date(eventDateTime.getFullYear(), eventDateTime.getMonth(), eventDateTime.getDate()),
+             changeMonth: true,
+             minDate: new Date($("#EventDateTime").val()),
+             maxDate: new Date($("#EventEndDateTime").val())
+    });
+
+    $("#SalesEnd").datetimepicker({ 
+             defaultDate: new Date(eventDateTime.getFullYear(), eventDateTime.getMonth(), eventDateTime.getDate()),
+             changeMonth: true,
+             minDate: new Date($("#EventDateTime").val()),
+             maxDate: new Date($("#EventEndDateTime").val())
+    });
+
+    $('#SalesStart').change(function (time) {
+        var defaultdate = new Date($("#SalesStart").val());
+        defaultdate.setHours(defaultdate.getHours() + 1);
+        hours = defaultdate.getHours() > 12 ? (defaultdate.getHours() - 12).toString() : defaultdate.getHours().toString();
+        hours = hours.length == 1 ? "0" + hours : hours;
+        minutes = defaultdate.getMinutes().toString();
+        minutes = minutes.length == 1 ? "0" + minutes : minutes;
+        ampm = defaultdate.getHours() > 11 ? "PM" : "AM";
+        defaulttime = hours + ":" + minutes + " " + ampm;
+        var displaydateandtime = defaultdate.getMonth() + 1 + "/" + defaultdate.getDate() + "/" + defaultdate.getFullYear() + " " + defaulttime;
+        $("#SalesEnd").val(displaydateandtime);
+        $("#SalesEnd").datetimepicker({ 
+             minDate: new Date(displaydateandtime)
+        });
+    });
+
     $(".files").on("change", function (e) {
         var files = e.target.files,
             filesLength = files.length;
@@ -774,11 +806,17 @@ function ValidateEventForm(element) {
     // }
     var checkUrl = window.location.href;
     var eventPageUrl = $(".eventsPage").val();
-    if(checkUrl.includes('new')== false){
+    var eventStartDateChange=$(".eventStartDateChange").val();
+    var eventEndDateChange=$(".eventEndDateChange").val();
+    var eventTimezoneChange = $(".eventTimezoneChange").val();
+    var EventDateTime = $("#EventDateTime").val();
+    var EventEndDateTime = $("#EventEndDateTime").val();
+    var cityTimezone = $("#cityTimezone").val();
+    if(checkUrl.includes('new')== false && ((eventStartDateChange != EventDateTime) || (eventEndDateChange != EventEndDateTime) || (eventTimezoneChange != cityTimezone))){
         event.preventDefault();
         doConfirm("Do you want to inform all attendees about this change?", function yes() {
-            return false;
-            // return;
+            $(element).unbind('submit').submit();
+            // return false;
         }, function no() {
             $(element).unbind('submit').submit();
             // window.location.href = eventPageUrl;
