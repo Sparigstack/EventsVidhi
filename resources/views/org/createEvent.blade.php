@@ -203,7 +203,13 @@
 
 
                                             </div>
-                                                <div class="removebtn d-none"><a type="button" id="RemoveImgBtn">Remove Banner</a></div>
+                                            <?php 
+                                            $dNoneClass = "d-none";
+                                            if(!empty($event->banner)){
+                                                $dNoneClass = '';
+                                            }
+                                            ?>
+                                                <div class="removebtn {{$dNoneClass}}"><a type="button" id="RemoveImgBtn">Remove Banner</a></div>
                                         </div>
 
                                         <div class="form-group col-lg-12 row">
@@ -281,7 +287,13 @@
 
                                                 <small class="text-danger">{{ $errors->first('EventThumbnailImage') }}</small>
                                                 <div class="text-danger d-none SizeError" id='SizeErrorBannerImage'>Image size must be less than or eqaul to 4MB</div>
-                                                <div class="removethumbnail d-none"><a type="button" id="RemoveThumbnailBtn">Remove Thumbnail</a></div>
+                                                <?php 
+                                            $dNoneClassThumb = "d-none";
+                                            if(!empty($event->thumbnail)){
+                                                $dNoneClassThumb = '';
+                                            }
+                                            ?>
+                                                <div class="removethumbnail {{$dNoneClassThumb}}"><a type="button" id="RemoveThumbnailBtn">Remove Thumbnail</a></div>
 
                                             </div>
 

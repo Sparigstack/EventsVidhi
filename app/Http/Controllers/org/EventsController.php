@@ -469,10 +469,10 @@ class EventsController extends Controller
 
             Storage::disk('s3')->put($filePath, file_get_contents($file), 'public');
             $bannerUrl = $filePath;
-            $events->banner = $bannerUrl;
             if (!empty($events->banner)) {
                 Storage::disk('s3')->delete($events->banner);
             }
+            $events->banner = $bannerUrl;
         }
         $thumbNailUrl = "";
         if ($request->hasFile('EventThumbnailImage')) {
@@ -483,10 +483,10 @@ class EventsController extends Controller
 
             Storage::disk('s3')->put($thumbnailfilePath, file_get_contents($thumbnailfile), 'public');
             $thumbNailUrl = $thumbnailfilePath;
-            $events->thumbnail = $thumbNailUrl;
             if (!empty($events->thumbnail)) {
                 Storage::disk('s3')->delete($events->thumbnail);
             }
+            $events->thumbnail = $thumbNailUrl;
         }
 
 
