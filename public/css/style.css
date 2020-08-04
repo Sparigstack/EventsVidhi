@@ -230,7 +230,12 @@ cursor: pointer;
     align-conent:center;
     padding:0px 12.5px;
 }
-#RemoveImgBtn, #RemoveThumbnailBtn{
+.removeprofilepic{
+    width: 100%;
+    display: flex;
+    /*padding-left: 25%;*/
+}
+#RemoveImgBtn, #RemoveThumbnailBtn, #RemoveProfileBtn{
     float:right;
     text-decoration:underline;
     color:#14ABEF;

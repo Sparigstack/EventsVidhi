@@ -333,7 +333,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group col-lg-12">
-                                                        <input {{$isOnlineUrlReq}} type="text" id="EventUrl" value="{{  old('EventUrl', $EventUrl) }}" name="EventUrl" class="form-control {{$HiddenEventUrl}}" title="Event Url" placeholder="Online Event Url" autocomplete="off" rows="0" value="">
+                                                        <input {{$isOnlineUrlReq}} type="url" id="EventUrl" value="{{  old('EventUrl', $EventUrl) }}" name="EventUrl" class="form-control {{$HiddenEventUrl}}" title="Event Url" placeholder="Online Event Url" autocomplete="off" rows="0" value="">
                                                     </div>
 
                                                     <div class="form-group col-lg-12">
@@ -359,7 +359,7 @@
 
                                                     <div class="form-group col-lg-12">
                                                         <label for="PostalCode">Postal code</label>
-                                                        <input id="txtChar" type="text"  onkeypress="return isNumberKey(event)"  maxlength="6" id="PostalCode" {{$disabled}} name="PostalCode" class="form-control" title="Postal Code" placeholder="Postal Code" autocomplete="off" rows="0" value="{{  old('PostalCode', $PostalCode) }}">
+                                                        <input id="txtChar" type="text"  onkeypress="return isNumberKey(event)"  maxlength="6" id="PostalCode" {{$disabled}} name="PostalCode" class="form-control PostalCode" title="Postal Code" placeholder="Postal Code" autocomplete="off" rows="0" value="{{  old('PostalCode', $PostalCode) }}">
                                                     </div>
 
                                                     <div class="form-group col-lg-12">
@@ -632,7 +632,7 @@
                                                             <div class="media-body ml-3 d-flex" style="align-items: center;">
                                                                 <?php $AwsUrl = env('AWS_URL');
                                                                     $podcastvideoUrl = "";
-                                                                    if (!empty($podcast->url_type)) {
+                                                                    if (!is_null($podcast->url_type)) {
                                                                         if ($podcast->url_type == 1) {
                                                                             $podcastvideoUrl = $AwsUrl . $podcast->url;
                                                                         } else {
@@ -928,8 +928,17 @@
                                                         <div class="dragFileContainer thumbNailContainer SpeakerProfilePicDiv" style="display: flex;justify-content: center;">
                                                             <input type="file" accept="image/*" id="EventProfilePicImage" name="profilePicImageUpload" class="form-control files" picvalue="">
                                                             <img id="profilePicImage" src="" class="d-none imageRadius w-100 {{$profilePicHidden}}" alt="your image" width="100" value="">
-                                                            <p id="TempTextThumb" class="TempTextPic">Drop your image here or click to upload.</p>
+                                                            <!-- <p id="TempTextThumb" class="TempTextPic">Drop your image here or click to upload.</p> -->
                                                         </div>
+
+                                                <div class="text-danger d-none SizeError" id='SizeErrorBannerImage'>Image size must be less than or eqaul to 4MB</div>
+                                                <?php 
+                                            $dNoneClassProfile = "d-none";
+                                            if(!empty($speaker->profile_pic)){
+                                                $dNoneClassProfile = '';
+                                            }
+                                            ?>
+                                                        <div class="removeprofilepic {{$dNoneClassProfile}}"><a type="button" id="RemoveProfileBtn">Remove Profile Pic</a></div>
                                                     </div>
 
 
@@ -971,7 +980,7 @@
 
                                                 <div class="form-group col-lg-12">
                                                     <label for="speakerLinkedinUrl">LinkedIn URL</label>
-                                                    <input type="text" class="form-control" id="speakerLinkedinUrl" value="" name="speakerLinkedinUrl" placeholder="Enter LinkedIn Url">
+                                                    <input type="url" class="form-control" id="speakerLinkedinUrl" value="" name="speakerLinkedinUrl" placeholder="Enter LinkedIn Url">
                                                     <small class="text-danger"></small>
                                                 </div>
 

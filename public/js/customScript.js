@@ -300,6 +300,55 @@ $('#RemoveThumbnailBtn').on('click', function(e){
      //<p id="TempTextThumb">Drop your image here or click to upload.</p>
 });
 
+var _URL = window.URL || window.webkitURL;
+$("#EventProfilePicImage").change(function(e) {
+            var file = $(this)[0].files[0];
+           if ((file = this.files[0])){
+        image = new Image();
+          image.onload = function() {
+//            alert(this.width + "@" + this.height);
+            // if(this.width === 845 && this.height === 445){
+//              $('#TempText').remove();
+//        document.getElementById('bannerImage').src = window.URL.createObjectURL(this.files[0]);
+//        document.getElementById('bannerImage').classList.remove('d-none');
+                // return true;
+              // }
+            if(this.width< 420 && this.height < 360){
+                $("#profilePicImage").addClass("SmallImages");
+                $(".removeprofilepic").removeClass("d-none");
+                return true;
+            }else if(this.width === 420 && this.height === 360){
+                $(".removeprofilepic").removeClass("d-none");
+                return true;
+            }else{
+                alert("Maximum image dimension allowed is : 420x360 pixels.");
+                $('#profilePicImage').attr("src", "");
+                $('#EventProfilePicImage').val("");
+                $(".removeprofilepic").addClass("d-none");
+                document.getElementById('profilePicImage').src = "";
+                document.getElementById('profilePicImage').classList.add('d-none');
+                // $(".TempTextPic").removeClass('d-none');
+                $('.SpeakerProfilePicDiv').append("<p id='TempTextThumb' class='TempTextPic'>Drop your image here or click to upload.</p>");
+               
+                return true;
+            }
+        }
+        image.src = _URL.createObjectURL(file);
+    
+     }
+});
+
+$('#RemoveProfileBtn').on('click', function(e){
+    $('#EventProfilePicImage').attr("src", "");
+    $('#EventProfilePicImage').val("");
+    $(".removeprofilepic").addClass("d-none");
+    document.getElementById('EventProfilePicImage').src = "";
+        document.getElementById('profilePicImage').classList.add('d-none');
+    // $(".TempTextPic").removeClass('d-none');
+    $('.SpeakerProfilePicDiv').append("<p id='TempTextThumb' class='TempTextPic'>Drop your image here or click to upload.</p>");
+     //<p id="TempTextThumb">Drop your image here or click to upload.</p>
+});
+
 function findParentForm(element) {
     var parentElement = $(element).parent();
     if ($(parentElement).is("form"))

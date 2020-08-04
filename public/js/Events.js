@@ -380,8 +380,8 @@ function IsOnlineEvent(element) {
 
         $('#Address2').attr('disabled', true);
 
-        $('#PostalCode').attr('disabled', true);
-        $('#PostalCode').removeAttr('required');
+        $('.PostalCode').attr('disabled', true);
+        $('.PostalCode').removeAttr('required');
 
         $('#city').attr('disabled', true);
         $('#city').removeAttr('required');
@@ -403,8 +403,8 @@ function IsOnlineEvent(element) {
 
         $('#Address2').attr('disabled', false);
 
-        $('#PostalCode').attr('disabled', false);
-        $('#PostalCode').attr('required', 'required');
+        $('.PostalCode').attr('disabled', false);
+        $('.PostalCode').attr('required', 'required');
 
         $('#city').attr('disabled', false);
         $('#city').attr('required', 'required');
@@ -504,6 +504,7 @@ function uploadSpeaker(element) {
         $("#profilePicImage").addClass('d-none');
         $("#speakerSubmitButton").attr('data-id', '');
         $("#speakerId").val('');
+        $(".removeprofilepic").addClass("d-none");
 
         if ($("#uploadedSpeakers").find(".speakerList").hasClass('d-none')) {
             $("#uploadedSpeakers").find(".speakerList").removeClass('d-none');
@@ -557,7 +558,7 @@ function ShowAddressFields(element) {
     $('#Address1').attr('disabled', false);
     $('#Address1').attr('required', 'required');
     $('#Address2').attr('disabled', false);
-    $('#PostalCode').attr('disabled', false);
+    $('.PostalCode').attr('disabled', false);
 }
 
 function RemoveSingleVideo(element) {
@@ -661,9 +662,11 @@ function EditSingleSpeaker(element) {
 
             if (response.profile_pic != "") {
                 $("#profilePicImage").removeClass('d-none');
+                $(".removeprofilepic").removeClass('d-none');
                 $(".TempTextPic").addClass('d-none');
             } else {
                 $("#profilePicImage").addClass('d-none');
+                $(".removeprofilepic").addClass('d-none');
                 $(".TempTextPic").removeClass('d-none');
             }
 

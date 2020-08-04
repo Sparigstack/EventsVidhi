@@ -377,7 +377,7 @@
                 var fileName = $("#input_podfile").val();
                 var fileNameExt = fileName.substr(fileName.lastIndexOf('.') + 1);
                 // if (regexp.test(url) || $.inArray(fileNameExt, validExtensions) != -1)
-                if ($.inArray(fileNameExt, validExtensions) != -1)
+                if (url != '' || $.inArray(fileNameExt, validExtensions) != -1)
                 {
                     $('.dragFileForm').find('.podcastProgressBar').removeClass('d-none');
                     //status.empty();
@@ -389,8 +389,8 @@
                 else
                 {
                     if(url != ''){
-                        $('.urlError').text('The input url format is invalid.');
-                        return false;
+                        // $('.urlError').text('The input url format is invalid.');
+                        // return false;
                         
                     } else{
                         $('.podcastFileError').text('The podcast video file must be a file of type: mpga, m4a, wma.');
