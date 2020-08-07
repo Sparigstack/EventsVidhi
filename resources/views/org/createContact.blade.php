@@ -68,23 +68,37 @@
                         <div class="form-group">
 
                             <label class="">Select Tags</label>
-                            <input type="text" id="TagSelectionInput" class="TagSelectionInput form-control" placeholder="Select Tags" />
-                            <img src="{{ asset('assets/images/busy.gif') }}" class="busyIcon d-none pull-right" alt="">
-                            <div class="CurrentSelectedTags row  ml-1 mr-1 mt-2 pb-3 pt-1" style="background-color: #cccccc42;">
-                                <?php $selectedTagsIDs=""; if (!empty($contact)){ foreach($contact->tags as $ContactTag){
-                                    if ($selectedTagsIDs == "") {
-                                        $selectedTagsIDs .=strval($ContactTag->id);
-                                    } else {
-                                       $selectedTagsIDs .=",".strval($ContactTag->id);
+                            
+                            <select class="form-control multiple-select" multiple="multiple" name="contactTag" id="contactTag">
+
+                            <?php $IsSelected = "";
+                            if (!empty($contact)) {
+                                foreach ($tagsData as $tags) {
+                                    $IsSelected = "";
+                                    foreach ($contact->tags as $ContactTags) {
+                                        if ($tags->id == $ContactTags->id) {
+                                            $IsSelected = "selected";
+                                            if ($checkCount == "no") {
+                                                $MultSelectTags .= strval($tags->id);
+                                            } else {
+                                                $MultSelectTags .= "," . $tags->id;
+                                            }
+                                            $checkCount = "yes";
+                                        }
                                     }
-                                    ?>
-                                    <div class="badge shade d-flex p-2" data-id="{{$ContactTag->id}}"><div class="badge_sub badge_sub_left" data-id="{{$ContactTag->id}}" data-alternateid="0" data-stringvalue="">{{$ContactTag->name}}</div><div class="badge_sub badge_sub_right pl-2" title="Delete" onclick="DeleteTag(this)" data-id="{{$ContactTag->id}}">X</div></div>
-                               <?php } }?>
-                            </div>
+                            ?>
+                                    <option value="{{old('contactTag',$tags->id)}}" {{$IsSelected}} @if (old('contactTag')==$tags->id) selected="selected" @endif ><?php echo $tags->name; ?> </option>
+                                <?php }
+                            } else {
+                                foreach ($tagsData as $tags) { ?>
+                                    <option value="{{old('contactTag',$tags->id)}}" @if (old('contactTag')==$tags->id) selected="selected" @endif ><?php echo $tags->name; ?> </option>
+                                <?php }
+                            } ?>
+                            </select>
 
                             <small class="text-danger">{{ $errors->first('tags') }}</small>
 
-                            <textarea id="HiddenCategoyID" name="HiddenCategoyID" required class="form-controld d-none" title="HiddenCategoyID" placeholder="HiddenCategoyID" autocomplete="off" rows="4">{{ old('HiddenCategoyID', $selectedTagsIDs) }} </textarea>
+                            <textarea id="HiddenCategoyID" name="HiddenCategoyID" required class="form-controld d-none" title="HiddenCategoyID" placeholder="HiddenCategoyID" autocomplete="off" rows="4">{{ old('HiddenCategoyID', $MultSelectTags) }} </textarea>
                         </div>
 
                         <div class="customFieldsContainer">

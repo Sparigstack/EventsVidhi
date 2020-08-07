@@ -25,7 +25,7 @@ class CustomFieldController extends Controller
     {
         $user = Auth::user();
         $customFields = "";
-        $customFields = CustomField::where('user_id', $user->id)->get();
+        $customFields = CustomField::where('user_id', $user->id)->orderBy('id', 'DESC')->get();
         return view('org/customField', compact('customFields'));
     }
 
@@ -48,7 +48,7 @@ class CustomFieldController extends Controller
         // return 'mansi';
         $user = Auth::user();
         $customFields1 = CustomField::findOrFail($id);
-        $customFields = CustomField::where('user_id', $user->id)->get();
+        $customFields = CustomField::where('user_id', $user->id)->orderBy('id', 'DESC')->get();
         // return redirect('org/customFields/edit/'. $customFields->id);
         return view('org/customField', compact('customFields', 'customFields1'));
     }

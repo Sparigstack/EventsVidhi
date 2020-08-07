@@ -25,7 +25,7 @@ class PodcastsController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $podcasts = Podcast::where('user_id',$user->id)->get();
+        $podcasts = Podcast::where('user_id',$user->id)->orderBy('id', 'DESC')->get();
         return view('org/podcasts', compact('podcasts'));
     }
 
@@ -83,10 +83,12 @@ class PodcastsController extends Controller
                 Storage::disk('s3')->put($filePath, file_get_contents($file));
                 $UrlToSave = $filePath;
                 $size=$request->file('input_podfile')->getSize();
+                $podcast->url_type = 1;
                 $podcast->file_size= $size;
             }
         } else {
             $UrlToSave = $request->input_url;
+            $podcast->url_type = 0;
         }
         // if (isset($request->IsLinkedEvent)) {
         //     $podcast->event_id = $request->EventToLink;
@@ -146,10 +148,10 @@ class PodcastsController extends Controller
     public function update(Request $request, $id)
     {
         $validator=null ;
-        if (isset($request->IsUploadVideo)){
+        if (isset($request->IsUploadPodcast)){
             $validator = Validator::make($request->all(), [
                 'input_title' => 'required',
-                'input_podfile'=>'required|mimes:mp3,m4a,wma'
+                'input_podfile'=>'required|mimes:mpga,m4a,wma'
             ]);
         }else{
             $validator = Validator::make($request->all(), [
@@ -158,6 +160,7 @@ class PodcastsController extends Controller
             ]);
         }
         // regex:/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/
+
         if ($validator->fails()) {
             return redirect('org/podcasts/'. $id)
                 ->withErrors($validator)
@@ -171,17 +174,22 @@ class PodcastsController extends Controller
         $userId = Auth::id();
         $podcast->user_id = $userId;
         $UrlToSave = "";
-        if (isset($request->IsUploadVideo)) {
+        if (isset($request->IsUploadPodcast)) {
             if ($request->hasFile('input_podfile')) {
                 $file = $request->file('input_podfile');
                 $name = time() . $file->getClientOriginalName();
                 $userId = Auth::id();
-                $filePath = 'org_' . $userId . '/Video/' . $name;
+                $filePath = 'org_' . $userId . '/Podcast/' . $name;
                 Storage::disk('s3')->put($filePath, file_get_contents($file));
                 $UrlToSave = $filePath;
+                $size=$request->file('input_podfile')->getSize();
+                $podcast->url_type = 1;
+                $podcast->file_size= $size;
             }
         } else {
             $UrlToSave = $request->input_url;
+            $podcast->url_type = 0;
+            $podcast->file_size= NULL;
         }
         // if (isset($request->IsLinkedEvent)) {
         //     $podcast->event_id = $request->EventToLink;

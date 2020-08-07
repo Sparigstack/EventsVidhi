@@ -40,7 +40,7 @@ class EventsController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $events = Event::where('user_id', $user->id)->where('date_time', '>=', date('Y-m-d', strtotime(now())))
+        $events = Event::where('user_id', $user->id)->where('date_time', '>=', date('Y-m-d', strtotime(now())))->orderBy('id', 'DESC')
             ->get();
         return view('org/events', compact('events'));
     }
@@ -48,7 +48,7 @@ class EventsController extends Controller
     public function pastEvents()
     {
         $user = Auth::user();
-        $events = Event::where('user_id', $user->id)->where('date_time', '<=', date('Y-m-d', strtotime(now())))
+        $events = Event::where('user_id', $user->id)->where('date_time', '<=', date('Y-m-d', strtotime(now())))->orderBy('id', 'DESC')
             ->get();
         return view('org/pastEvents', compact('events'));
     }
@@ -159,7 +159,12 @@ class EventsController extends Controller
 
         $events->thumbnail = $thumbNailUrl;
         $events->banner = $bannerUrl;
-        if (isset($request->IsPublish)) {
+        // if (isset($request->IsPublish)) {
+        //     $events->is_live = '1';
+        // } else {
+        //     $events->is_live = '0';
+        // }
+        if ($request->IsPublish == "true") {
             $events->is_live = '1';
         } else {
             $events->is_live = '0';
@@ -435,7 +440,7 @@ class EventsController extends Controller
         }
 
         $event = Event::findOrFail($id);
-        $speakers = Speaker::where('event_id', $event->id)->get();
+        $speakers = Speaker::where('event_id', $event->id)->orderBy('id', 'DESC')->get();
         $categories = Category::all();
         
         $cities = City::all();
@@ -443,9 +448,10 @@ class EventsController extends Controller
         $eventTypes = EventType::all();
         $countries = Country::all();
         $states = State::all();
-        $videos = Video::where('event_id', $event->id)->get();
-        $podcasts = Podcast::where('event_id', $event->id)->get();
-        return view('org/createEvent', compact('categories', 'cities', 'event', 'cityTimeZones', 'eventTypes', 'IsNew', 'countries', 'states', 'tabe', 'videos', 'podcasts', 'speakers'));
+        $videos = Video::where('event_id', $event->id)->orderBy('id', 'DESC')->get();
+        $tickets = Ticket::where('event_id', $event->id)->orderBy('id', 'DESC')->get();
+        $podcasts = Podcast::where('event_id', $event->id)->orderBy('id', 'DESC')->get();
+        return view('org/createEvent', compact('categories', 'cities', 'event', 'cityTimeZones', 'eventTypes', 'IsNew', 'countries', 'states', 'tabe', 'videos', 'podcasts', 'speakers', 'tickets'));
     }
 
     /**
@@ -527,7 +533,12 @@ class EventsController extends Controller
             $events->postal_code = $request->PostalCode;
         }
 
-        if (isset($request->IsPublish)) {
+        // if (isset($request->IsPublish)) {
+        //     $events->is_live = '1';
+        // } else {
+        //     $events->is_live = '0';
+        // }
+        if ($request->IsPublish == "true") {
             $events->is_live = '1';
         } else {
             $events->is_live = '0';

@@ -56,6 +56,7 @@
                             <input type="text" class="form-control" id="input_title" name='input_title' value="{{  old('input_title', $title) }}" placeholder="Enter Podcast Title" required>
                         </div>
                         <hr class="mt-5 mb-5">
+
                         <div class="form-group">
                                     <label for="BlankLabel"></label>
                                 <input type="hidden" class="linkedEvent" name="linkedEvent" value="">
@@ -109,22 +110,49 @@
                             </div>
 
                         <hr class="mt-5 mb-5">
-                        <div class="form-group">
+
+                        <?php
+                        $classChange = "d-none";
+                        if(!empty($podcast)){
+                            $classChange = "";
+                        }?>
+                        <div class='form-group mediaPodcastDiv {{$classChange}}'>
+                            <?php
+                                    $AwsUrl = env('AWS_URL');
+                                        $videoPodcastUrl = "";
+                                        $dnoneClass = "";
+                                        if (!empty($podcast)) {
+                                            $dnoneClass = "d-none";
+                                            if(substr($podcast->url, 0, 8 ) != "https://"){
+                                                $videoPodcastUrl = $AwsUrl . $podcast->url;
+                                            }
+                                            else{
+                                                $videoPodcastUrl = $podcast->url;
+                                            }
+                                        }
+                                ?>
+                                <a href="{{$videoPodcastUrl}}" target="_blank" class="videoIframe"><audio controls><source src="{{$videoPodcastUrl}}" type="audio/ogg" class="col-lg-7 pr-0 pl-0"></audio></a>
+
+                                            <?php 
+                                            $dNoneClassPodcast = "d-none";
+                                            if(!empty($podcast->url)){
+                                                $dNoneClassPodcast = '';
+                                            }
+                                            ?>
+                                                <div class="changePodcast {{$dNoneClassPodcast}}"><a type="button" id="ChangePodcastBtn">Change Podcast</a></div>
+                        </div>
+
+                        <div class="form-group {{$dnoneClass}} checkPodcastExist">
                             <label> You can either save your Youtube or Vimeo podcast URL OR you can upload your own podcast.</label>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group {{$dnoneClass}} checkPodcastExist">
                             <p for='input_url' class="float-left">Podcast URL</p><span style="font-size: 11px;font-weight: 600;">&nbsp;&nbsp;(YouTube or Vimeo url)</span>
                             <input type="text" class="form-control" id="input_url" onkeyup="pocastUrlCheck(this);" onchange="pocastUrlCheck(this);" name="input_url" value="{{  old('input_url', $desription) }}" placeholder="Enter Podcast URL" required>
                             <small class="text-danger urlError">{{ $errors->first('input_url') }}</small>
                             <!-- <label> You can either save your Youtube or Vimeo podcast URL OR you can upload your own podcast.</label> -->
                         </div>
 
-                        <!-- <div class='form-group'>
-                            <label for='input_url'>Podcast URL</label>
-                            <input type="text" class="form-control" id="input_url" name="input_url"  value="{{  old('input_url', $desription) }}" placeholder="Enter Podcast URL" required>
-                        </div> -->
-
-                        <div class="form-group">
+                        <div class="form-group {{$dnoneClass}} checkPodcastExist">
                                 <label for="BlankLabel"></label>
                                 <div class="icheck-material-primary">
                                     <input onclick="UploadPodcastVideoBox()" type="checkbox" id="IsUploadPodcast" name="IsUploadPodcast" @if(old('IsUploadPodcast')) checked @endif>
@@ -212,10 +240,16 @@
 
 
                         <!-- <button class="btn btn-primary px-5 pull-right" type="submit">Save Podcast</button> -->
-                        <button id="btnSavePodcast" class="d-none btn btn-primary px-5 pull-right" type="submit">Save Podcast</button>
+                        <?php
+                        $showButton = "d-none";
+                        if($desription != ""){
+                            $showButton = "";
+                        }
+                        ?>
+                        <button id="btnSavePodcast" class="{{$showButton}} btn btn-primary px-5 pull-right" type="submit">Save Podcast</button>
                     </form>
 
-                    <a href="{{url('org/podcasts')}}"><button id="btnCancelPodcast" class="d-none btn btn-light float-left">Cancel</button></a>
+                    <a href="{{url('org/podcasts')}}"><button id="btnCancelPodcast" class="{{$showButton}} btn btn-light float-left">Cancel</button></a>
 
                     <!--                    <form class="row" method="post" action="{{$ActionCall}}" enctype="multipart/form-data">
                                             {{ csrf_field() }}
@@ -325,7 +359,9 @@
                                   ?>
                                 </div>
 
-                                  <i title="Remove Podcast" onclick="deletePodcast(this);" aria-hidden="true" class="fa fa-trash ml-3 mt-1 clickable" style="font-size: 25px;float: right;" db-delete-id="{{$Podcast->id}}"></i>
+                                <i title="Edit Podcast" aria-hidden="true" class="fa fa-edit mt-1 clickable" style="font-size: 25px;float: right;" onclick="window.location='{{ url("org/podcasts/$Podcast->id") }}'"></i>
+
+                                  <i title="Remove Podcast" onclick="deletePodcast(this);" aria-hidden="true" class="fa fa-trash ml-1 mt-1 clickable" style="font-size: 25px;float: right;" db-delete-id="{{$Podcast->id}}"></i>
 
                             </div>
                         </li>

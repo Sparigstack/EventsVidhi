@@ -62,6 +62,23 @@ $(document).ready(function () {
     });
     UploadPodcastVideoBox();
     showHideLinkEvent();
+
+    $('#ChangeVideoBtn').on('click', function(e){
+        $(".checkVideoExist").removeClass("d-none");
+        $(".iframeVideoDiv").addClass("d-none");
+        $("#input_url").val("");
+        $("#btnSaveVideo").addClass("d-none");
+        $("#btnCancelVideo").addClass("d-none");
+    });
+
+    $('#ChangePodcastBtn').on('click', function(e){
+        $(".checkPodcastExist").removeClass("d-none");
+        $(".mediaPodcastDiv").addClass("d-none");
+        $("#input_url").val("");
+        $("#btnSavePodcast").addClass("d-none");
+        $("#btnCancelPodcast").addClass("d-none");
+    });
+
 });
 function findParent(element) {
     var parentElement = $(element).parent();

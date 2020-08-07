@@ -88,7 +88,17 @@
                     </div>
                     <div class="user-details">
                         <div class="media align-items-center" data-toggle="collapse">
-                            <div class="avatar"><img class="mr-3 side-user-img" src="https://via.placeholder.com/110x110" alt="user avatar"></div>
+                            <!-- <div class="avatar"><img class="mr-3 side-user-img" src="https://via.placeholder.com/110x110" alt="user avatar"></div> -->
+
+                            <?php
+                                $profileLogo = "";
+                                 if(!is_null(Auth::user()->profile_pic)){
+                                 $profileLogo = env("AWS_URL"). Auth::user()->profile_pic; ?>
+                                 <div class="avatar"><img class="mr-3 side-user-img" src="{{$profileLogo}}" alt="user avatar"></div>
+                               <?php } else{ ?>
+                                    <div class="avatar"><img class="mr-3 side-user-img" src="https://via.placeholder.com/110x110" alt="user avatar"></div>
+                               <?php } ?>
+
                             <div class="media-body">
                                 <h6 class="side-user-name">{{ Auth::user()->name }} </h6>
                             </div>
@@ -198,14 +208,31 @@
                             <div class="mr-2 AvailableStorage">{{ number_format((float)$totalGb, 3, '.', '')}} GB Used out of 3GB</div>
                             <div class="mr-2 AvailableStorage"></div>
                             <div>
-                                <span class="user-profile"><img src="https://via.placeholder.com/110x110" class="img-circle" alt="user avatar"></span>
+                                <!-- <span class="user-profile"><img src="https://via.placeholder.com/110x110" class="img-circle" alt="user avatar"></span> -->
+                                <?php
+                                $profileLogo = "";
+                                 if(!is_null(Auth::user()->profile_pic)){
+                                 $profileLogo = env("AWS_URL"). Auth::user()->profile_pic; ?>
+                                <span class="user-profile"><img src="{{$profileLogo}}" class="img-circle" alt="user avatar"></span>
+                               <?php } else{ ?>
+                                    <span class="user-profile"><img src="https://via.placeholder.com/110x110" class="img-circle" alt="user avatar"></span>
+                               <?php } ?>
                             </div>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-right">
                             <li class="dropdown-item user-details">
                                 <a href="javaScript:void();">
                                     <div class="media">
-                                        <div class="avatar"><img class="align-self-start mr-3" src="https://via.placeholder.com/110x110" alt="user avatar"></div>
+                                        <!-- <div class="avatar"><img class="align-self-start mr-3" src="https://via.placeholder.com/110x110" alt="user avatar"></div> -->
+                                        <?php
+                                $profileLogo = "";
+                                 if(!is_null(Auth::user()->profile_pic)){
+                                 $profileLogo = env("AWS_URL"). Auth::user()->profile_pic; ?>
+                                 <div class="avatar"><img class="align-self-start mr-3" src="{{$profileLogo}}" alt="user avatar"></div>
+                               <?php } else{ ?>
+                                    <div class="avatar"><img class="align-self-start mr-3" src="https://via.placeholder.com/110x110" alt="user avatar"></div>
+                               <?php } ?>
+
                                         <div class="media-body">
                                             <h6 class="mt-2 user-title">{{ Auth::user()->name }}</h6>
                                             <p class="user-subtitle">{{ Auth::user()->email }}</p>

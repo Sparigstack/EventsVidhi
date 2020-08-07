@@ -87,10 +87,10 @@ Route::post('getCity', 'org\EventsController@getCity');
 
 Route::post('org/csv/import', 'org\CsvImportController@store');
 
-// Route::get('org/profile', function () {
-//     return view('org/profile');
-// });
-Route::get('org/profile','org\ProfileController@index');
+Route::get('org/profile', function () {
+    return view('org/profileList');
+});
+Route::get('org/profile/{id}','org\ProfileController@index');
 Route::post('org/profile/update', 'org\ProfileController@update');
 
 Route::get('account', function () {

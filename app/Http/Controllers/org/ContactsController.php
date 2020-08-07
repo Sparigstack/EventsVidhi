@@ -50,7 +50,7 @@ class ContactsController extends Controller
             foreach($contact_ids as $cid){
                 $ids[] = $cid->id;
             }
-            $contacts = Contact::whereIn('id', $ids)->get(); 
+            $contacts = Contact::whereIn('id', $ids)->orderBy('id', 'DESC')->get(); 
         }
         return view('org/contacts', compact('contacts', 'tagList', 'tag_ids'));
     }

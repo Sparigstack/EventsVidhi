@@ -37,7 +37,7 @@ class VideosController extends Controller {
         //     ];
         // }
         $user = Auth::user();
-        $videos = Video::where('user_id', $user->id)->get();
+        $videos = Video::where('user_id', $user->id)->orderBy('id', 'DESC')->get();
         // var_dump($videos->events->title); 
         // var_dump($images);
         // return;
@@ -124,6 +124,7 @@ class VideosController extends Controller {
                 $size = $request->file('input_vidfile')->getSize();
                 $videoupdate->file_size = $size;
                 $videoupdate->url = $fileLocation;
+                $videoupdate->url_type = 1;
                 $videoupdate->save();
             }
         }
@@ -213,14 +214,25 @@ class VideosController extends Controller {
                 // $filePath = 'org_' . $userId . '/Video';
                 // $fileLocation = Storage::disk('s3')->put($filePath, $request->file('input_vidfile'));
                 // // $size = Storage::disk('s3')->size($filePath);
-                $filePath = "public/TemporaryFiles";
-                $fileLocation = Storage::disk('local')->put($filePath, $request->file('input_vidfile'));
+
+                // $filePath = "public/TemporaryFiles";
+                // $fileLocation = Storage::disk('local')->put($filePath, $request->file('input_vidfile'));
+                // $size = $request->file('input_vidfile')->getSize();
+                // $video->file_size = $size;
+                // $UrlToSave = $fileLocation;
+
+                $userId = Auth::id();
+                $filePath = 'org_' . $userId . '/Video';
+                $fileLocation = Storage::disk('s3')->put($filePath, $request->file('input_vidfile'));
                 $size = $request->file('input_vidfile')->getSize();
                 $video->file_size = $size;
                 $UrlToSave = $fileLocation;
+                $video->url_type = 1;
             }
         } else {
             $UrlToSave = $request->input_url;
+            $video->file_size = NULL;
+            $video->url_type = 0;
         }
         // if (isset($request->IsLinkedEvent)) {
         //     $video->event_id = $request->EventToLink;

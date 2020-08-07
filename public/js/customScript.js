@@ -327,6 +327,7 @@ $("#EventProfilePicImage").change(function(e) {
                 $(".removeprofilepic").addClass("d-none");
                 document.getElementById('profilePicImage').src = "";
                 document.getElementById('profilePicImage').classList.add('d-none');
+                $("#profilePicImage").find("#TempTextOrgBanner").addClass('d-none');
                 // $(".TempTextPic").removeClass('d-none');
                 $('.SpeakerProfilePicDiv').append("<p id='TempTextThumb' class='TempTextPic'>Drop your image here or click to upload.</p>");
                
@@ -344,9 +345,95 @@ $('#RemoveProfileBtn').on('click', function(e){
     $(".removeprofilepic").addClass("d-none");
     document.getElementById('EventProfilePicImage').src = "";
         document.getElementById('profilePicImage').classList.add('d-none');
+        $("#profilePicImage").find("#TempTextOrgBanner").addClass('d-none');
     // $(".TempTextPic").removeClass('d-none');
     $('.SpeakerProfilePicDiv').append("<p id='TempTextThumb' class='TempTextPic'>Drop your image here or click to upload.</p>");
      //<p id="TempTextThumb">Drop your image here or click to upload.</p>
+});
+
+var _URL = window.URL || window.webkitURL;
+          $("#profileBannerImage").change(function(e) {
+            var file = $(this)[0].files[0];
+           if ((file = this.files[0])){
+        image = new Image();
+          image.onload = function() {
+            if(this.width< 845 && this.height < 445){
+                $("#profileBannerImageSrc").addClass("SmallImages");
+                $(".TempTextBanner").addClass('d-none');
+                $(".removeorgbannerbtn").removeClass("d-none");
+                return true;
+            }else if(this.width === 845 && this.height === 445){
+                $(".removeorgbannerbtn").removeClass("d-none");
+                $(".TempTextBanner").addClass('d-none');
+                return true;
+            }else{
+                alert("Maximum image dimension allowed is : 845x445 pixels.");
+                $('#profileBannerImageSrc').attr("src", "");
+                $('#profileBannerImage').val("");
+                document.getElementById('profileBannerImageSrc').src = "";
+                document.getElementById('profileBannerImageSrc').classList.add('d-none');
+                $(".TempTextBanner").addClass('d-none');
+                $(".removeorgbannerbtn").addClass("d-none");
+                $('#orgDragBannerFile').append("<p class='TempTextBanner'>Drop your image here or click to upload.</p>");
+               
+                return true;
+            }
+        }
+        image.src = _URL.createObjectURL(file);
+    
+     }
+});
+
+$('#RemoveOrgBannerButton').on('click', function(e){
+    $('#profileBannerImage').attr("src", "");
+    $('#profileBannerImage').val("");
+    $(".removeorgbannerbtn").addClass("d-none");
+    document.getElementById('profileBannerImage').src = "";
+        document.getElementById('profileBannerImageSrc').classList.add('d-none');
+        // $("#TempTextBanner").removeClass('d-none');
+    $('#orgDragBannerFile').append("<p class='TempTextBanner'>Drop your image here or click to upload.</p>");
+    $("#profileBannerImageSrc").removeClass("SmallImages");
+});
+
+var _URL = window.URL || window.webkitURL;
+$("#profileImg").change(function(e) {
+            var file = $(this)[0].files[0];
+           if ((file = this.files[0])){
+        image = new Image();
+          image.onload = function() {
+            if(this.width< 420 && this.height < 360){
+                $("#profileImgSrc").addClass("SmallImages");
+                $(".removeuserprofile").removeClass("d-none");
+                return true;
+            }else if(this.width === 420 && this.height === 360){
+                $(".removeuserprofile").removeClass("d-none");
+                return true;
+            }else{
+                alert("Maximum image dimension allowed is : 420x360 pixels.");
+                $('#profileImgSrc').attr("src", "");
+                $('#profileImg').val("");
+                $(".removeuserprofile").addClass("d-none");
+                document.getElementById('profileImgSrc').src = "";
+                document.getElementById('profileImgSrc').classList.add('d-none');
+                // $("#profileImgSrc").find("#TempTextOrgBanner").addClass('d-none');
+                $('.orgProfile').append("<p id='textForProfile' class='textForProfile'>Drop your image here or click to upload.</p>");
+               
+                return true;
+            }
+        }
+        image.src = _URL.createObjectURL(file);
+    
+     }
+});
+
+$('#RemoveUserProfileBtn').on('click', function(e){
+    $('#profileImg').attr("src", "");
+    $('#profileImg').val("");
+    $(".removeuserprofile").addClass("d-none");
+    document.getElementById('profileImg').src = "";
+    document.getElementById('profileImgSrc').classList.add('d-none');
+    // $("#profileImgsrc").find("#TempTextOrgBanner").addClass('d-none');
+    $('.orgProfile').append("<p id='textForProfile' class='textForProfile'>Drop your image here or click to upload.</p>");
 });
 
 function findParentForm(element) {

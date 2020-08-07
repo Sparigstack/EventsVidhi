@@ -94,7 +94,7 @@
                                                 } 
                                                 ?>
                                             </td>
-                                            <td class="pt-4">
+                                            <td class="">
                                         <div class="card-action float-none">
                                             <div class="dropdown">
                                                 <a href="javascript:void();" class="dropdown-toggle dropdown-toggle-nocaret" data-toggle="dropdown" title="View More Actions">

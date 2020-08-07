@@ -69,10 +69,14 @@ class ProfileController extends Controller
         }
 
     	$users->name = $request->organizerName;
-    	$users->username = $request->organizerUsername;
+    	// $users->username = $request->organizerUsername;
         $users->email = $request->organizerEmail;
         $users->description = $request->organizerDesc;
-        $users->phone = $request->organizerMobile;
+        $users->website_url = $request->websiteName;
+        $users->linkedin_url = $request->linkedinAcc;
+        $users->facebook_url = $request->facebookAcc;
+        $users->twitter_url = $request->twitterAcc;
+        // $users->phone = $request->organizerMobile;
         if($profilePicUrl != ""){
         	$users->profile_pic = $profilePicUrl;
         }

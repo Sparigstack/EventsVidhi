@@ -360,6 +360,10 @@ $(document).ready(function () {
 
 });
 
+$('#publishButton').click(function() {
+        $(".publishButton").val('true');
+});
+
 function findParent(element) {
     var parentElement = $(element).parent();
     if ($(parentElement).hasClass("parent"))
@@ -1042,3 +1046,12 @@ function removeDisable(){
         $('#EventEndDateTime').addAttr("disabled");
     }
 }
+
+// function isPublishEvent(element){
+//     // if($(element).attr('id') == "publishButton"){
+//     //     $(".publishEvent").val('true');
+//     // }
+//     // else{
+//     //     $(".publishEvent").val('');
+//     // }
+// }

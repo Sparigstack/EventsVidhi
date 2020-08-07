@@ -27,7 +27,7 @@ if(!empty($user)){
         <div class="card w-100">
             <div class="card-body">
                 <div class="card-title">
-                        <h5>Profile Details</h5>
+                        <h5>Edit Profile</h5>
                 </div>
                 <hr>
                     @if (session('status'))
@@ -41,23 +41,34 @@ if(!empty($user)){
                     <div class="form-group col-lg-12">
                         <label for="profileBannerImage">Organizer Banner Image (optional)</label>
 
-                        <div class="dragFileContainer">
+                        <div class="dragFileContainer orgDragBannerFile" id="orgDragBannerFile">
                             <input type="file" accept="image/*" id="profileBannerImage" name="profileBannerImage" class="form-control files">
-                            <img id="profileBannerImageSrc" src="{{$BannerUrl}}" class="{{$BannerHidden}} imageRadius w-100" alt="your image"/>
+                            <img id="profileBannerImageSrc" src="{{$BannerUrl}}" class="{{$BannerHidden}} bannerRadius w-100" alt="your image" />
                             <?php
                                 if (empty($BannerUrl)) { ?>
-                                <p id="textForProfileBanner">Drop your image here or click to upload.</p>
+                                <p class="TempTextBanner">Drop your image here or click to upload.</p>
                             <?php } ?>
                         </div>
                         <small class="text-danger">{{ $errors->first('profileBannerImage') }}</small>
                         <div class="text-danger d-none SizeError">Image size must be less than or equal to 4MB</div>
+                        <?php 
+                        $dNoneClass = "d-none";
+                        if(!empty($user->banner)){
+                                $dNoneClass = '';
+                        }
+                        ?>
+                        <div class="removeorgbannerbtn {{$dNoneClass}}"><a type="button" id="RemoveOrgBannerButton">Remove Organizer Banner Image</a></div>
+
                     </div>
+
+                    
 
                     <div class="row col-lg-12">
             		<div class="form-group col-lg-6">
             			<label for="profileImgSrc">Organizer Profile Image (optional)</label>
-            			<div class="dragFileContainer thumbNailContainer" style="display: flex;justify-content: center;">
-                            <input type="file" accept="image/*" id="profileImg" name="profileImg" class="form-control files">
+            			<div class="dragFileContainer thumbNailContainer orgProfile" style="display: flex;justify-content: center;">
+                            <input type="file" accept="image/*" id="profileImg" name="profileImg" class="form-control files" style="width: 38%;
+    height: 0% !important;">
                             <img id="profileImgSrc" src="{{$profilePicUrl}}" class="imageRadius w-100 {{$imageNone}}" alt="your image">
                             <?php
                                 if (empty($profilePicUrl)) { ?>
@@ -67,6 +78,20 @@ if(!empty($user)){
                         </div>
                         <small class="text-danger">{{ $errors->first('profileImg') }}</small>
                         <div class="text-danger d-none SizeError">Image size must be less than or equal to 4MB</div>
+
+                        <?php 
+                            $dNoneClassProfile = "d-none";
+                            if(!empty($user->profile_pic)){
+                                $dNoneClassProfile = '';
+                            }
+                            ?>
+                            <div class="removeuserprofile {{$dNoneClassProfile}} pl-5 ml-5"><a type="button" id="RemoveUserProfileBtn">Remove Profile Image</a></div>
+
+                        <div class="form-group mt-5">
+                        <label for="organizerDesc">Organizer Description</label>
+                        <textarea id="organizerDesc" name="organizerDesc" class="form-control" title="Organizer Description" placeholder="Organizer Description" autocomplete="off" rows="4">{{$user->description}}</textarea>
+                    </div>
+
             		</div>
 
                     <div class="form-group col-lg-6">
@@ -75,46 +100,47 @@ if(!empty($user)){
 						<input type="text" id="organizerName" value="{{$user->name}}" name="organizerName" class="form-control" title="Organizer Name" placeholder="Organizer Name" autocomplete="off" rows="0" required="">
 					</div>
 
-                    <div class="form-group col-lg-12">
+                    <!-- <div class="form-group col-lg-12">
                         <label for="organizerUsername">Organizer Username</label>
                         <input type="text" id="organizerUsername" value="{{$user->username}}" name="organizerUsername" class="form-control" title="Organizer Username" placeholder="Organizer Username" autocomplete="off" rows="0">
-                    </div>
+                    </div> -->
 
                     <div class="form-group col-lg-12">
                         <label for="organizerEmail">Organizer Email Address</label>
                         <input type="email" id="organizerEmail" value="{{$user->email}}" name="organizerEmail" class="form-control" title="Organizer Email Address" placeholder="Organizer Email Address" autocomplete="off" rows="0" readonly="">
                     </div>
-                </div>
-                </div>
 
-                    <div class="form-group col-lg-6">
-                        <label for="organizerMobile">Organizer Phone Number</label>
-                        <input type="text" id="organizerMobile" value="{{$user->phone}}" name="organizerMobile" class="form-control" title="Organizer Phone Number" placeholder="Organizer Phone Number" autocomplete="off" rows="0">
+                    <div class="form-group col-lg-12">
+                        <label for="websiteName">Website Name</label>
+                        <input type="url" id="websiteName" value="{{$user->website_url}}" name="websiteName" class="form-control" title="Website Name" placeholder="Website Name" autocomplete="off" rows="0">
                     </div>
 
-					<div class="form-group col-lg-12">
-            			<label for="organizerDesc">Organizer Description</label>
-                        <textarea id="organizerDesc" name="organizerDesc" class="form-control" title="Organizer Description" placeholder="Organizer Description" autocomplete="off" rows="4">{{$user->description}}</textarea>
-					</div>
+                    <div class="form-group col-lg-12">
+                        <label for="linkedinAcc">LinkedIn</label>
+                        <input type="url" id="linkedinAcc" value="{{$user->linkedin_url}}" name="linkedinAcc" class="form-control" title="LinkedIn" placeholder="LinkedIn" autocomplete="off" rows="0">
+                    </div>
+
+                    <div class="form-group col-lg-12">
+                        <label for="facebookAcc">Facebook</label>
+                        <input type="url" id="facebookAcc" value="{{$user->facebook_url}}" name="facebookAcc" class="form-control" title="Facebook" placeholder="Facebook" autocomplete="off" rows="0">
+                    </div>
+
+                    <div class="form-group col-lg-12">
+                        <label for="twitterAcc">Twitter</label>
+                        <input type="url" id="twitterAcc" value="{{$user->twitter_url}}" name="twitterAcc" class="form-control" title="Twitter" placeholder="Twitter" autocomplete="off" rows="0">
+                    </div>
+
+                </div>
+                </div>
+
+                    <!-- <div class="form-group col-lg-6">
+                        <label for="organizerMobile">Organizer Phone Number</label>
+                        <input type="text" id="organizerMobile" value="{{$user->phone}}" name="organizerMobile" class="form-control" title="Organizer Phone Number" placeholder="Organizer Phone Number" autocomplete="off" rows="0">
+                    </div> -->
 
 					<!-- <div class="form-group col-lg-12">
-            			<label for="facebookAcc">Facebook Account</label>
-						<input type="text" id="facebookAcc" value="" name="facebookAcc" class="form-control" title="Facebook Account" placeholder="Facebook Account" autocomplete="off" rows="0">
-					</div>
-
-					<div class="form-group col-lg-12">
-            			<label for="twitterAcc">Twitter Account</label>
-						<input type="text" id="twitterAcc" value="" name="twitterAcc" class="form-control" title="Twitter Account" placeholder="Twitter Account" autocomplete="off" rows="0">
-					</div>
-
-					<div class="form-group col-lg-12">
-            			<label for="linkedinAcc">LinkedIn Account</label>
-						<input type="text" id="linkedinAcc" value="" name="linkedinAcc" class="form-control" title="LinkedIn Account" placeholder="LinkedIn Account" autocomplete="off" rows="0">
-					</div>
-
-					<div class="form-group col-lg-12">
-            			<label for="websiteName">Website Name</label>
-						<input type="text" id="websiteName" value="" name="websiteName" class="form-control" title="Website Name" placeholder="Website Name" autocomplete="off" rows="0">
+            			<label for="organizerDesc">Organizer Description</label>
+                        <textarea id="organizerDesc" name="organizerDesc" class="form-control" title="Organizer Description" placeholder="Organizer Description" autocomplete="off" rows="4">{{$user->description}}</textarea>
 					</div> -->
 
 					<div class="col-lg-12">

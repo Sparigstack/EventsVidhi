@@ -111,18 +111,56 @@ $CardTitle = "Add New Video";
                             </select>
                         </div>
                         <hr class="mt-5 mb-5">
-                        <div class="form-group">
+
+                        <div class='form-group iframeVideoDiv'>
+                            <?php
+                                $AwsUrl = env('AWS_URL');
+                                $videoUrl = "";
+                                $dnoneClass = "";
+                                if (!empty($video)) {
+                                    $dnoneClass = "d-none";
+                                    if($video->url_type == 1){
+                                        $videoUrl = $AwsUrl . $video->url; ?>
+                                        <a href="{{$videoUrl}}" target="_blank"><video class="videoIframeFile" src="{{$videoUrl}}"></video></a>
+                                    <?php   }
+                                    else{
+                                            $videoUrl = $video->url; 
+                                            if(strpos($videoUrl, 'youtube') !== false){
+                                                    $explodeUrl = explode('=', $videoUrl);
+                                                    $getLastWord = array_pop($explodeUrl);
+                                                    $url = "https://www.youtube.com/embed/" . $getLastWord;
+                                                }else{
+                                                        $explodeUrl = explode('/', $videoUrl);
+                                                        $getLastWord = array_pop($explodeUrl);
+                                                        $url = "https://player.vimeo.com/video/" . $getLastWord;
+                                                }
+
+                                                ?>
+                                                <a href="{{$url}}" target="_blank" class="videoIframe"><iframe src="{{$url}}"></iframe></a>
+                                            <?php  } ?>
+                                            <?php 
+                                            $dNoneClassVideo = "d-none";
+                                            if(!empty($video->url)){
+                                                $dNoneClassVideo = '';
+                                            }
+                                            ?>
+                                                <div class="changeVideo {{$dNoneClassVideo}}"><a type="button" id="ChangeVideoBtn">Change Video</a></div>
+                                     <?php   }
+                                    ?>
+                        </div>
+
+                        <div class="form-group {{$dnoneClass}} checkVideoExist">
                             <label> You can either save your Youtube or Vimeo video URL OR you can upload your own video.</label>
                         </div>
                         
 
-                        <div class='form-group'>
+                        <div class='form-group {{$dnoneClass}} checkVideoExist'>
                             <p for='input_url' class="float-left">Video URL</p><span style="font-size: 11px;font-weight: 600;">&nbsp;&nbsp;(YouTube or Vimeo url)</span>
                             <input type="text" class="form-control" id="input_url" onkeyup="videoUrlCheck(this);" onchange="videoUrlCheck(this);" name="input_url" value="{{  old('input_url', $desription) }}" placeholder="Enter Video URL" required>
                             <small class="text-danger urlError">{{ $errors->first('input_url') }}</small>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group {{$dnoneClass}} checkVideoExist">
                             <div class="icheck-material-primary">
                                 <input onclick="UploadVideoBoxVideoCon(this);" type="checkbox" id="IsUploadVideo" name="IsUploadVideo" @if(old('IsUploadVideo')) checked @endif>
                                        <label for="IsUploadVideo">Or upload your own video</label>
@@ -161,11 +199,17 @@ $CardTitle = "Add New Video";
 
 
                         </div>
+                        <?php
+                        $showButton = "d-none";
+                        if($desription != ""){
+                            $showButton = "";
+                        }
+                        ?>
                         <!-- <button id="btnCancelVideo" class="d-none btn btn-light px-5 float-left" type="submit">Cancel</button> -->
-                        <button id="btnSaveVideo" class="d-none btn btn-primary px-5 pull-right" type="submit">Save Video</button>
+                        <button id="btnSaveVideo" class="{{$showButton}} btn btn-primary px-5 pull-right" type="submit">Save Video</button>
                     </form>
 
-                    <a href="{{url('org/videos')}}"><button id="btnCancelVideo" class="d-none btn btn-light float-left">Cancel</button></a>
+                    <a href="{{url('org/videos')}}"><button id="btnCancelVideo" class="{{$showButton}} btn btn-light float-left">Cancel</button></a>
 
                     <!--                    <form class="row" method="post" action="{{$ActionCall}}" enctype="multipart/form-data">
                                             {{ csrf_field() }}
@@ -285,7 +329,8 @@ $CardTitle = "Add New Video";
                                    <?php } 
                                   ?>
 
-    <i title="Remove Video" onclick="deleteVideo(this);" aria-hidden="true" class="fa fa-trash ml-3 mt-1 clickable" style="font-size: 25px;float: right;" db-delete-id="{{$Video->id}}"></i>
+    <i title="Remove Video" onclick="deleteVideo(this);" aria-hidden="true" class="fa fa-trash ml-2 mt-1 clickable" style="font-size: 25px;float: right;" db-delete-id="{{$Video->id}}"></i>
+    <i title="Edit Video" aria-hidden="true" class="fa fa-edit ml-3 mt-1 clickable" style="font-size: 25px;float: right;" onclick="window.location='{{ url("org/videos/$Video->id") }}'"></i>
                                 </div>
 
                             </div>
@@ -314,7 +359,7 @@ $CardTitle = "Add New Video";
 <!-- Data Tables -->
 <script src="{{ asset('assets/plugins/bootstrap-datatable/js/jquery.dataTables.min.js') }}"></script>
 <script>
-                                    (function () {
+(function () {
 
                                         var bar = $('.bar_upload');
                                         var percent = $('.percent_upload');

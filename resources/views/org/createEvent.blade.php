@@ -101,7 +101,8 @@
             $BannerHidden = "";
         }
         if ($event->is_live == 1) {
-            $IsLive = "checked";
+            // $IsLive = "checked";
+            $IsLive = "true";
         }
         if (!empty($event->custom_url)) {
             $CustomHumanReadableUrl = $event->custom_url;
@@ -440,11 +441,14 @@
                                                             <h5>Publish Event Info </h5>
                                                         </div>
                                                         <div class="form-group col-lg-12">
-                                                            <label for="BlankLabel"></label>
-                                                            <div class="icheck-material-primary">
+                                                            <!-- <label for="BlankLabel"></label> -->
+                                                            <!-- <div class="icheck-material-primary">
                                                                 <input type="checkbox" id="IsPublish" {{$IsLive}} name="IsPublish" @if(old('IsPublish')) checked @endif>
                                                                 <label for="IsPublish"> Do you want to publish this event?</label>
-                                                            </div>
+                                                            </div> -->
+                                                            <!-- <input type="hidden" class="publishEvent" name="IsPublish" value="{{$IsLive}}">
+                                                            <button type="button" class="btn btn-primary mr-2 mt-2 publishButton" name="IsPublish" value="" id="publishButton" onclick="isPublishEvent(this);">Publish</button>
+                                            <button type="button" class="btn btn-primary mt-2 draftButton" id="draftButton" value="" onclick="isPublishEvent(this);"> Save as Draft</button> -->
                                                         </div><br>
 
                                                         <div class="form-group col-lg-12">
@@ -535,7 +539,9 @@
                                         </div>
 
                                         <div class="form-group col-lg-12">
-                                            <button type="submit" id="Submit" class="btn btn-primary px-5 pull-right"> Save Event</button>
+                                            <!-- <button type="submit" id="Submit" class="btn btn-primary px-5 pull-right"> Save Event</button> -->
+                                            <button type="submit" class="btn btn-primary mr-2 publishButton pull-right" name="IsPublish" value="" id="publishButton">Publish Event</button>
+                                            <button type="submit" class="btn btn-primary mr-2 draftButton pull-right" id="draftButton" value=""> Save as Draft</button>
                                             <a class="pull-right" href="{{url('org/events')}}"><button type="button" class="btn btn-light mr-2">Cancel</button></a>
                                         </div>
 
@@ -776,7 +782,7 @@
                                     <div class="card-body row">
                                         <div id="uploadedTickets" class="col-lg-12 m-auto p-0">
                                             <?php
-                                            foreach ($event->tickets as $ticket) { ?>
+                                            foreach ($tickets as $ticket) { ?>
                                                 <div class="parent">
                                                     <ul class="list-group parent list-group-flush TicketList mb-2 col-lg-8">
                                                         <li class="list-group-item">
