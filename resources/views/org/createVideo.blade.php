@@ -381,8 +381,9 @@ $CardTitle = "Add New Video";
         var fileNameExt = fileName.substr(fileName.lastIndexOf('.') + 1);
                                                 // if (regexp.test(url) || $.inArray(fileNameExt, validExtensions) != -1)
                                                 // {
-                                                    if (url.match(regexp) || $.inArray(fileNameExt, validExtensions) != -1)
+                                                    if ((url.match(regexp) || $.inArray(fileNameExt, validExtensions) != -1) && (!$(".checkVideoExist").hasClass('d-none')))
                                                     {
+                                                        $('.videoFileError').text('');
                                                     $('.dragFileForm').find('.progressBar').removeClass('d-none');
                                                     //status.empty();
                                                     var percentVal = '0%';
@@ -393,12 +394,16 @@ $CardTitle = "Add New Video";
                                                 else
                                                 {
                                                     if(url != ''){
-                                                        $('.urlError').text('The input url format is invalid.');
-                                                        return false;
+                                                        // alert("The input url format is invalid.");
+                                                        // $('.urlError').text('The input url format is invalid.');
+                                                        // clearInterval(auto_refresh);
+                                                        // return false;
                                                     } 
                                                     else{
+                                                        alert("The video file must be a file of type: mov, mp4, wmv, flv, avi.");
                                                         $('.videoFileError').text('The video file must be a file of type: mov, mp4, wmv, flv, avi.');
-                                                        return false;
+                                                        clearInterval(auto_refresh);
+                                                        // return false;
                                                     }
                                                     
                                                 }
@@ -425,8 +430,14 @@ $CardTitle = "Add New Video";
                                                     }, 5000);
                                                     // window.location.href = $('#hdnRedirect').val();
                                                 }
+                                            } else if(!$("#ChangeVideoBtn").hasClass('d-none')){
+                                                LoaderStart();
+                                                window.location.href = $('#hdnRedirect').val();
+                                                        LoaderStop();
                                             }
-                                                // LoaderStart();
+                                            else{
+                                                // event.preventDefault();
+                                            }
                                             },
                                             // success: function () {
                                             //     LoaderStop();

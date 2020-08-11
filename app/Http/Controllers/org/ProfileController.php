@@ -41,6 +41,10 @@ class ProfileController extends Controller
         }
 
     	$profilePicUrl = "";
+        if (empty($request->userProfile) && !empty($users->profile_pic)) {
+                Storage::disk('s3')->delete($users->profile_pic);
+                $users->profile_pic = "";
+        }
         if ($request->hasFile('profileImg')) {
             $profilePicFile = $request->file('profileImg');
             $profilePicName = time() . $profilePicFile->getClientOriginalName();
@@ -55,6 +59,10 @@ class ProfileController extends Controller
         }
 
         $profileBannerUrl = "";
+        if (empty($request->userBanner) && !empty($users->banner)) {
+                Storage::disk('s3')->delete($users->banner);
+                $users->banner = "";
+        }
         if ($request->hasFile('profileBannerImage')) {
             $profileBannerFile = $request->file('profileBannerImage');
             $profileBannerName = time() . $profileBannerFile->getClientOriginalName();

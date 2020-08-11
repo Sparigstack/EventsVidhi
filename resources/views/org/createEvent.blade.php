@@ -191,6 +191,7 @@
                                                 <label for="EventBannerImage">Banner Image (optional)</label>
                                                 <p style="font-size: .7pc;">Preferred image size is 845 &#10005; 445 px and maximum 4MB allowed.</p>
                                                 <!-- <input type="file" accept="image/*" id="EventBannerImage" name="EventBannerImage" class="form-control files" onchange="document.getElementById('bannerImage').src = window.URL.createObjectURL(this.files[0]);document.getElementById('bannerImage').classList.remove('d-none');"> -->
+                                                <input type="hidden" name="eventBannerPic" class="eventBannerPic" value="{{$BannerUrl}}">
                                                 <div class="dragFileContainer" id="dragfile" style="text-align:center;">
                                                     <input type="file" accept="image/*" id="EventBannerImage" name="EventBannerImage" class="form-control files">
                                                     <!-- <img id="bannerImage" src="{{$BannerUrl}}" class="{{$BannerHidden}} imageRadius w-100" alt="your image" width="100" /> -->
@@ -279,6 +280,7 @@
                                                 <label for="EventThumbnailImage">Thumbnail Image (optional)</label>
                                                 <p style="font-size: .7pc;">Preferred image size is 420 &#10005; 360 px and maximum 4MB allowed.</p>
                                                 <!-- <input type="file" accept="image/*" id="EventThumbnailImage" name="EventThumbnailImage" class="form-control files" onchange="document.getElementById('thumbnailImage').src = window.URL.createObjectURL(this.files[0]);document.getElementById('thumbnailImage').classList.remove('d-none');"> -->
+                                                <input type="hidden" name="eventThumbPic" class="eventThumbPic" value="{{$ThumnailUrl}}">
 
                                                 <div class="dragFileContainer thumbNailContainer m-auto" style="display: flex;justify-content: center;">
                                                     <input type="file" accept="image/*" id="EventThumbnailImage" name="EventThumbnailImage" class="form-control files">
@@ -931,9 +933,11 @@
                                                 <div class="form-group col-lg-12 row">
                                                     <div class="form-group col-lg-6">
                                                         <label for="profilePicImage">Profile Pic</label>
+                                                        <input type="hidden" name="eventSpeakerPic" class="eventSpeakerPic" value="">
                                                         <div class="dragFileContainer thumbNailContainer SpeakerProfilePicDiv" style="display: flex;justify-content: center;">
                                                             <input type="file" accept="image/*" id="EventProfilePicImage" name="profilePicImageUpload" class="form-control files" picvalue="">
                                                             <img id="profilePicImage" src="" class="d-none imageRadius w-100 {{$profilePicHidden}}" alt="your image" width="100" value="">
+                                                            <p class="picText">Drop your image here or click to upload.</p>
                                                             <!-- <p id="TempTextThumb" class="TempTextPic">Drop your image here or click to upload.</p> -->
                                                         </div>
 

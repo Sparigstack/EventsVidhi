@@ -413,8 +413,9 @@
                 var fileName = $("#input_podfile").val();
                 var fileNameExt = fileName.substr(fileName.lastIndexOf('.') + 1);
                 // if (regexp.test(url) || $.inArray(fileNameExt, validExtensions) != -1)
-                if (url != '' || $.inArray(fileNameExt, validExtensions) != -1)
+                if ((url != '' || $.inArray(fileNameExt, validExtensions) != -1) && (!$(".checkPodcastExist").hasClass('d-none')))
                 {
+                    $('.podcastFileError').text('');
                     $('.dragFileForm').find('.podcastProgressBar').removeClass('d-none');
                     //status.empty();
                     var percentVal = '0%';
@@ -429,8 +430,10 @@
                         // return false;
                         
                     } else{
+                        alert("The podcast video file must be a file of type: mpga, m4a, wma.");
                         $('.podcastFileError').text('The podcast video file must be a file of type: mpga, m4a, wma.');
-                        return false;
+                        clearInterval(auto_refresh);
+                        // return false;
                     }
                     // $('.urlError').text('The input url format is invalid.');
                     // return;
@@ -456,7 +459,14 @@
                                                     }, 5000);
                 // LoaderStart();
             }
-        }
+        } else if(!$("#ChangePodcastBtn").hasClass('d-none')){
+                                                LoaderStart();
+                                                window.location.href = $('#hdnRedirect').val();
+                                                        LoaderStop();
+                                            }
+                                            else{
+                                                
+                                            }
             },
             // success: function () {
             //     LoaderStop();

@@ -491,12 +491,13 @@ function uploadVideo(element) {
 
 function uploadSpeaker(element) {
     if ($(element).attr('id') == 'speakerButton') {
-        if ($('.TempTextPic').hasClass('d-none')) {
-            $('.TempTextPic').removeClass('d-none');
-        }
-        if ($('.SpeakerProfilePicDiv').find('#TempTextThumb').length == 0) {
-            $('.SpeakerProfilePicDiv').append('<p id="TempTextThumb" class="TempTextPic">Drop your image here or click to upload.</p>');
-        }
+        // if ($('.TempTextPic').hasClass('d-none')) {
+        //     $('.TempTextPic').removeClass('d-none');
+        // }
+        $(".picText").removeClass("d-none");
+        // if ($('.SpeakerProfilePicDiv').find('#TempTextThumb').length == 0) {
+        //     $('.SpeakerProfilePicDiv').append('<p id="TempTextThumb" class="TempTextPic">Drop your image here or click to upload.</p>');
+        // }
         $('.speakerContainer').removeClass('d-none');
         $("#speakerTitle").val('');
         $("#speakerFirstName").val('');
@@ -627,7 +628,7 @@ function EditSingleSpeaker(element) {
     LoaderStart();
     $('.editSpeakerContainer').removeClass('d-none');
     $("#profilePicImage").removeClass("d-none");
-    $(".TempTextPic").addClass("d-none");
+    $(".picText").addClass("d-none");
     $(".deletePicDiv").removeClass("d-none");
 
     event.preventDefault();
@@ -663,15 +664,18 @@ function EditSingleSpeaker(element) {
             $("#profilePicImage").attr('src', response.profile_pic);
             $("#speakerSubmitButton").attr('data-id', response.id);
             $("#speakerId").val(response.id);
+            $(".eventSpeakerPic").val(response.profile_pic);
 
             if (response.profile_pic != "") {
                 $("#profilePicImage").removeClass('d-none');
                 $(".removeprofilepic").removeClass('d-none');
-                $(".TempTextPic").addClass('d-none');
+                $(".picText").addClass('d-none');
+                $(".TempTextPic").addClass("d-none");
             } else {
                 $("#profilePicImage").addClass('d-none');
                 $(".removeprofilepic").addClass('d-none');
-                $(".TempTextPic").removeClass('d-none');
+                $(".picText").removeClass('d-none');
+                $(".TempTextPic").addClass("d-none");
             }
 
             $('html, body').animate({

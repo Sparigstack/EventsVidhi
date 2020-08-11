@@ -248,6 +248,7 @@ $('#RemoveImgBtn').on('click', function(e){
     $(".removebtn").addClass("d-none");
     document.getElementById('bannerImage').src = "";
         document.getElementById('bannerImage').classList.add('d-none');
+        $(".eventBannerPic").val("");
     $('#dragfile').append("<p id='TempText'>Drop your image here or click to upload.</p>");
     $("#bannerImage").removeClass("SmallImages");
      //<p id="TempText">Drop your image here or click to upload.</p>
@@ -296,6 +297,7 @@ $('#RemoveThumbnailBtn').on('click', function(e){
     $(".removethumbnail").addClass("d-none");
     document.getElementById('EventThumbnailImage').src = "";
         document.getElementById('thumbnailImage').classList.add('d-none');
+        $(".eventThumbPic").val("");
     $('.thumbNailContainer').append("<p id='TempTextThumb'>Drop your image here or click to upload.</p>");
      //<p id="TempTextThumb">Drop your image here or click to upload.</p>
 });
@@ -316,9 +318,11 @@ $("#EventProfilePicImage").change(function(e) {
             if(this.width< 420 && this.height < 360){
                 $("#profilePicImage").addClass("SmallImages");
                 $(".removeprofilepic").removeClass("d-none");
+                $(".picText").addClass("d-none");
                 return true;
             }else if(this.width === 420 && this.height === 360){
                 $(".removeprofilepic").removeClass("d-none");
+                $(".picText").addClass("d-none");
                 return true;
             }else{
                 alert("Maximum image dimension allowed is : 420x360 pixels.");
@@ -329,6 +333,7 @@ $("#EventProfilePicImage").change(function(e) {
                 document.getElementById('profilePicImage').classList.add('d-none');
                 $("#profilePicImage").find("#TempTextOrgBanner").addClass('d-none');
                 // $(".TempTextPic").removeClass('d-none');
+                $(".picText").addClass("d-none");
                 $('.SpeakerProfilePicDiv').append("<p id='TempTextThumb' class='TempTextPic'>Drop your image here or click to upload.</p>");
                
                 return true;
@@ -346,6 +351,8 @@ $('#RemoveProfileBtn').on('click', function(e){
     document.getElementById('EventProfilePicImage').src = "";
         document.getElementById('profilePicImage').classList.add('d-none');
         $("#profilePicImage").find("#TempTextOrgBanner").addClass('d-none');
+        $(".eventSpeakerPic").val("");
+        $(".picText").addClass("d-none");
     // $(".TempTextPic").removeClass('d-none');
     $('.SpeakerProfilePicDiv').append("<p id='TempTextThumb' class='TempTextPic'>Drop your image here or click to upload.</p>");
      //<p id="TempTextThumb">Drop your image here or click to upload.</p>
@@ -388,6 +395,7 @@ $('#RemoveOrgBannerButton').on('click', function(e){
     $('#profileBannerImage').attr("src", "");
     $('#profileBannerImage').val("");
     $(".removeorgbannerbtn").addClass("d-none");
+    $(".userBanner").val("");
     document.getElementById('profileBannerImage').src = "";
         document.getElementById('profileBannerImageSrc').classList.add('d-none');
         // $("#TempTextBanner").removeClass('d-none');
@@ -432,6 +440,7 @@ $('#RemoveUserProfileBtn').on('click', function(e){
     $(".removeuserprofile").addClass("d-none");
     document.getElementById('profileImg').src = "";
     document.getElementById('profileImgSrc').classList.add('d-none');
+    $(".userProfile").val("");
     // $("#profileImgsrc").find("#TempTextOrgBanner").addClass('d-none');
     $('.orgProfile').append("<p id='textForProfile' class='textForProfile'>Drop your image here or click to upload.</p>");
 });

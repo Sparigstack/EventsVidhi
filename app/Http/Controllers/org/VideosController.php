@@ -229,10 +229,12 @@ class VideosController extends Controller {
                 $UrlToSave = $fileLocation;
                 $video->url_type = 1;
             }
-        } else {
+        } else if($request->input_url != $video->url){
             $UrlToSave = $request->input_url;
             $video->file_size = NULL;
             $video->url_type = 0;
+        } else{
+            $UrlToSave = $video->url;
         }
         // if (isset($request->IsLinkedEvent)) {
         //     $video->event_id = $request->EventToLink;

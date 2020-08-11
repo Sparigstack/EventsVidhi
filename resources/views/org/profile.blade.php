@@ -40,7 +40,7 @@ if(!empty($user)){
             		{{ csrf_field() }}
                     <div class="form-group col-lg-12">
                         <label for="profileBannerImage">Organizer Banner Image (optional)</label>
-
+                        <input type="hidden" name="userBanner" class="userBanner" value="{{$BannerUrl}}">
                         <div class="dragFileContainer orgDragBannerFile" id="orgDragBannerFile">
                             <input type="file" accept="image/*" id="profileBannerImage" name="profileBannerImage" class="form-control files">
                             <img id="profileBannerImageSrc" src="{{$BannerUrl}}" class="{{$BannerHidden}} bannerRadius w-100" alt="your image" />
@@ -66,9 +66,10 @@ if(!empty($user)){
                     <div class="row col-lg-12">
             		<div class="form-group col-lg-6">
             			<label for="profileImgSrc">Organizer Profile Image (optional)</label>
+                        <input type="hidden" name="userProfile" class="userProfile" value="{{$profilePicUrl}}">
             			<div class="dragFileContainer thumbNailContainer orgProfile" style="display: flex;justify-content: center;">
                             <input type="file" accept="image/*" id="profileImg" name="profileImg" class="form-control files" style="width: 38%;
-    height: 0% !important;">
+    height: 38% !important;">
                             <img id="profileImgSrc" src="{{$profilePicUrl}}" class="imageRadius w-100 {{$imageNone}}" alt="your image">
                             <?php
                                 if (empty($profilePicUrl)) { ?>

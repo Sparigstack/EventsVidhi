@@ -186,10 +186,12 @@ class PodcastsController extends Controller
                 $podcast->url_type = 1;
                 $podcast->file_size= $size;
             }
-        } else {
+        } else if($request->input_url != $podcast->url){
             $UrlToSave = $request->input_url;
+            $podcast->file_size = NULL;
             $podcast->url_type = 0;
-            $podcast->file_size= NULL;
+        } else{
+            $UrlToSave = $podcast->url;
         }
         // if (isset($request->IsLinkedEvent)) {
         //     $podcast->event_id = $request->EventToLink;

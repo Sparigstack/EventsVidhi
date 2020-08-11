@@ -467,6 +467,10 @@ class EventsController extends Controller
         $events = Event::findOrFail($id);
 
         $bannerUrl = "";
+        if (empty($request->eventBannerPic) && !empty($events->banner)) {
+                Storage::disk('s3')->delete($events->banner);
+                $events->banner = "";
+        }
         if ($request->hasFile('EventBannerImage')) {
             $file = $request->file('EventBannerImage');
             $name = time() . $file->getClientOriginalName();
@@ -480,7 +484,12 @@ class EventsController extends Controller
             }
             $events->banner = $bannerUrl;
         }
+
         $thumbNailUrl = "";
+        if (empty($request->eventThumbPic) && !empty($events->thumbnail)) {
+                Storage::disk('s3')->delete($events->thumbnail);
+                $events->thumbnail = "";
+        }
         if ($request->hasFile('EventThumbnailImage')) {
             $thumbnailfile = $request->file('EventThumbnailImage');
             $thumbnailName = time() . $thumbnailfile->getClientOriginalName();
@@ -702,6 +711,10 @@ class EventsController extends Controller
         $userId = Auth::id();
         $UrlToSave = "";
         $FinalUrl = $speaker->profile_pic;
+        if (empty($request->eventSpeakerPic) && !empty($speaker->profile_pic)) {
+                Storage::disk('s3')->delete($speaker->profile_pic);
+                $speaker->profile_pic = "";
+        }
         if ($request->hasFile('profilePicImageUpload')) {
             $FinalUrl = '';
             Storage::disk('s3')->delete($speaker->profile_pic);
@@ -714,8 +727,9 @@ class EventsController extends Controller
             $UrlToSave = $filePath;
             //$FinalUrl = env('AWS_URL'); 
             $FinalUrl .= $UrlToSave;
+            $speaker->profile_pic = $FinalUrl;
         }
-        $speaker->profile_pic = $FinalUrl;
+        
         $speaker->event_id = $request->EventToLinkId;
         $speaker->save();
 

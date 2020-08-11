@@ -64,53 +64,53 @@ if(!empty(Auth::user())){
                                         $logoUrl = $AwsUrl . Auth::user()->profile_pic;
                                     }
                                 ?>
-                                <img class="w-50 rounded" style="" title="" src="{{$logoUrl}}">
+                                <img class="rounded" style="width:35% !important;" title="" src="{{$logoUrl}}">
                             </div>
 
                             <div class="form-group col-lg-12">
-                             <label for="organizerName">Organizer Name</label>
+                             <label for="organizerName" class="mb-0">Organizer Name</label>
                               <!-- <input type="text" id="organizerName" value="{{Auth::user()->name}}" name="organizerName" class="form-control" title="Organizer Name" placeholder="Organizer Name" autocomplete="off" rows="0" required="" readonly=""> -->
-                                <p style="font-size:16px;">{{Auth::user()->name}}</p>
+                                <p style="font-size:16px;" class="mb-4">{{Auth::user()->name}}</p>
                            </div>
 
                            <div class="form-group col-lg-12">
-                                <label for="organizerEmail">Organizer Email Address</label>
+                                <label for="organizerEmail" class="mb-0">Organizer Email Address</label>
                                 <!-- <input type="email" id="organizerEmail" value="{{Auth::user()->email}}" name="organizerEmail" class="form-control" title="Organizer Email Address" placeholder="Organizer Email Address" autocomplete="off" rows="0" readonly=""> -->
-                                <p style="font-size:16px;">{{Auth::user()->email}}</p>
+                                <p style="font-size:16px;" class="mb-0">{{Auth::user()->email}}</p>
                             </div>
 
             		  </div>
 
-                      <div class="form-group col-lg-6 mt-2">
+                      <div class="form-group col-lg-6">
 
                             <div class="form-group col-lg-12">
-                                <label for="organizerDesc">Organizer Description</label>
+                                <label for="organizerDesc" class="mb-0">Organizer Description</label>
                                 <!-- <textarea id="organizerDesc" name="organizerDesc" class="form-control" title="Organizer Description" placeholder="Organizer Description" autocomplete="off" rows="4" readonly="">{{Auth::user()->description}}</textarea> -->
-                                <p style="font-size:16px;">{{Auth::user()->description}}</p>
+                                <p style="font-size:16px;" class="mb-4">{{Auth::user()->description}}</p>
                             </div>
 
                             <div class="form-group col-lg-12">
-                                <label for="websiteName">Website Name</label>
+                                <label for="websiteName" class="mb-0">Website Name</label>
                                 <!-- <input type="url" id="websiteName" value="{{Auth::user()->website_url}}" name="websiteName" class="form-control" title="Website Name" placeholder="Website Name" autocomplete="off" rows="0"> -->
-                                <p style="font-size:16px;">{{Auth::user()->website_url}}</p>
+                                <p style="font-size:16px;" class="mb-4">{{Auth::user()->website_url}}</p>
                             </div>
 
                             <div class="form-group col-lg-12">
-                                <label for="linkedinAcc">LinkedIn</label>
+                                <label for="linkedinAcc" class="mb-0">LinkedIn</label>
                                 <!-- <input type="url" id="linkedinAcc" value="{{Auth::user()->linkedin_url}}" name="linkedinAcc" class="form-control" title="LinkedIn" placeholder="LinkedIn" autocomplete="off" rows="0"> -->
-                                <p style="font-size:16px;">{{Auth::user()->linkedin_url}}</p>
+                                <p style="font-size:16px;" class="mb-4">{{Auth::user()->linkedin_url}}</p>
                             </div>
 
                             <div class="form-group col-lg-12">
-                                <label for="facebookAcc">Facebook</label>
+                                <label for="facebookAcc" class="mb-0">Facebook</label>
                                 <!-- <input type="url" id="facebookAcc" value="{{Auth::user()->facebook_url}}" name="facebookAcc" class="form-control" title="Facebook" placeholder="Facebook" autocomplete="off" rows="0"> -->
-                                <p style="font-size:16px;">{{Auth::user()->facebook_url}}</p>
+                                <p style="font-size:16px;" class="mb-4">{{Auth::user()->facebook_url}}</p>
                             </div>
 
                             <div class="form-group col-lg-12">
-                                <label for="twitterAcc">Twitter</label>
+                                <label for="twitterAcc" class="mb-0">Twitter</label>
                                 <!-- <input type="url" id="twitterAcc" value="{{Auth::user()->twitter_url}}" name="twitterAcc" class="form-control" title="Twitter" placeholder="Twitter" autocomplete="off" rows="0"> -->
-                                <p style="font-size:16px;">{{Auth::user()->twitter_url}}</p>
+                                <p style="font-size:16px;" class="mb-0">{{Auth::user()->twitter_url}}</p>
                             </div>
 
                         </div>

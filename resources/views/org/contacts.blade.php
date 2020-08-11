@@ -76,59 +76,7 @@ $MultSelectTags = "";
 
                         <!-- <form action=""> -->
                             <!-- {{ csrf_field() }} -->
-                            <div class="row p-1 mb-3">
-                                <div class="col-sm-12 col-lg-6 col-md-6">
-                                    <!-- <label>Search Tags</label> -->
-
-                                    <select class="form-control multiple-select" name="tagSelection[]" id="tagSelection" multiple="multiple">
-                                        <?php $tagIdsArr = explode(',', $tag_ids);
-                                        foreach ($tagList as $tag) {
-                                        $IsSelected = "";  ?>
-
-                                        <?php  foreach ($tagIdsArr as $tag_id) {
-
-                                            if ($tag_id == $tag->id) {
-                                                $IsSelected = "selected";
-                                                if ($checkCount == "no") {
-                                                    $MultSelectTags .= strval($tag->id);
-                                                } else {
-                                                    $MultSelectTags .= "," . $tag->id;
-                                                }
-                                                $checkCount = "yes";
-                                            }
-
-                                ?>
-
-                                        <?php } ?>
-
-                                      
-
-                                        <option value="{{$tag->id}}" {{$IsSelected}}>{{$tag->name}}</option>
-
-                                            
-                                        <?php } ?>
-                                    </select>
-
-                                    <textarea id="HiddenCategoyID" name="HiddenCategoyID" required class="form-controld d-none" title="HiddenCategoyID" placeholder="HiddenCategoyID" autocomplete="off" rows="4">{{$MultSelectTags}} </textarea>
-                                    <!-- <input type="text" class="form-control" placeholder="" value="" name="search" id="search"> -->
-                                </div>
-
-                                <div class="col-sm-12 col-lg-4 col-md-4">
-                                    <!-- <button type="submit" class="btn btn-primary">Search Tags</button> -->
-                                    <!-- <button onclick="tagsSelect(this);" class="btn btn-primary">Search Tags</button> -->
-                                    <button onclick="tagsSelect(this);" class="btn m-1" aria-hidden="true" style="background-color:#6c757d29;"></i>Search Tags</button>
-                                </div>
-
-                                <!-- <div class="col-sm-12 col-lg-2 col-md-2">
-                                    <div class="dropdown">
-                                        <a href="javascript:void();" class="dropdown-toggle dropdown-toggle-nocaret" data-toggle="dropdown"><button class="btn btn-outline-primary m-1 pull-right">Bulk Actions</button></a>
-                                        <div class="dropdown-menu dropdown-menu-right bulkActionDropDown">
-                                            <a class="dropdown-item backColorDropdownItem" href="">Email</a>
-                                        </div>
-                                    </div>
-                                </div> -->
-
-                            </div>
+                            
                         <!-- </form> -->
 
 

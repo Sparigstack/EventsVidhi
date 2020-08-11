@@ -92,7 +92,7 @@
 
                             <?php
                                 $profileLogo = "";
-                                 if(!is_null(Auth::user()->profile_pic)){
+                                 if(!is_null(Auth::user()->profile_pic) && Auth::user()->profile_pic != ""){
                                  $profileLogo = env("AWS_URL"). Auth::user()->profile_pic; ?>
                                  <div class="avatar"><img class="mr-3 side-user-img" src="{{$profileLogo}}" alt="user avatar"></div>
                                <?php } else{ ?>
@@ -211,7 +211,7 @@
                                 <!-- <span class="user-profile"><img src="https://via.placeholder.com/110x110" class="img-circle" alt="user avatar"></span> -->
                                 <?php
                                 $profileLogo = "";
-                                 if(!is_null(Auth::user()->profile_pic)){
+                                 if(!is_null(Auth::user()->profile_pic) && Auth::user()->profile_pic != ""){
                                  $profileLogo = env("AWS_URL"). Auth::user()->profile_pic; ?>
                                 <span class="user-profile"><img src="{{$profileLogo}}" class="img-circle" alt="user avatar"></span>
                                <?php } else{ ?>
@@ -226,7 +226,7 @@
                                         <!-- <div class="avatar"><img class="align-self-start mr-3" src="https://via.placeholder.com/110x110" alt="user avatar"></div> -->
                                         <?php
                                 $profileLogo = "";
-                                 if(!is_null(Auth::user()->profile_pic)){
+                                 if(!is_null(Auth::user()->profile_pic) && Auth::user()->profile_pic != ""){
                                  $profileLogo = env("AWS_URL"). Auth::user()->profile_pic; ?>
                                  <div class="avatar"><img class="align-self-start mr-3" src="{{$profileLogo}}" alt="user avatar"></div>
                                <?php } else{ ?>
