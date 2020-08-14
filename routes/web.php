@@ -112,4 +112,19 @@ Route::post('org/customFields/update/{id}', 'org\CustomFieldController@update');
 Route::post('org/customfield/delete/{id}', 'org\CustomFieldController@delete');
 Route::post('org/setting/update', 'org\SettingController@update');
 
+Route::post('loginCheck', 'Auth\LoginController@determineLoginType')->middleware('guest');
 
+Route::get('userRegister', function () {
+    return view('auth/register');
+});
+
+Route::get('myAccount', function () {
+    return view('myAccount');
+});
+
+Route::get('myAccount', 'IndexController@show');
+Route::get('userProfile', function () {
+    return view('userProfileList');
+});
+Route::get('userProfile/{id}','IndexController@index');
+Route::post('userProfile/update', 'IndexController@update');

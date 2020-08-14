@@ -6,12 +6,23 @@
     <div class="card card-authentication1 mx-auto my-4">
         <div class="card-body">
             <form method="POST" action="{{ route('register') }}">
+               <?php
+               $checkUrl = "";
+               $dnoneClass = "";
+               $labelSignUp = "Organizer Sign Up";
+                if (strpos($_SERVER['REQUEST_URI'], '/userRegister') !== false) {
+                        $checkUrl = "1";
+                        $dnoneClass = "d-none";
+                        $labelSignUp = "User Sign Up";
+                } ?>
                 @csrf
+                <input type="hidden" name="checkUrl" value="{{$checkUrl}}">
                 <div class="card-content p-2">
                     <div class="text-center">
                         <img src="assets/images/logo-icon.png" alt="logo icon">
                     </div>
-                    <div class="card-title text-uppercase text-center py-3">Sign Up</div>
+                    <div class="card-title text-uppercase text-center py-3">
+                    {{$labelSignUp}}</div>
 
                     <div class="form-group">
                         <label for="exampleInputName" class="sr-only">Name</label>
@@ -68,13 +79,16 @@
 
                     <div class="form-group">
                         <div class="icheck-material-primary">
-                            <input type="checkbox" id="user-checkbox" >
+                            <input type="checkbox" id="user-checkbox" onchange="if (document.getElementById('user-checkbox').checked){
+                document.getElementById('SignUpButton').disabled = false;}else{
+                    document.getElementById('SignUpButton').disabled = true;
+                }">
                             <label for="user-checkbox">I Agree With Terms &amp; Conditions</label>
                         </div>
                     </div>
                     <div class="form-group">
-                        <button type="submit" class="btn btn-primary btn-block waves-effect waves-light">Sign Up</button></div>
-                    <p>Sign up for free account, you can create and showcase your events, manage customer data and use upto 3 gb space for your videos and podcasts.</p>
+                        <button type="submit" class="btn btn-primary btn-block waves-effect waves-light" id="SignUpButton" disabled="">Sign Up</button></div>
+                    <p class="{{$dnoneClass}}">Sign up for free account, you can create and showcase your events, manage customer data and use upto 3 gb space for your videos and podcasts.</p>
 
             </form>
         </div>
