@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 // use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\User;
+use App\UserOrganizer;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\UploadedFile;
 use File;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 
-class IndexController extends Controller
+class UserController extends Controller
 {
     public function __construct() {
         $this->middleware('verified');
@@ -24,7 +25,14 @@ class IndexController extends Controller
      */
     public function show()
     {
-        $organizers = User::where("user_type", 1)->get();
+        $user = Auth::user();
+        // $organizers = User::where("user_type", 1)->get();
+        $userOrgs = UserOrganizer::where("user_id", $user->id)->get();
+        $orgIds = [];
+        foreach($userOrgs as $userOrg){
+                $orgIds[] = $userOrg->org_id;
+        }
+        $organizers = User::whereIn("id", $orgIds)->get();
         return view('myAccount', compact('organizers'));
     }
 

@@ -122,9 +122,9 @@ Route::get('myAccount', function () {
     return view('myAccount');
 });
 
-Route::get('myAccount', 'IndexController@show');
+Route::get('myAccount', 'UserController@show');
 Route::get('userProfile', function () {
     return view('userProfileList');
 });
-Route::get('userProfile/{id}','IndexController@index');
-Route::post('userProfile/update', 'IndexController@update');
+Route::get('userProfile/{id}','UserController@index');
+Route::post('userProfile/update', 'UserController@update');
