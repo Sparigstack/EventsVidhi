@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use SoareCostin\FileVault\Facades\FileVault;
 use Artisan;
+use App\Event;
+use App\Country;
 
 class HomeController extends Controller
 {
@@ -27,14 +29,18 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
+        $events = Event::where('date_time', '>=', date('Y-m-d', strtotime(now())))->take(12)->orderBy('id', 'DESC')
+            ->get();
+        // $events = Event::where('date_time', '>=', date('Y-m-d', strtotime(now())))->where('country_id', '4')->take(12)->orderBy('id', 'DESC')
+        //     ->get();
 //        Artisan::call('config:clear');
 //        Artisan::call('cache:clear');
 //        $localFiles = Storage::files('files/' . auth()->user()->id);
 //        $s3Files = Storage::disk('s3')->files('files/' . auth()->user()->id);
 //        
-        return view('home');
+        return view('home', compact('events'));
     }
     
     public function store(Request $request){
