@@ -757,13 +757,15 @@ function deleteEvent(element) {
     var eventDeleteId = $(element).attr('db-delete-id');
     var CSRF_TOKEN = $('.csrf-token').val();
     var urlString = $('.deleteEvent').val();
+    var eventsPage = $('.eventsPage').val();
     $.ajax({
         url: urlString,
         type: 'post',
         data: { _token: CSRF_TOKEN, eventDeleteId: eventDeleteId },
         success: function (response) {
             // console.log(response);
-            location.reload();
+            // location.reload();
+            window.location.href = eventsPage;
         }
     });
 }
@@ -926,6 +928,7 @@ function copyEvent(element) {
     var eventId = $(element).attr('db-event-id');
     var CSRF_TOKEN = $('.csrf-token').val();
     var urlString = $('.copyEvent').val();
+    var eventsPage = $('.eventsPage').val();
     LoaderStart();
     $.ajax({
         url: urlString,
@@ -934,7 +937,8 @@ function copyEvent(element) {
         success: function (response) {
             console.log(response);
             LoaderStop();
-            location.reload();
+            // location.reload();
+            window.location.href = eventsPage;
         },
         error: function (err) {
             console.log(err);

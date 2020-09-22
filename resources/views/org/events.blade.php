@@ -7,6 +7,7 @@
 @section('content')
 <?php $AwsUrl = env('AWS_URL'); ?>
 <div class="container-fluid">
+    <input type="hidden" class="eventsPage d-none" value="{{url("org/events")}}"/>
     <input type="text" class="PostUrl d-none" value="{{url("org/events/update")}}"/>
     <div class="Data-Table">
 
@@ -135,16 +136,16 @@
                                     $dateStr = "";
 
                                     $sdStamp = strtotime($event->date_time);
-                                    $sd = date("d M, yy", $sdStamp);
+                                    $sd = date("d M, Y", $sdStamp);
                                     $st = date('H:i A', $sdStamp);
 
                                     $edStamp = strtotime($event->end_date_time);
-                                    $ed = date("d M, yy", $edStamp);
+                                    $ed = date("d M, Y", $edStamp);
                                     $et = date('H:i A', $edStamp);
                                     if ($sd == $ed) {
-                                        $dateStr = date("d M, yy", $sdStamp) . ' ' . $st . ' to ' . $et;
+                                        $dateStr = date("d M, Y", $sdStamp) . ' ' . $st . ' to ' . $et;
                                     } else {
-                                        $dateStr = date("d M, yy", $sdStamp) . ' ' . $st . ' to ' . date("d M, yy", $edStamp) . ' ' . $et;
+                                        $dateStr = date("d M, Y", $sdStamp) . ' ' . $st . ' to ' . date("d M, Y", $edStamp) . ' ' . $et;
                                     }
                                     ?>
                                      <td class="{{$titleClass}} pt-4">{{$event->title}}{{$draftWord}} <br> {{$dateStr}} </td>
@@ -184,6 +185,8 @@
                                                     <a class="dropdown-item backColorDropdownItem" href="javascript:void();" onclick="copyEvent(this);" db-event-id="{{$event->id}}"> Copy </a>
 
                                                     <a class="dropdown-item backColorDropdownItem" href="javascript:void();" data-toggle="modal" data-target="#openCustomUrlPopup" event-title="{{$event->title}}" db-event-id="{{$event->id}}" onclick="addCustomUrl(this);"> Custom URL </a>
+
+                                                    <a class="dropdown-item backColorDropdownItem" href="{{ url("org/eventPreview/$event->id") }}"> Preview </a>
 
                                                     <?php if ($event->is_live != 0) { ?>
                                                     <a class="dropdown-item pauseButton backColorDropdownItem" href="javascript:void();" onclick="UpdateEventStatus(this);" data-id="{{$event->id}}" status='{{$event->is_live}}'> Pause </a>

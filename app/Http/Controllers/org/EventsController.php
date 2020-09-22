@@ -86,8 +86,10 @@ class EventsController extends Controller
             'category' => 'required',
             'Description' => 'required',
             'EventDateTime' => 'required',
-            'EventEndDateTime' => 'date_format:m/d/Y g:i A|after_or_equal:EventDateTime',
+            'EventEndDateTime' => 'after_or_equal:EventDateTime',
         ]);
+
+        // date_format:m/d/Y g:i A|after_or_equal:EventDateTime
 
         if ($validator->fails()) {
             return redirect('org/events/new')
@@ -465,6 +467,24 @@ class EventsController extends Controller
     {
         $user = Auth::user();
         $events = Event::findOrFail($id);
+
+        $validator = Validator::make($request->all(), [
+            'EventBannerImage' => 'image|mimes:jpeg,bmp,png,jpg,gif,spg|dimensions:max_width=845,max_height=445',
+            'EventThumbnailImage' => 'image|mimes:jpeg,bmp,png,jpg|dimensions:max_width=420,max_height=360',
+            'title' => 'required',
+            'category' => 'required',
+            'Description' => 'required',
+            'EventDateTime' => 'required',
+            'EventEndDateTime' => 'after_or_equal:EventDateTime',
+        ]);
+
+        // date_format:m/d/Y g:i A|after_or_equal:EventDateTime
+
+        if ($validator->fails()) {
+            return redirect('org/events/'. $events->id)
+                ->withErrors($validator)
+                ->withInput();
+        }
 
         $bannerUrl = "";
         if (empty($request->eventBannerPic) && !empty($events->banner)) {
@@ -1021,6 +1041,12 @@ class EventsController extends Controller
             $events->save();
             // return $events;
         }
+    }
+
+    public function eventPreview($id){
+        $event = Event::findOrFail($id);
+        $tickets = Ticket::where('event_id', $event->id)->orderBy('id', 'DESC')->get();
+        return view('org/eventPreview', compact('event', 'tickets'));
     }
 
 }

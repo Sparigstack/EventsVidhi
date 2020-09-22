@@ -51,6 +51,7 @@ Route::post('org/events/updateTicket/{id}', 'org\EventsController@updateTicket')
 Route::post('org/events/deleteTicket/{id}/{Type}/{UrlType}', 'org\EventsController@destroyVideo');
 Route::post('copyEvent', 'org\EventsController@copyEvent');
 Route::post('saveCustomUrl', 'org\EventsController@saveCustomUrl');
+Route::get('org/eventPreview/{eventid}', 'org\EventsController@eventPreview');
 
 Route::get('org/videos', 'org\VideosController@index');
 Route::get('org/videos/new', 'org\VideosController@create');

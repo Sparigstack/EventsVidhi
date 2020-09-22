@@ -304,3 +304,7 @@ cursor: pointer;
     color: black;
     border-radius: 4px;
 }
+
+.switchery-small{
+    width: 50px !important;
+}
