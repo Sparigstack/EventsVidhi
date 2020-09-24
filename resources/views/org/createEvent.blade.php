@@ -148,7 +148,11 @@
                     <?php    } ?>
 
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#tabe-15"><span class="hidden-xs">Participants</span></a>
+                        <a class="nav-link
+                        <?php if ($tabe == 3) {
+                            echo "active";
+                        } ?>
+                        " data-toggle="tab" href="#tabe-15"><span class="hidden-xs">Participants</span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link
@@ -772,7 +776,11 @@
                         <?php } ?>
                     </div>
 
-                    <div class="parent row tab-pane " id="tabe-15">
+                    <div class="parent row
+                    <?php if ($tabe == 3) {
+                        echo "active";
+                    } ?>
+                     tab-pane " id="tabe-15">
                         <div class="text-center m-4"><label class="">This feature is coming soon</label></div>
 
                     </div>

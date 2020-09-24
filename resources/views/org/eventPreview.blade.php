@@ -18,9 +18,18 @@
                     </div>
                     <div class="card-body">
                         
-                        <div class="form-group">
-                            <div class="col-lg-12">
-                                <h5 class="">{{$event->title}}</h5>
+                        <div class="form-group mb-1">
+                            <input class="csrf-token" type="hidden" value="{{ csrf_token() }}">
+                            <input type="hidden" class="deleteEvent" value="{{url('deleteEvent')}}">
+                            <input type="hidden" class="copyEvent" value="{{url('copyEvent')}}">
+                            <div class="col-lg-12 row pr-0">
+                                <div class="col-lg-6">
+                                    <h5 class="mt-2 pt-1">{{$event->title}}</h5>
+                                </div>
+                                <div class="col-lg-6 pr-0">
+                                    <button type="button" id="button" class="btn btn-light waves-effect waves-light m-1 float-right" onclick="deleteEvent(this);" db-delete-id="{{$event->id}}">Delete</button>
+                                    <button type="button" id="button" class="btn btn-light waves-effect waves-light m-1 float-right mr-2" onclick="copyEvent(this);" db-event-id="{{$event->id}}">Copy</button>
+                                </div>
                             </div>
                         </div>
 
@@ -47,10 +56,6 @@
                         </div>
 
                         <div class="form-group">
-                            <input class="csrf-token" type="hidden" value="{{ csrf_token() }}">
-                            <input type="hidden" class="deleteEvent" value="{{url('deleteEvent')}}">
-                            <input type="hidden" class="copyEvent" value="{{url('copyEvent')}}">
-
                             <div class="col-lg-12">
                                 <label for="eventStatus" class="mb-0 mr-2">Draft</label>
                                 <?php
@@ -61,9 +66,6 @@
                                 ?>
                                 <input type="checkbox" class="js-switch" data-color="#14abef" data-secondary-color="#607d8b" data-switchery="true" style="display: none;" data-size="small" {{$checkBoxChecked}}>
                                 <label for="eventStatus" class="mb-0 ml-2 mr-3">Published</label>
-
-                                <button type="button" id="button" class="btn btn-success px-5 mr-3" onclick="copyEvent(this);" db-event-id="{{$event->id}}">Copy</button>
-                                <button type="button" id="button" class="btn btn-danger px-5" onclick="deleteEvent(this);" db-delete-id="{{$event->id}}">Delete</button>
                             </div>
                         </div>
 
@@ -94,6 +96,10 @@
                                     @endforeach
                                 </tbody>
                             </table>
+                        </div>
+
+                        <div class="form-group col-lg-12">
+                            <label for="registrationTab" class="mb-0"> Check all Registrations <a target="_blank" href="{{ url("org/events/$event->id/3") }}"> here </a></label>
                         </div>
 
                     </div>

@@ -99,7 +99,7 @@
                         <button id="" class="btn m-1 pull-right btn-primary" style=""><a href="{{url("org/events/new")}}">Add New Event</a></button>
                     </div>
                     <div class="card-body">
-                        <div class="table-responsive" id="default-datatable_wrapper">
+                        <div class="table-responsive" id="default-datatable_wrapper" style="overflow-x: visible;">
                             <!-- <table id="default-datatable" class="table table-bordered"> -->
                             <table id="default-datatable" class="table" style="border-collapse: collapse !important;">
                                 <thead style="background-color: #6c757d29;">
@@ -148,7 +148,7 @@
                                         $dateStr = date("d M, Y", $sdStamp) . ' ' . $st . ' to ' . date("d M, Y", $edStamp) . ' ' . $et;
                                     }
                                     ?>
-                                     <td class="{{$titleClass}} pt-4">{{$event->title}}{{$draftWord}} <br> {{$dateStr}} </td>
+                                     <td class="{{$titleClass}} pt-4"><a href="{{ url("org/eventPreview/$event->id") }}" style="color:inherit;">{{$event->title}}{{$draftWord}} <br> {{$dateStr}} </a></td>
 
                                     
                                     <!-- <td class="max-w-table-100">{{$dateStr}}</td> -->
@@ -185,8 +185,6 @@
                                                     <a class="dropdown-item backColorDropdownItem" href="javascript:void();" onclick="copyEvent(this);" db-event-id="{{$event->id}}"> Copy </a>
 
                                                     <a class="dropdown-item backColorDropdownItem" href="javascript:void();" data-toggle="modal" data-target="#openCustomUrlPopup" event-title="{{$event->title}}" db-event-id="{{$event->id}}" onclick="addCustomUrl(this);"> Custom URL </a>
-
-                                                    <a class="dropdown-item backColorDropdownItem" href="{{ url("org/eventPreview/$event->id") }}"> Preview </a>
 
                                                     <?php if ($event->is_live != 0) { ?>
                                                     <a class="dropdown-item pauseButton backColorDropdownItem" href="javascript:void();" onclick="UpdateEventStatus(this);" data-id="{{$event->id}}" status='{{$event->is_live}}'> Pause </a>
