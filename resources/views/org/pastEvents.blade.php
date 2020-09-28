@@ -43,9 +43,11 @@
                                     <td><img class="speakerImgSize rounded" style="" title="Event Logo" src="{{$logoUrl}}" </td> <?php
                                     $titleClass = "";
                                     $draftWord = "(Draft)";
+                                    $boldClass = "";
                                     if ($event->is_live == 1) {
                                         $titleClass = "greenFont";
                                         $draftWord = "";
+                                        $boldClass = "boldGreenFont";
                                     }
                                     ?>
 
@@ -65,7 +67,7 @@
                                         $dateStr = date("d M, yy", $sdStamp) . ' ' . $st . ' to ' . date("d M, yy", $edStamp) . ' ' . $et;
                                     }
                                     ?>
-                                     <td class="{{$titleClass}}">{{$event->title}}{{$draftWord}} <br> {{$dateStr}} </td>
+                                     <td class="{{$titleClass}} pt-4 {{$boldClass}}"><a href="{{ url("org/eventPreview/$event->id") }}" style="color:inherit;"><u>{{$event->title}}{{$draftWord}}</u></a> <br> {{$dateStr}} </td>
                                     <!-- <td class="max-w-table-100">{{$dateStr}}</td> -->
                                     <td>
                                         {{$event->category->name}}

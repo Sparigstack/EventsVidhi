@@ -127,9 +127,11 @@
                                     <td><img class="speakerImgSize rounded" style="" title="Event Logo" src="{{$logoUrl}}" </td> <?php
                                     $titleClass = "";
                                     $draftWord = "(Draft)";
+                                    $boldClass = "";
                                     if ($event->is_live == 1) {
                                         $titleClass = "greenFont";
                                         $draftWord = "";
+                                        $boldClass = "boldGreenFont";
                                     }
                                     ?>
                                     <?php
@@ -148,7 +150,7 @@
                                         $dateStr = date("d M, Y", $sdStamp) . ' ' . $st . ' to ' . date("d M, Y", $edStamp) . ' ' . $et;
                                     }
                                     ?>
-                                     <td class="{{$titleClass}} pt-4"><a href="{{ url("org/eventPreview/$event->id") }}" style="color:inherit;">{{$event->title}}{{$draftWord}} <br> {{$dateStr}} </a></td>
+                                     <td class="{{$titleClass}} pt-4 {{$boldClass}}"><a href="{{ url("org/eventPreview/$event->id") }}" style="color:inherit;"><u>{{$event->title}}{{$draftWord}}</u></a> <br> {{$dateStr}} </td>
 
                                     
                                     <!-- <td class="max-w-table-100">{{$dateStr}}</td> -->

@@ -308,3 +308,7 @@ cursor: pointer;
 .switchery-small{
     width: 50px !important;
 }
+
+.boldGreenFont{
+    font-weight: 500;
+}
