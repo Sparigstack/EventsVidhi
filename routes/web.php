@@ -130,3 +130,5 @@ Route::get('userProfile', function () {
 });
 Route::get('userProfile/{id}','UserController@index');
 Route::post('userProfile/update', 'UserController@update');
+
+Route::get('orgList', 'UserController@orgList');

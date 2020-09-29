@@ -88,4 +88,11 @@ class UserController extends Controller
         $users->save();
         return redirect('userProfile');
     }
+
+    public function orgList()
+    {
+        $organizers = User::where("user_type", 1)->get();
+        
+        return view('org/organizerList', compact('organizers'));
+    }
 }
