@@ -17,7 +17,6 @@ use Illuminate\Support\Facades\Route;
 //     return view('home');
 // });
 
-//Route::resource('events', 'EventsController');
 Route::get('events', 'EventsController@index');
 Route::get('events/{eventid}', 'EventsController@show');
 
@@ -28,7 +27,7 @@ Auth::routes(['verify' => true]);
 Route::get('/', 'HomeController@index')->name('home');
 //Route::get('/home/create', 'HomeController@create')->name('home');
 
-///All routes for Organizer panel will be here.
+//All routes for Organizer Panel will be here.
 Route::get('org/events', 'org\EventsController@index')->name('orgEvents');
 Route::get('org/pastEvents', 'org\EventsController@pastEvents');
 Route::get('org/events/new', 'org\EventsController@create')->name('newEvent');;
@@ -74,7 +73,6 @@ Route::post('deletePodcast', 'org\PodcastsController@destroy');
 
 // Route::get('org/contacts', 'org\ContactsController@index');
 Route::get('org/my_contacts/{tag_ids?}', 'org\ContactsController@index');
-
 Route::get('org/contacts/new', 'org\ContactsController@create');
 Route::post('org/contacts/store', 'org\ContactsController@store');
 Route::get('org/contacts/edit/{contactid}', 'org\ContactsController@edit');
@@ -102,7 +100,6 @@ Route::get('org/csvImport', 'org\CsvImportController@index');
 Route::get('org/settings','org\SettingController@index');
 
 Route::get('org/tags', 'org\TagsController@show');
-
 Route::post('org/tags/store', 'org\TagsController@store');
 Route::post('org/tags/delete/{id}', 'org\TagsController@Delete');
 Route::get('org/tags/{value}', 'org\TagsController@GetTagsByValue');
@@ -115,13 +112,8 @@ Route::post('org/customfield/delete/{id}', 'org\CustomFieldController@delete');
 Route::post('org/setting/update', 'org\SettingController@update');
 
 Route::post('loginCheck', 'Auth\LoginController@determineLoginType')->middleware('guest');
-
 Route::get('userRegister', function () {
     return view('auth/register');
-});
-
-Route::get('myAccount', function () {
-    return view('myAccount');
 });
 
 Route::get('myAccount', 'UserController@show');
@@ -131,4 +123,7 @@ Route::get('userProfile', function () {
 Route::get('userProfile/{id}','UserController@index');
 Route::post('userProfile/update', 'UserController@update');
 
-Route::get('orgList', 'UserController@orgList');
+//All routes for Admin Panel will be here.
+Route::get('organizers', 'UserController@orgList');
+Route::get('events', 'UserController@eventsList');
+Route::get('orgEvents/{id}', 'UserController@orgEventsList');

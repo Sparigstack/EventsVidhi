@@ -42,6 +42,8 @@ class LoginController extends Controller
             return '/org/events';
         } else if(auth()->user()->user_type == "2"){
             return '/myAccount';
+        } else if(auth()->user()->user_type == "3"){
+            return '/organizers';
         }
         return '/';
     }

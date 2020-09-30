@@ -9,10 +9,11 @@
     <div class="Data-Table">
 
         <div class="row">
-            <div class="col-lg-9" style="margin: 0 auto;">
+            <div class="col-lg-12">
+
                 <div class="card">
                     <div class="card-header addNewEventButton">
-                        <i class="fa fa-table pt-3"></i> List of Organizers
+                        <i class="fa fa-table pt-3"></i> List of Events
                         <!-- <button id="" class="btn m-1 pull-right btn-primary" style=""><a href="{{url("org/events/new")}}">Add New Event</a></button> -->
                     </div>
                     <div class="card-body">
@@ -21,17 +22,41 @@
                             <table id="default-datatable" class="table" style="border-collapse: collapse !important;">
                                 <thead style="background-color: #6c757d29;">
                                     <tr>
-                                        <th width="35%">Organizer Name</th>
-                                        <th>Organizer Email</th>
+                                        <th>Event Title</th>
+                                        <th>Event Status</th>
+                                        <th>Event Date & Time</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($organizers as $organizer) {
-                                        ?>
+                                    <?php foreach ($orgEvents as $orgEvent) { ?>
                                     <tr class="parent">
-                                        <td width="35%"> {{$organizer->name}} </td> 
-                                        <td> {{$organizer->email}} </td>
-                                    </tr>
+                                    <?php
+                                    $eventStatus = "";
+                                    if ($orgEvent->is_live == 1) {
+                                        $eventStatus = "Live";
+                                    }
+                                    ?>
+
+                                    <?php
+                                    $dateStr = "";
+
+                                    $sdStamp = strtotime($orgEvent->date_time);
+                                    $sd = date("d M, Y", $sdStamp);
+                                    $st = date('H:i A', $sdStamp);
+
+                                    $edStamp = strtotime($orgEvent->end_date_time);
+                                    $ed = date("d M, Y", $edStamp);
+                                    $et = date('H:i A', $edStamp);
+                                    if ($sd == $ed) {
+                                        $dateStr = date("d M, Y", $sdStamp) . ' ' . $st . ' to ' . $et;
+                                    } else {
+                                        $dateStr = date("d M, Y", $sdStamp) . ' ' . $st . ' to ' . date("d M, Y", $edStamp) . ' ' . $et;
+                                    }
+                                    ?>
+                                    <td>{{$orgEvent->title}}</td>
+                                    <td>{{$eventStatus}}</td>
+                                    <td>{{$dateStr}}</td>
+                                </tr>
                                 <?php } ?>
                             </tbody>
                                 <!-- <thead>
@@ -65,14 +90,13 @@
 <script>
     $(document).ready(function () {
         var table = $('#default-datatable').DataTable({
-                        ordering: false,
-
-                        aoColumnDefs: [
-                        {
-                            bSortable: false,
-                            aTargets: [1]
-                        }
-                        ],
+            ordering: false,
+            aoColumnDefs: [
+            {
+                bSortable: false,
+                aTargets: [2]
+            }
+        ],
         });
     });
 </script>

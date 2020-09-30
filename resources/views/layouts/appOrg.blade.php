@@ -106,6 +106,8 @@
                     </div>
                     <ul class="sidebar-menu do-nicescrol in">
                         <li class="sidebar-header">MAIN NAVIGATION</li>
+
+                        <?php if(Auth::user()->user_type != 3) { ?>
                         <li>
                             <a href="{{ url('org/events') }}" class="waves-effect">
                                 <i class="zmdi zmdi-view-dashboard"></i> <span>Events</span><i class="fa fa-angle-left pull-right"></i>
@@ -179,6 +181,24 @@
 
                             </ul>
                         </li>
+
+                       <?php } else { ?>
+
+                            <li>
+                                <a href="{{url('organizers')}}" class="waves-effect">
+                                <i class="fa fa-user-circle mr-1"></i>
+                                <span>Organizers</span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="{{url('events')}}" class="waves-effect">
+                                <i class="zmdi zmdi-view-dashboard"></i>
+                                <span>Events</span>
+                                </a>
+                            </li>
+
+                        <?php } ?>
 
                     </ul>
 

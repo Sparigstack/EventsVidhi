@@ -11,6 +11,7 @@ use Illuminate\Http\UploadedFile;
 use File;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
+use App\Event;
 
 class UserController extends Controller
 {
@@ -89,10 +90,32 @@ class UserController extends Controller
         return redirect('userProfile');
     }
 
+    // Admin Panel Functions
     public function orgList()
     {
-        $organizers = User::where("user_type", 1)->get();
+        $organizers = User::where('user_type', 1)->get();
         
-        return view('org/organizerList', compact('organizers'));
+        return view('organizerList', compact('organizers'));
     }
+
+    public function eventsList()
+    {
+        $users = User::where('user_type', '1')->get();
+        $orgUserIds = [];
+        foreach($users as $user){
+                $orgUserIds[] = $user->id;
+        }
+
+        $orgEvents = Event::where('is_live', '1')->whereIn('user_id', $orgUserIds)->orderBy('id', 'DESC')->get();
+        
+        return view('eventsList', compact('orgEvents'));
+    }
+
+    public function orgEventsList($id)
+    {
+        $orgEvents = Event::where('user_id', $id)->orderBy('id', 'DESC')->get();
+        
+        return view('orgEventsList', compact('orgEvents'));
+    }
+
 }
