@@ -225,8 +225,13 @@
 
                     <li class="nav-item">
                         <a class="nav-link dropdown-toggle dropdown-toggle-nocaret UserIconWithText" data-toggle="dropdown" href="#">
+
+                            <?php if(Auth::user()->user_type != 3) { ?>
+
                             <div class="mr-2 AvailableStorage">{{ number_format((float)$totalGb, 3, '.', '')}} GB Used out of 3GB</div>
                             <div class="mr-2 AvailableStorage"></div>
+
+                            <?php } ?>
                             <div>
                                 <!-- <span class="user-profile"><img src="https://via.placeholder.com/110x110" class="img-circle" alt="user avatar"></span> -->
                                 <?php

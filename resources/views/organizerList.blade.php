@@ -9,7 +9,7 @@
     <div class="Data-Table">
 
         <div class="row">
-            <div class="col-lg-9" style="margin: 0 auto;">
+            <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header addNewEventButton">
                         <i class="fa fa-table pt-3"></i> List of Organizers
