@@ -1,0 +1,270 @@
+body{
+    font-family: 'Open Sans', sans-serif !important;
+}
+.site-header{
+    position: absolute;
+    height: 100px;
+    left: 0px;
+    right: 0px;
+    background: #FFFFFF;
+}
+.site-footer{
+    position: absolute;
+    height: 150px;
+    left: 0px;
+    right: 0px;
+    background: #FFFFFF;
+}
+.serachEvent{
+    border: 1px solid #bababa;
+    color: #2c2c2c;
+    font-size: 16px;
+    height: 40px;
+    width: 100%;
+    border-radius: 25px;
+    background: transparent;
+    padding-left: 20px;
+    padding-right: 32px;
+    font-family: inherit;
+}
+.signInButton{
+    height: 45px;
+    border: none;
+    background: #FD6568;
+    color: #FFF;
+    font-size: 17px;
+    padding: 8px 38px;
+    font-weight: 600;
+    border-radius: 25px;
+    font-family: inherit;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+.signUpButton{
+    height: 45px;
+    border: none;
+    background: #FD6568;
+    color: #FFF;
+    font-size: 17px;
+    padding: 8px 38px;
+    font-weight: 600;
+    border-radius: 25px;
+    font-family: inherit;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    margin-left: -3px;
+}
+.bannerImageOverlay{
+    position: absolute !important;
+    width: 590px !important;
+    height: 266px;
+    left: 12px;
+    top: 40px;
+    background: #FFFFFF;
+    opacity: 0.9;
+    border-radius: 0px 6px 6px 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.bannerText{
+    /*text-align: center;*/
+    /*margin-top: 14%;
+    margin-left: 10%;*/
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    align-content: center;
+    flex-direction: column;
+}
+.bannerText2{
+    margin-top: 14%;
+    margin-left: 10%;
+}
+.createEventButton{
+    height: 45px;
+    border: none;
+    background: #FD6568;
+    color: #FFF;
+    font-size: 17px;
+    padding: 8px 38px;
+    font-weight: 600;
+    border-radius: 25px;
+    font-family: inherit;
+}
+.banner2{
+    background-color: #FED8C6;
+    width: 460px !important;
+    top: 35px !important;
+    display: initial !important;
+    left: 0px !important;
+}
+.featuredContent{
+    display: flex;
+    margin: 0 auto;
+}
+.nav .nav-item .nav-link{
+    color: black;
+    text-transform: capitalize;
+    font-size: 15px;
+    font-weight: 400;
+}
+.mainTab .nav-item .nav-link.active{
+    border-bottom: 3px solid #EB5757;
+    color: black;
+    border-color: #EB5757 #EB5757 #fff;
+    border-bottom: 4px solid #EB5757;
+}
+.searchIcon{
+    position: absolute;
+    height: 45px;
+    left: 420px;
+    top: -3px;
+    background: #FED8C6;
+    border-radius: 22.5px;
+    width: 42px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}
+.searchIcon i{
+    /* position: absolute; */
+    /* height: 45px; */
+    /* left: 15px; */
+    /* top: 15px; */
+    color: black;
+    /* right: 579px !important; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    padding: 12px 0px;
+    font-weight: bold;
+    /* font-size: 17px; */
+}
+.profileImg{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+.communityHeader{
+    margin-top: 10%;
+    margin-left: 20%;
+}
+.communityText{
+    margin-left: 20%;
+    color: black;
+    margin-right: 20%;
+    font-weight: 500;
+}
+.site-footer a{
+    color: black;
+}
+.freeTextSpanClass{
+    background-color: white;
+    position: absolute;
+    width: 80px;
+    padding: 10px 23px;
+    color: black;
+    border-radius: 4px;
+    left: 5%;
+    opacity: 0.9;
+}
+.likeButtonSpan{
+    position: absolute;
+    height: 35px;
+    width: 35px;
+    top: 10px;
+    background: #FFFFFF;
+    opacity: 0.9;
+    right: 5px;
+    border-radius: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}
+.likeButtonSpan i{
+            /*margin-left: 9px;
+            margin-top: 9px;*/
+            color:red;
+}
+.locationDropDown{
+            border-radius: 25px;
+            background-color: white;
+            width: 150px;
+            float: right;
+}
+.signUpButton , .signInButton{
+            padding: 8px 20px;
+}
+.mainTab{
+    border-bottom: unset !important;
+}
+.mainHomePageContainer{
+    padding-top: 130px;
+}
+.dot{
+    background: #FD6568;
+    height: 9px;
+    width: 9px;
+    border-radius: 50%;
+    display: inline-block;
+}
+.dot1{
+    background: #FED8C6;
+    height: 9px;
+    width: 9px;
+    border-radius: 50%;
+    display: inline-block;
+}
+.carousel-indicators {
+    justify-content: flex-end !important;
+    margin-right: 3% !important;
+    bottom: 0px !important;
+}
+.carousel-indicators li{
+    width: 15px !important;
+    height: 15px !important;
+    margin-right: 8px !important;
+    margin-left: 5px !important;
+    border-radius: 50%;
+}
+.carousel-indicators .active{
+    background-color: #FED8C6 !important;
+}
+
+
+@media(max-width:40em) {
+    .site-header, .site-footer{
+        height: 190px;
+    }
+    .mainHomePageContainer{
+        padding-top: 210px;
+    }
+    .searchIcon{
+        left: 360px;
+    }
+    .bannerImage{
+        height: 250px !important;
+    }
+    .bannerImageOverlay{
+        height: 170px!important;
+        width: 250px !important;
+    }
+    .bannerText{
+        top:15% !important;
+    }
+    .buttonMobileSize{
+        height: 35px;
+        font-size: 15px;
+        position: absolute;
+        top: 60%;
+        padding: 7px 10px;
+    }
+    .fontSizeCss{
+        font-size: 15px;
+        line-height: 20px;
+    }
+}

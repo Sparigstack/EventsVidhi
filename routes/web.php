@@ -24,7 +24,7 @@ Route::get('events/{eventid}', 'EventsController@show');
 Auth::routes(['verify' => true]);
 
 // Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/', 'HomeController@index')->name('home');
+// Route::get('/', 'HomeController@index')->name('home');
 //Route::get('/home/create', 'HomeController@create')->name('home');
 
 //All routes for Organizer Panel will be here.
@@ -127,3 +127,6 @@ Route::post('userProfile/update', 'UserController@update');
 Route::get('organizers', 'UserController@orgList');
 Route::get('events', 'UserController@eventsList');
 Route::get('orgEvents/{id}', 'UserController@orgEventsList');
+
+//All routes according to new UI will be here.
+Route::get('/', 'HomeController@indexPage');

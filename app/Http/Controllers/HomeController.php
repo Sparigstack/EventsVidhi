@@ -10,6 +10,8 @@ use Illuminate\Support\Str;
 use SoareCostin\FileVault\Facades\FileVault;
 use Artisan;
 use App\Event;
+use App\Video;
+use App\Podcast;
 use App\Country;
 
 class HomeController extends Controller
@@ -78,5 +80,16 @@ class HomeController extends Controller
         return response()->streamDownload(function () use ($filename) {
             FileVault::disk('s3')->streamDecrypt('files/' . auth()->user()->id . '/' . $filename);
         }, Str::replaceLast('.enc', '', $filename));
+    }
+
+    public function indexPage(Request $request)
+    {
+        $events = Event::where('date_time', '>=', date('Y-m-d', strtotime(now())))->take(12)->orderBy('id', 'DESC')
+            ->get();
+        $eventsFeature = Event::where('date_time', '>=', date('Y-m-d', strtotime(now())))->take(4)->orderBy('id', 'DESC')
+            ->get();
+        $videos = Video::where('created_at', '<=', date('Y-m-d', strtotime(now())))->take(8)->orderBy('id', 'DESC')->get();
+        $podcasts = Podcast::where('created_at', '<=', date('Y-m-d', strtotime(now())))->take(8)->orderBy('id', 'DESC')->get();
+        return view('home', compact('events', 'videos', 'podcasts', 'eventsFeature'));
     }
 }
