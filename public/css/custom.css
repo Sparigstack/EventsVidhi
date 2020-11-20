@@ -2,25 +2,27 @@ body{
     font-family: 'Open Sans', sans-serif !important;
 }
 .site-header{
-    position: absolute;
-    height: 100px;
     left: 0px;
     right: 0px;
     background: #FFFFFF;
 }
 .site-footer{
     position: absolute;
-    height: 150px;
+    background:#fff;
+    height:unset !important;    
     left: 0px;
     right: 0px;
     background: #FFFFFF;
+    padding-bottom:50px;
+    padding-top:30px;
 }
 .serachEvent{
     border: 1px solid #bababa;
     color: #2c2c2c;
     font-size: 16px;
     height: 40px;
-    width: 100%;
+    /*width: 100%;*/
+    width: 85%;
     border-radius: 25px;
     background: transparent;
     padding-left: 20px;
@@ -58,7 +60,7 @@ body{
     position: absolute !important;
     width: 590px !important;
     height: 266px;
-    left: 12px;
+    /*left: 12px;*/
     top: 40px;
     background: #FFFFFF;
     opacity: 0.9;
@@ -81,6 +83,7 @@ body{
     margin-top: 14%;
     margin-left: 10%;
 }
+
 .createEventButton{
     height: 45px;
     border: none;
@@ -118,7 +121,8 @@ body{
 .searchIcon{
     position: absolute;
     height: 45px;
-    left: 420px;
+    /*right:0;*/
+    right:80px;
     top: -3px;
     background: #FED8C6;
     border-radius: 22.5px;
@@ -144,9 +148,9 @@ body{
     /* font-size: 17px; */
 }
 .profileImg{
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
+    width: 50px !important;
+    height: 50px !important;
+    border-radius: 50% !important;
 }
 .communityHeader{
     margin-top: 10%;
@@ -203,7 +207,7 @@ body{
     border-bottom: unset !important;
 }
 .mainHomePageContainer{
-    padding-top: 130px;
+    padding-top: 30px !important;
 }
 .dot{
     background: #FD6568;
@@ -234,23 +238,166 @@ body{
 .carousel-indicators .active{
     background-color: #FED8C6 !important;
 }
-
-
+.featuredContent{
+    display:flex;
+    justify-content:center;
+}
+.Pmobmargin{
+    margin-top:20px;
+    margin-bottom:10px;
+    margin-left:40px;
+}
+.footer-menu-first-column{
+    display:flex;
+    flex-direction:column;
+}
+.footer-menu-second-column{
+    display:flex;
+    flex-direction:column;
+}
+.newloginform{
+    background: #FFFFFF;
+    border: 2px solid #ECECEC;
+    box-sizing: border-box;
+    border-radius: 6px;
+}
+.ForRemember{
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 13px;
+    line-height: 18px;
+    display: flex;
+    text-transform: capitalize;
+    align-items: center;
+    color:#9c9c9c;
+}
+[class*="icheck-material"] > input:first-child + label::before, [class*="icheck-material"] > input:first-child + input[type="hidden"] + label::before{
+border: 2px solid #ECECEC !important;
+box-sizing: border-box !important;
+border-radius: 6px !important;
+}
+.sign-in-button{
+    display:flex;
+    align-items:center;
+    align-content:center;
+    padding:unset !important;
+}
+.sign-in-button .col-md-6{
+    padding:unset !important;
+} 
+.SignUpLink{
+    display: flex;
+    align-items:center;
+    justify-content:center;
+}
+.New-Login{
+    background: #FD6568 !important;
+    font-family: Open Sans !important;
+    font-style: normal  !important;
+    font-weight: bold  !important;
+    font-size: 14px  !important;
+    line-height: 19px  !important;
+    display: flex  !important;
+    border-color:unset !important;
+    text-transform:capitalize !important;
+    justify-content: center  !important;
+    align-items: center  !important;
+    padding: 12px 50px  !important;
+    text-align: center  !important;
+    width: auto  !important;
+    color: #FFFFFF  !important;
+    border-radius: 25px  !important;    
+ }
+ .SignUpSocial{
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+}
+ .LetsStart-Section, .LetsStartOrgReg-Section{
+    display:flex;
+    align-items:center;
+    align-content:center;
+}
+.icon-magnifier:before{
+    font-size: 18px;
+}
+ 
+@media(min-width:768px) and (max-width:1024px){
+    .SignUpLink p a{
+        font-size:10px !important;
+    }
+}
 @media(max-width:40em) {
-    .site-header, .site-footer{
-        height: 190px;
+    .HiddenImageOnclick img{
+        max-width:100% !important;
+        width:100% !important;
+    }
+    .MobWidth{
+        min-width:100%;
+    }
+    .featuredContent .card a img{
+        height:unset !important;
+    }
+    /*ul.mainTab{*/
+    /*    display:block !important;*/
+    /*    columns:2;*/
+    /*}*/
+    ul.mainTab{
+        display:flex !important;
+        align-items:flex-start;
+        flex-direction:column;
+    }
+    .MobFrame{
+        width:100% !important;
+        height:unset !important;
+    }
+    ul.mainTab .nav-item.ml-4{
+        margin:unset !important;
+    }
+    .serachEvent{
+        margin-bottom:10px;
+    }
+    .mob-pd-common{
+        padding:10px 0px !important;
+    }
+    .footer-menu-third-column{
+        padding:10px 0px;
+    }
+    .footer-social{
+        display:flex !important;
+        margin:15px 0px;
+    }
+    .Pmobmargin{
+        margin-left:1.3rem !important;
+        margin-top:unset !important;
+        
+    }
+    .bannerText2 .col-md-9 h4{
+      font-size:18px !important;
+    }
+    .MobDisplay{
+        display:contents !important;
+    }
+    /*.site-header, .site-footer{*/
+    /*    height: 190px;*/
+    /*}*/
+    .MobileMt{
+        margin-top:15px !important;
     }
     .mainHomePageContainer{
         padding-top: 210px;
     }
     .searchIcon{
-        left: 360px;
+        /*right:12px;*/
+        /*right: 40px;*/
+        right: 10%;
     }
     .bannerImage{
         height: 250px !important;
     }
     .bannerImageOverlay{
-        height: 170px!important;
+        /*height: 170px!important;*/
         width: 250px !important;
     }
     .bannerText{
@@ -266,5 +413,15 @@ body{
     .fontSizeCss{
         font-size: 15px;
         line-height: 20px;
+        margin-bottom:60px;
+    }
+    .logodiv, .searchbardiv, .signupindiv{
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        align-content: center !important;
+    }
+    .marginzeromobile{
+        margin-left: 0px !important;
     }
 }

@@ -39,9 +39,11 @@ class LoginController extends Controller
      */
     protected function redirectTo(){
         if(auth()->user()->user_type == "1"){
-            return '/org/events';
+            // return '/org/events';
+            return '/';
         } else if(auth()->user()->user_type == "2"){
-            return '/myAccount';
+            // return '/myAccount';
+            return '/';
         } else if(auth()->user()->user_type == "3"){
             return '/organizers';
         }

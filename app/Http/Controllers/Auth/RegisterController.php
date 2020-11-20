@@ -37,6 +37,11 @@ class RegisterController extends Controller
      *
      * @return void
      */
+
+    // protected function redirectTo(){
+    //     return '/userRegister';
+    // }
+
     public function __construct()
     {
         $this->middleware('guest');
@@ -51,9 +56,9 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
+            // 'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            // 'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
     }
 
@@ -73,12 +78,27 @@ class RegisterController extends Controller
                 'user_type' => 2,
             ]);
         } else{
-            return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-            'user_type' => 1,
-        ]);
+            if (array_key_exists("website", $data) && array_key_exists("businessName", $data)) {
+            // if($data['website']->exists() && $data['businessName']->exists()){
+                $lastID = User::orderBy('id', 'desc')->first();
+                return User::where('id', $lastID->id)->update([
+                    'name' => $data['businessName'],
+                    'website_url' => $data['website'],
+                ]);
+                // $users = User::findOrFail($lastID->id);
+                // $users->name = $data['businessName'];
+                // $users->website_url = $data['website'];
+                // $users->save();
+            } else {
+                return User::create([
+                // 'name' => $data['name'],
+                'email' => $data['email'],
+                'password' => Hash::make($data['password']),
+                'user_type' => 1,
+                ]);
+                // $lastID = User::orderBy('id', 'desc')->first();
+                // return $lastID->id;
+            }
 
         }
     }

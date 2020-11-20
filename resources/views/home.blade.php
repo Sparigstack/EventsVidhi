@@ -2,8 +2,9 @@
 @section('content')
     <?php $AwsUrl = env('AWS_URL'); ?>
                 <div class="container mainHomePageContainer" style="">
-                    <div class="col-md-12 col-lg-12">
-                        <img src="assets/images-new/banner-image-1.png" class="w-100 bannerImage">
+                    <div class="col-md-12 col-lg-12 d-flex align-items-center" style="background:url('assets/images-new/banner-image-1.png'); background-size:cover; background-position:center;
+                    background-repeat:no-repeat; min-height:350px; padding:unset;">
+                        <!--<img src="assets/images-new/banner-image-1.png" class="w-100 bannerImage">-->
                         <div class="col-md-6 bannerImageOverlay">
                             <div class="bannerText">
                                 <h4 class="fontSizeCss"> Hub for all great learning.<br>Start your journey with us!</h4>
@@ -52,7 +53,7 @@
                                 </div>
 
                                 <div class="col-md-12">
-                                    <p class="mt-4 ml-5" style="color: black;font-weight: 500;">{{$eventFeature->description}}</p>
+                                    <p class=" Pmobmargin " style="color: black;font-weight: 500;">{{$eventFeature->description}}</p>
                                 </div>
                             </div>
                                   <div class="carousel-caption d-md-block">
@@ -71,24 +72,29 @@
                                 <div class="card-body">
                                     <ul class="nav nav-tabs mainTab">
                                         <li class="nav-item ml-4">
-                                            <a class="nav-link active" data-toggle="tab" href="#contentTab"><span class="hidden-xs">All Content</span></a>
+                                            <a class="nav-link active" data-toggle="tab" href="#contentTab" onclick="showHidecategoriesNav(this);"><span>All Content</span></a>
                                         </li>
 
                                         <li class="nav-item">
-                                            <a class="nav-link" data-toggle="tab" href="#eventsTab"><span class="hidden-xs">Events</span></a>
+                                            <a class="nav-link eventsTab" data-toggle="tab" href="#eventsTab" onclick="showHidecategoriesNav(this);"><span>Events</span></a>
                                         </li>
 
                                         <li class="nav-item">
-                                            <a class="nav-link" data-toggle="tab" href="#videoTab"><span class="hidden-xs">Video</span></a>
+                                            <a class="nav-link" data-toggle="tab" href="#videoTab" onclick="showHidecategoriesNav(this);"><span>Video</span></a>
                                         </li>
 
                                         <li class="nav-item">
-                                            <a class="nav-link" data-toggle="tab" href="#audioTab"><span class="hidden-xs">Audio</span></a>
+                                            <a class="nav-link" data-toggle="tab" href="#audioTab" onclick="showHidecategoriesNav(this);"><span>Audio</span></a>
                                         </li>
                                     </ul>
 
-                                    <ul class="nav">
+                                    <ul class="nav categoriesNav d-none" style="">
+                                        @foreach($categories as $category)
                                         <li class="nav-item ml-4">
+                                            <a class="nav-link" data-toggle="tab" href="#" onclick="showHideEventListing(this);" data-id="{{$category->id}}"><span class="">{{$category->name}}</span></a>
+                                        </li>
+                                        @endforeach
+                                        <!-- <li class="nav-item ml-4">
                                             <a class="nav-link active" data-toggle="tab" href="#"><span class="hidden-xs">All</span></a>
                                         </li>
 
@@ -102,7 +108,7 @@
 
                                         <li class="nav-item">
                                             <a class="nav-link" data-toggle="tab" href="#"><span class="hidden-xs">Mindfullness</span></a>
-                                        </li>
+                                        </li> -->
                                     </ul>
 
                                 </div>
@@ -112,7 +118,7 @@
                         <div class="tab-content">
                             <div class="row tab-pane active" id="contentTab">
                                 <div class="col-md-11 featuredContent mb-4">
-                                    <div class="col-md-12 row">
+                                    <div class="col-md-12 row MobDisplay">
                                         <div class="col-md-4">
                                             <h4> All Content </h4>
                                         </div>
@@ -221,7 +227,7 @@
                                                                 $url = "https://player.vimeo.com/video/" . $getLastWord;
                                                             }
                                                             ?>
-                                                            <a href="{{$url}}" target="_blank"><iframe width="230px" height="130px" src="{{$url}}"></iframe></a>
+                                                            <a href="{{$url}}" target="_blank"><iframe class="MobFrame" width="230px" height="130px" src="{{$url}}"></iframe></a>
                                                             <?php  }
                                                         }
                                                         ?>
@@ -337,7 +343,7 @@
 
                             <div class="row tab-pane" id= "eventsTab">
                                 <div class="col-md-11 featuredContent mb-4">
-                                    <div class="col-md-12 row">
+                                    <div class="col-md-12 row MobDisplay">
                                         <div class="col-md-4">
                                             <h4> Events</h4>
                                         </div>
@@ -352,15 +358,26 @@
                                 </div>
                                 <div class="col-md-11 featuredContent mb-4">
                                     <div class="row col-md-12 pl-0 pr-0">
+                                        <div class="col-md-12 d-none noEventMsg">
+                                            <p class="text-center"> No Records Found! </p>
+                                        </div>
                                         <?php $row_count = 1;
                                         foreach ($events as $event) { ?>
+
                                         <?php
                                         $logoUrl = $AwsUrl . 'no-image-logo.jpg';
                                         if (!empty($event->thumbnail)) {
                                             $logoUrl = $AwsUrl . $event->thumbnail;
                                         }
                                         ?>
-                                        <div class="col-md-3">
+
+                                        <div class="col-md-3 eventListDiv parent">
+
+                                            <?php
+                                         foreach ($event->categories as $EventCategory) { ?>
+                                            <input type="hidden" class="eventCatID" value="{{$EventCategory->id}}">
+                                        <?php } ?>
+
                                             <div class="card">
                                                 <?php
                                                 $freeEventClass = "d-none";
@@ -419,7 +436,7 @@
 
                             <div class="row tab-pane" id= "videoTab">
                                 <div class="col-md-11 featuredContent mb-4">
-                                    <div class="col-md-12 row">
+                                    <div class="col-md-12 row MobDisplay">
                                         <div class="col-md-4">
                                             <h4>Video</h4>
                                         </div>
@@ -529,7 +546,7 @@
 
                                     <div class="row tab-pane" id= "audioTab">
                                         <div class="col-md-11 featuredContent mb-4">
-                                            <div class="col-md-12 row">
+                                            <div class="col-md-12 row MobDisplay">
                                                 <div class="col-md-4">
                                                     <h4>Audio</h4>
                                                 </div>
@@ -625,4 +642,40 @@
                                         </div>
 
                                     </div>
+@endsection
+
+@section('script')
+    <script>
+       function showHidecategoriesNav(classname){
+           if($(classname).hasClass("eventsTab")){
+                $('.categoriesNav').removeClass('d-none');
+                $('.eventListDiv').removeClass('d-none');
+                $('.noEventMsg').addClass('d-none');
+            } else{
+                $('.categoriesNav').addClass('d-none');
+            }
+       }
+
+       function showHideEventListing(eventslist){
+            var eventListID = $(eventslist).attr('data-id');
+            
+            $('.eventCatID').each(function() {
+                var eventCategoryID = $(this).val();
+                if(eventListID == eventCategoryID){
+                    $(this).parent().removeClass('d-none');
+                } else {
+                    $(this).parent().addClass('d-none');
+                }
+            });
+
+            var checkLength = $('.eventListDiv:visible').length;
+
+            if(checkLength == 0){
+                $('.noEventMsg').removeClass('d-none');
+            } else {
+                $('.noEventMsg').addClass('d-none');   
+            }
+        }
+    </script>
+
 @endsection

@@ -81,7 +81,7 @@
             <div class="simplebar-scroll-content" style="padding-right: 17px; margin-bottom: -34px;">
                 <div class="simplebar-content" style="padding-bottom: 17px; margin-right: -17px;">
                     <div class="brand-logo">
-                        <a href="{{ route('home') }}">
+                        <a href="{{ url('/') }}">
                             <img src="{{ asset('assets/images/logo-icon.png') }}" class="logo-icon" alt="logo icon">
                             <h5 class="logo-text">Vidhi's Events</h5>
                         </a>

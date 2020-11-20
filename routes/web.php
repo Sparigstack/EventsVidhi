@@ -22,6 +22,7 @@ Route::get('events/{eventid}', 'EventsController@show');
 
 
 Auth::routes(['verify' => true]);
+// Auth::routes();
 
 // Route::get('/home', 'HomeController@index')->name('home');
 // Route::get('/', 'HomeController@index')->name('home');

@@ -13,6 +13,8 @@ use App\Event;
 use App\Video;
 use App\Podcast;
 use App\Country;
+use App\EventCategory;
+use App\Category;
 
 class HomeController extends Controller
 {
@@ -90,6 +92,8 @@ class HomeController extends Controller
             ->get();
         $videos = Video::where('created_at', '<=', date('Y-m-d', strtotime(now())))->take(8)->orderBy('id', 'DESC')->get();
         $podcasts = Podcast::where('created_at', '<=', date('Y-m-d', strtotime(now())))->take(8)->orderBy('id', 'DESC')->get();
-        return view('home', compact('events', 'videos', 'podcasts', 'eventsFeature'));
+        $categories = Category::all();
+        // $eventCategories = EventCategory::all();
+        return view('home', compact('events', 'videos', 'podcasts', 'eventsFeature', 'categories'));
     }
 }
