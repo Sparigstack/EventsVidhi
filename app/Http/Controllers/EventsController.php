@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Event;
 use App\FailedJob;
 
 class EventsController extends Controller
 {
     public function __construct() {
-        $this->middleware('verified');
+        // $this->middleware('verified');
     }
 
     /**
@@ -16,10 +17,14 @@ class EventsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($eventid)
     {
-        $events = FailedJob::all();
-        return view('events', compact('events'));
+        // $events = FailedJob::all();
+        // return view('events', compact('events'));
+        $event = Event::find($eventid);
+        $eventsList = Event::where('date_time', '>=', date('Y-m-d', strtotime(now())))->take(4)->orderBy('id', 'DESC')
+            ->get();
+        return view('eventDetail', compact('event', 'eventsList'));
     }
 
     /**

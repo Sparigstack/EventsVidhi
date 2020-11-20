@@ -17,8 +17,8 @@ use Illuminate\Support\Facades\Route;
 //     return view('home');
 // });
 
-Route::get('events', 'EventsController@index');
-Route::get('events/{eventid}', 'EventsController@show');
+
+// Route::get('events/{eventid}', 'EventsController@show');
 
 
 Auth::routes(['verify' => true]);
@@ -131,3 +131,6 @@ Route::get('orgEvents/{id}', 'UserController@orgEventsList');
 
 //All routes according to new UI will be here.
 Route::get('/', 'HomeController@indexPage');
+
+
+Route::get('events/{eventid}', 'EventsController@index');

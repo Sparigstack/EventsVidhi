@@ -152,7 +152,7 @@
                                                 $dateStr = date("d",  $sdStamp);
                                                 $MonthStr = date("M",  $sdStamp); 
                                                 ?>
-                                                <a href="#"><img src="{{$logoUrl}}" class="w-100" alt="" style="height: 130px;"></a>
+                                                <a href="{{url('events/'. $event->id)}}"><img src="{{$logoUrl}}" class="w-100" alt="" style="height: 130px;"></a>
                                                 <span class="{{$freeEventClass}} mt-2">FREE</span>
                                                 <span class="likeButtonSpan"><i aria-hidden="true" class="fa fa-heart-o"></i></span>
                                                 <div class="card-body">
@@ -388,7 +388,7 @@
                                                 $dateStr = date("d",  $sdStamp);
                                                 $MonthStr = date("M",  $sdStamp); 
                                                 ?>
-                                                <a href="#"><img src="{{$logoUrl}}" class="w-100" alt="" style="height: 130px;"></a>
+                                                <a href="{{url('events/'. $event->id)}}"><img src="{{$logoUrl}}" class="w-100" alt="" style="height: 130px;"></a>
                                                 <span class="{{$freeEventClass}} mt-2">FREE</span>
                                                 <span class="likeButtonSpan"><i aria-hidden="true" class="fa fa-heart-o"></i></span>
                                                 <div class="card-body">

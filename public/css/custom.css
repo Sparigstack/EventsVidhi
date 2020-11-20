@@ -322,6 +322,28 @@ border-radius: 6px !important;
 .icon-magnifier:before{
     font-size: 18px;
 }
+.eventDateTimeBox{
+    width: 45%;
+    padding: 5px 10px;
+    background-color: white;
+    height: 5%;
+    border-radius: 6px;
+}
+.eventCategoryTag{
+    width: 90%;
+    padding: 5px 10px;
+    background-color: white;
+    margin: 0 auto;
+    border-radius: 6px;
+}
+.eventDetailCardBody{
+    padding: 25px 40px !important;
+    border-radius: 6px;
+}
+.ticketBoxes{
+    background-color: #C4C4C4;
+    height: 316px;
+}
  
 @media(min-width:768px) and (max-width:1024px){
     .SignUpLink p a{
@@ -423,5 +445,15 @@ border-radius: 6px !important;
     }
     .marginzeromobile{
         margin-left: 0px !important;
+    }
+    .eventDateTimeBox{
+        height: 5%;
+        width: 50%;
+    }
+    .eventCategoryTag{
+        width: 50%;
+    }
+    .ticketBoxes{
+        margin-bottom: 10px;
     }
 }
