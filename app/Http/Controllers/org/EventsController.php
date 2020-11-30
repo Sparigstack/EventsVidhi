@@ -80,7 +80,7 @@ class EventsController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'EventBannerImage' => 'image|mimes:jpeg,bmp,png,jpg,gif,spg|dimensions:max_width=845,max_height=445',
+            'EventBannerImage' => 'image|mimes:jpeg,bmp,png,jpg,gif,spg|dimensions:min_width=970,min_height=330',
             'EventThumbnailImage' => 'image|mimes:jpeg,bmp,png,jpg|dimensions:max_width=420,max_height=360',
             'title' => 'required',
             'category' => 'required',
@@ -469,7 +469,7 @@ class EventsController extends Controller
         $events = Event::findOrFail($id);
 
         $validator = Validator::make($request->all(), [
-            'EventBannerImage' => 'image|mimes:jpeg,bmp,png,jpg,gif,spg|dimensions:max_width=845,max_height=445',
+            'EventBannerImage' => 'image|mimes:jpeg,bmp,png,jpg,gif,spg|dimensions:min_width=970,min_height=330',
             'EventThumbnailImage' => 'image|mimes:jpeg,bmp,png,jpg|dimensions:max_width=420,max_height=360',
             'title' => 'required',
             'category' => 'required',

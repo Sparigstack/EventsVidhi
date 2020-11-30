@@ -231,15 +231,19 @@ function isNumberKey(evt)
 //        document.getElementById('bannerImage').classList.remove('d-none');
                 // return true;
               // }
-            if(this.width< 845 && this.height < 445){
+            // if(this.width< 845 && this.height < 445){
+                if(this.width> 970 && this.height > 330){
                 $("#bannerImage").addClass("SmallImages");
                 $(".removebtn").removeClass("d-none");
                 return true;
-            }else if(this.width === 845 && this.height === 445){
+            }
+            // else if(this.width === 845 && this.height === 445){
+                else if(this.width === 970 && this.height === 330){
                 $(".removebtn").removeClass("d-none");
                 return true;
             }else{
-                alert("Maximum image dimension allowed is : 845x445 pixels.");
+                // alert("Maximum image dimension allowed is : 845x445 pixels.");
+                alert("Maximum image dimension allowed is : 970x330 pixels.");
                 $('#bannerImage').attr("src", "");
                 $('#EventBannerImage').val("");
                 document.getElementById('bannerImage').src = "";

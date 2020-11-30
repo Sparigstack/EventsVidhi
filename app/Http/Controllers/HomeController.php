@@ -9,12 +9,14 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use SoareCostin\FileVault\Facades\FileVault;
 use Artisan;
+use DB;
 use App\Event;
 use App\Video;
 use App\Podcast;
 use App\Country;
 use App\EventCategory;
 use App\Category;
+use App\ContentFollower;
 
 class HomeController extends Controller
 {
@@ -86,14 +88,67 @@ class HomeController extends Controller
 
     public function indexPage(Request $request)
     {
-        $events = Event::where('date_time', '>=', date('Y-m-d', strtotime(now())))->take(12)->orderBy('id', 'DESC')
+        $events = Event::where('date_time', '>=', date('Y-m-d', strtotime(now())))->where('is_live', '=', '1')->where('deleted_at', '=', NULL)->take(8)->orderBy('id', 'DESC')
             ->get();
-        $eventsFeature = Event::where('date_time', '>=', date('Y-m-d', strtotime(now())))->take(4)->orderBy('id', 'DESC')
+        $eventsFeature = Event::where('date_time', '>=', date('Y-m-d', strtotime(now())))->where('is_featured', '=', '1')->where('is_live', '=', '1')->where('deleted_at', '=', NULL)->take(4)->orderBy('id', 'DESC')
             ->get();
-        $videos = Video::where('created_at', '<=', date('Y-m-d', strtotime(now())))->take(8)->orderBy('id', 'DESC')->get();
-        $podcasts = Podcast::where('created_at', '<=', date('Y-m-d', strtotime(now())))->take(8)->orderBy('id', 'DESC')->get();
+        $videos = Video::take(8)->orderBy('id', 'DESC')->get();
+        $podcasts = Podcast::take(8)->orderBy('id', 'DESC')->get();
+
+        // $countries = Country::all();
+        $countries = DB::table('events')->select('countries.name')->join('countries', 'events.country_id', '=', 'countries.id')->distinct('countries.name')->get();
         $categories = Category::all();
-        // $eventCategories = EventCategory::all();
-        return view('home', compact('events', 'videos', 'podcasts', 'eventsFeature', 'categories'));
+        $eventCategories = EventCategory::all();
+        $eventFollowersList = ContentFollower::all();
+        return view('home', compact('events', 'videos', 'podcasts', 'eventsFeature', 'categories', 'countries', 'eventCategories', 'eventFollowersList'));
+    }
+
+    public function allContent($tabId = 0)
+    {
+        $events = Event::where('date_time', '>=', date('Y-m-d', strtotime(now())))->where('is_live', '=', '1')->where('deleted_at', '=', NULL)->orderBy('id', 'DESC')
+            ->get();
+        $videos = Video::orderBy('id', 'DESC')->get();
+        $podcasts = Podcast::orderBy('id', 'DESC')->get();
+        $countries = DB::table('events')->select('countries.name')->join('countries', 'events.country_id', '=', 'countries.id')->distinct('countries.name')->get();
+        $categories = Category::all();
+        $eventCategories = EventCategory::all();
+        $eventFollowersList = ContentFollower::all();
+        return view('allContent', compact('events', 'videos', 'podcasts', 'categories', 'tabId', 'countries', 'eventCategories', 'eventFollowersList'));
+    }
+
+    public function eventDetail($eventid)
+    {
+        // $events = FailedJob::all();
+        // return view('events', compact('events'));
+        $event = Event::find($eventid);
+        $countryName = DB::table('events')->select('countries.name')->join('countries', 'events.country_id', '=', 'countries.id')->where('events.id', $eventid)->first();
+        $eventsList = Event::where('date_time', '>=', date('Y-m-d', strtotime(now())))->where('is_live', '=', '1')->where('deleted_at', '=', NULL)->take(4)->orderBy('id', 'DESC')
+            ->get();
+        $eventFollowersList = ContentFollower::all();
+        return view('eventDetail', compact('event', 'eventsList', 'countryName', 'eventFollowersList'));
+    }
+
+    public function videoDetail($videoid)
+    {
+        $video = Video::find($videoid);
+        $eventCategories = "select c.name from videos v join event_categories e on v.event_id=e.event_id join categories c on e.category_id=c.id where v.id=". $videoid;
+        $eventCategoriesResult = DB::select(DB::raw($eventCategories));
+        $videosList = Video::take(4)->orderBy('id', 'DESC')->get();
+        return view('videoDetail', compact('video', 'videosList', 'eventCategoriesResult'));
+    }
+
+    public function saveEventFollower(Request $request){
+        // if($request->userIDFollow == ''){
+        if($request->userIDFollow != ''){
+            if($request->fillHeartValue == '1'){
+                $eventFollowerDelete = ContentFollower::where('user_id', $request->userIDFollow)->where('content_id', $request->eventId)->where('discriminator', $request->discriminator)->delete();
+            } else {
+                $contentFollower = new ContentFollower;
+                $contentFollower->content_id = $request->eventId;
+                $contentFollower->discriminator = $request->discriminator;
+                $contentFollower->user_id = $request->userIDFollow;
+                $contentFollower->save();
+            }
+        }
     }
 }

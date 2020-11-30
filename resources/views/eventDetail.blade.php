@@ -1,3 +1,4 @@
+<?php $v = "1.0.1"; ?>
 @extends('layouts.appFront')
 @section('content')
 
@@ -7,9 +8,21 @@
 		  if (!empty($event->banner)) {
             $bannerImage = $AwsUrl . $event->banner;
           } else {
-          	$bannerImage = $AwsUrl . 'no-image-logo.jpg';
+          	// $bannerImage = $AwsUrl . 'no-image-logo.jpg';
+            $bannerImage = '../assets/images-new/banner_img_no_available.png';
           }
 	?>
+
+    <?php 
+                                $getUserID = "";
+                                if(Auth::check()){
+                                    $getUserID = Auth::user()->id;
+                                }
+                            ?>
+                            <input class="csrf-token" type="hidden" value="{{ csrf_token() }}">
+                            <input type="hidden" class="saveEventFollower" value="{{url('saveEventFollower')}}">
+                            <input type="hidden" class="loginRoute" value="{{route('login')}}">
+                            <input type="hidden" class="userIDFollow" value="{{$getUserID}}">
 
 	<div class="col-md-12 col-lg-12 d-flex align-items-center mb-3">
 		<a href="{{url('/')}}" style="color: #9C9C9C;font-weight: 100;" class="ml-5"><i class="fa fa-angle-left"></i>&nbsp; Back</a>
@@ -22,7 +35,7 @@
                     <!-- <img src="{{url('assets/images-new/banner-image-1.png')}}" class="w-100 bannerImage"> -->
      </div>
 
-     <div class="col-md-12 featuredContent mt-5 mb-4 row" style="padding: 0px 40px;">
+     <div class="featuredContent mt-5 mb-4 row" style="padding: 0px 40px;">
      	<div class="col-md-8 col-lg-8">
      		<div class="card w-100">
                 <div class="card-body eventDetailCardBody">
@@ -66,7 +79,7 @@
      	<div class="col-md-4 col-lg-4">
      		<h5> Time </h5>
 
-     		<div class="eventDateTimeBox">
+     		<div class="eventDateTimeBox mb-4">
      			<?php
      				$eventDateTime = strtotime($event->date_time);
                     $dateStr = date("d M",  $eventDateTime);
@@ -75,27 +88,30 @@
     			<p class="text-center text-uppercase"> {{$timeStr}}, {{$dateStr}}</p>
      		</div>
 
-     		<h5 class="mt-4"> Location </h5>
+            <?php
+                $address = "";
+                $countryNameAdd = "";
+                $cityName = "";
+                if($event->country_id && $countryName){
+                    $address = $event->address;
+                    $countryNameAdd = $countryName->name;
+                    $cityName = $event->city; ?>
+                
+     		<h5 class=""> Location </h5>
 
      		<div class="mt-3 mb-4"> 
-     			<?php
-     				$cityName = "";
-     				$address = "";
-     				if($event->city_id){
-     					$cityName = $event->city_id;
-     					$address = $event->address;
-     				}
-     			?>
      			<!--Google map-->
 				<div id="map-container-google-1" class="z-depth-1-half map-container" style="">
-  					<iframe src="https://maps.google.com/maps?q=manhatan&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0" style="border:0" allowfullscreen></iframe>
+  					<!-- <iframe src="https://maps.google.com/maps?q=manhatan&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0" style="border:0" allowfullscreen></iframe> -->
+                    <iframe src="https://maps.google.com/maps?q={{$cityName}}&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0" style="border:0" allowfullscreen></iframe>
 				</div>
 				<!--Google Maps-->
 
-				<p class="mt-2"> {{$address}} (Manhattan) </p>
+				<p class="mt-2"> {{$address}} ({{$cityName}}) </p>
      		</div>
+            <?php } ?>
 
-     		<div class="registerEvent">
+     		<div class="registerEvent col-md-12 row">
      			<a href="{{ route('register') }}">
                 <input type="button" id="" class="clickable createEventButton buttonMobileSize" value="Registration" style="padding: 8px 30px;"></a>
      		</div>
@@ -123,7 +139,7 @@
      	</div>
      </div>
 
-     <div class="col-md-12 eventsList mb-4 row" style="padding: 0px 40px;padding-top: 70px;">
+     <div class="col-md-12 eventsList mb-4" style="padding: 0px 40px;padding-top: 70px;">
      	<h5 class="mb-4"> Events you may like </h5>
 
      	<div class="row col-md-12 pl-0 pr-0">
@@ -146,25 +162,53 @@
                     $dateStr = date("d",  $sdStamp);
                     $MonthStr = date("M",  $sdStamp); 
                 ?>
-                    <a href="{{url('events/'. $eventList->id)}}"><img src="{{$logoUrl}}" class="w-100" alt="" style="height: 130px;"></a>
-                    <span class="likeButtonSpan"><i aria-hidden="true" class="fa fa-heart-o"></i></span>
+                    <a href="{{url('events/'. $eventList->id)}}"><img src="{{$logoUrl}}" class="w-100" alt="" style="height: 130px;border-radius: 6px 6px 0px 0px;"></a>
+                    
+                    <?php 
+                                                    $checkHeartFill = "d-none";
+                                                    $checkHeartEmpty = "";
+                                                    $checkVal = "";
+                                                    if(Auth::check()){
+                                                        foreach($eventFollowersList as $eventFollowerList){
+                                                            if(Auth::user()->id == $eventFollowerList->user_id && $eventList->id == $eventFollowerList->event_id){
+                                                                $checkHeartFill = "";
+                                                                $checkHeartEmpty = "d-none";
+                                                                $checkVal = "1";
+                                                            }
+                                                        }
+                                                    }
+                                                ?>
+                                                <a style="cursor: pointer;" onclick="followEvent(this);" data-event-id="{{$eventList->id}}">
+                                                <span class="likeButtonSpan"><i aria-hidden="true" class="fa fa-heart-o emptyHeart {{$checkHeartEmpty}}" id="" style=""></i>
+                                                    <i aria-hidden="true" class="fa fa-heart {{$checkHeartFill}} fillHeart" style="color: #FD6568;" value="{{$checkVal}}"></i>
+                                                </span></a>
+
                     <div class="card-body">
-                        <div class="col-md-12 row pr-0">
-                            <div class="pr-0 pl-1">
+                        <a href="{{url('events/'. $eventList->id)}}">
+                        <div class="col-md-12 row pr-0" style="padding: unset;margin: unset;">
+                            <div class="pr-0 pl-1 col-md-3 mobRowDisplay">
                                 <h6 class="text-uppercase"> {{$dateStr}} <br> {{$MonthStr}} </h6>
                             </div>
-                            <div class="pl-4">
+                            <div class="pl-1 col-md-9 mobRowDisplay1">
                                 <h6> {{$eventList->title}} </h6>
                             </div>
-                        </div>
+                        </div></a>
 
 						<?php
 						for ($x = 0; $x < 1; $x++) {  ?>
-                        <a class="text-center" data-toggle="collapse" data-target="#heading<?php echo $row_count ?>" style="display: block;"><i class="fa fa-chevron-down"></i></a>
+                        <a class="text-center chevronClass" data-toggle="collapse" aria-expanded="false" data-target="#heading<?php echo $row_count ?>" style="display: block;"><i class="fa fa-chevron-down" style="color: #9C9C9C;"></i>
+                                                    <i class="fa fa-chevron-up" style="color: #9C9C9C;"></i></a>
                         <div id="heading<?php echo $row_count ?>" class="collapse" style="color: black;">
                             {{$eventList->description}}
                         </div>
                         <?php $row_count++; } ?>
+
+                        <?php if($eventList->is_online == 1){ ?>
+                                                    <div class="col-md-12 pr-0 mt-2 pl-0" style="color:#9C9C9C;">Online Event </div>
+                                              <?php  } else { ?>
+                                                    <div class="col-md-12 pr-0 mt-2 pl-0" style="color:#9C9C9C;"> <i aria-hidden="true" class="fa fa-location-arrow pr-1"></i> {{$eventList->city}},  {{$eventList->state}}</div>
+                                                <?php } ?>
+                        
                         <hr>
                         <div class="row">
                            <div class="pl-2">
@@ -192,4 +236,8 @@
 
 </div>
 
+@endsection
+
+@section('script')
+<script src="{{asset('/js/custom.js?v='.$v)}}" type="text/javascript"></script>
 @endsection

@@ -1,106 +1,19 @@
 <?php $v = "1.0.1"; ?>
 @extends('layouts.appFront')
 @section('content')
-    <?php $AwsUrl = env('AWS_URL'); ?>
-                <div class="container mainHomePageContainer" style="">
-                    <div class="col-md-12 col-lg-12 d-flex align-items-center" style="background:url('assets/images-new/banner-image-1.png'); background-size:cover; background-position:center;
-                    background-repeat:no-repeat; min-height:350px; padding:unset;">
-                        <!--<img src="assets/images-new/banner-image-1.png" class="w-100 bannerImage">-->
-                        <div class="col-md-6 bannerImageOverlay">
-                            <div class="bannerText">
-                                <h4 class="fontSizeCss"> Hub for all great learning.<br>Start your journey with us!</h4>
-                                <?php
-                                if(Auth::check()){ 
-                                    if(Auth::user()->user_type == 1) {?>
-                                <a href="{{ url('org/events') }}">
-                                    <input type="button" id="" class="clickable createEventButton buttonMobileSize mt-3" value="Create your event"></a>
-                                <?php } else{ ?>
-                                    <!-- <a href="{{ route('register') }}">
-                                    <input type="button" id="" class="clickable createEventButton buttonMobileSize mt-3" value="Create your event"></a> -->
-                                    <a href="{{url('allContent/1')}}">
-                                    <input type="button" id="" class="clickable createEventButton buttonMobileSize mt-3" value="Browse Events"></a>
-                               <?php } } else{?>
-                                    <a href="{{ route('register') }}">
-                                    <input type="button" id="" class="clickable createEventButton buttonMobileSize mt-3" value="Create your event"></a>
-                           <?php }
-                                ?>
-                                </div>
-                            </div>
-                        </div> 
+<?php $AwsUrl = env('AWS_URL'); ?>
 
-                        <div class="col-md-12 col-lg-12 mt-4 mb-4">
-                            <h4> Featured Content </h4>
-                        </div>
+<div class="container mainHomePageContainer pt-3" style="">
+	<div class="col-md-12 col-lg-12 d-flex align-items-center mb-3">
+		<a href="{{url('/')}}" style="color: #9C9C9C;font-weight: 100;" class="ml-4 pl-2"><i class="fa fa-angle-left"></i>&nbsp; Back</a>
+	</div>
 
-                        <div class="col-md-11 featuredContent mb-4">
-                            <!-- <img src="assets/images-new/banner-image-2.png" class="w-100"> -->
-                            <!-- carousel start -->
-                            <div id="carouselExampleIndicators" class="carousel slide w-100" data-ride="carousel">
-                                <?php $countIndicatorActive = 0;
-                                  ?>
-                              <!-- Indicators -->
-                              <ol class="carousel-indicators">
-                                <?php for($countIndicator=1;$countIndicator<=count($eventsFeature);$countIndicator++) { ?>
-                                <li data-target="#carouselExampleIndicators" data-slide-to="{{$countIndicator-1}}" class="<?php if($countIndicatorActive==0){ echo "active"; } else{ echo " ";}?>"></li>
-                                
-                                <?php $countIndicatorActive++;
-                                 } ?>
-                                <!-- <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                                <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-                                <li data-target="#carouselExampleIndicators" data-slide-to="3"></li> -->
-                            </ol>
-                            <!-- Wrapper for slides -->
-                            <div class="carousel-inner">
-                                <?php $count = 0;
-                                    foreach ($eventsFeature as $eventFeature) {
-                                    $sdStamp = strtotime($eventFeature->date_time);
-                                    $dateStr = date("d",  $sdStamp);
-                                    $MonthStr = date("M",  $sdStamp);
-                                    $bannerImageSrc = "";
-                                    if($eventFeature->banner){
-                                        $bannerImageSrc = env('AWS_URL') . $eventFeature->banner;
-                                    } else {
-                                        $bannerImageSrc = "assets/images-new/banner-image-2.png";
-                                    }
-                                ?>
-                                <div class="carousel-item <?php if($count==0){ echo "active"; } else{ echo " ";}?>">
-                                    <a href="{{url('events/'. $eventFeature->id)}}">
-                                    <img class="d-block w-100" src="{{$bannerImageSrc}}" data-color="lightblue" alt="First Image" style="height: 365px;border-radius: 6px;"></a>
-                                    <a href="{{url('events/'. $eventFeature->id)}}">
-                                    <div class="col-md-6 bannerImageOverlay banner2">
-                                <div class="bannerText2">
-                                    <div class="col-md-12 row">
-                                        <div class="col-md-3 pl-0 pr-0 mobSlider">
-                                            <h4> {{$dateStr}} <br> {{$MonthStr}} </h4>
-                                        </div>
-
-                                        <div class="col-md-9 mobSlider1">
-                                            <h4 class="text-left"> {{$eventFeature->title}} </h4>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12 pl-0 pr-0">
-                                    <p class=" Pmobmargin " style="color: black;font-weight: 500;">
-                                        <?php $eventDesc = substr($eventFeature->description,0,140).'...'; ?>
-                                        {{$eventDesc}}</p>
-                                </div>
-                            </div></a>
-                                  <div class="carousel-caption d-md-block">
-                                    <!-- <h5>First Image</h5> -->
-                                </div>
-                            </div>
-                            <?php $count++; } ?>
-                </div>
-            </div>
-<!-- carousel end -->
-
-                        </div>
-
-                        <div class="col-md-11 featuredContent mb-4">
+    <div class="col-md-11 featuredContent mb-4">
 
                             <?php 
                                 $getUserID = "";
+                                $activeClass = "active";
+                                $dnoneClass = "d-none";
                                 if(Auth::check()){
                                     $getUserID = Auth::user()->id;
                                 }
@@ -116,19 +29,19 @@
                                 <div class="card-body">
                                     <ul class="nav nav-tabs mainTab">
                                         <li class="nav-item">
-                                            <a class="nav-link active" data-toggle="tab" href="#contentTab" onclick="showHidecategoriesNav(this);"><span class="tabSpan">All Content</span></a>
+                                            <a class="nav-link <?php if($tabId == 1){ echo $activeClass;} ?>" data-toggle="tab" href="#contentTab" onclick="showHidecategoriesNav(this);"><span class="tabSpan">All Content</span></a>
                                         </li>
 
                                         <li class="nav-item">
-                                            <a class="nav-link eventsTab" data-toggle="tab" href="#eventsTab" onclick="showHidecategoriesNav(this);"><span class="tabSpan">Events</span></a>
+                                            <a class="nav-link <?php if($tabId == 2){ echo $activeClass;} ?> eventsTab" data-toggle="tab" href="#eventsTab" onclick="showHidecategoriesNav(this);"><span class="tabSpan">Events</span></a>
                                         </li>
 
                                         <li class="nav-item">
-                                            <a class="nav-link" data-toggle="tab" href="#videoTab" onclick="showHidecategoriesNav(this);"><span class="tabSpan">Videos</span></a>
+                                            <a class="nav-link <?php if($tabId == 3){ echo $activeClass;} ?>" data-toggle="tab" href="#videoTab" onclick="showHidecategoriesNav(this);"><span class="tabSpan">Videos</span></a>
                                         </li>
 
                                         <li class="nav-item">
-                                            <a class="nav-link" data-toggle="tab" href="#audioTab" onclick="showHidecategoriesNav(this);"><span class="tabSpan">Podcasts</span></a>
+                                            <a class="nav-link <?php if($tabId == 4){ echo $activeClass;} ?>" data-toggle="tab" href="#audioTab" onclick="showHidecategoriesNav(this);"><span class="tabSpan">Podcasts</span></a>
                                         </li>
                                     </ul>
 
@@ -215,8 +128,9 @@
 
                         </div>
 
-                        <div class="tab-content">
-                            <div class="row tab-pane active" id="contentTab">
+    
+        <div class="tab-content">
+                            <div class="row tab-pane <?php if($tabId == 1){ echo $activeClass;} ?>" id="contentTab">
                                 <div class="col-md-11 featuredContent mb-4">
                                     <div class="col-md-12 row MobDisplay">
                                         <div class="col-md-4">
@@ -316,7 +230,6 @@
                                                 <?php } ?>
 
                                                     <hr class="mt-2 mb-2">
-
                                                     <div class="row">
                                                         <div class="pl-3">
                                                             <?php
@@ -414,6 +327,7 @@
                                                 </span></a>
 
 
+
                                                         <div class="card-body" style="padding: 10px;">
                                                             <a href="{{url('videos/'. $video->id)}}">
                                                             <div class="col-md-12 pr-0 pl-0">
@@ -438,7 +352,7 @@
                                                             ?>
                                                             <div class="col-md-12 pr-0 pl-0" style="color: black;">{{$eventDescText}}</div>
 
-                                <div class="col-md-12 pr-0 mt-2 pl-0" style="color:#9C9C9C;">Video </div> </a>
+                                <div class="col-md-12 pr-0 mt-2 ml-2 mr-2 pl-0" style="color:#9C9C9C;">Video </div> </a>
 
                                                             <hr class="mt-2 mb-2">
                                                             <div class="row">
@@ -476,9 +390,8 @@
                                        ?>
                                        <input type="hidden" class="eventCatID" value="<?php echo $eventCat; ?>">
                                                     <div class="card">
-                                                        <a href="#"><img src="assets/images-new/sample-image.png" class="" alt="" style="width: 100%;height: 130px;"></a>
+                                                        <a href="#"><img src="../assets/images-new/sample-image.png" class="" alt="" style="width: 100%;height: 130px;"></a>
 
-                                                        
                                                         <?php 
                                                     $checkHeartFill = "d-none";
                                                     $checkHeartEmpty = "";
@@ -497,6 +410,7 @@
                                                 <span class="likeButtonSpan"><i aria-hidden="true" class="fa fa-heart-o emptyHeart {{$checkHeartEmpty}}" id="" style=""></i>
                                                     <i aria-hidden="true" class="fa fa-heart {{$checkHeartFill}} fillHeart" style="color: #FD6568;" value="{{$checkVal}}"></i>
                                                 </span></a>
+
 
 
                                                         <div class="card-body" style="padding: 10px;">
@@ -528,7 +442,7 @@
                                                             ?>
                                                             <a href="{{$videoPodcastUrl}}" target="_blank"><audio controls  class="w-100"><source src="{{$videoPodcastUrl}}" type="audio/ogg" class="col-lg-7 pr-0 pl-0"></audio></a>
 
-                                                                <div class="col-md-12 pr-0 mt-2 pl-0" style="color:#9C9C9C;">Podcast </div>
+                                                                <div class="col-md-12 pr-0 mt-2 ml-2 mr-2 pl-0" style="color:#9C9C9C;">Podcast </div>
 
                                                                 <hr class="mt-2 mb-2">
                                                                 <div class="row">
@@ -554,14 +468,9 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-12 mb-5 mobileSeeMoreBtn" style="justify-content: center;display: flex;">
-                                    <a href="{{url('allContent/1')}}">
-                                    <input type="button" id="" class="clickable createEventButton buttonMobileSize" value="See more" style="background: #FED8C6;color:black;box-shadow: 0px 2px 7px rgba(81, 33, 34, 0.2), 0px 2px 10px rgba(81, 33, 34, 0.25);"></a>
-                                </div>
-
                             </div>
 
-                            <div class="row tab-pane" id= "eventsTab">
+                            <div class="row tab-pane <?php if($tabId == 2){ echo $activeClass;} ?>" id= "eventsTab">
                                 <div class="col-md-11 featuredContent mb-4">
                                     <div class="col-md-12 row MobDisplay">
                                         <div class="col-md-4">
@@ -652,8 +561,7 @@
                                                     for ($x = 0; $x < 1; $x++) {  ?>
                                                     <a class="text-center chevronClass" data-toggle="collapse" aria-expanded="false" data-target="#heading<?php echo $row_count ?>" style="display: block;"><i class="fa fa-chevron-down" style="color: #9C9C9C;"></i>
                                                     <i class="fa fa-chevron-up" style="color: #9C9C9C;"></i></a>
-                                                    
-                                                    <div id="heading<?php echo $row_count ?>" class="collapse mt-2 ml-2 mr-2" style="color: black;">
+                                                    <div id="heading<?php echo $row_count ?>" class="mt-2 ml-2 mr-2 collapse" style="color: black;">
                                                         {{$event->description}}
                                                     </div>
                                                     <?php $row_count++; } ?>
@@ -688,14 +596,9 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-12 mb-5 seeMoreEvent mobileSeeMoreBtn" style="justify-content: center;display: flex;">
-                                    <a href="{{url('allContent/2')}}">
-                                    <input type="button" id="" class="clickable createEventButton buttonMobileSize" value="See more" style="background: #FED8C6;color:black;box-shadow: 0px 2px 7px rgba(81, 33, 34, 0.2), 0px 2px 10px rgba(81, 33, 34, 0.25);"></a>
-                                </div>
-
                             </div>
 
-                            <div class="row tab-pane" id= "videoTab">
+                            <div class="row tab-pane <?php if($tabId == 3){ echo $activeClass;} ?>" id= "videoTab">
                                 <div class="col-md-11 featuredContent mb-4">
                                     <div class="col-md-12 row MobDisplay">
                                         <div class="col-md-4">
@@ -775,7 +678,6 @@
                                                         <!-- <a href="#"><img src="{{$logoUrl}}" class="w-100" alt="" style="height: 130px;"></a> -->
                                                         <!-- <span class="{{$freeEventClass}} mt-2">FREE</span> -->
                                                         
-
                                                         <?php 
                                                     $checkHeartFill = "d-none";
                                                     $checkHeartEmpty = "";
@@ -821,7 +723,7 @@
                                                             
                                                             <div class="col-md-12 pr-0 pl-0" style="color: black;">{{$eventDescText}}</div>
 
-                                <div class="col-md-12 pr-0 mt-2 pl-0" style="color:#9C9C9C;">Video </div> </a>
+                                <div class="col-md-12 pr-0 mt-2 ml-2 mr-2 pl-0" style="color:#9C9C9C;">Video </div> </a>
 
                                                             <hr class="mt-2 mb-2">
                                                             <div class="row">
@@ -836,7 +738,7 @@
                                                                        <?php } ?>
                                                                    </div>
                                                                    <div class="">
-                                                                    <h6 class="mt-2 ml-2"> {{$video->user->name}} </h6>
+                                                                    <h6 class="mt-3 ml-2"> {{$video->user->name}} </h6>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -847,15 +749,11 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-md-12 mb-5 mobileSeeMoreBtn" style="justify-content: center;display: flex;">
-                                        <a href="{{url('allContent/3')}}">
-                                        <input type="button" id="" class="clickable createEventButton buttonMobileSize" value="See more" style="background: #FED8C6;color:black;box-shadow: 0px 2px 7px rgba(81, 33, 34, 0.2), 0px 2px 10px rgba(81, 33, 34, 0.25);"></a>
-                                        </div>
 
                                     </div>
 
 
-                                    <div class="row tab-pane" id= "audioTab">
+                                    <div class="row tab-pane <?php if($tabId == 4){ echo $activeClass;} ?>" id= "audioTab">
                                         <div class="col-md-11 featuredContent mb-4">
                                             <div class="col-md-12 row MobDisplay">
                                                 <div class="col-md-4">
@@ -893,9 +791,8 @@
                                        ?>
                                        <input type="hidden" class="eventCatID" value="<?php echo $eventCat; ?>">
                                                     <div class="card">
-                                                        <a href="#"><img src="assets/images-new/sample-image.png" class="" alt="" style="width: 100%;height: 130px;"></a>
+                                                        <a href="#"><img src="../assets/images-new/sample-image.png" class="" alt="" style="width: 100%;height: 130px;"></a>
 
-                                                        
                                                         <?php 
                                                     $checkHeartFill = "d-none";
                                                     $checkHeartEmpty = "";
@@ -946,7 +843,7 @@
                                                             ?>
                                                             <a href="{{$videoPodcastUrl}}" target="_blank"><audio controls  class="w-100"><source src="{{$videoPodcastUrl}}" type="audio/ogg" class="col-lg-7 pr-0 pl-0"></audio></a>
 
-                                                                <div class="col-md-12 pr-0 mt-2 pl-0" style="color:#9C9C9C;">Podcast </div>
+                                                                <div class="col-md-12 pr-0 mt-2 ml-2 mr-2 pl-0" style="color:#9C9C9C;">Podcast </div>
 
                                                                 <hr class="mt-2 mb-2">
                                                                 <div class="row">
@@ -972,33 +869,16 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-12 mb-5 mobileSeeMoreBtn" style="justify-content: center;display: flex;">
-                                                <a href="{{url('allContent/4')}}">
-                                                <input type="button" id="" class="clickable createEventButton buttonMobileSize" value="See more" style="background: #FED8C6;color:black;box-shadow: 0px 2px 7px rgba(81, 33, 34, 0.2), 0px 2px 10px rgba(81, 33, 34, 0.25);"></a>
-                                            </div>
 
                                         </div>
 
 
                                     </div>
 
-                                    <div class="col-md-12 mb-5 card">
-                                        <div class="card-body col-md-12 row">
-                                            <div class="col-md-6">
-                                                <h3 class="communityHeader"> <a style="color:#FD6568;"> JOIN </a> OUR <br> COMMUNITY! </h3> <br>
-                                                <p class="communityText"> As an Organiser, you can list your events, manage them, showcase videos and podcasts of previous events.</p>
-                                                <a href="#">
-                                                    <input type="button" id="" class="clickable createEventButton mt-3" value="Learn More" style="margin-left:18%;"></a>
-                                                </div>
 
-                                                <div class="col-md-6">
-                                                    <img src="assets/images-new/Community 1.jpg" class="w-100">
-                                                </div>
-                                            </div>
-                                            <!-- <img src="assets/images-new/join-community.png" class="w-100"> -->
-                                        </div>
 
-                                    </div>
+
+</div>
 @endsection
 
 @section('script')

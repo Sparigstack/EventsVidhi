@@ -1,11 +1,11 @@
-@extends('layouts.app')
+@extends('layouts.appFront')
 @section('css')
 <!-- Data Tables -->
 <link href="{{ asset('assets/plugins/bootstrap-datatable/css/buttons.bootstrap4.min.css') }}" rel="stylesheet">
 <link href="{{ asset('assets/plugins/bootstrap-datatable/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
 @endsection
 @section('content')
-<div class="container-fluid col-md-7 m-auto">
+<div class="container-fluid col-md-7 m-auto pt-5 pb-5">
     <div class="Data-Table">
 
         <div class="row">

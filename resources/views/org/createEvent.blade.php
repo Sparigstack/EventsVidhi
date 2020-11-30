@@ -193,7 +193,7 @@
                                         <div class="col-lg-12 row mt-2">
                                             <div class="form-group col-lg-12">
                                                 <label for="EventBannerImage">Banner Image (optional)</label>
-                                                <p style="font-size: .7pc;">Preferred image size is 845 &#10005; 445 px and maximum 4MB allowed.</p>
+                                                <p style="font-size: .7pc;">Preferred image size is 970 &#10005; 330 px and maximum 4MB allowed.</p>
                                                 <!-- <input type="file" accept="image/*" id="EventBannerImage" name="EventBannerImage" class="form-control files" onchange="document.getElementById('bannerImage').src = window.URL.createObjectURL(this.files[0]);document.getElementById('bannerImage').classList.remove('d-none');"> -->
                                                 <input type="hidden" name="eventBannerPic" class="eventBannerPic" value="{{$BannerUrl}}">
                                                 <div class="dragFileContainer" id="dragfile" style="text-align:center;">

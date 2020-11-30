@@ -56,7 +56,7 @@
                     <h4 style="font-family: rockwell;font-weight: 400;" class="mt-1"> <span class="dot1"></span> <span class="dot"></span> <a href="{{ url('/') }}" style="color: black;"> panelhive </a> </h4>
                 </div>
 
-                <div class="col-md-5 col-lg-5 MobileMt searchbardiv">
+                <div class="col-md-5 col-lg-5 MobileMt searchbardiv mt-1">
                 <!-- <div class="col-md-4 col-lg-4 mt-2"> -->
                    <input name="" id="" type="search" value="" class="large serachEvent" placeholder="Search..." autocomplete="off">
                    <div class="searchIcon">
@@ -135,8 +135,16 @@
                                 <li class="dropdown-divider"></li>
                                 <li class="dropdown-item"><i class="icon-wallet mr-2"></i> Account</li>
                                 <li class="dropdown-divider"></li> -->
-                            <li class="dropdown-item"><a style="color:inherit" href="{{url('myAccount')}}"><i class="icon-settings mr-2"></i> My Account</a></li>
+                            <?php if(Auth::user()->user_type != 3){ ?>
+                            <li class="dropdown-item"><a style="color:inherit" href="#"><i class="icon-settings mr-2"></i> My Account</a></li>
+                            <?php } else { ?>
+                                <li class="dropdown-item"><a style="color:inherit" href="{{url('myAccount')}}"><i class="icon-settings mr-2"></i> My Account</a></li>
+                            <?php } ?>
                             <li class="dropdown-divider"></li>
+                            <?php if(Auth::user()->user_type != 3){ ?>
+                                <li class="dropdown-item"><a style="color:inherit" href="{{url('myEvents')}}"><i class="icon-settings mr-2"></i> My Events</a></li>
+                                <li class="dropdown-divider"></li>
+                            <?php } ?>
                             <!-- <li class="dropdown-item"><a style="color:inherit" href="{{url('account')}}"><i class="icon-wallet mr-2"></i> Account</a></li> -->
                             <!-- <li class="dropdown-divider"></li> -->
                             <!-- <li class="dropdown-item"><a style="color:inherit" href="{{url('org/settings')}}"><i class="icon-settings mr-2"></i> Settings</a></li> -->
