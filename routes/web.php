@@ -131,7 +131,9 @@ Route::get('orgEvents/{id}', 'UserController@orgEventsList');
 
 //All routes according to new UI will be here.
 Route::get('/', 'HomeController@indexPage');
-Route::get('allContent/{tabId}', 'HomeController@allContent');
+
+// Route::get('allContent/{tabId}', 'HomeController@allContent');
+Route::get('allContent/{tabId}/{categoryId}/page={pageCount}', 'HomeController@allContent');
 
 Route::get('events/{eventid}', 'HomeController@eventDetail');
 Route::get('videos/{videoid}', 'HomeController@videoDetail');

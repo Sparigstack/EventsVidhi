@@ -29,26 +29,26 @@
                                 <div class="card-body">
                                     <ul class="nav nav-tabs mainTab">
                                         <li class="nav-item">
-                                            <a class="nav-link <?php if($tabId == 1){ echo $activeClass;} ?>" data-toggle="tab" href="#contentTab" onclick="showHidecategoriesNav(this);"><span class="tabSpan">All Content</span></a>
+                                            <a class="nav-link <?php if($tabId == 1){ echo $activeClass;} ?>" data-toggle="tab" href="#contentTab" onclick="showHidecategoriesNav(this);" value="1"><span class="tabSpan">All Content</span></a>
                                         </li>
 
                                         <li class="nav-item">
-                                            <a class="nav-link <?php if($tabId == 2){ echo $activeClass;} ?> eventsTab" data-toggle="tab" href="#eventsTab" onclick="showHidecategoriesNav(this);"><span class="tabSpan">Events</span></a>
+                                            <a class="nav-link <?php if($tabId == 2){ echo $activeClass;} ?> eventsTab" data-toggle="tab" href="#eventsTab" onclick="showHidecategoriesNav(this);" value="2"><span class="tabSpan">Events</span></a>
                                         </li>
 
                                         <li class="nav-item">
-                                            <a class="nav-link <?php if($tabId == 3){ echo $activeClass;} ?>" data-toggle="tab" href="#videoTab" onclick="showHidecategoriesNav(this);"><span class="tabSpan">Videos</span></a>
+                                            <a class="nav-link <?php if($tabId == 3){ echo $activeClass;} ?>" data-toggle="tab" href="#videoTab" onclick="showHidecategoriesNav(this);" value="3"><span class="tabSpan">Videos</span></a>
                                         </li>
 
                                         <li class="nav-item">
-                                            <a class="nav-link <?php if($tabId == 4){ echo $activeClass;} ?>" data-toggle="tab" href="#audioTab" onclick="showHidecategoriesNav(this);"><span class="tabSpan">Podcasts</span></a>
+                                            <a class="nav-link <?php if($tabId == 4){ echo $activeClass;} ?>" data-toggle="tab" href="#audioTab" onclick="showHidecategoriesNav(this);" value="4"><span class="tabSpan">Podcasts</span></a>
                                         </li>
                                     </ul>
 
                                     <ul class="nav categoriesNav mt-2" style="">
                                         @foreach($categories as $category)
                                         <li class="nav-item mobileNav" style="margin-right: 1rem;">
-                                            <a class="nav-link" data-toggle="tab" href="#" onclick="showHideEventListing(this);" data-id="{{$category->id}}"><span class="" style="letter-spacing: 0px;">{{$category->name}}</span></a>
+                                            <a class="nav-link" data-toggle="tab" href="" onclick="filterByCategories(this);" data-id="{{$category->id}}"><span class="" style="letter-spacing: 0px;">{{$category->name}}</span></a>
                                         </li>
                                         @endforeach
                                         <!-- <li class="nav-item ml-4">
@@ -134,7 +134,7 @@
                                 <div class="col-md-11 featuredContent mb-4">
                                     <div class="col-md-12 row MobDisplay">
                                         <div class="col-md-4">
-                                            <h4> All Content </h4>
+                                            <h4> All Content &nbsp; <i class="fa fa-arrow-right" aria-hidden="true"></i> </h4>
                                         </div>
                                         <div class="col-md-8">
                                             <button class="btn dropdown-toggle locationDropDown text-capitalize" type="button" data-toggle="dropdown" aria-expanded="false" style=""><i aria-hidden="true" class="fa fa-location-arrow pr-2"></i>Everywhere</button>
@@ -474,7 +474,7 @@
                                 <div class="col-md-11 featuredContent mb-4">
                                     <div class="col-md-12 row MobDisplay">
                                         <div class="col-md-4">
-                                            <h4> Events</h4>
+                                            <h4> Events &nbsp; <i class="fa fa-arrow-right" aria-hidden="true"></i></h4>
                                         </div>
                                         <div class="col-md-8">
                                             <button class="btn dropdown-toggle locationDropDown text-capitalize" type="button" data-toggle="dropdown" aria-expanded="false" style=""><i aria-hidden="true" class="fa fa-location-arrow pr-2"></i>Everywhere</button>
@@ -602,7 +602,7 @@
                                 <div class="col-md-11 featuredContent mb-4">
                                     <div class="col-md-12 row MobDisplay">
                                         <div class="col-md-4">
-                                            <h4>Videos</h4>
+                                            <h4>Videos &nbsp; <i class="fa fa-arrow-right" aria-hidden="true"></i></h4>
                                         </div>
                                         <div class="col-md-8">
                                             <button class="btn dropdown-toggle locationDropDown text-capitalize" type="button" data-toggle="dropdown" aria-expanded="false" style=""><i aria-hidden="true" class="fa fa-location-arrow pr-2"></i>Everywhere</button>
@@ -757,7 +757,7 @@
                                         <div class="col-md-11 featuredContent mb-4">
                                             <div class="col-md-12 row MobDisplay">
                                                 <div class="col-md-4">
-                                                    <h4>Podcasts</h4>
+                                                    <h4>Podcasts &nbsp; <i class="fa fa-arrow-right" aria-hidden="true"></i></h4>
                                                 </div>
                                                 <div class="col-md-8">
                                                     <button class="btn dropdown-toggle locationDropDown text-capitalize" type="button" data-toggle="dropdown" aria-expanded="false" style=""><i aria-hidden="true" class="fa fa-location-arrow pr-2"></i>Everywhere</button>
@@ -874,6 +874,66 @@
 
 
                                     </div>
+
+                                    <div class="col-md-12 d-flex mb-4 fr">
+
+                                         <?php
+                                        $dbRecordCount = 50;
+
+
+            if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
+                $link = "https";
+            else
+                $link = "http";
+
+// Here append the common URL characters. 
+            $link .= "://";
+// Append the host(domain name, ip) to the URL. 
+            $link .= $_SERVER['HTTP_HOST'];
+// Append the requested resource location to the URL 
+            $link .= $_SERVER['REQUEST_URI'];
+// Print the link 
+
+            $str = substr(strrchr($link, '/'), 0);
+            $redirectLink = str_replace($str, '', $link);
+//echo $redirectLink;
+            if ($dbRecordCount >= 25) {
+                $pages = (int) ($dbRecordCount / 25);
+
+                $pageNumber = substr(strrchr($link, '='), 1);
+                if (isset($pageNumber) && !is_null($pageNumber)) {
+
+                    $previous = $pageNumber - 1;
+                    if ($previous == 0)
+                        $previous = 1;
+                    $next = $pageNumber + 1;
+                }
+                ?>
+
+                <div class="col-md-6"> </div>
+
+                <div class="col-md-6">
+                <ul class="pull-right pagination pagination-separate pagination-outline-primary" id="finalQuery">
+                    <li class="page-item"><a class="page-link" href="<?php echo $redirectLink; ?>/page=<?php echo $previous; ?>">Previous</a></li>
+                    <?php
+                    for ($i = 1; $i <= $pages + 1; $i++) {
+                        $active = $i == $pageCount ? 'active' : '';
+                        ?>   
+
+                        <li class="page-item <?php echo $active; ?>"><a class="page-link" href="<?php echo $redirectLink; ?>/page=<?php echo $i; ?>"><?php echo $i; ?></a></li>
+                        <?php
+                    }
+                    ?>
+                    <li class="page-item"><a class="page-link" href="<?php echo $redirectLink; ?>/page=<?php echo $next; ?>">Next</a></li>
+                </ul>
+            </div>
+                <?php
+            }
+            ?>
+
+
+                                    </div>
+
 
 
 

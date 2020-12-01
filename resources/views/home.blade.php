@@ -220,7 +220,7 @@
                                 <div class="col-md-11 featuredContent mb-4">
                                     <div class="col-md-12 row MobDisplay">
                                         <div class="col-md-4">
-                                            <h4> All Content </h4>
+                                            <h4> All Content &nbsp; <i class="fa fa-arrow-right" aria-hidden="true"></i> </h4>
                                         </div>
                                         <div class="col-md-8">
                                             <button class="btn dropdown-toggle locationDropDown text-capitalize" type="button" data-toggle="dropdown" aria-expanded="false" style=""><i aria-hidden="true" class="fa fa-location-arrow pr-2"></i>Everywhere</button>
@@ -565,7 +565,7 @@
                                 <div class="col-md-11 featuredContent mb-4">
                                     <div class="col-md-12 row MobDisplay">
                                         <div class="col-md-4">
-                                            <h4> Events</h4>
+                                            <h4> Events &nbsp; <i class="fa fa-arrow-right" aria-hidden="true"></i></h4>
                                         </div>
                                         <div class="col-md-8">
                                             <button class="btn dropdown-toggle locationDropDown text-capitalize" type="button" data-toggle="dropdown" aria-expanded="false" style=""><i aria-hidden="true" class="fa fa-location-arrow pr-2"></i>Everywhere</button>
@@ -699,7 +699,7 @@
                                 <div class="col-md-11 featuredContent mb-4">
                                     <div class="col-md-12 row MobDisplay">
                                         <div class="col-md-4">
-                                            <h4>Videos</h4>
+                                            <h4>Videos &nbsp; <i class="fa fa-arrow-right" aria-hidden="true"></i></h4>
                                         </div>
                                         <div class="col-md-8">
                                             <button class="btn dropdown-toggle locationDropDown text-capitalize" type="button" data-toggle="dropdown" aria-expanded="false" style=""><i aria-hidden="true" class="fa fa-location-arrow pr-2"></i>Everywhere</button>
@@ -859,7 +859,7 @@
                                         <div class="col-md-11 featuredContent mb-4">
                                             <div class="col-md-12 row MobDisplay">
                                                 <div class="col-md-4">
-                                                    <h4>Podcasts</h4>
+                                                    <h4>Podcasts &nbsp; <i class="fa fa-arrow-right" aria-hidden="true"></i></h4>
                                                 </div>
                                                 <div class="col-md-8">
                                                     <button class="btn dropdown-toggle locationDropDown text-capitalize" type="button" data-toggle="dropdown" aria-expanded="false" style=""><i aria-hidden="true" class="fa fa-location-arrow pr-2"></i>Everywhere</button>

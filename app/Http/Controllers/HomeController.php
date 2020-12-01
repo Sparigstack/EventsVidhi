@@ -103,8 +103,37 @@ class HomeController extends Controller
         return view('home', compact('events', 'videos', 'podcasts', 'eventsFeature', 'categories', 'countries', 'eventCategories', 'eventFollowersList'));
     }
 
-    public function allContent($tabId = 0)
+    public function allContent($tabId = 0,$categoryId,$pageCount)
     {
+        // $categoryId = 0;
+        $categoryQuery = "";
+        $joinClause = " left ";
+
+        if($categoryId != 0){
+            if($tabId == 1){
+                $categoryQuery .= " and ec.category_id = " . $categoryId;
+                $joinClause = " right ";
+            }
+
+        }
+
+        $page = '1';
+        if (isset($pageCount)) {
+            $page = $pageCount;
+        }
+        if ($page == "" || $page == "1") {
+            $startingRecord = 0;
+        } else {
+            $startingRecord = $page * 32 - 32;
+        }
+        
+        $allData = "select e.*, ec.*, v.*, p.* from events e join event_categories ec on e.id = ec.event_id" .$joinClause.  "join videos v on e.id = v.event_id" .$joinClause. "join podcasts p on e.id = p.event_id where e.is_live = 1 and e.deleted_at IS NULL and e.date_time >= CURDATE()" .$categoryQuery;
+
+        // return $allData;
+
+        $allDataResult = DB::select(DB::raw($allData));
+        // var_dump(count($allDataResult)); return;
+
         $events = Event::where('date_time', '>=', date('Y-m-d', strtotime(now())))->where('is_live', '=', '1')->where('deleted_at', '=', NULL)->orderBy('id', 'DESC')
             ->get();
         $videos = Video::orderBy('id', 'DESC')->get();
@@ -113,7 +142,7 @@ class HomeController extends Controller
         $categories = Category::all();
         $eventCategories = EventCategory::all();
         $eventFollowersList = ContentFollower::all();
-        return view('allContent', compact('events', 'videos', 'podcasts', 'categories', 'tabId', 'countries', 'eventCategories', 'eventFollowersList'));
+        return view('allContent', compact('events', 'videos', 'podcasts', 'categories', 'tabId', 'countries', 'eventCategories', 'eventFollowersList', 'allDataResult', 'pageCount'));
     }
 
     public function eventDetail($eventid)
