@@ -1,7 +1,19 @@
+<?php $v = "1.0.1"; ?>
 @extends('layouts.appFront')
 @section('content')
 
 <div class="container mainHomePageContainer pt-3" style="">
+
+    <?php 
+                                $getUserID = "";
+                                if(Auth::check()){
+                                    $getUserID = Auth::user()->id;
+                                }
+                            ?>
+                            <input class="csrf-token" type="hidden" value="{{ csrf_token() }}">
+                            <input type="hidden" class="saveEventFollower" value="{{url('saveEventFollower')}}">
+                            <input type="hidden" class="loginRoute" value="{{route('login')}}">
+                            <input type="hidden" class="userIDFollow" value="{{$getUserID}}">
 
 	<div class="col-md-12 col-lg-12 d-flex align-items-center mb-3">
 		<a href="{{url('/')}}" style="color: #9C9C9C;font-weight: 100;" class="ml-4"><i class="fa fa-angle-left"></i>&nbsp; Back</a>
@@ -101,6 +113,8 @@
     	</div>
 
 		<div class="col-md-4 col-lg-4">
+
+            <a href="{{url('organizer/'. $video->user->id)}}" target="_blank">
 			<div class="card w-100 d-flex align-items-center" style="margin-top: 15%;border-radius: 6px;">
 				<?php
                     $profileLogo = "";
@@ -113,7 +127,7 @@
 
                 <div class="card-body pt-3">
                 	<h6> {{$video->user->name}} </h6>
-                	<p class="mt-3"> 134 Followers </p>
+                	<p class="mt-3" style="color: black;"> 134 Followers </p>
 
                 	<div class="followingDiv row">
      					<a href="#">
@@ -122,6 +136,7 @@
 
                 </div>
             </div>
+        </a>
 
             <?php if($eventCategoriesResult){ ?>
             <h5 class="mt-4"> Tags </h5>
@@ -154,7 +169,7 @@
      	<div class="row col-md-12 pl-0 pr-0">
 			<?php
             foreach ($videosList as $videoList) { ?>
-            <div class="col-md-3">
+            <div class="col-md-3 parent showHideListDiv pl-2 pr-2">
                 <div class="card">
                 <?php
                 	$sdStamp = strtotime($videoList->created_at);
@@ -167,7 +182,7 @@
                     if (!empty($videoList->url)) {
                         if($videoList->url_type == 1){
                           	$videoUrl = $AwsUrl . $videoList->url; ?>
-                       		<a href="{{url('videos/'. $videoList->id)}}">
+                       		<a href="{{url('videos/'. $videoList->id)}}" target="_blank">
                             <video class="" src="{{$videoUrl}}" width="100%" height="100%" controls="controls" style="border-radius: 6px 6px 0px 0px;"></video></a>
                         <?php   }
                         else{
@@ -181,13 +196,33 @@
                                 $getLastWord = array_pop($explodeUrl);
                                 $url = "https://player.vimeo.com/video/" . $getLastWord;
                             } ?>
-                            <a href="{{url('videos/'. $videoList->id)}}">
-                            <iframe width="230px" height="130px" src="{{$url}}" frameborder="0" class="videoIframe" style="border-radius: 6px 6px 0px 0px;"></iframe></a>
+                            <a href="{{url('videos/'. $videoList->id)}}" target="_blank">
+                            <iframe width="240px" height="130px" src="{{$url}}" frameborder="0" class="videoIframe" style="border-radius: 6px 6px 0px 0px;pointer-events: none;"></iframe></a>
                         <?php  }
                     } ?>
-                    <span class="likeButtonSpan"><i aria-hidden="true" class="fa fa-heart-o"></i></span>
-                    <div class="card-body">
-                        <a href="{{url('videos/'. $videoList->id)}}">
+                    
+                    <?php 
+                                                    $checkHeartFill = "d-none";
+                                                    $checkHeartEmpty = "";
+                                                    $checkVal = "";
+                                                    if(Auth::check()){
+                                                        foreach($eventFollowersList as $eventFollowerList){
+                                                            if(Auth::user()->id == $eventFollowerList->user_id && $videoList->id == $eventFollowerList->content_id && $eventFollowerList->discriminator == "v"){
+                                                                $checkHeartFill = "";
+                                                                $checkHeartEmpty = "d-none";
+                                                                $checkVal = "1";
+                                                            }
+                                                        }
+                                                    }
+                                                ?>
+                                                <a style="cursor: pointer;" onclick="followEvent(this);" data-event-id="{{$videoList->id}}" discriminator="v">
+                                                <span class="likeButtonSpan"><i aria-hidden="true" class="fa fa-heart-o emptyHeart {{$checkHeartEmpty}}" id="" style=""></i>
+                                                    <i aria-hidden="true" class="fa fa-heart {{$checkHeartFill}} fillHeart" style="color: #FD6568;" value="{{$checkVal}}"></i>
+                                                </span></a>
+
+
+                    <div class="card-body" style="padding: 10px;">
+                        <a href="{{url('videos/'. $videoList->id)}}" target="_blank">
                         <div class="col-md-12 pr-0 pl-0">
                             <h6> {{$videoList->title}} </h6>
                         </div>
@@ -204,25 +239,30 @@
                                 
                                 <div class="col-md-12 pr-0 pl-0" style="color: black;">{{$eventDescText}}</div>
 
-                                <div class="col-md-12 pr-0 mt-2 pl-0" style="color:#9C9C9C;">Video </div> </a>
+                                <div class="col-md-12 pr-0 mt-2 mr-2 pl-0" style="color:#9C9C9C;">Video </div> </a>
                                 
-                                 <hr>
+                                 <hr class="mt-2 mb-2">
+
+                                 <a href="{{url('organizer/'. $videoList->user->id)}}" target="_blank">
                                  <div class="row">
-                                    <div class="pl-2">
+                                    <div class="pl-3">
                                      <?php
                                         $profileLogo = "";
                                         if(!is_null($videoList->user->profile_pic) && $videoList->user->profile_pic != ""){
                                             $profileLogo = env("AWS_URL"). $videoList->user->profile_pic; ?>
-                                            <img class="align-self-start profileImg" src="{{$profileLogo}}" alt="user avatar" style="">
+                                            <img class="align-self-start profileImg" src="{{$profileLogo}}" alt="user avatar" style="width:40px !important;height:40px !important;">
                                         <?php } else{ ?>
-                                            <img class="align-self-start profileImg" src="https://via.placeholder.com/110x110" alt="user avatar" style="">
+                                            <img class="align-self-start profileImg" src="https://via.placeholder.com/110x110" alt="user avatar" style="width:40px !important;height:40px !important;">
                                         <?php } ?>
                                     </div>
                                                                    
                                     <div class="">
-                                       <h6 class="mt-3 ml-2"> {{$videoList->user->name}} </h6>
+                                       <h6 class="mt-2 ml-2"> {{$videoList->user->name}} </h6>
                                     </div>
                                 </div>
+                            </a>
+
+
                             </div>
                         </div>
                     </div> 
@@ -236,6 +276,7 @@
 @endsection
 
 @section('script')
+<script src="{{asset('/js/custom.js?v='.$v)}}" type="text/javascript"></script>
 <script>
 	function showHideComments(comment){
 		var txt = $(comment).parent().parent().find(".contentDiv").is(':visible') ? 'Show More' : 'Show Less';

@@ -825,12 +825,17 @@ function ValidateEventForm(element) {
     var EventDateTime = $("#EventDateTime").val();
     var EventEndDateTime = $("#EventEndDateTime").val();
     var cityTimezone = $("#cityTimezone").val();
+    // $(".checkYes").val("");
+
+
     if(checkUrl.includes('new')== false && ((eventStartDateChange != EventDateTime) || (eventEndDateChange != EventEndDateTime) || (eventTimezoneChange != cityTimezone))){
         event.preventDefault();
         doConfirm("Do you want to inform all attendees about this change?", function yes() {
+            $(".checkYes").val("1");
             $(element).unbind('submit').submit();
             // return false;
         }, function no() {
+            $(".checkYes").val("");
             $(element).unbind('submit').submit();
             // window.location.href = eventPageUrl;
         });
@@ -1054,12 +1059,3 @@ function removeDisable(){
         $('#EventEndDateTime').addAttr("disabled");
     }
 }
-
-// function isPublishEvent(element){
-//     // if($(element).attr('id') == "publishButton"){
-//     //     $(".publishEvent").val('true');
-//     // }
-//     // else{
-//     //     $(".publishEvent").val('');
-//     // }
-// }

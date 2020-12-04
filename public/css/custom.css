@@ -330,7 +330,7 @@ border-radius: 6px !important;
     width: 45%;
     padding: 5px 10px;
     background-color: white;
-    height: 5%;
+    height: 30px;
     border-radius: 6px;
 }
 .eventCategoryTag{
@@ -341,7 +341,7 @@ border-radius: 6px !important;
     border-radius: 6px;
 }
 .eventDetailCardBody{
-    padding: 25px 40px !important;
+    padding: 25px 0px !important;
     border-radius: 6px;
 }
 .ticketBoxes{
@@ -368,6 +368,26 @@ border-radius: 6px !important;
 }
 #heart.red{
     /*color:red;*/
+}
+.pagination-outline-primary .page-item .page-link {
+    color: black !important;
+    border: 1px solid #FED8C6 !important;
+}
+
+.pagination-outline-primary .page-item .page-link:hover {
+    color: black !important;
+    background-color: #FED8C6 !important;
+    border-color: #FED8C6 !important;
+}
+
+.pagination-outline-primary .page-item.active .page-link {
+    color: black !important;
+    background-color: #FED8C6 !important;
+    border-color: #FED8C6 !important;
+}
+
+.pagination-outline-primary .page-item .page-link:focus {
+    box-shadow: 0 0 0 0.2rem #FED8C6 !important;
 }
  
 @media(min-width:768px) and (max-width:1024px){
@@ -474,7 +494,7 @@ border-radius: 6px !important;
         margin-left: 0px !important;
     }
     .eventDateTimeBox{
-        height: 5%;
+        height: 30px;
         width: 50%;
     }
     .eventCategoryTag{
@@ -523,5 +543,11 @@ border-radius: 6px !important;
     }
     .tabSpan{
         font-size: 15px !important;
+    }
+    .vFrame{
+        width: 100% !important;
+    }
+    .profileTop{
+        margin-top: -30% !important;
     }
 }

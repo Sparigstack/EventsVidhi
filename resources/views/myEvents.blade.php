@@ -9,8 +9,8 @@
 
 	<div class="col-md-11 featuredContent mb-4">
         <div class="col-md-12 row MobDisplay">
-            <div class="col-md-4">
-               <h4> My Events </h4>
+            <div class="col-md-4 pl-0">
+               <h4> My Events &nbsp; <i class="fa fa-arrow-right" aria-hidden="true"></i> </h4>
             </div>
         </div>
     </div>
@@ -53,7 +53,7 @@
                                                 $dateStr = date("d",  $sdStamp);
                                                 $MonthStr = date("M",  $sdStamp); 
                                                 ?>
-                                                <a href="{{url('events/'. $event->id)}}"><img src="{{$logoUrl}}" class="w-100" alt="" style="height: 130px;border-radius: 6px 6px 0px 0px;"></a>
+                                                <a href="{{url('events/'. $event->id)}}" target="_blank"><img src="{{$logoUrl}}" class="w-100" alt="" style="height: 130px;border-radius: 6px 6px 0px 0px;"></a>
                                                 <span class="{{$freeEventClass}} mt-2">FREE</span>
 
                                                 <?php 
@@ -76,7 +76,7 @@
                                                 </span></a>
 
                                                 <div class="card-body" style="padding: 10px;">
-                                                    <a href="{{url('events/'. $event->id)}}">
+                                                    <a href="{{url('events/'. $event->id)}}" target="_blank">
                                                     <div class="col-md-12 row pr-0" style="padding: unset;margin: unset;">
                                                         <div class="col-md-2 pr-0 pl-1 mobRowDisplay">
                                                             <h6 class="text-uppercase"> {{$dateStr}} <br> {{$MonthStr}} </h6>
@@ -103,21 +103,25 @@
                                                 <?php } ?>
 
                                                     <hr class="mt-2 mb-2">
+
+                                                    <a href="{{url('organizer/'. $event->user->id)}}" target="_blank">
                                                     <div class="row">
                                                         <div class="pl-3">
                                                             <?php
                                                             $profileLogo = "";
-                                                            if(!is_null($event->profile_pic) && $event->profile_pic != ""){
-                                                               $profileLogo = env("AWS_URL"). $event->profile_pic; ?>
+                                                            if(!is_null($event->user->profile_pic) && $event->user->profile_pic != ""){
+                                                               $profileLogo = env("AWS_URL"). $event->user->profile_pic; ?>
                                                                <img class="align-self-start profileImg" src="{{$profileLogo}}" alt="user avatar" style="width:40px !important;height:40px !important;">
                                                                <?php } else{ ?>
                                                                <img class="align-self-start profileImg" src="https://via.placeholder.com/110x110" alt="user avatar" style="width:40px !important;height:40px !important;">
                                                                <?php } ?>
                                                            </div>
                                                            <div class="">
-                                                            <h6 class="mt-2 ml-2"> {{$event->name}} </h6>
+                                                            <h6 class="mt-2 ml-2"> {{$event->user->name}} </h6>
                                                         </div>
                                                     </div>
+                                                </a>
+
                                                 </div>
                                             </div>
                                         </div> 

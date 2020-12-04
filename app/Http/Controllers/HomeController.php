@@ -17,6 +17,8 @@ use App\Country;
 use App\EventCategory;
 use App\Category;
 use App\ContentFollower;
+use App\User;
+use App\Ticket;
 
 class HomeController extends Controller
 {
@@ -105,17 +107,38 @@ class HomeController extends Controller
 
     public function allContent($tabId = 0,$categoryId,$pageCount)
     {
-        // $categoryId = 0;
-        $categoryQuery = "";
-        $joinClause = " left ";
+        $categoryQueryVideo = " ";
+        $categoryQueryPodcast = " ";
+        $categoryQueryEvent = " ";
+        $catSelectId = "";
+        $allData = "";
+        $dataCount = "";
 
         if($categoryId != 0){
-            if($tabId == 1){
-                $categoryQuery .= " and ec.category_id = " . $categoryId;
-                $joinClause = " right ";
-            }
-
+            $categoryQueryVideo .= " join event_categories ec on e.id = ec.event_id where ec.category_id = ". $categoryId . " ";
+            $categoryQueryPodcast .= " join event_categories ec on e.id = ec.event_id where ec.category_id = ". $categoryId . " ";
+            $categoryQueryEvent .= " join event_categories ec on e.id = ec.event_id ";
+            $catSelectId .= " and ec.category_id = ". $categoryId . " ";
         }
+        
+        $eventQuery = "select e.id as eventId, u.id as userId, u.name as userName, u.profile_pic as userProfilePic, NULL as videoId, e.title as eventTitle, e.description as eventDesc, e.thumbnail as eventThumbnail, e.is_online as eventOnline, e.city as eventCity, e.state as eventState, e.is_paid as eventPaid, e.is_live as eventLive, e.date_time as eventDateTime, '' as videoUrl, '' as videoUrlType, NULL as podcastId,'' as eventVideoDesc, '' as videoTitle, '' as videoDesc, '' as podcastTitle   
+
+            from events e join users u on e.user_id = u.id "
+            .$categoryQueryEvent.
+            " where e.is_live = 1 and e.deleted_at IS NULL and e.date_time >= CURDATE() "
+            .$catSelectId."";
+
+        $videoQuery = "select v.event_id as eventId, u.id as userId, u.name as userName , u.profile_pic as userProfilePic,v.id as videoId, '' as eventTitle, '' as eventDesc, '' as eventThumbnail, NULL as eventOnline, '' as eventCity, '' as eventState, NULL as eventPaid, '' as eventLive, NULL as eventDateTime, v.url as videoUrl, v.url_type as videoUrlType, NULL as podcastId,e.description as eventVideoDesc, v.title as videoTitle, v.description as videoDesc, '' as podcastTitle    
+
+            from videos v join users u on v.user_id = u.id
+            left join events e on v.event_id = e.id"
+            .$categoryQueryVideo."";
+
+        $podcastQuery = "select p.event_id as eventId, u.id as userId, u.name as userName , u.profile_pic as userProfilePic,NULL as videoId, '' as eventTitle, '' as eventDesc, '' as eventThumbnail, NULL as eventOnline, '' as eventCity, '' as eventState, NULL as eventPaid, '' as eventLive, NULL as eventDateTime, p.url as videoUrl, p.url_type as videoUrlType, p.id as podcastId,e.description as eventVideoDesc, '' as videoTitle, '' as videoDesc, p.title as podcastTitle  
+
+            from podcasts p join users u on p.user_id = u.id
+            left join events e on p.event_id = e.id"
+            .$categoryQueryPodcast."";
 
         $page = '1';
         if (isset($pageCount)) {
@@ -124,37 +147,70 @@ class HomeController extends Controller
         if ($page == "" || $page == "1") {
             $startingRecord = 0;
         } else {
-            $startingRecord = $page * 32 - 32;
+            $startingRecord = $page * 4 - 4;
         }
-        
-        $allData = "select e.*, ec.*, v.*, p.* from events e join event_categories ec on e.id = ec.event_id" .$joinClause.  "join videos v on e.id = v.event_id" .$joinClause. "join podcasts p on e.id = p.event_id where e.is_live = 1 and e.deleted_at IS NULL and e.date_time >= CURDATE()" .$categoryQuery;
+
+        if($tabId == 1){
+            $allData .= "SELECT * FROM ("
+                .$eventQuery." UNION ".$videoQuery." UNION ".$podcastQuery.
+                ") allDataQuery LIMIT " . $startingRecord . ",4";
+            $dataCount .= "SELECT * FROM ("
+                .$eventQuery." UNION ".$videoQuery." UNION ".$podcastQuery.
+                ") allDataQuery";
+        } else if($tabId == 2){
+            $allData .= "SELECT * FROM ("
+                .$eventQuery.
+                ") allDataQuery LIMIT " . $startingRecord . ",4";
+            $dataCount .= "SELECT * FROM ("
+                .$eventQuery.
+                ") allDataQuery";
+        } else if($tabId == 3){
+            $allData .= "SELECT * FROM ("
+                .$videoQuery.
+                ") allDataQuery LIMIT " . $startingRecord . ",4";
+            $dataCount .= "SELECT * FROM ("
+                .$videoQuery.
+                ") allDataQuery";
+        } else {
+            $allData .= "SELECT * FROM ("
+                .$podcastQuery.
+                ") allDataQuery LIMIT " . $startingRecord . ",4";
+            $dataCount .= "SELECT * FROM ("
+                .$podcastQuery.
+                ") allDataQuery";
+        }
 
         // return $allData;
 
         $allDataResult = DB::select(DB::raw($allData));
-        // var_dump(count($allDataResult)); return;
 
-        $events = Event::where('date_time', '>=', date('Y-m-d', strtotime(now())))->where('is_live', '=', '1')->where('deleted_at', '=', NULL)->orderBy('id', 'DESC')
-            ->get();
-        $videos = Video::orderBy('id', 'DESC')->get();
-        $podcasts = Podcast::orderBy('id', 'DESC')->get();
+        $dataCountResult = DB::select(DB::raw($dataCount));
+
+        $allDataCount = count($dataCountResult);
+        // var_dump($allDataResult); return;
+
+        // $events = Event::where('date_time', '>=', date('Y-m-d', strtotime(now())))->where('is_live', '=', '1')->where('deleted_at', '=', NULL)->orderBy('id', 'DESC')
+        //     ->get();
+        // $videos = Video::orderBy('id', 'DESC')->get();
+        // $podcasts = Podcast::orderBy('id', 'DESC')->get();
         $countries = DB::table('events')->select('countries.name')->join('countries', 'events.country_id', '=', 'countries.id')->distinct('countries.name')->get();
         $categories = Category::all();
-        $eventCategories = EventCategory::all();
+        // $eventCategories = EventCategory::all();
         $eventFollowersList = ContentFollower::all();
-        return view('allContent', compact('events', 'videos', 'podcasts', 'categories', 'tabId', 'countries', 'eventCategories', 'eventFollowersList', 'allDataResult', 'pageCount'));
+        return view('allContent', compact('categories', 'tabId', 'countries', 'eventFollowersList', 'allDataResult', 'pageCount', 'allDataCount'));
     }
 
     public function eventDetail($eventid)
     {
-        // $events = FailedJob::all();
-        // return view('events', compact('events'));
         $event = Event::find($eventid);
         $countryName = DB::table('events')->select('countries.name')->join('countries', 'events.country_id', '=', 'countries.id')->where('events.id', $eventid)->first();
         $eventsList = Event::where('date_time', '>=', date('Y-m-d', strtotime(now())))->where('is_live', '=', '1')->where('deleted_at', '=', NULL)->take(4)->orderBy('id', 'DESC')
             ->get();
         $eventFollowersList = ContentFollower::all();
-        return view('eventDetail', compact('event', 'eventsList', 'countryName', 'eventFollowersList'));
+        $videosList = Video::where('event_id', $eventid)->get();
+        $podcastsList = Podcast::where('event_id', $eventid)->get();
+        $ticketsList = Ticket::where('event_id',$eventid)->get();
+        return view('eventDetail', compact('event', 'eventsList', 'countryName', 'eventFollowersList', 'videosList', 'podcastsList', 'ticketsList'));
     }
 
     public function videoDetail($videoid)
@@ -163,7 +219,34 @@ class HomeController extends Controller
         $eventCategories = "select c.name from videos v join event_categories e on v.event_id=e.event_id join categories c on e.category_id=c.id where v.id=". $videoid;
         $eventCategoriesResult = DB::select(DB::raw($eventCategories));
         $videosList = Video::take(4)->orderBy('id', 'DESC')->get();
-        return view('videoDetail', compact('video', 'videosList', 'eventCategoriesResult'));
+        $eventFollowersList = ContentFollower::all();
+        return view('videoDetail', compact('video', 'videosList', 'eventCategoriesResult', 'eventFollowersList'));
+    }
+
+    public function podcastDetail($podcastid)
+    {
+        $podcast = Podcast::find($podcastid);
+        $eventCategories = "select c.name from podcasts p join event_categories e on p.event_id=e.event_id join categories c on e.category_id=c.id where p.id=". $podcastid;
+        $eventCategoriesResult = DB::select(DB::raw($eventCategories));
+        $podcastsList = Podcast::take(4)->orderBy('id', 'DESC')->get();
+        $eventFollowersList = ContentFollower::all();
+        return view('podcastDetail', compact('podcast', 'podcastsList', 'eventCategoriesResult', 'eventFollowersList'));
+    }
+
+    public function organizerDetail($orgid)
+    {
+        $organizer = User::find($orgid);
+        $eventsList = Event::where('date_time', '>=', date('Y-m-d', strtotime(now())))->where('is_live', '=', '1')->where('deleted_at', '=', NULL)->take(4)->orderBy('id', 'DESC')
+            ->get();
+        $orgFutureEventsList = Event::where('date_time', '>=', date('Y-m-d', strtotime(now())))->where('is_live', '=', '1')->where('deleted_at', '=', NULL)->where('user_id', $orgid)->orderBy('id', 'DESC')
+            ->get();
+        $orgPastEventsList = Event::where('date_time', '<=', date('Y-m-d', strtotime(now())))->where('is_live', '=', '1')->where('deleted_at', '=', NULL)->where('user_id', $orgid)->orderBy('id', 'DESC')
+            ->get();
+        $videosList = Video::where('user_id', $orgid)->get();
+        $podcastsList = Podcast::where('user_id', $orgid)->get();
+        $eventFollowersList = ContentFollower::all();
+        
+        return view('organizerDetail', compact('organizer', 'eventsList', 'orgPastEventsList', 'eventFollowersList', 'orgFutureEventsList', 'videosList', 'podcastsList'));
     }
 
     public function saveEventFollower(Request $request){

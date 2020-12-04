@@ -17,10 +17,14 @@ use App\Video;
 use App\Podcast;
 use App\Speaker;
 use App\Ticket;
+use App\ContentFollower;
 use DateTime;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\UploadedFile;
 use File;
+use App\Mail\Email;
+use Mail;
+use App\CustomClass\MailContent;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 
@@ -567,6 +571,7 @@ class EventsController extends Controller
         // } else {
         //     $events->is_live = '0';
         // }
+
         if ($request->IsPublish == "true") {
             $events->is_live = '1';
         } else {
@@ -597,6 +602,31 @@ class EventsController extends Controller
         }
 
         $events->save();
+
+        // $followEventUsers = ContentFollower::where('content_id', $events->id)->where('discriminator', 'e')->get();
+
+        $eventDetails = Event::where('id', $events->id)->first();
+
+        $sdStamp = strtotime($eventDetails->date_time);
+        $sd = date("d M, Y", $sdStamp);
+        $st = date('H:i A', $sdStamp);
+        $dateStr = date("d M, Y", $sdStamp) . ' ' . $st;
+
+        $followEventUsers = DB::table('content_followers')->select('content_followers.*', 'users.name as userName', 'users.email as userEmail' )->join('users', 'content_followers.user_id', '=', 'users.id')->where('content_followers.content_id', $events->id)->where('content_followers.discriminator', 'e')->get();
+
+        if($request->checkYes == "1") {
+            foreach($followEventUsers as $followEventUser){
+                $mail_content = new MailContent();
+                $mail_content->user_name = $followEventUser->userName;
+                $mail_content->event_title = $eventDetails->title;
+                $mail_content->org_name = $eventDetails->user->name;
+                $mail_content->event_datetime = $dateStr;
+                $mail_content->event_id = $eventDetails->id;
+                $data = ['view' => 'mails.eventSchedule', 'mail_content' => $mail_content, 'subject' => 'Event Schedule Update'];
+                $emailOb = new Email($data);
+                Mail::to($followEventUser->userEmail)->send($emailOb);
+            }
+        }
 
         return redirect('org/events');
     }

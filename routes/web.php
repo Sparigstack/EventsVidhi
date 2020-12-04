@@ -137,6 +137,9 @@ Route::get('allContent/{tabId}/{categoryId}/page={pageCount}', 'HomeController@a
 
 Route::get('events/{eventid}', 'HomeController@eventDetail');
 Route::get('videos/{videoid}', 'HomeController@videoDetail');
+Route::get('podcasts/{podcastid}', 'HomeController@podcastDetail');
+
+Route::get('organizer/{orgid}', 'HomeController@organizerDetail');
 
 Route::post('saveEventFollower', 'HomeController@saveEventFollower');
 

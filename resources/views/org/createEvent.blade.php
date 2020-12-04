@@ -185,6 +185,8 @@
                                     <form class="row" ID="EventSaveForm" name="EventSaveForm" onsubmit="return ValidateEventForm(this)" method="post" action="{{$ActionCall}}" enctype="multipart/form-data">
                                         <input type="hidden" class="eventsPage" value="{{url('org/events')}}">
                                         <!-- <input type="text" value="{{$ActionCall}}"> -->
+                                        <input type="hidden" class="checkYes" name="checkYes" value="">
+                                        <!-- <input type="hidden" class="checkPublish" name="checkPublish" value=""> -->
                                         {{ csrf_field() }}
                                         <div class="basicDetails col-lg-12">
                                             <h5> Basic Details </h5>

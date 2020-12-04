@@ -116,19 +116,19 @@
                                 <div class="card-body">
                                     <ul class="nav nav-tabs mainTab">
                                         <li class="nav-item">
-                                            <a class="nav-link active" data-toggle="tab" href="#contentTab" onclick="showHidecategoriesNav(this);"><span class="tabSpan">All Content</span></a>
+                                            <a class="nav-link active" data-toggle="tab" href="#contentTab" onclick=""><span class="tabSpan">All Content</span></a>
                                         </li>
 
                                         <li class="nav-item">
-                                            <a class="nav-link eventsTab" data-toggle="tab" href="#eventsTab" onclick="showHidecategoriesNav(this);"><span class="tabSpan">Events</span></a>
+                                            <a class="nav-link eventsTab" data-toggle="tab" href="#eventsTab" onclick=""><span class="tabSpan">Events</span></a>
                                         </li>
 
                                         <li class="nav-item">
-                                            <a class="nav-link" data-toggle="tab" href="#videoTab" onclick="showHidecategoriesNav(this);"><span class="tabSpan">Videos</span></a>
+                                            <a class="nav-link" data-toggle="tab" href="#videoTab" onclick=""><span class="tabSpan">Videos</span></a>
                                         </li>
 
                                         <li class="nav-item">
-                                            <a class="nav-link" data-toggle="tab" href="#audioTab" onclick="showHidecategoriesNav(this);"><span class="tabSpan">Podcasts</span></a>
+                                            <a class="nav-link" data-toggle="tab" href="#audioTab" onclick=""><span class="tabSpan">Podcasts</span></a>
                                         </li>
                                     </ul>
 
@@ -219,7 +219,7 @@
                             <div class="row tab-pane active" id="contentTab">
                                 <div class="col-md-11 featuredContent mb-4">
                                     <div class="col-md-12 row MobDisplay">
-                                        <div class="col-md-4">
+                                        <div class="col-md-4 pl-0">
                                             <h4> All Content &nbsp; <i class="fa fa-arrow-right" aria-hidden="true"></i> </h4>
                                         </div>
                                         <div class="col-md-8">
@@ -267,7 +267,7 @@
                                                 $dateStr = date("d",  $sdStamp);
                                                 $MonthStr = date("M",  $sdStamp); 
                                                 ?>
-                                                <a href="{{url('events/'. $event->id)}}"><img src="{{$logoUrl}}" class="w-100" alt="" style="height: 130px;border-radius: 6px 6px 0px 0px;"></a>
+                                                <a href="{{url('events/'. $event->id)}}" target="_blank"><img src="{{$logoUrl}}" class="w-100" alt="" style="height: 130px;border-radius: 6px 6px 0px 0px;"></a>
                                                 <span class="{{$freeEventClass}} mt-2">FREE</span>
 
                                                 <?php 
@@ -290,7 +290,7 @@
                                                 </span></a>
 
                                                 <div class="card-body" style="padding: 10px;">
-                                                    <a href="{{url('events/'. $event->id)}}">
+                                                    <a href="{{url('events/'. $event->id)}}" target="_blank">
                                                     <div class="col-md-12 row pr-0" style="padding: unset;margin:unset;">
                                                         <div class="col-md-2 pr-0 pl-1 mobRowDisplay">
                                                             <h6 class="text-uppercase"> {{$dateStr}} <br> {{$MonthStr}} </h6>
@@ -317,6 +317,7 @@
 
                                                     <hr class="mt-2 mb-2">
 
+                                                    <a href="{{url('organizer/'. $event->user->id)}}" target="_blank">
                                                     <div class="row">
                                                         <div class="pl-3">
                                                             <?php
@@ -332,6 +333,8 @@
                                                             <h6 class="mt-2 ml-2"> {{$event->user->name}} </h6>
                                                         </div>
                                                     </div>
+                                                </a>
+
                                                 </div>
                                             </div> 
                                         </div>
@@ -368,7 +371,7 @@
                                                     if($video->url_type == 1){
                                                         $videoUrl = $AwsUrl . $video->url; ?>
                                                         <!-- <a href="{{$videoUrl}}" target="_blank"> -->
-                                                            <a href="{{url('videos/'. $video->id)}}">
+                                                            <a href="{{url('videos/'. $video->id)}}" target="_blank">
                                                             <video class="" src="{{$videoUrl}}" width="100%" height="100%" controls="controls" style="border-radius: 6px 6px 0px 0px;"></video>
                                                         </a>
                                                         <?php   }
@@ -385,8 +388,8 @@
                                                             }
                                                             ?>
                                                             <!-- <a href="{{$url}}" target="_blank"> -->
-                                                                <a href="{{url('videos/'. $video->id)}}">
-                                                                <iframe class="MobFrame" width="240px" height="130px" frameborder="0" src="{{$url}}" style="border-radius: 6px 6px 0px 0px;"></iframe>
+                                                                <a href="{{url('videos/'. $video->id)}}" target="_blank">
+                                                                <iframe class="MobFrame" width="240px" height="130px" frameborder="0" src="{{$url}}" style="border-radius: 6px 6px 0px 0px;pointer-events: none;"></iframe>
                                                             </a>
                                                             <?php  }
                                                         }
@@ -415,7 +418,7 @@
 
 
                                                         <div class="card-body" style="padding: 10px;">
-                                                            <a href="{{url('videos/'. $video->id)}}">
+                                                            <a href="{{url('videos/'. $video->id)}}" target="_blank">
                                                             <div class="col-md-12 pr-0 pl-0">
                                                                 <h6> {{$video->title}} </h6>
                                                             </div>
@@ -441,6 +444,8 @@
                                 <div class="col-md-12 pr-0 mt-2 pl-0" style="color:#9C9C9C;">Video </div> </a>
 
                                                             <hr class="mt-2 mb-2">
+
+                                                            <a href="{{url('organizer/'. $video->user->id)}}" target="_blank">
                                                             <div class="row">
                                                                 <div class="pl-3">
                                                                     <?php
@@ -456,6 +461,8 @@
                                                                     <h6 class="mt-2 ml-2"> {{$video->user->name}} </h6>
                                                                 </div>
                                                             </div>
+                                                        </a>
+
                                                         </div>
                                                     </div>
                                                 </div> 
@@ -476,7 +483,7 @@
                                        ?>
                                        <input type="hidden" class="eventCatID" value="<?php echo $eventCat; ?>">
                                                     <div class="card">
-                                                        <a href="#"><img src="assets/images-new/sample-image.png" class="" alt="" style="width: 100%;height: 130px;"></a>
+                                                        <a href="{{url('podcasts/'. $podcast->id)}}" target="_blank"><img src="assets/images-new/sample-image.png" class="" alt="" style="width: 100%;height: 130px;"></a>
 
                                                         
                                                         <?php 
@@ -501,7 +508,7 @@
 
                                                         <div class="card-body" style="padding: 10px;">
                                                             <div class="col-md-12 row pr-0">
-                                                                <h6> {{$podcast->title}} </h6>
+                                                                <a href="{{url('podcasts/'. $podcast->id)}}" target="_blank"><h6> {{$podcast->title}} </h6></a>
                                                             </div>
 
                                                             <?php
@@ -531,6 +538,8 @@
                                                                 <div class="col-md-12 pr-0 mt-2 pl-0" style="color:#9C9C9C;">Podcast </div>
 
                                                                 <hr class="mt-2 mb-2">
+
+                                                                <a href="{{url('organizer/'. $podcast->user->id)}}" target="_blank">
                                                                 <div class="row">
                                                                     <div class="pl-3">
                                                                         <?php
@@ -546,6 +555,9 @@
                                                                         <h6 class="mt-2 ml-2"> {{$podcast->user->name}} </h6>
                                                                     </div>
                                                                 </div>
+                                                            </a>
+
+
                                                             </div>
                                                         </div>
                                                     </div> 
@@ -555,7 +567,7 @@
                                 </div>
 
                                 <div class="col-md-12 mb-5 mobileSeeMoreBtn" style="justify-content: center;display: flex;">
-                                    <a href="{{url('allContent/1')}}">
+                                    <a href="{{url('allContent/1/0/page=1')}}">
                                     <input type="button" id="" class="clickable createEventButton buttonMobileSize" value="See more" style="background: #FED8C6;color:black;box-shadow: 0px 2px 7px rgba(81, 33, 34, 0.2), 0px 2px 10px rgba(81, 33, 34, 0.25);"></a>
                                 </div>
 
@@ -564,7 +576,7 @@
                             <div class="row tab-pane" id= "eventsTab">
                                 <div class="col-md-11 featuredContent mb-4">
                                     <div class="col-md-12 row MobDisplay">
-                                        <div class="col-md-4">
+                                        <div class="col-md-4 pl-0">
                                             <h4> Events &nbsp; <i class="fa fa-arrow-right" aria-hidden="true"></i></h4>
                                         </div>
                                         <div class="col-md-8">
@@ -615,7 +627,7 @@
                                                 $dateStr = date("d",  $sdStamp);
                                                 $MonthStr = date("M",  $sdStamp); 
                                                 ?>
-                                                <a href="{{url('events/'. $event->id)}}"><img src="{{$logoUrl}}" class="w-100" alt="" style="height: 130px;border-radius: 6px 6px 0px 0px;"></a>
+                                                <a href="{{url('events/'. $event->id)}}" target="_blank"><img src="{{$logoUrl}}" class="w-100" alt="" style="height: 130px;border-radius: 6px 6px 0px 0px;"></a>
                                                 <span class="{{$freeEventClass}} mt-2">FREE</span>
 
                                                 <?php 
@@ -638,7 +650,7 @@
                                                 </span></a>
 
                                                 <div class="card-body" style="padding: 10px;">
-                                                    <a href="{{url('events/'. $event->id)}}">
+                                                    <a href="{{url('events/'. $event->id)}}" target="_blank">
                                                     <div class="col-md-12 row pr-0" style="padding: unset;margin: unset;">
                                                         <div class="col-md-2 pr-0 pl-1 mobRowDisplay">
                                                             <h6 class="text-uppercase"> {{$dateStr}} <br> {{$MonthStr}} </h6>
@@ -665,6 +677,8 @@
                                                 <?php } ?>
 
                                                     <hr class="mt-2 mb-2">
+
+                                                    <a href="{{url('organizer/'. $event->user->id)}}" target="_blank">
                                                     <div class="row">
                                                         <div class="pl-3">
                                                             <?php
@@ -680,6 +694,8 @@
                                                             <h6 class="mt-2 ml-2"> {{$event->user->name}} </h6>
                                                         </div>
                                                     </div>
+                                                </a>
+
                                                 </div>
                                             </div>
                                         </div> 
@@ -689,7 +705,7 @@
                                 </div>
 
                                 <div class="col-md-12 mb-5 seeMoreEvent mobileSeeMoreBtn" style="justify-content: center;display: flex;">
-                                    <a href="{{url('allContent/2')}}">
+                                    <a href="{{url('allContent/2/0/page=1')}}">
                                     <input type="button" id="" class="clickable createEventButton buttonMobileSize" value="See more" style="background: #FED8C6;color:black;box-shadow: 0px 2px 7px rgba(81, 33, 34, 0.2), 0px 2px 10px rgba(81, 33, 34, 0.25);"></a>
                                 </div>
 
@@ -698,7 +714,7 @@
                             <div class="row tab-pane" id= "videoTab">
                                 <div class="col-md-11 featuredContent mb-4">
                                     <div class="col-md-12 row MobDisplay">
-                                        <div class="col-md-4">
+                                        <div class="col-md-4 pl-0">
                                             <h4>Videos &nbsp; <i class="fa fa-arrow-right" aria-hidden="true"></i></h4>
                                         </div>
                                         <div class="col-md-8">
@@ -751,7 +767,7 @@
                                                     if($video->url_type == 1){
                                                         $videoUrl = $AwsUrl . $video->url; ?>
                                                         <!-- <a href="{{$videoUrl}}" target="_blank"> -->
-                                                            <a href="{{url('videos/'. $video->id)}}">
+                                                            <a href="{{url('videos/'. $video->id)}}" target="_blank">
                                                             <video class="" src="{{$videoUrl}}" width="100%" height="100%" controls="controls" style="border-radius: 6px 6px 0px 0px;"></video></a>
                                                         <?php   }
                                                         else{
@@ -767,8 +783,8 @@
                                                             }
                                                             ?>
                                                             <!-- <a href="{{$url}}" target="_blank"> -->
-                                                                <a href="{{url('videos/'. $video->id)}}">
-                                                                <iframe width="240px" height="130px" src="{{$url}}" frameborder="0" class="" style="border-radius: 6px 6px 0px 0px;"></iframe></a>
+                                                                <a href="{{url('videos/'. $video->id)}}" target="_blank">
+                                                                <iframe width="240px" height="130px" src="{{$url}}" frameborder="0" class="" style="border-radius: 6px 6px 0px 0px;pointer-events: none;"></iframe></a>
                                                             <?php  }
                                                         }
                                                         ?>
@@ -797,7 +813,7 @@
 
 
                                                         <div class="card-body" style="padding: 10px;">
-                                                            <a href="{{url('videos/'. $video->id)}}">
+                                                            <a href="{{url('videos/'. $video->id)}}" target="_blank">
                                                             <div class="col-md-12 pr-0 pl-0">
                                                                 <h6> {{$video->title}} </h6>
                                                             </div>
@@ -824,6 +840,8 @@
                                 <div class="col-md-12 pr-0 mt-2 pl-0" style="color:#9C9C9C;">Video </div> </a>
 
                                                             <hr class="mt-2 mb-2">
+
+                                                            <a href="{{url('organizer/'. $video->user->id)}}" target="_blank">
                                                             <div class="row">
                                                                 <div class="pl-3">
                                                                     <?php
@@ -839,6 +857,8 @@
                                                                     <h6 class="mt-2 ml-2"> {{$video->user->name}} </h6>
                                                                 </div>
                                                             </div>
+                                                        </a>
+
                                                         </div>
                                                     </div>
                                                 </div> 
@@ -848,7 +868,7 @@
                                         </div>
 
                                         <div class="col-md-12 mb-5 mobileSeeMoreBtn" style="justify-content: center;display: flex;">
-                                        <a href="{{url('allContent/3')}}">
+                                        <a href="{{url('allContent/3/0/page=1')}}">
                                         <input type="button" id="" class="clickable createEventButton buttonMobileSize" value="See more" style="background: #FED8C6;color:black;box-shadow: 0px 2px 7px rgba(81, 33, 34, 0.2), 0px 2px 10px rgba(81, 33, 34, 0.25);"></a>
                                         </div>
 
@@ -858,7 +878,7 @@
                                     <div class="row tab-pane" id= "audioTab">
                                         <div class="col-md-11 featuredContent mb-4">
                                             <div class="col-md-12 row MobDisplay">
-                                                <div class="col-md-4">
+                                                <div class="col-md-4 pl-0">
                                                     <h4>Podcasts &nbsp; <i class="fa fa-arrow-right" aria-hidden="true"></i></h4>
                                                 </div>
                                                 <div class="col-md-8">
@@ -893,7 +913,7 @@
                                        ?>
                                        <input type="hidden" class="eventCatID" value="<?php echo $eventCat; ?>">
                                                     <div class="card">
-                                                        <a href="#"><img src="assets/images-new/sample-image.png" class="" alt="" style="width: 100%;height: 130px;"></a>
+                                                        <a href="{{url('podcasts/'. $podcast->id)}}" target="_blank"><img src="assets/images-new/sample-image.png" class="" alt="" style="width: 100%;height: 130px;"></a>
 
                                                         
                                                         <?php 
@@ -919,7 +939,7 @@
 
                                                         <div class="card-body" style="padding: 10px;">
                                                             <div class="col-md-12 row pr-0">
-                                                                <h6> {{$podcast->title}} </h6>
+                                                                <a href="{{url('podcasts/'. $podcast->id)}}" target="_blank"><h6> {{$podcast->title}} </h6></a>
                                                             </div>
 
                                                             <?php
@@ -949,6 +969,8 @@
                                                                 <div class="col-md-12 pr-0 mt-2 pl-0" style="color:#9C9C9C;">Podcast </div>
 
                                                                 <hr class="mt-2 mb-2">
+
+                                                                <a href="{{url('organizer/'. $podcast->user->id)}}" target="_blank">
                                                                 <div class="row">
                                                                     <div class="pl-3">
                                                                         <?php
@@ -964,6 +986,9 @@
                                                                         <h6 class="mt-2 ml-2"> {{$podcast->user->name}} </h6>
                                                                     </div>
                                                                 </div>
+                                                            </a>
+
+
                                                             </div>
                                                         </div>
                                                     </div> 
@@ -973,7 +998,7 @@
                                             </div>
 
                                             <div class="col-md-12 mb-5 mobileSeeMoreBtn" style="justify-content: center;display: flex;">
-                                                <a href="{{url('allContent/4')}}">
+                                                <a href="{{url('allContent/4/0/page=1')}}">
                                                 <input type="button" id="" class="clickable createEventButton buttonMobileSize" value="See more" style="background: #FED8C6;color:black;box-shadow: 0px 2px 7px rgba(81, 33, 34, 0.2), 0px 2px 10px rgba(81, 33, 34, 0.25);"></a>
                                             </div>
 

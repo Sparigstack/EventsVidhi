@@ -1,12 +1,21 @@
 function showHidecategoriesNav(classname){
     if($(classname).hasClass("eventsTab")){
-        // $('.categoriesNav').removeClass('d-none');
         $('.eventListDiv').removeClass('d-none');
-        // $('.noEventMsg').addClass('d-none');
     } else{
-        // $('.categoriesNav').addClass('d-none');
     }
-    $('.noEventMsg').addClass('d-none'); 
+    $('.noEventMsg').addClass('d-none');
+
+    var tabId = $(classname).attr('value');
+    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr("content");
+    var url = "0";
+
+    url =  "../../../allContent/" +
+                tabId +
+                "/" +
+                0 +
+                "/page=1";
+        //        alert(url);
+        window.location.replace(url);
 }
 
 function showHideEventListing(eventslist){
@@ -90,28 +99,4 @@ function filterByCategories(categorylist){
                 "/page=1";
         //        alert(url);
         window.location.replace(url);
-
-        $('.showHideListDiv').each(function() {
-        var eventCategoryID = $(this).find('.eventCatID');
-        var eventCategoryIDVal = $(this).find('.eventCatID').val();
-        var split_str = eventCategoryIDVal.split(",");
-        $(this).removeClass('d-none');
-            if (split_str.indexOf(eventListID) !== -1)  {
-                $(this).removeClass('d-none');
-            } else {
-                $(this).addClass('d-none');
-            }
-        }); 
-
-    // var checkLength = $('.eventListDiv:visible').length;
-    var checkLength = $('.showHideListDiv:visible').length;
-    if(checkLength == 0){
-        // $('.seeMoreEvent').addClass('d-none');
-        $('.mobileSeeMoreBtn').addClass('d-none');
-        $('.noEventMsg').removeClass('d-none');
-    } else {
-        // $('.seeMoreEvent').removeClass('d-none');
-        $('.mobileSeeMoreBtn').addClass('d-none');
-        $('.noEventMsg').addClass('d-none');   
-    }
 }
