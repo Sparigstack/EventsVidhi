@@ -88,24 +88,7 @@ class HomeController extends Controller
         }, Str::replaceLast('.enc', '', $filename));
     }
 
-    public function indexPage(Request $request)
-    {
-        $events = Event::where('date_time', '>=', date('Y-m-d', strtotime(now())))->where('is_live', '=', '1')->where('deleted_at', '=', NULL)->take(8)->orderBy('id', 'DESC')
-            ->get();
-        $eventsFeature = Event::where('date_time', '>=', date('Y-m-d', strtotime(now())))->where('is_featured', '=', '1')->where('is_live', '=', '1')->where('deleted_at', '=', NULL)->take(4)->orderBy('id', 'DESC')
-            ->get();
-        $videos = Video::take(8)->orderBy('id', 'DESC')->get();
-        $podcasts = Podcast::take(8)->orderBy('id', 'DESC')->get();
-
-        // $countries = Country::all();
-        $countries = DB::table('events')->select('countries.name')->join('countries', 'events.country_id', '=', 'countries.id')->distinct('countries.name')->get();
-        $categories = Category::all();
-        $eventCategories = EventCategory::all();
-        $eventFollowersList = ContentFollower::all();
-        return view('home', compact('events', 'videos', 'podcasts', 'eventsFeature', 'categories', 'countries', 'eventCategories', 'eventFollowersList'));
-    }
-
-    public function allContent($tabId = 0,$categoryId,$pageCount)
+    public function indexPage(Request $request,$tabId = NULL,$categoryId = NULL,$pageCount= NULL)
     {
         $categoryQueryVideo = " ";
         $categoryQueryPodcast = " ";
@@ -114,7 +97,7 @@ class HomeController extends Controller
         $allData = "";
         $dataCount = "";
 
-        if($categoryId != 0){
+        if($categoryId != 0 && $categoryId != NULL){
             $categoryQueryVideo .= " join event_categories ec on e.id = ec.event_id where ec.category_id = ". $categoryId . " ";
             $categoryQueryPodcast .= " join event_categories ec on e.id = ec.event_id where ec.category_id = ". $categoryId . " ";
             $categoryQueryEvent .= " join event_categories ec on e.id = ec.event_id ";
@@ -140,6 +123,115 @@ class HomeController extends Controller
             left join events e on p.event_id = e.id"
             .$categoryQueryPodcast."";
 
+        // $page = '1';
+        // if (isset($pageCount) && $pageCount!= NULL) {
+        //     $page = $pageCount;
+        // }
+        // if ($page == "" || $page == "1") {
+        //     $startingRecord = 0;
+        // } else {
+        //     $startingRecord = $page * 4 - 4;
+        // }
+
+        if($tabId == 1 || $tabId == NULL){
+            $allData .= "SELECT * FROM ("
+                .$eventQuery." UNION ".$videoQuery." UNION ".$podcastQuery.
+                ") allDataQuery LIMIT 12";
+            $dataCount .= "SELECT * FROM ("
+                .$eventQuery." UNION ".$videoQuery." UNION ".$podcastQuery.
+                ") allDataQuery";
+        } else if($tabId == 2){
+            $allData .= "SELECT * FROM ("
+                .$eventQuery.
+                ") allDataQuery LIMIT 12";
+            $dataCount .= "SELECT * FROM ("
+                .$eventQuery.
+                ") allDataQuery";
+        } else if($tabId == 3){
+            $allData .= "SELECT * FROM ("
+                .$videoQuery.
+                ") allDataQuery LIMIT 12";
+            $dataCount .= "SELECT * FROM ("
+                .$videoQuery.
+                ") allDataQuery";
+        } else {
+            $allData .= "SELECT * FROM ("
+                .$podcastQuery.
+                ") allDataQuery LIMIT 12";
+            $dataCount .= "SELECT * FROM ("
+                .$podcastQuery.
+                ") allDataQuery";
+        }
+
+        // return $allData;
+
+        $allDataResult = DB::select(DB::raw($allData));
+
+        $dataCountResult = DB::select(DB::raw($dataCount));
+
+        $allDataCount = count($dataCountResult);
+        // var_dump($allDataResult); return;
+
+
+
+        // $events = Event::where('date_time', '>=', date('Y-m-d', strtotime(now())))->where('is_live', '=', '1')->where('deleted_at', '=', NULL)->take(8)->orderBy('id', 'DESC')
+        //     ->get();
+        // $videos = Video::take(8)->orderBy('id', 'DESC')->get();
+        // $podcasts = Podcast::take(8)->orderBy('id', 'DESC')->get();
+
+        $eventsFeature = Event::where('date_time', '>=', date('Y-m-d', strtotime(now())))->where('is_featured', '=', '1')->where('is_live', '=', '1')->where('deleted_at', '=', NULL)->take(4)->orderBy('id', 'DESC')
+            ->get();
+        $countries = DB::table('events')->select('countries.name')->join('countries', 'events.country_id', '=', 'countries.id')->distinct('countries.name')->get();
+        $categories = Category::all();
+        $eventCategories = EventCategory::all();
+        $eventFollowersList = ContentFollower::all();
+        return view('home', compact('eventsFeature', 'categories', 'countries', 'eventCategories', 'eventFollowersList', 'tabId', 'allDataResult', 'pageCount', 'allDataCount', 'categoryId'));
+    }
+
+    public function allContent($tabId = 0,$categoryId,$searchName,$pageCount)
+    {
+        $categoryQueryVideo = " ";
+        $categoryQueryPodcast = " ";
+        $categoryQueryEvent = " ";
+        $catSelectId = "";
+        $allData = "";
+        $dataCount = "";
+        $searchNameEventQuery = " ";
+        $searchNameVideoQuery = " ";
+        $searchNamePodcastQuery = " ";
+
+        if($categoryId != 0){
+            $categoryQueryVideo .= " join event_categories ec on e.id = ec.event_id where ec.category_id = ". $categoryId . " ";
+            $categoryQueryPodcast .= " join event_categories ec on e.id = ec.event_id where ec.category_id = ". $categoryId . " ";
+            $categoryQueryEvent .= " join event_categories ec on e.id = ec.event_id ";
+            $catSelectId .= " and ec.category_id = ". $categoryId . " ";
+        }
+
+        if($categoryId == 0 && $searchName != '0'){
+            $searchNameEventQuery .= " and e.title LIKE '%" .$searchName. "%' ";
+            $searchNameVideoQuery .= " where v.title LIKE '%" .$searchName."%' ";
+            $searchNamePodcastQuery .= " where p.title LIKE '%" .$searchName."%' ";
+        }
+        
+        $eventQuery = "select e.id as eventId, u.id as userId, u.name as userName, u.profile_pic as userProfilePic, NULL as videoId, e.title as eventTitle, e.description as eventDesc, e.thumbnail as eventThumbnail, e.is_online as eventOnline, e.city as eventCity, e.state as eventState, e.is_paid as eventPaid, e.is_live as eventLive, e.date_time as eventDateTime, '' as videoUrl, '' as videoUrlType, NULL as podcastId,'' as eventVideoDesc, '' as videoTitle, '' as videoDesc, '' as podcastTitle   
+
+            from events e join users u on e.user_id = u.id "
+            .$categoryQueryEvent.
+            " where e.is_live = 1 and e.deleted_at IS NULL and e.date_time >= CURDATE() "
+            .$catSelectId." ". $searchNameEventQuery."";
+
+        $videoQuery = "select v.event_id as eventId, u.id as userId, u.name as userName , u.profile_pic as userProfilePic,v.id as videoId, '' as eventTitle, '' as eventDesc, '' as eventThumbnail, NULL as eventOnline, '' as eventCity, '' as eventState, NULL as eventPaid, '' as eventLive, NULL as eventDateTime, v.url as videoUrl, v.url_type as videoUrlType, NULL as podcastId,e.description as eventVideoDesc, v.title as videoTitle, v.description as videoDesc, '' as podcastTitle    
+
+            from videos v join users u on v.user_id = u.id
+            left join events e on v.event_id = e.id"
+            .$categoryQueryVideo." ". $searchNameVideoQuery."";
+
+        $podcastQuery = "select p.event_id as eventId, u.id as userId, u.name as userName , u.profile_pic as userProfilePic,NULL as videoId, '' as eventTitle, '' as eventDesc, '' as eventThumbnail, NULL as eventOnline, '' as eventCity, '' as eventState, NULL as eventPaid, '' as eventLive, NULL as eventDateTime, p.url as videoUrl, p.url_type as videoUrlType, p.id as podcastId,e.description as eventVideoDesc, '' as videoTitle, '' as videoDesc, p.title as podcastTitle  
+
+            from podcasts p join users u on p.user_id = u.id
+            left join events e on p.event_id = e.id"
+            .$categoryQueryPodcast." ". $searchNamePodcastQuery."";
+
         $page = '1';
         if (isset($pageCount)) {
             $page = $pageCount;
@@ -147,34 +239,34 @@ class HomeController extends Controller
         if ($page == "" || $page == "1") {
             $startingRecord = 0;
         } else {
-            $startingRecord = $page * 4 - 4;
+            $startingRecord = $page * 32 - 32;
         }
 
         if($tabId == 1){
             $allData .= "SELECT * FROM ("
                 .$eventQuery." UNION ".$videoQuery." UNION ".$podcastQuery.
-                ") allDataQuery LIMIT " . $startingRecord . ",4";
+                ") allDataQuery LIMIT " . $startingRecord . ",32";
             $dataCount .= "SELECT * FROM ("
                 .$eventQuery." UNION ".$videoQuery." UNION ".$podcastQuery.
                 ") allDataQuery";
         } else if($tabId == 2){
             $allData .= "SELECT * FROM ("
                 .$eventQuery.
-                ") allDataQuery LIMIT " . $startingRecord . ",4";
+                ") allDataQuery LIMIT " . $startingRecord . ",32";
             $dataCount .= "SELECT * FROM ("
                 .$eventQuery.
                 ") allDataQuery";
         } else if($tabId == 3){
             $allData .= "SELECT * FROM ("
                 .$videoQuery.
-                ") allDataQuery LIMIT " . $startingRecord . ",4";
+                ") allDataQuery LIMIT " . $startingRecord . ",32";
             $dataCount .= "SELECT * FROM ("
                 .$videoQuery.
                 ") allDataQuery";
         } else {
             $allData .= "SELECT * FROM ("
                 .$podcastQuery.
-                ") allDataQuery LIMIT " . $startingRecord . ",4";
+                ") allDataQuery LIMIT " . $startingRecord . ",32";
             $dataCount .= "SELECT * FROM ("
                 .$podcastQuery.
                 ") allDataQuery";
@@ -197,7 +289,7 @@ class HomeController extends Controller
         $categories = Category::all();
         // $eventCategories = EventCategory::all();
         $eventFollowersList = ContentFollower::all();
-        return view('allContent', compact('categories', 'tabId', 'countries', 'eventFollowersList', 'allDataResult', 'pageCount', 'allDataCount'));
+        return view('allContent', compact('categories', 'tabId', 'countries', 'eventFollowersList', 'allDataResult', 'pageCount', 'allDataCount', 'categoryId'));
     }
 
     public function eventDetail($eventid)

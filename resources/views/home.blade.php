@@ -3,7 +3,11 @@
 @section('content')
     <?php $AwsUrl = env('AWS_URL'); ?>
                 <div class="container mainHomePageContainer" style="">
-                    <div class="col-md-12 col-lg-12 d-flex align-items-center" style="background:url('assets/images-new/banner-image-1.png'); background-size:cover; background-position:center;
+
+                    <input type="hidden" class="homePageUrl" value="{{url('/')}}">
+
+<!-- 'assets/images-new/banner-image-1.png' -->
+                    <div class="col-md-12 col-lg-12 d-flex align-items-center" style="background:url('{{asset('assets/images-new/banner-image-1.png')}}'); background-size:cover; background-position:center;
                     background-repeat:no-repeat; min-height:350px; padding:unset;">
                         <!--<img src="assets/images-new/banner-image-1.png" class="w-100 bannerImage">-->
                         <div class="col-md-6 bannerImageOverlay">
@@ -17,7 +21,7 @@
                                 <?php } else{ ?>
                                     <!-- <a href="{{ route('register') }}">
                                     <input type="button" id="" class="clickable createEventButton buttonMobileSize mt-3" value="Create your event"></a> -->
-                                    <a href="{{url('allContent/1')}}">
+                                    <a href="{{url('allContent/1/0/0/page=1')}}">
                                     <input type="button" id="" class="clickable createEventButton buttonMobileSize mt-3" value="Browse Events"></a>
                                <?php } } else{?>
                                     <a href="{{ route('register') }}">
@@ -57,10 +61,15 @@
                                     $dateStr = date("d",  $sdStamp);
                                     $MonthStr = date("M",  $sdStamp);
                                     $bannerImageSrc = "";
+                                    $imageSrc = "url({{ URL::asset('assets/images-new/banner-image-2.png') }})";
                                     if($eventFeature->banner){
                                         $bannerImageSrc = env('AWS_URL') . $eventFeature->banner;
                                     } else {
-                                        $bannerImageSrc = "assets/images-new/banner-image-2.png";
+                                        if($tabId == NULL){
+                                            $bannerImageSrc = "assets/images-new/banner-image-2.png";
+                                        } else {
+                                            $bannerImageSrc = "../../assets/images-new/banner-image-2.png";
+                                        }
                                     }
                                 ?>
                                 <div class="carousel-item <?php if($count==0){ echo "active"; } else{ echo " ";}?>">
@@ -101,6 +110,8 @@
 
                             <?php 
                                 $getUserID = "";
+                                $activeClass = "active";
+                                $dnoneClass = "d-none";
                                 if(Auth::check()){
                                     $getUserID = Auth::user()->id;
                                 }
@@ -116,26 +127,32 @@
                                 <div class="card-body">
                                     <ul class="nav nav-tabs mainTab">
                                         <li class="nav-item">
-                                            <a class="nav-link active" data-toggle="tab" href="#contentTab" onclick=""><span class="tabSpan">All Content</span></a>
+                                            <a class="nav-link <?php if($tabId == 1 || $tabId == NULL){ echo $activeClass;} ?>" data-toggle="tab" href="javascript:void(0);" onclick="showHidecategoriesNavItem(this);" value="1"><span class="tabSpan">All Content</span></a>
                                         </li>
 
                                         <li class="nav-item">
-                                            <a class="nav-link eventsTab" data-toggle="tab" href="#eventsTab" onclick=""><span class="tabSpan">Events</span></a>
+                                            <a class="nav-link <?php if($tabId == 2){ echo $activeClass;} ?> eventsTab" data-toggle="tab" href="javascript:void(0);" onclick="showHidecategoriesNavItem(this);" value="2"><span class="tabSpan">Events</span></a>
                                         </li>
 
                                         <li class="nav-item">
-                                            <a class="nav-link" data-toggle="tab" href="#videoTab" onclick=""><span class="tabSpan">Videos</span></a>
+                                            <a class="nav-link <?php if($tabId == 3){ echo $activeClass;} ?>" data-toggle="tab" href="javascript:void(0);" onclick="showHidecategoriesNavItem(this);" value="3"><span class="tabSpan">Videos</span></a>
                                         </li>
 
                                         <li class="nav-item">
-                                            <a class="nav-link" data-toggle="tab" href="#audioTab" onclick=""><span class="tabSpan">Podcasts</span></a>
+                                            <a class="nav-link <?php if($tabId == 4){ echo $activeClass;} ?>" data-toggle="tab" href="javascript:void(0);" onclick="showHidecategoriesNavItem(this);" value="4"><span class="tabSpan">Podcasts</span></a>
                                         </li>
                                     </ul>
 
                                     <ul class="nav categoriesNav mt-2" style="">
                                         @foreach($categories as $category)
+                                        <?php
+                                            $activeCatClass = '';
+                                            if($categoryId == $category->id){
+                                                $activeCatClass = "active";
+                                            }
+                                         ?>
                                         <li class="nav-item mobileNav" style="margin-right: 1rem;">
-                                            <a class="nav-link" data-toggle="tab" href="#" onclick="showHideEventListing(this);" data-id="{{$category->id}}"><span class="" style="letter-spacing: 0px;">{{$category->name}}</span></a>
+                                            <a class="nav-link {{$activeCatClass}}" data-toggle="tab" href="javascript:void(0)" onclick="filterByCategoryList(this);" data-id="{{$category->id}}"><span class="" style="letter-spacing: 0px;">{{$category->name}}</span></a>
                                         </li>
                                         @endforeach
                                         <!-- <li class="nav-item ml-4">
@@ -158,65 +175,10 @@
                                 </div>
                             </div>
 
-
-
-
-                            <!-- sample mobile view -->
-                                <!-- <div class="col-lg-6">
-           <div class="card">
-              <div class="card-body"> 
-                <ul class="nav nav-tabs mainTab">
-                  <li class="nav-item">
-                    <a class="nav-link active" data-toggle="tab" href="#tabe-1"><i class=""></i> <span class="hidden-xs">Home</span></a>
-                  </li>
-                  <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="javascript:void();" aria-expanded="false"><i class=""></i> <span class="hidden-xs">Events</span></a>
-                    <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 42px, 0px);">
-                      <a class="dropdown-item" data-toggle="tab" href="#tabe-3">Link 1</a>
-                      <a class="dropdown-item" href="javascript:void();">Link 2</a>
-                      <a class="dropdown-item" href="javascript:void();">Link 3</a>
-                    </div>
-                  </li>
-                 
-                  <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="javascript:void();" aria-expanded="false"><i class=""></i> <span class="hidden-xs">Videos</span></a>
-                    <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 42px, 0px);">
-                      <a class="dropdown-item" data-toggle="tab" href="#tabe-3">Link 1</a>
-                      <a class="dropdown-item" href="javascript:void();">Link 2</a>
-                      <a class="dropdown-item" href="javascript:void();">Link 3</a>
-                    </div>
-                  </li>
-                </ul> -->
-
-                <!-- Tab panes -->
-                <!-- <div class="tab-content">
-                  <div id="tabe-1" class="container tab-pane active">
-                    <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.</p>
-          <p>If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text.All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet</p>
-                  </div>
-                  <div id="tabe-2" class="container tab-pane fade">
-                    <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-          <p>It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.</p>
-                  </div>
-                  <div id="tabe-3" class="container tab-pane fade">
-                    <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</p>
-                  </div>
-                </div>
-              </div>
-           </div>
-
-        </div> -->
-
-
-                            <!-- sample mobile view -->
-
-
-
-
                         </div>
 
                         <div class="tab-content">
-                            <div class="row tab-pane active" id="contentTab">
+                            <div class="row tab-pane <?php if($tabId == 1 || $tabId == NULL){ echo $activeClass;} ?>" id="contentTab">
                                 <div class="col-md-11 featuredContent mb-4">
                                     <div class="col-md-12 row MobDisplay">
                                         <div class="col-md-4 pl-0">
@@ -240,34 +202,29 @@
                                             <p class="text-center"> No Records Found! </p>
                                         </div>
                                         <?php $row_count = 1;
-                                        foreach ($events as $event) { ?>
+                                        if(count($allDataResult) > 0){
+                                        foreach ($allDataResult as $allData) {
+                                        if($allData->videoId == NULL && $allData->podcastId == NULL) { ?>
                                         <?php
                                         $logoUrl = $AwsUrl . 'no-image-logo.jpg';
-                                        if (!empty($event->thumbnail)) {
-                                            $logoUrl = $AwsUrl . $event->thumbnail;
+                                        if (!empty($allData->eventThumbnail)) {
+                                            $logoUrl = $AwsUrl . $allData->eventThumbnail;
                                         }
                                         ?>
 
                                         <div class="col-md-3 showHideListDiv eventListDiv parent pl-2 pr-2">
-                                            <?php
-                                            $eventCat = "";
-                                         foreach ($event->categories as $EventCategory) {
-                                         $eventCat .= $EventCategory->id . ',';
-                                          ?>
-                                        <?php }
-                                         ?>
-                                         <input type="hidden" class="eventCatID" value="<?php echo $eventCat; ?>">
+                                            
                                             <div class="card">
                                                 <?php
                                                 $freeEventClass = "d-none";
-                                                if($event->is_paid != 1){
+                                                if($allData->eventPaid != 1){
                                                     $freeEventClass = "freeTextSpanClass";
                                                 }
-                                                $sdStamp = strtotime($event->date_time);
+                                                $sdStamp = strtotime($allData->eventDateTime);
                                                 $dateStr = date("d",  $sdStamp);
                                                 $MonthStr = date("M",  $sdStamp); 
                                                 ?>
-                                                <a href="{{url('events/'. $event->id)}}" target="_blank"><img src="{{$logoUrl}}" class="w-100" alt="" style="height: 130px;border-radius: 6px 6px 0px 0px;"></a>
+                                                <a href="{{url('events/'. $allData->eventId)}}" target="_blank"><img src="{{$logoUrl}}" class="w-100" alt="" style="height: 130px;border-radius: 6px 6px 0px 0px;"></a>
                                                 <span class="{{$freeEventClass}} mt-2">FREE</span>
 
                                                 <?php 
@@ -276,7 +233,7 @@
                                                     $checkVal = "";
                                                     if(Auth::check()){
                                                         foreach($eventFollowersList as $eventFollowerList){
-                                                            if(Auth::user()->id == $eventFollowerList->user_id && $event->id == $eventFollowerList->content_id && $eventFollowerList->discriminator == "e"){
+                                                            if(Auth::user()->id == $eventFollowerList->user_id && $allData->eventId == $eventFollowerList->content_id && $eventFollowerList->discriminator == "e"){
                                                                 $checkHeartFill = "";
                                                                 $checkHeartEmpty = "d-none";
                                                                 $checkVal = "1";
@@ -284,19 +241,19 @@
                                                         }
                                                     }
                                                 ?>
-                                                <a style="cursor: pointer;" onclick="followEvent(this);" data-event-id="{{$event->id}}" discriminator="e">
+                                                <a style="cursor: pointer;" onclick="followEvent(this);" data-event-id="{{$allData->eventId}}" discriminator="e">
                                                 <span class="likeButtonSpan"><i aria-hidden="true" class="fa fa-heart-o emptyHeart {{$checkHeartEmpty}}" id="" style=""></i>
                                                     <i aria-hidden="true" class="fa fa-heart {{$checkHeartFill}} fillHeart" style="color: #FD6568;" value="{{$checkVal}}"></i>
                                                 </span></a>
 
                                                 <div class="card-body" style="padding: 10px;">
-                                                    <a href="{{url('events/'. $event->id)}}" target="_blank">
+                                                    <a href="{{url('events/'. $allData->eventId)}}" target="_blank">
                                                     <div class="col-md-12 row pr-0" style="padding: unset;margin:unset;">
                                                         <div class="col-md-2 pr-0 pl-1 mobRowDisplay">
                                                             <h6 class="text-uppercase"> {{$dateStr}} <br> {{$MonthStr}} </h6>
                                                         </div>
                                                         <div class="col-md-10 pl-2 pr-0 mobRowDisplay1">
-                                                            <h6> {{$event->title}} </h6>
+                                                            <h6> {{$allData->eventTitle}} </h6>
                                                         </div>
                                                     </div> </a>
 
@@ -305,32 +262,32 @@
                                                     <a class="text-center chevronClass" data-toggle="collapse" aria-expanded="false" data-target="#heading<?php echo $row_count ?>" style="display: block;"><i class="fa fa-chevron-down" style="color: #9C9C9C;"></i>
                                                     <i class="fa fa-chevron-up" style="color: #9C9C9C;"></i></a>
                                                     <div id="heading<?php echo $row_count ?>" class="mt-2 ml-2 mr-2 collapse" style="color: black;">
-                                                        {{$event->description}}
+                                                        {{$allData->eventDesc}}
                                                     </div>
                                                     <?php $row_count++; } ?>
 
-                                                    <?php if($event->is_online == 1){ ?>
+                                                    <?php if($allData->eventOnline == 1){ ?>
                                                     <div class="col-md-12 pr-0 mt-2 ml-2 mr-2 pl-0" style="color:#9C9C9C;">Online Event </div>
                                               <?php  } else { ?>
-                                                    <div class="col-md-12 pr-0 mt-2 ml-2 mr-2 pl-0" style="color:#9C9C9C;"> <i aria-hidden="true" class="fa fa-location-arrow pr-1"></i> {{$event->city}},  {{$event->state}}</div>
+                                                    <div class="col-md-12 pr-0 mt-2 ml-2 mr-2 pl-0" style="color:#9C9C9C;"> <i aria-hidden="true" class="fa fa-location-arrow pr-1"></i> {{$allData->eventCity}},  {{$allData->eventState}}</div>
                                                 <?php } ?>
 
                                                     <hr class="mt-2 mb-2">
 
-                                                    <a href="{{url('organizer/'. $event->user->id)}}" target="_blank">
+                                                    <a href="{{url('organizer/'. $allData->userId)}}" target="_blank">
                                                     <div class="row">
                                                         <div class="pl-3">
                                                             <?php
                                                             $profileLogo = "";
-                                                            if(!is_null($event->user->profile_pic) && $event->user->profile_pic != ""){
-                                                               $profileLogo = env("AWS_URL"). $event->user->profile_pic; ?>
+                                                            if(!is_null($allData->userProfilePic) && $allData->userProfilePic != ""){
+                                                               $profileLogo = env("AWS_URL"). $allData->userProfilePic; ?>
                                                                <img class="align-self-start profileImg" src="{{$profileLogo}}" alt="user avatar" style="width:40px !important;height:40px !important;">
                                                                <?php } else{ ?>
                                                                <img class="align-self-start profileImg" src="https://via.placeholder.com/110x110" alt="user avatar" style="width:40px !important;height:40px !important;">
                                                                <?php } ?>
                                                            </div>
                                                            <div class="">
-                                                            <h6 class="mt-2 ml-2"> {{$event->user->name}} </h6>
+                                                            <h6 class="mt-2 ml-2"> {{$allData->userName}} </h6>
                                                         </div>
                                                     </div>
                                                 </a>
@@ -338,45 +295,36 @@
                                                 </div>
                                             </div> 
                                         </div>
-                                        <?php } ?>
-
-                                        <?php $row_count = 1;
-                                        foreach ($videos as $video) { ?>
-                                        <div class="col-md-3 parent showHideListDiv pl-2 pr-2">
-                                           <?php
-                                           $eventCat = "";
-                                            if($video->event_id != '' || $video->event_id != "NULL") {
-                                                foreach($eventCategories as $eventCategory) {
-                                                if($eventCategory->event_id == $video->event_id) {
-                                                $eventCat .= $eventCategory->category_id . ','; ?>
                                         <?php }  ?>
-                                            
-                                      <?php  } }
-                                       ?>
-                                       <input type="hidden" class="eventCatID" value="<?php echo $eventCat; ?>">
+
+                                        <?php 
+                                        // $row_count = 1;
+                                        if($allData->videoId != NULL && $allData->podcastId == NULL){ ?>
+                                        <div class="col-md-3 parent showHideListDiv pl-2 pr-2">
+                                           
                                             <div class="card">
                                                 <?php
                             // $freeEventClass = "d-none";
                             // if($event->is_paid != 1){
                             //     $freeEventClass = "freeTextSpanClass";
                             // }
-                                                $sdStamp = strtotime($video->created_at);
-                                                $dateStr = date("d",  $sdStamp);
-                                                $MonthStr = date("M",  $sdStamp); 
+                                                // $sdStamp = strtotime($video->created_at);
+                                                // $dateStr = date("d",  $sdStamp);
+                                                // $MonthStr = date("M",  $sdStamp); 
                                                 ?>
                                                 <?php
                                                 $AwsUrl = env('AWS_URL');
                                                 $videoUrl = "";
-                                                if (!empty($video->url)) {
-                                                    if($video->url_type == 1){
-                                                        $videoUrl = $AwsUrl . $video->url; ?>
+                                                if (!empty($allData->videoUrl)) {
+                                                    if($allData->videoUrlType == 1){
+                                                        $videoUrl = $AwsUrl . $allData->videoUrl; ?>
                                                         <!-- <a href="{{$videoUrl}}" target="_blank"> -->
-                                                            <a href="{{url('videos/'. $video->id)}}" target="_blank">
+                                                            <a href="{{url('videos/'. $allData->videoId)}}" target="_blank">
                                                             <video class="" src="{{$videoUrl}}" width="100%" height="100%" controls="controls" style="border-radius: 6px 6px 0px 0px;"></video>
                                                         </a>
                                                         <?php   }
                                                         else{
-                                                            $videoUrl = $video->url; 
+                                                            $videoUrl = $allData->videoUrl; 
                                                             if(strpos($videoUrl, 'youtube') !== false){
                                                                 $explodeUrl = explode('=', $videoUrl);
                                                                 $getLastWord = array_pop($explodeUrl);
@@ -388,14 +336,13 @@
                                                             }
                                                             ?>
                                                             <!-- <a href="{{$url}}" target="_blank"> -->
-                                                                <a href="{{url('videos/'. $video->id)}}" target="_blank">
+                                                                <a href="{{url('videos/'. $allData->videoId)}}" target="_blank">
                                                                 <iframe class="MobFrame" width="240px" height="130px" frameborder="0" src="{{$url}}" style="border-radius: 6px 6px 0px 0px;pointer-events: none;"></iframe>
                                                             </a>
                                                             <?php  }
                                                         }
                                                         ?>
-                                                        <!-- <a href="#"><img src="{{$logoUrl}}" class="w-100" alt="" style="height: 130px;"></a> -->
-                                                        <!-- <span class="{{$freeEventClass}} mt-2">FREE</span> -->
+                                                        
                                                         
                                                         <?php 
                                                     $checkHeartFill = "d-none";
@@ -403,7 +350,7 @@
                                                     $checkVal = "";
                                                     if(Auth::check()){
                                                         foreach($eventFollowersList as $eventFollowerList){
-                                                            if(Auth::user()->id == $eventFollowerList->user_id && $video->id == $eventFollowerList->content_id && $eventFollowerList->discriminator == "v"){
+                                                            if(Auth::user()->id == $eventFollowerList->user_id && $allData->videoId == $eventFollowerList->content_id && $eventFollowerList->discriminator == "v"){
                                                                 $checkHeartFill = "";
                                                                 $checkHeartEmpty = "d-none";
                                                                 $checkVal = "1";
@@ -411,54 +358,53 @@
                                                         }
                                                     }
                                                 ?>
-                                                <a style="cursor: pointer;" onclick="followEvent(this);" data-event-id="{{$video->id}}" discriminator="v">
+                                                <a style="cursor: pointer;" onclick="followEvent(this);" data-event-id="{{$allData->videoId}}" discriminator="v">
                                                 <span class="likeButtonSpan"><i aria-hidden="true" class="fa fa-heart-o emptyHeart {{$checkHeartEmpty}}" id="" style=""></i>
                                                     <i aria-hidden="true" class="fa fa-heart {{$checkHeartFill}} fillHeart" style="color: #FD6568;" value="{{$checkVal}}"></i>
                                                 </span></a>
 
 
+
                                                         <div class="card-body" style="padding: 10px;">
-                                                            <a href="{{url('videos/'. $video->id)}}" target="_blank">
+                                                            <a href="{{url('videos/'. $allData->videoId)}}" target="_blank">
                                                             <div class="col-md-12 pr-0 pl-0">
-                                                                <h6> {{$video->title}} </h6>
+                                                                <h6> {{$allData->videoTitle}} </h6>
                                                             </div>
 
                                                             <?php $eventDesc = "";
-                                            // $eventPrefix = "";
                                                             $eventLink = "";
                                                             $desc = "";
                                                             $eventDescText = "";
-                                                            if(isset($video->event)){
-                                                // $eventPrefix = "Event : ";
-                                                // $eventDesc = $eventPrefix.$video->event->title;
-                                                                $eventDesc = $video->event->description;
+                                                            if($allData->videoDesc == ''){
+                                                
+                                                                $eventDesc = $allData->eventVideoDesc;
                                                                 $eventDescText = substr($eventDesc,0,80).'...';
                                                             }
                                                             else{
-                                                                $eventDesc = $video->description;
+                                                                $eventDesc = $allData->videoDesc;
                                                                 $eventDescText = substr($eventDesc,0,80).'...';
                                                             } 
                                                             ?>
                                                             <div class="col-md-12 pr-0 pl-0" style="color: black;">{{$eventDescText}}</div>
 
-                                <div class="col-md-12 pr-0 mt-2 pl-0" style="color:#9C9C9C;">Video </div> </a>
+                                <div class="col-md-12 pr-0 mt-2 mr-2 pl-0" style="color:#9C9C9C;">Video </div> </a>
 
                                                             <hr class="mt-2 mb-2">
 
-                                                            <a href="{{url('organizer/'. $video->user->id)}}" target="_blank">
+                                                            <a href="{{url('organizer/'. $allData->userId)}}" target="_blank">
                                                             <div class="row">
                                                                 <div class="pl-3">
                                                                     <?php
                                                                     $profileLogo = "";
-                                                                    if(!is_null($video->user->profile_pic) && $video->user->profile_pic != ""){
-                                                                       $profileLogo = env("AWS_URL"). $video->user->profile_pic; ?>
+                                                                    if(!is_null($allData->userProfilePic) && $allData->userProfilePic != ""){
+                                                                       $profileLogo = env("AWS_URL"). $allData->userProfilePic; ?>
                                                                        <img class="align-self-start profileImg" src="{{$profileLogo}}" alt="user avatar" style="width:40px !important;height:40px !important;">
                                                                        <?php } else{ ?>
                                                                        <img class="align-self-start profileImg" src="https://via.placeholder.com/110x110" alt="user avatar" style="width:40px !important;height:40px !important;">
                                                                        <?php } ?>
                                                                    </div>
                                                                    <div class="">
-                                                                    <h6 class="mt-2 ml-2"> {{$video->user->name}} </h6>
+                                                                    <h6 class="mt-2 ml-2"> {{$allData->userName}} </h6>
                                                                 </div>
                                                             </div>
                                                         </a>
@@ -468,31 +414,30 @@
                                                 </div> 
                                                 <?php } ?>
 
-                                                 <?php $row_count = 1;
-                                                foreach ($podcasts as $podcast) { ?>
+                                                 <?php 
+                                                 // $row_count = 1;
+                                                if ($allData->videoId == NULL && $allData->podcastId != NULL) { ?>
                                                 <div class="col-md-3 parent showHideListDiv pl-2 pr-2">
-                                                    <?php
-                                           $eventCat = "";
-                                            if($podcast->event_id != '' || $podcast->event_id != "NULL") {
-                                                foreach($eventCategories as $eventCategory) {
-                                                if($eventCategory->event_id == $podcast->event_id) {
-                                                $eventCat .= $eventCategory->category_id . ','; ?>
-                                        <?php }  ?>
-                                            
-                                      <?php  } }
-                                       ?>
-                                       <input type="hidden" class="eventCatID" value="<?php echo $eventCat; ?>">
-                                                    <div class="card">
-                                                        <a href="{{url('podcasts/'. $podcast->id)}}" target="_blank"><img src="assets/images-new/sample-image.png" class="" alt="" style="width: 100%;height: 130px;"></a>
 
-                                                        
+                                                    <?php 
+                                                    $podcastImg = "";
+                                                    if($tabId == NULL){
+                                            $podcastImg = "assets/images-new/sample-image.png";
+                                        } else {
+                                            $podcastImg = "../../assets/images-new/sample-image.png";
+                                        }
+                                                    ?>
+                                                    
+                                                    <div class="card">
+                                                        <a href="{{url('podcasts/'. $allData->podcastId)}}" target="_blank"><img src="{{$podcastImg}}" class="" alt="" style="width: 100%;height: 130px;"></a>
+
                                                         <?php 
                                                     $checkHeartFill = "d-none";
                                                     $checkHeartEmpty = "";
                                                     $checkVal = "";
                                                     if(Auth::check()){
                                                         foreach($eventFollowersList as $eventFollowerList){
-                                                            if(Auth::user()->id == $eventFollowerList->user_id && $podcast->id == $eventFollowerList->content_id && $eventFollowerList->discriminator == "p"){
+                                                            if(Auth::user()->id == $eventFollowerList->user_id && $allData->podcastId == $eventFollowerList->content_id && $eventFollowerList->discriminator == "p"){
                                                                 $checkHeartFill = "";
                                                                 $checkHeartEmpty = "d-none";
                                                                 $checkVal = "1";
@@ -500,80 +445,81 @@
                                                         }
                                                     }
                                                 ?>
-                                                <a style="cursor: pointer;" onclick="followEvent(this);" data-event-id="{{$podcast->id}}" discriminator="p">
+                                                <a style="cursor: pointer;" onclick="followEvent(this);" data-event-id="{{$allData->podcastId}}" discriminator="p">
                                                 <span class="likeButtonSpan"><i aria-hidden="true" class="fa fa-heart-o emptyHeart {{$checkHeartEmpty}}" id="" style=""></i>
                                                     <i aria-hidden="true" class="fa fa-heart {{$checkHeartFill}} fillHeart" style="color: #FD6568;" value="{{$checkVal}}"></i>
                                                 </span></a>
 
 
+
                                                         <div class="card-body" style="padding: 10px;">
                                                             <div class="col-md-12 row pr-0">
-                                                                <a href="{{url('podcasts/'. $podcast->id)}}" target="_blank"><h6> {{$podcast->title}} </h6></a>
+                                                                <a href="{{url('podcasts/'. $allData->podcastId)}}" target="_blank"><h6> {{$allData->podcastTitle}} </h6></a>
                                                             </div>
 
                                                             <?php
-                            // $freeEventClass = "d-none";
-                            // if($event->is_paid != 1){
-                            //     $freeEventClass = "freeTextSpanClass";
-                            // }
-                                                            $sdStamp = strtotime($podcast->created_at);
-                                                            $dateStr = date("d",  $sdStamp);
-                                                            $MonthStr = date("M",  $sdStamp); 
-                                                            ?>
-                                                            <?php
                                                             $videoPodcastUrl = "";
                                                             $dnoneClass = "";
-                                                            if (!empty($podcast)) {
+                                                            if (!empty($allData->videoUrl)) {
                                                                 $dnoneClass = "d-none";
-                                                                if(substr($podcast->url, 0, 8 ) != "https://"){
-                                                                    $videoPodcastUrl = $AwsUrl . $podcast->url;
+                                                                if(substr($allData->videoUrl, 0, 8 ) != "https://"){
+                                                                    $videoPodcastUrl = $AwsUrl . $allData->videoUrl;
                                                                 }
                                                                 else{
-                                                                    $videoPodcastUrl = $podcast->url;
+                                                                    $videoPodcastUrl = $allData->videoUrl;
                                                                 }
                                                             }
                                                             ?>
                                                             <a href="{{$videoPodcastUrl}}" target="_blank"><audio controls  class="w-100"><source src="{{$videoPodcastUrl}}" type="audio/ogg" class="col-lg-7 pr-0 pl-0"></audio></a>
 
-                                                                <div class="col-md-12 pr-0 mt-2 pl-0" style="color:#9C9C9C;">Podcast </div>
+                                                                <div class="col-md-12 pr-0 mt-2 mr-2 pl-0" style="color:#9C9C9C;">Podcast </div>
 
                                                                 <hr class="mt-2 mb-2">
 
-                                                                <a href="{{url('organizer/'. $podcast->user->id)}}" target="_blank">
+                                                                <a href="{{url('organizer/'. $allData->userId)}}" target="_blank">
                                                                 <div class="row">
                                                                     <div class="pl-3">
                                                                         <?php
                                                                         $profileLogo = "";
-                                                                        if(!is_null($podcast->user->profile_pic) && $podcast->user->profile_pic != ""){
-                                                                           $profileLogo = env("AWS_URL"). $podcast->user->profile_pic; ?>
+                                                                        if(!is_null($allData->userProfilePic) && $allData->userProfilePic != ""){
+                                                                           $profileLogo = env("AWS_URL"). $allData->userProfilePic; ?>
                                                                            <img class="align-self-start profileImg" src="{{$profileLogo}}" alt="user avatar" style="width:40px !important;height:40px !important;">
                                                                            <?php } else{ ?>
                                                                            <img class="align-self-start profileImg" src="https://via.placeholder.com/110x110" alt="user avatar" style="width:40px !important;height:40px !important;">
                                                                            <?php } ?>
                                                                        </div>
                                                                        <div class="">
-                                                                        <h6 class="mt-2 ml-2"> {{$podcast->user->name}} </h6>
+                                                                        <h6 class="mt-2 ml-2"> {{$allData->userName}} </h6>
                                                                     </div>
                                                                 </div>
                                                             </a>
 
-
                                                             </div>
                                                         </div>
                                                     </div> 
+                                                    <?php } } ?>
+
+
+                                                    <div class="col-md-12 mobileSeeMoreBtn" style="justify-content: center;display: flex;">
+                                    <a href="{{url('allContent/1/0/0/page=1')}}">
+                                    <input type="button" id="" class="clickable createEventButton buttonMobileSize" value="See more" style="background: #FED8C6;color:black;box-shadow: 0px 2px 7px rgba(81, 33, 34, 0.2), 0px 2px 10px rgba(81, 33, 34, 0.25);"></a>
+                                </div>
+
+
+
+                                            <?php    } else{ ?>
+                                                <div class="col-md-12 noEventMsg">
+                                            <p class="text-center"> No Records Found! </p>
+                                        </div>
                                                     <?php } ?>
 
                                     </div>
                                 </div>
 
-                                <div class="col-md-12 mb-5 mobileSeeMoreBtn" style="justify-content: center;display: flex;">
-                                    <a href="{{url('allContent/1/0/page=1')}}">
-                                    <input type="button" id="" class="clickable createEventButton buttonMobileSize" value="See more" style="background: #FED8C6;color:black;box-shadow: 0px 2px 7px rgba(81, 33, 34, 0.2), 0px 2px 10px rgba(81, 33, 34, 0.25);"></a>
-                                </div>
 
                             </div>
 
-                            <div class="row tab-pane" id= "eventsTab">
+                            <div class="row tab-pane <?php if($tabId == 2){ echo $activeClass;} ?>" id= "eventsTab">
                                 <div class="col-md-11 featuredContent mb-4">
                                     <div class="col-md-12 row MobDisplay">
                                         <div class="col-md-4 pl-0">
@@ -597,37 +543,31 @@
                                             <p class="text-center"> No Records Found! </p>
                                         </div>
                                         <?php $row_count = 1;
-                                        foreach ($events as $event) { ?>
+                                        if(count($allDataResult) > 0){
+                                        foreach ($allDataResult as $allData) {
+                                        if($allData->videoId == NULL && $allData->podcastId == NULL) {
+                                         ?>
 
                                         <?php
                                         $logoUrl = $AwsUrl . 'no-image-logo.jpg';
-                                        if (!empty($event->thumbnail)) {
-                                            $logoUrl = $AwsUrl . $event->thumbnail;
+                                        if (!empty($allData->eventThumbnail)) {
+                                            $logoUrl = $AwsUrl . $allData->eventThumbnail;
                                         }
                                         ?>
 
                                         <div class="col-md-3 showHideListDiv eventListDiv parent pl-2 pr-2">
 
-                                            <?php
-                                            $eventCat = "";
-                                         foreach ($event->categories as $EventCategory) {
-                                         $eventCat .= $EventCategory->id . ',';
-                                          ?>
-                                        <?php }
-                                         ?>
-                                         <input type="hidden" class="eventCatID" value="<?php echo $eventCat; ?>">
-
                                             <div class="card">
                                                 <?php
                                                 $freeEventClass = "d-none";
-                                                if($event->is_paid != 1){
+                                                if($allData->eventPaid != 1){
                                                     $freeEventClass = "freeTextSpanClass";
                                                 }
-                                                $sdStamp = strtotime($event->date_time);
+                                                $sdStamp = strtotime($allData->eventDateTime);
                                                 $dateStr = date("d",  $sdStamp);
                                                 $MonthStr = date("M",  $sdStamp); 
                                                 ?>
-                                                <a href="{{url('events/'. $event->id)}}" target="_blank"><img src="{{$logoUrl}}" class="w-100" alt="" style="height: 130px;border-radius: 6px 6px 0px 0px;"></a>
+                                                <a href="{{url('events/'. $allData->eventId)}}" target="_blank"><img src="{{$logoUrl}}" class="w-100" alt="" style="height: 130px;border-radius: 6px 6px 0px 0px;"></a>
                                                 <span class="{{$freeEventClass}} mt-2">FREE</span>
 
                                                 <?php 
@@ -636,7 +576,7 @@
                                                     $checkVal = "";
                                                     if(Auth::check()){
                                                         foreach($eventFollowersList as $eventFollowerList){
-                                                            if(Auth::user()->id == $eventFollowerList->user_id && $event->id == $eventFollowerList->content_id && $eventFollowerList->discriminator == "e"){
+                                                            if(Auth::user()->id == $eventFollowerList->user_id && $allData->eventId == $eventFollowerList->content_id && $eventFollowerList->discriminator == "e"){
                                                                 $checkHeartFill = "";
                                                                 $checkHeartEmpty = "d-none";
                                                                 $checkVal = "1";
@@ -644,19 +584,19 @@
                                                         }
                                                     }
                                                 ?>
-                                                <a style="cursor: pointer;" onclick="followEvent(this);" data-event-id="{{$event->id}}" discriminator="e">
+                                                <a style="cursor: pointer;" onclick="followEvent(this);" data-event-id="{{$allData->eventId}}" discriminator="e">
                                                 <span class="likeButtonSpan"><i aria-hidden="true" class="fa fa-heart-o emptyHeart {{$checkHeartEmpty}}" id="" style=""></i>
                                                     <i aria-hidden="true" class="fa fa-heart {{$checkHeartFill}} fillHeart" style="color: #FD6568;" value="{{$checkVal}}"></i>
                                                 </span></a>
 
                                                 <div class="card-body" style="padding: 10px;">
-                                                    <a href="{{url('events/'. $event->id)}}" target="_blank">
+                                                    <a href="{{url('events/'. $allData->eventId)}}" target="_blank">
                                                     <div class="col-md-12 row pr-0" style="padding: unset;margin: unset;">
                                                         <div class="col-md-2 pr-0 pl-1 mobRowDisplay">
                                                             <h6 class="text-uppercase"> {{$dateStr}} <br> {{$MonthStr}} </h6>
                                                         </div>
                                                         <div class="col-md-10 pl-2 pr-0 mobRowDisplay1">
-                                                            <h6> {{$event->title}} </h6>
+                                                            <h6> {{$allData->eventTitle}} </h6>
                                                         </div>
                                                     </div> </a>
 
@@ -664,54 +604,66 @@
                                                     for ($x = 0; $x < 1; $x++) {  ?>
                                                     <a class="text-center chevronClass" data-toggle="collapse" aria-expanded="false" data-target="#heading<?php echo $row_count ?>" style="display: block;"><i class="fa fa-chevron-down" style="color: #9C9C9C;"></i>
                                                     <i class="fa fa-chevron-up" style="color: #9C9C9C;"></i></a>
-                                                    
-                                                    <div id="heading<?php echo $row_count ?>" class="collapse mt-2 ml-2 mr-2" style="color: black;">
-                                                        {{$event->description}}
+                                                    <div id="heading<?php echo $row_count ?>" class="mt-2 ml-2 mr-2 collapse" style="color: black;">
+                                                        {{$allData->eventDesc}}
                                                     </div>
                                                     <?php $row_count++; } ?>
 
-                                                    <?php if($event->is_online == 1){ ?>
+                                                    <?php if($allData->eventOnline == 1){ ?>
                                                     <div class="col-md-12 pr-0 mt-2 ml-2 mr-2 pl-0" style="color:#9C9C9C;">Online Event </div>
                                               <?php  } else { ?>
-                                                    <div class="col-md-12 pr-0 mt-2 ml-2 mr-2 pl-0" style="color:#9C9C9C;"> <i aria-hidden="true" class="fa fa-location-arrow pr-1"></i> {{$event->city}},  {{$event->state}}</div>
+                                                    <div class="col-md-12 pr-0 mt-2 ml-2 mr-2 pl-0" style="color:#9C9C9C;"> <i aria-hidden="true" class="fa fa-location-arrow pr-1"></i> {{$allData->eventCity}},  {{$allData->eventState}}</div>
                                                 <?php } ?>
 
                                                     <hr class="mt-2 mb-2">
 
-                                                    <a href="{{url('organizer/'. $event->user->id)}}" target="_blank">
+                                                    <a href="{{url('organizer/'. $allData->userId)}}" target="_blank">
                                                     <div class="row">
                                                         <div class="pl-3">
                                                             <?php
                                                             $profileLogo = "";
-                                                            if(!is_null($event->user->profile_pic) && $event->user->profile_pic != ""){
-                                                               $profileLogo = env("AWS_URL"). $event->user->profile_pic; ?>
+                                                            if(!is_null($allData->userProfilePic) && $allData->userProfilePic != ""){
+                                                               $profileLogo = env("AWS_URL"). $allData->userProfilePic; ?>
                                                                <img class="align-self-start profileImg" src="{{$profileLogo}}" alt="user avatar" style="width:40px !important;height:40px !important;">
                                                                <?php } else{ ?>
                                                                <img class="align-self-start profileImg" src="https://via.placeholder.com/110x110" alt="user avatar" style="width:40px !important;height:40px !important;">
                                                                <?php } ?>
                                                            </div>
                                                            <div class="">
-                                                            <h6 class="mt-2 ml-2"> {{$event->user->name}} </h6>
+                                                            <h6 class="mt-2 ml-2"> {{$allData->userName}} </h6>
                                                         </div>
                                                     </div>
+
                                                 </a>
 
                                                 </div>
                                             </div>
                                         </div> 
-                                        <?php } ?>
+                                        <?php } } ?>
+
+
+                                        <div class="col-md-12 mobileSeeMoreBtn" style="justify-content: center;display: flex;">
+                                    <a href="{{url('allContent/2/0/0/page=1')}}">
+                                    <input type="button" id="" class="clickable createEventButton buttonMobileSize" value="See more" style="background: #FED8C6;color:black;box-shadow: 0px 2px 7px rgba(81, 33, 34, 0.2), 0px 2px 10px rgba(81, 33, 34, 0.25);"></a>
+                                </div>
+
+
+
+
+
+                                 <?php   } else{ ?>
+                                                <div class="col-md-12 noEventMsg">
+                                            <p class="text-center"> No Records Found! </p>
+                                        </div>
+                                                    <?php } ?>
 
                                     </div>
                                 </div>
 
-                                <div class="col-md-12 mb-5 seeMoreEvent mobileSeeMoreBtn" style="justify-content: center;display: flex;">
-                                    <a href="{{url('allContent/2/0/page=1')}}">
-                                    <input type="button" id="" class="clickable createEventButton buttonMobileSize" value="See more" style="background: #FED8C6;color:black;box-shadow: 0px 2px 7px rgba(81, 33, 34, 0.2), 0px 2px 10px rgba(81, 33, 34, 0.25);"></a>
-                                </div>
 
                             </div>
 
-                            <div class="row tab-pane" id= "videoTab">
+                            <div class="row tab-pane <?php if($tabId == 3){ echo $activeClass;} ?>" id= "videoTab">
                                 <div class="col-md-11 featuredContent mb-4">
                                     <div class="col-md-12 row MobDisplay">
                                         <div class="col-md-4 pl-0">
@@ -735,43 +687,25 @@
                                             <p class="text-center"> No Records Found! </p>
                                         </div>
                                         <?php $row_count = 1;
-                                        foreach ($videos as $video) { ?>
+                                        if(count($allDataResult) > 0){
+                                        foreach ($allDataResult as $allData) {
+                                        if($allData->videoId != NULL && $allData->podcastId == NULL){ ?>
                                         <div class="col-md-3 showHideListDiv parent pl-2 pr-2">
 
-                                            <?php
-                                           $eventCat = "";
-                                            if($video->event_id != '' || $video->event_id != "NULL") {
-                                                foreach($eventCategories as $eventCategory) {
-                                                if($eventCategory->event_id == $video->event_id) {
-                                                $eventCat .= $eventCategory->category_id . ','; ?>
-                                        <?php }  ?>
-                                            
-                                      <?php  } }
-                                       ?>
-                                       <input type="hidden" class="eventCatID" value="<?php echo $eventCat; ?>">
-
                                             <div class="card">
-                                                <?php
-                            // $freeEventClass = "d-none";
-                            // if($event->is_paid != 1){
-                            //     $freeEventClass = "freeTextSpanClass";
-                            // }
-                                                $sdStamp = strtotime($video->created_at);
-                                                $dateStr = date("d",  $sdStamp);
-                                                $MonthStr = date("M",  $sdStamp); 
-                                                ?>
+                                                
                                                 <?php
                                                 $AwsUrl = env('AWS_URL');
                                                 $videoUrl = "";
-                                                if (!empty($video->url)) {
-                                                    if($video->url_type == 1){
-                                                        $videoUrl = $AwsUrl . $video->url; ?>
+                                                if (!empty($allData->videoUrl)) {
+                                                    if($allData->videoUrlType == 1){
+                                                        $videoUrl = $AwsUrl . $allData->videoUrl; ?>
                                                         <!-- <a href="{{$videoUrl}}" target="_blank"> -->
-                                                            <a href="{{url('videos/'. $video->id)}}" target="_blank">
+                                                            <a href="{{url('videos/'. $allData->videoId)}}" target="_blank">
                                                             <video class="" src="{{$videoUrl}}" width="100%" height="100%" controls="controls" style="border-radius: 6px 6px 0px 0px;"></video></a>
                                                         <?php   }
                                                         else{
-                                                            $videoUrl = $video->url; 
+                                                            $videoUrl = $allData->videoUrl; 
                                                             if(strpos($videoUrl, 'youtube') !== false){
                                                                 $explodeUrl = explode('=', $videoUrl);
                                                                 $getLastWord = array_pop($explodeUrl);
@@ -783,22 +717,20 @@
                                                             }
                                                             ?>
                                                             <!-- <a href="{{$url}}" target="_blank"> -->
-                                                                <a href="{{url('videos/'. $video->id)}}" target="_blank">
+                                                                <a href="{{url('videos/'. $allData->videoId)}}" target="_blank">
                                                                 <iframe width="240px" height="130px" src="{{$url}}" frameborder="0" class="" style="border-radius: 6px 6px 0px 0px;pointer-events: none;"></iframe></a>
                                                             <?php  }
                                                         }
                                                         ?>
-                                                        <!-- <a href="#"><img src="{{$logoUrl}}" class="w-100" alt="" style="height: 130px;"></a> -->
-                                                        <!-- <span class="{{$freeEventClass}} mt-2">FREE</span> -->
                                                         
-
+                                                        
                                                         <?php 
                                                     $checkHeartFill = "d-none";
                                                     $checkHeartEmpty = "";
                                                     $checkVal = "";
                                                     if(Auth::check()){
                                                         foreach($eventFollowersList as $eventFollowerList){
-                                                            if(Auth::user()->id == $eventFollowerList->user_id && $video->id == $eventFollowerList->content_id && $eventFollowerList->discriminator == "v"){
+                                                            if(Auth::user()->id == $eventFollowerList->user_id && $allData->videoId == $eventFollowerList->content_id && $eventFollowerList->discriminator == "v"){
                                                                 $checkHeartFill = "";
                                                                 $checkHeartEmpty = "d-none";
                                                                 $checkVal = "1";
@@ -806,76 +738,90 @@
                                                         }
                                                     }
                                                 ?>
-                                                <a style="cursor: pointer;" onclick="followEvent(this);" data-event-id="{{$video->id}}" discriminator="v">
+                                                <a style="cursor: pointer;" onclick="followEvent(this);" data-event-id="{{$allData->videoId}}" discriminator="v">
                                                 <span class="likeButtonSpan"><i aria-hidden="true" class="fa fa-heart-o emptyHeart {{$checkHeartEmpty}}" id="" style=""></i>
                                                     <i aria-hidden="true" class="fa fa-heart {{$checkHeartFill}} fillHeart" style="color: #FD6568;" value="{{$checkVal}}"></i>
                                                 </span></a>
 
 
                                                         <div class="card-body" style="padding: 10px;">
-                                                            <a href="{{url('videos/'. $video->id)}}" target="_blank">
+                                                            <a href="{{url('videos/'. $allData->videoId)}}" target="_blank">
                                                             <div class="col-md-12 pr-0 pl-0">
-                                                                <h6> {{$video->title}} </h6>
+                                                                <h6> {{$allData->videoTitle}} </h6>
                                                             </div>
 
                                                             <?php $eventDesc = "";
-                                            // $eventPrefix = "";
                                                             $eventLink = "";
                                                             $desc = "";
                                                             $eventDescText = "";
-                                                            if(isset($video->event)){
-                                                // $eventPrefix = "Event : ";
-                                                // $eventDesc = $eventPrefix.$video->event->title;
-                                                                $eventDesc = $video->event->description;
+                                                            if($allData->videoDesc == ''){
+                                                
+                                                                $eventDesc = $allData->eventVideoDesc;
                                                                 $eventDescText = substr($eventDesc,0,80).'...';
                                                             }
                                                             else{
-                                                                $eventDesc = $video->description;
+                                                                $eventDesc = $allData->videoDesc;
                                                                 $eventDescText = substr($eventDesc,0,80).'...';
                                                             } 
                                                             ?>
                                                             
                                                             <div class="col-md-12 pr-0 pl-0" style="color: black;">{{$eventDescText}}</div>
 
-                                <div class="col-md-12 pr-0 mt-2 pl-0" style="color:#9C9C9C;">Video </div> </a>
+                                <div class="col-md-12 pr-0 mt-2 mr-2 pl-0" style="color:#9C9C9C;">Video </div> </a>
 
                                                             <hr class="mt-2 mb-2">
 
-                                                            <a href="{{url('organizer/'. $video->user->id)}}" target="_blank">
+                                                            <a href="{{url('organizer/'. $allData->userId)}}" target="_blank">
                                                             <div class="row">
                                                                 <div class="pl-3">
                                                                     <?php
                                                                     $profileLogo = "";
-                                                                    if(!is_null($video->user->profile_pic) && $video->user->profile_pic != ""){
-                                                                       $profileLogo = env("AWS_URL"). $video->user->profile_pic; ?>
+                                                                    if(!is_null($allData->userProfilePic) && $allData->userProfilePic){
+                                                                       $profileLogo = env("AWS_URL"). $allData->userProfilePic; ?>
                                                                        <img class="align-self-start profileImg" src="{{$profileLogo}}" alt="user avatar" style="width:40px !important;height:40px !important;">
                                                                        <?php } else{ ?>
                                                                        <img class="align-self-start profileImg" src="https://via.placeholder.com/110x110" alt="user avatar" style="width:40px !important;height:40px !important;">
                                                                        <?php } ?>
                                                                    </div>
                                                                    <div class="">
-                                                                    <h6 class="mt-2 ml-2"> {{$video->user->name}} </h6>
+                                                                    <h6 class="mt-3 ml-2"> {{$allData->userName}} </h6>
                                                                 </div>
                                                             </div>
+
                                                         </a>
 
                                                         </div>
                                                     </div>
                                                 </div> 
-                                                <?php } ?>
+                                                <?php } } ?>
+
+
+                                                <div class="col-md-12 mobileSeeMoreBtn" style="justify-content: center;display: flex;">
+                                    <a href="{{url('allContent/3/0/0/page=1')}}">
+                                    <input type="button" id="" class="clickable createEventButton buttonMobileSize" value="See more" style="background: #FED8C6;color:black;box-shadow: 0px 2px 7px rgba(81, 33, 34, 0.2), 0px 2px 10px rgba(81, 33, 34, 0.25);"></a>
+                                </div>
+
+
+
+
+
+
+
+                                       <?php     } else{ ?>
+                                                    
+                                                <div class="col-md-12 noEventMsg">
+                                            <p class="text-center"> No Records Found! </p>
+                                        </div>
+                                                    <?php } ?>
 
                                             </div>
                                         </div>
 
-                                        <div class="col-md-12 mb-5 mobileSeeMoreBtn" style="justify-content: center;display: flex;">
-                                        <a href="{{url('allContent/3/0/page=1')}}">
-                                        <input type="button" id="" class="clickable createEventButton buttonMobileSize" value="See more" style="background: #FED8C6;color:black;box-shadow: 0px 2px 7px rgba(81, 33, 34, 0.2), 0px 2px 10px rgba(81, 33, 34, 0.25);"></a>
-                                        </div>
 
                                     </div>
 
 
-                                    <div class="row tab-pane" id= "audioTab">
+                                    <div class="row tab-pane <?php if($tabId == 4){ echo $activeClass;} ?>" id= "audioTab">
                                         <div class="col-md-11 featuredContent mb-4">
                                             <div class="col-md-12 row MobDisplay">
                                                 <div class="col-md-4 pl-0">
@@ -899,30 +845,31 @@
                                             <p class="text-center"> No Records Found! </p>
                                         </div>
                                                 <?php $row_count = 1;
-                                                foreach ($podcasts as $podcast) { ?>
+                                                if(count($allDataResult) > 0){
+                                                foreach ($allDataResult as $allData) {
+                                        if($allData->videoId == NULL && $allData->podcastId != NULL) {
+                                                 ?>
                                                 <div class="col-md-3 parent showHideListDiv pl-2 pr-2">
-                                                    <?php
-                                           $eventCat = "";
-                                            if($podcast->event_id != '' || $podcast->event_id != "NULL") {
-                                                foreach($eventCategories as $eventCategory) {
-                                                if($eventCategory->event_id == $podcast->event_id) {
-                                                $eventCat .= $eventCategory->category_id . ','; ?>
-                                        <?php }  ?>
-                                            
-                                      <?php  } }
-                                       ?>
-                                       <input type="hidden" class="eventCatID" value="<?php echo $eventCat; ?>">
-                                                    <div class="card">
-                                                        <a href="{{url('podcasts/'. $podcast->id)}}" target="_blank"><img src="assets/images-new/sample-image.png" class="" alt="" style="width: 100%;height: 130px;"></a>
 
-                                                        
+                                                    <?php 
+                                                    $podcastImg = "";
+                                                    if($tabId == NULL){
+                                            $podcastImg = "assets/images-new/sample-image.png";
+                                        } else {
+                                            $podcastImg = "../../assets/images-new/sample-image.png";
+                                        }
+                                                    ?>
+                                                    
+                                                    <div class="card">
+                                                        <a href="{{url('podcasts/'. $allData->podcastId)}}" target="_blank"><img src="{{$podcastImg}}" class="" alt="" style="width: 100%;height: 130px;"></a>
+
                                                         <?php 
                                                     $checkHeartFill = "d-none";
                                                     $checkHeartEmpty = "";
                                                     $checkVal = "";
                                                     if(Auth::check()){
                                                         foreach($eventFollowersList as $eventFollowerList){
-                                                            if(Auth::user()->id == $eventFollowerList->user_id && $podcast->id == $eventFollowerList->content_id && $eventFollowerList->discriminator == "p"){
+                                                            if(Auth::user()->id == $eventFollowerList->user_id && $allData->podcastId == $eventFollowerList->content_id && $eventFollowerList->discriminator == "p"){
                                                                 $checkHeartFill = "";
                                                                 $checkHeartEmpty = "d-none";
                                                                 $checkVal = "1";
@@ -930,7 +877,7 @@
                                                         }
                                                     }
                                                 ?>
-                                                <a style="cursor: pointer;" onclick="followEvent(this);" data-event-id="{{$podcast->id}}" discriminator="p">
+                                                <a style="cursor: pointer;" onclick="followEvent(this);" data-event-id="{{$allData->podcastId}}" discriminator="p">
                                                 <span class="likeButtonSpan"><i aria-hidden="true" class="fa fa-heart-o emptyHeart {{$checkHeartEmpty}}" id="" style=""></i>
                                                     <i aria-hidden="true" class="fa fa-heart {{$checkHeartFill}} fillHeart" style="color: #FD6568;" value="{{$checkVal}}"></i>
                                                 </span></a>
@@ -939,73 +886,76 @@
 
                                                         <div class="card-body" style="padding: 10px;">
                                                             <div class="col-md-12 row pr-0">
-                                                                <a href="{{url('podcasts/'. $podcast->id)}}" target="_blank"><h6> {{$podcast->title}} </h6></a>
+                                                                <a href="{{url('podcasts/'. $allData->podcastId)}}" target="_blank"><h6> {{$allData->podcastTitle}} </h6></a>
                                                             </div>
 
                                                             <?php
-                            // $freeEventClass = "d-none";
-                            // if($event->is_paid != 1){
-                            //     $freeEventClass = "freeTextSpanClass";
-                            // }
-                                                            $sdStamp = strtotime($podcast->created_at);
-                                                            $dateStr = date("d",  $sdStamp);
-                                                            $MonthStr = date("M",  $sdStamp); 
-                                                            ?>
-                                                            <?php
                                                             $videoPodcastUrl = "";
                                                             $dnoneClass = "";
-                                                            if (!empty($podcast)) {
+                                                            if (!empty($allData->videoUrl)) {
                                                                 $dnoneClass = "d-none";
-                                                                if(substr($podcast->url, 0, 8 ) != "https://"){
-                                                                    $videoPodcastUrl = $AwsUrl . $podcast->url;
+                                                                if(substr($allData->videoUrl, 0, 8 ) != "https://"){
+                                                                    $videoPodcastUrl = $AwsUrl . $allData->videoUrl;
                                                                 }
                                                                 else{
-                                                                    $videoPodcastUrl = $podcast->url;
+                                                                    $videoPodcastUrl = $allData->videoUrl;
                                                                 }
                                                             }
                                                             ?>
                                                             <a href="{{$videoPodcastUrl}}" target="_blank"><audio controls  class="w-100"><source src="{{$videoPodcastUrl}}" type="audio/ogg" class="col-lg-7 pr-0 pl-0"></audio></a>
 
-                                                                <div class="col-md-12 pr-0 mt-2 pl-0" style="color:#9C9C9C;">Podcast </div>
+                                                                <div class="col-md-12 pr-0 mt-2 mr-2 pl-0" style="color:#9C9C9C;">Podcast </div>
 
                                                                 <hr class="mt-2 mb-2">
 
-                                                                <a href="{{url('organizer/'. $podcast->user->id)}}" target="_blank">
+                                                                <a href="{{url('organizer/'. $allData->userId)}}" target="_blank">
                                                                 <div class="row">
                                                                     <div class="pl-3">
                                                                         <?php
                                                                         $profileLogo = "";
-                                                                        if(!is_null($podcast->user->profile_pic) && $podcast->user->profile_pic != ""){
-                                                                           $profileLogo = env("AWS_URL"). $podcast->user->profile_pic; ?>
+                                                                        if(!is_null($allData->userProfilePic) && $allData->userProfilePic != ""){
+                                                                           $profileLogo = env("AWS_URL"). $allData->userProfilePic; ?>
                                                                            <img class="align-self-start profileImg" src="{{$profileLogo}}" alt="user avatar" style="width:40px !important;height:40px !important;">
                                                                            <?php } else{ ?>
                                                                            <img class="align-self-start profileImg" src="https://via.placeholder.com/110x110" alt="user avatar" style="width:40px !important;height:40px !important;">
                                                                            <?php } ?>
                                                                        </div>
                                                                        <div class="">
-                                                                        <h6 class="mt-2 ml-2"> {{$podcast->user->name}} </h6>
+                                                                        <h6 class="mt-2 ml-2"> {{$allData->userName}} </h6>
                                                                     </div>
                                                                 </div>
                                                             </a>
 
-
                                                             </div>
                                                         </div>
                                                     </div> 
-                                                    <?php } ?>
+                                                    <?php } } ?>
 
+
+                                                    <div class="col-md-12 mobileSeeMoreBtn" style="justify-content: center;display: flex;">
+                                    <a href="{{url('allContent/4/0/0/page=1')}}">
+                                    <input type="button" id="" class="clickable createEventButton buttonMobileSize" value="See more" style="background: #FED8C6;color:black;box-shadow: 0px 2px 7px rgba(81, 33, 34, 0.2), 0px 2px 10px rgba(81, 33, 34, 0.25);"></a>
+                                </div>
+
+
+
+
+                                            <?php    } else{?>
+                                                <div class="col-md-12 noEventMsg">
+                                            <p class="text-center"> No Records Found! </p>
+                                        </div>
+                                                    <?php } ?>
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-12 mb-5 mobileSeeMoreBtn" style="justify-content: center;display: flex;">
-                                                <a href="{{url('allContent/4/0/page=1')}}">
-                                                <input type="button" id="" class="clickable createEventButton buttonMobileSize" value="See more" style="background: #FED8C6;color:black;box-shadow: 0px 2px 7px rgba(81, 33, 34, 0.2), 0px 2px 10px rgba(81, 33, 34, 0.25);"></a>
-                                            </div>
 
                                         </div>
 
 
                                     </div>
+
+
+
 
                                     <div class="col-md-12 mb-5 card">
                                         <div class="card-body col-md-12 row">
@@ -1017,7 +967,15 @@
                                                 </div>
 
                                                 <div class="col-md-6">
-                                                    <img src="assets/images-new/Community 1.jpg" class="w-100">
+                                                    <?php
+                                                    $communityImg = "";
+                                                        if($tabId == NULL){
+                                            $communityImg = "assets/images-new/Community 1.jpg";
+                                        } else {
+                                            $communityImg = "../../assets/images-new/Community 1.jpg";
+                                        }
+                                                     ?>
+                                                    <img src="{{$communityImg}}" class="w-100">
                                                 </div>
                                             </div>
                                             <!-- <img src="assets/images-new/join-community.png" class="w-100"> -->

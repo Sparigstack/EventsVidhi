@@ -163,7 +163,7 @@ body{
     margin-right: 20%;
     font-weight: 500;
 }
-.site-footer a{
+.site-footer a, .site-footer a:hover{
     color: black;
 }
 .freeTextSpanClass{
@@ -256,6 +256,10 @@ body{
     flex-direction:column;
 }
 .footer-menu-second-column{
+    display:flex;
+    flex-direction:column;
+}
+.footer-menu-third-column{
     display:flex;
     flex-direction:column;
 }
@@ -388,6 +392,54 @@ border-radius: 6px !important;
 
 .pagination-outline-primary .page-item .page-link:focus {
     box-shadow: 0 0 0 0.2rem #FED8C6 !important;
+}
+
+.categoriesNav .nav-item .nav-link.active {
+    border-color: #EB5757 #EB5757 #fff;
+    border-bottom: 3px solid #EB5757;
+}
+.aboutUsBannerTxt{
+    color: white;
+    font-weight: bold;
+    font-size: 36px;
+    line-height: 49px;
+}
+.aboutUsCardCss{
+    background: #FED8C6;
+    border-radius: 6px;
+    padding-left: 18%;
+    padding-right: 18%;
+    padding-top: 4%;
+    padding-bottom: 4%;
+}
+.aboutPara{
+    font-size: 20px;
+    line-height: 27px;
+    color: #1E1E1E;
+    font-weight: bold;
+}
+.orgInfoButton, .userInfoButton{
+    padding: 8px 40px;color:black;background: white;border: 2px solid #ECECEC;
+    border-radius: 35px;
+    height: 70px;
+    width: 250px;
+}
+
+.infoBtn{
+    background: #FFFFFF;
+    border: 2px solid #FED8C6;
+    box-sizing: border-box;
+    border-radius: 6px;
+    color: black;
+    height: 70px;
+    padding: 8px 30px;
+    align-items: center;
+    text-align: center;
+    width: 250px;
+}
+.infoContent{
+    padding-left: 80px !important;
+    padding-right: 270px !important;
 }
  
 @media(min-width:768px) and (max-width:1024px){
@@ -549,5 +601,11 @@ border-radius: 6px !important;
     }
     .profileTop{
         margin-top: -30% !important;
+    }
+    .infoContent{
+        padding-left: 20px !important;
+    padding-right: 20px !important;
+    display: flex !important;
+    flex-wrap: wrap;
     }
 }

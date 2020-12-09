@@ -45,6 +45,7 @@
         <?php $AwsUrl = env('AWS_URL'); ?>
         <header class="site-header">
         <div class="container">
+            <input type="hidden" class="homePageUrl" value="{{url('/')}}">
             <!-- padding: 29px 0px; -->
             <!-- padding: 20px 0px; -->
             <div class="row" style="padding: 15px 0px;">
@@ -58,10 +59,13 @@
 
                 <div class="col-md-5 col-lg-5 MobileMt searchbardiv mt-1">
                 <!-- <div class="col-md-4 col-lg-4 mt-2"> -->
+                    <input class="csrf-token" type="hidden" value="{{ csrf_token() }}">
                    <input name="" id="" type="search" value="" class="large serachEvent" placeholder="Search..." autocomplete="off">
                    <div class="searchIcon">
-                    <a href="javascript:void();">
-                        <i class="icon-magnifier" style=""></i></a>
+                    <!-- <a href="javascript:void();"> -->
+                    <a onclick="searchTitle();" style="cursor: pointer;">
+                        <i class="icon-magnifier" style=""></i>
+                    </a>
                     </div>
                 </div>
 
@@ -142,7 +146,7 @@
                             <?php } ?>
                             <li class="dropdown-divider"></li>
                             <?php if(Auth::user()->user_type != 3){ ?>
-                                <li class="dropdown-item"><a style="color:inherit" href="{{url('myEvents')}}"><i class="icon-settings mr-2"></i> My Events</a></li>
+                                <li class="dropdown-item"><a style="color:inherit" href="{{url('myContent')}}"><i class="icon-settings mr-2"></i> My Content</a></li>
                                 <li class="dropdown-divider"></li>
                             <?php } ?>
                             <!-- <li class="dropdown-item"><a style="color:inherit" href="{{url('account')}}"><i class="icon-wallet mr-2"></i> Account</a></li> -->
@@ -178,8 +182,8 @@
                                                 <div class="col-md-6 footer-menu-column">
                                                     <div class="col-md-12 row">
                                                         <div class="col-md-4 footer-menu-first-column">
-                                                            <a href="#" class="mob-pd-common">About Us</a> 
-                                                            <a href="#" class="mob-pd-common" style="padding-top:20px">Help</a>
+                                                            <a href="{{url('aboutUs')}}" class="mob-pd-common">About Us</a> 
+                                                            <a href="{{url('information')}}" class="mob-pd-common" style="padding-top:20px">Help</a>
                                                         </div>
                                                         <div class="col-md-4 footer-menu-second-column">
                                                             <a href="#" class="mob-pd-common">Privacy Policy</a> 
@@ -210,6 +214,7 @@
 <script src="{{ asset('assets/plugins/jquery-knob/jquery.knob.js') }}"></script>
 <script src="{{asset('/js/customScript.js?v='.$v)}}" type="text/javascript"></script>
 <script src="{{ asset('assets/js/owl.carousel.js') }}"></script>
+<script src="{{asset('/js/custom.js?v='.$v)}}" type="text/javascript"></script>
 @yield('script')
 
     </body>

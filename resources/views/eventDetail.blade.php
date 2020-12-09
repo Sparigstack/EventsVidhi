@@ -90,6 +90,11 @@
                                         </div>
                                     </div>
 
+                                    <div class="row purchaseTicketDiv" style="justify-content: center;">
+                                        <a href="#">
+                                            <input type="button" id="" class="clickable createEventButton buttonMobileSize" value="Purchase Ticket" style="padding: 5px 15px;height: 35px;"></a>
+                                    </div>
+
                                 </div>
 
                             </div>
@@ -380,7 +385,7 @@
             <?php } ?>
 
      		<div class="registerEvent col-md-12 row">
-     			<a href="{{ route('register') }}">
+     			<a href="#">
                 <input type="button" id="" class="clickable createEventButton buttonMobileSize" value="Registration" style="padding: 8px 30px;"></a>
      		</div>
 

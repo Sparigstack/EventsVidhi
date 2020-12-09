@@ -9,8 +9,30 @@ function showHidecategoriesNav(classname){
     var CSRF_TOKEN = $('meta[name="csrf-token"]').attr("content");
     var url = "0";
 
-    url =  "../../../allContent/" +
+    url =  "../../../../allContent/" +
                 tabId +
+                "/" +
+                0 +
+                "/" +
+                0 +
+                "/page=1";
+        //        alert(url);
+        window.location.replace(url);
+}
+
+function showHidecategoriesNavItem(classname){
+    if($(classname).hasClass("eventsTab")){
+        $('.eventListDiv').removeClass('d-none');
+    } else{
+    }
+    $('.noEventMsg').addClass('d-none');
+
+    var tabId = $(classname).attr('value');
+    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr("content");
+    var url = "0";
+    var homePageUrl = $(".homePageUrl").val();
+
+    url = homePageUrl + "/" + tabId +
                 "/" +
                 0 +
                 "/page=1";
@@ -92,11 +114,58 @@ function filterByCategories(categorylist){
     var CSRF_TOKEN = $('meta[name="csrf-token"]').attr("content");
     var url = "0";
 
-    url =  "../../../allContent/" +
+    url =  "../../../../allContent/" +
                 tabId +
+                "/" +
+                categoryListID +
+                "/" +
+                0 +
+                "/page=1";
+        //        alert(url);
+        window.location.replace(url);
+}
+
+function filterByCategoryList(categorylist){
+    var categoryListID = $(categorylist).attr('data-id');
+    var tabId = $('.mainTab').find('.active').attr('value');
+    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr("content");
+    var url = "0";
+    var homePageUrl = $(".homePageUrl").val();
+
+    url = homePageUrl + "/" + tabId +
                 "/" +
                 categoryListID +
                 "/page=1";
         //        alert(url);
         window.location.replace(url);
+}
+
+function searchTitle(){
+    var searchName = $(".serachEvent").val();
+    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr("content");
+    var url = "0";
+    var homePageUrl = $(".homePageUrl").val();
+
+    if(searchName == ""){
+        url =  homePageUrl + "/allContent/" +
+                1 +
+                "/" +
+                0 +
+                "/" +
+                0 +
+                "/page=1";
+    } else {
+        url =  homePageUrl + "/allContent/" +
+                1 +
+                "/" +
+                0 +
+                "/" +
+                searchName +
+                "/page=1";
+    }
+
+    
+        //        alert(url);
+        window.location.replace(url);
+
 }

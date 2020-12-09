@@ -311,6 +311,10 @@
             <?php } ?>
 
 
+                <div class="col-md-12 mobileSeeMoreBtn d-none" style="">
+                                    <a href="{{url('organizer/'.$organizer->id.'/1/0/0/page=1')}}">
+                                    <input type="button" id="" class="clickable createEventButton buttonMobileSize" value="See more" style="background: #FED8C6;color:black;box-shadow: 0px 2px 7px rgba(81, 33, 34, 0.2), 0px 2px 10px rgba(81, 33, 34, 0.25);float: right;"></a>
+                                </div>
      				
 
      			</div>

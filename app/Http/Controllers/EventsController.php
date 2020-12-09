@@ -21,13 +21,6 @@ class EventsController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function myEvents(){
-        $user = Auth::user();
-        $events = DB::table('events')->select('events.*', 'content_followers.content_id as eventFollowEventId' , 'users.profile_pic', 'users.name')->join('users', 'events.user_id', '=', 'users.id')->join('content_followers', 'events.id', '=', 'content_followers.content_id')->where('content_followers.user_id', $user->id)->get();
-        $eventFollowersList = ContentFollower::all();
-        return view('myEvents', compact('events', 'eventFollowersList'));
-    }
-
 
     // public function index($eventid)
     // {

@@ -12,6 +12,8 @@ use File;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use App\Event;
+use DB;
+use App\ContentFollower;
 
 class UserController extends Controller
 {
@@ -116,6 +118,15 @@ class UserController extends Controller
         $orgEvents = Event::where('user_id', $id)->orderBy('id', 'DESC')->get();
         
         return view('orgEventsList', compact('orgEvents'));
+    }
+
+    public function myContent(){
+        $user = Auth::user();
+        $events = DB::table('events')->select('events.*', 'content_followers.content_id as eventFollowEventId' , 'users.profile_pic', 'users.name', 'users.id as userId')->join('users', 'events.user_id', '=', 'users.id')->join('content_followers', 'events.id', '=', 'content_followers.content_id')->where('content_followers.user_id', $user->id)->where('content_followers.discriminator', 'e')->get();
+        $videos = DB::table('videos')->select('videos.*', 'content_followers.content_id as eventFollowVideoId' , 'users.profile_pic', 'users.name', 'users.id as userId', 'events.description as eventDesc')->join('users', 'videos.user_id', '=', 'users.id')->leftJoin('events', 'videos.event_id', '=', 'events.id')->join('content_followers', 'videos.id', '=', 'content_followers.content_id')->where('content_followers.user_id', $user->id)->where('content_followers.discriminator', 'v')->get();
+        $podcasts = DB::table('podcasts')->select('podcasts.*', 'content_followers.content_id as eventFollowPodcastId' , 'users.profile_pic', 'users.name', 'users.id as userId')->join('users', 'podcasts.user_id', '=', 'users.id')->join('content_followers', 'podcasts.id', '=', 'content_followers.content_id')->where('content_followers.user_id', $user->id)->where('content_followers.discriminator', 'p')->get();
+        $eventFollowersList = ContentFollower::all();
+        return view('myEvents', compact('events', 'videos', 'podcasts' ,'eventFollowersList'));
     }
 
 }

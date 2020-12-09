@@ -7,14 +7,6 @@
 		<a href="{{url('/')}}" style="color: #9C9C9C;font-weight: 100;" class="ml-4 pl-2"><i class="fa fa-angle-left"></i>&nbsp; Back</a>
 	</div>
 
-	<div class="col-md-11 featuredContent mb-4">
-        <div class="col-md-12 row MobDisplay">
-            <div class="col-md-4 pl-0">
-               <h4> My Events &nbsp; <i class="fa fa-arrow-right" aria-hidden="true"></i> </h4>
-            </div>
-        </div>
-    </div>
-
     <?php 
         $getUserID = "";
         if(Auth::check()){
@@ -25,6 +17,15 @@
        <input type="hidden" class="saveEventFollower" value="{{url('saveEventFollower')}}">
        <input type="hidden" class="loginRoute" value="{{route('login')}}">
        <input type="hidden" class="userIDFollow" value="{{$getUserID}}">
+
+    <?php if(count($events) > 0) { ?>
+	<div class="col-md-11 featuredContent mb-4">
+        <div class="col-md-12 row MobDisplay">
+            <div class="col-md-4 pl-0">
+               <h4> Followed Events &nbsp; <i class="fa fa-arrow-right" aria-hidden="true"></i> </h4>
+            </div>
+        </div>
+    </div>
 
     <div class="col-md-11 featuredContent mb-4">
         <div class="row col-md-12 pl-0 pr-0">
@@ -104,20 +105,20 @@
 
                                                     <hr class="mt-2 mb-2">
 
-                                                    <a href="{{url('organizer/'. $event->user->id)}}" target="_blank">
+                                                    <a href="{{url('organizer/'. $event->userId)}}" target="_blank">
                                                     <div class="row">
                                                         <div class="pl-3">
                                                             <?php
                                                             $profileLogo = "";
-                                                            if(!is_null($event->user->profile_pic) && $event->user->profile_pic != ""){
-                                                               $profileLogo = env("AWS_URL"). $event->user->profile_pic; ?>
+                                                            if(!is_null($event->profile_pic) && $event->profile_pic != ""){
+                                                               $profileLogo = env("AWS_URL"). $event->profile_pic; ?>
                                                                <img class="align-self-start profileImg" src="{{$profileLogo}}" alt="user avatar" style="width:40px !important;height:40px !important;">
                                                                <?php } else{ ?>
                                                                <img class="align-self-start profileImg" src="https://via.placeholder.com/110x110" alt="user avatar" style="width:40px !important;height:40px !important;">
                                                                <?php } ?>
                                                            </div>
                                                            <div class="">
-                                                            <h6 class="mt-2 ml-2"> {{$event->user->name}} </h6>
+                                                            <h6 class="mt-2 ml-2"> {{$event->name}} </h6>
                                                         </div>
                                                     </div>
                                                 </a>
@@ -129,6 +130,248 @@
 
                                     </div>
                                 </div>
+
+
+
+    <?php } ?>
+
+
+
+    <?php if(count($videos) > 0) { ?>
+    <div class="col-md-11 featuredContent mb-4">
+        <div class="col-md-12 row MobDisplay">
+            <div class="col-md-4 pl-0">
+               <h4> Followed Videos &nbsp; <i class="fa fa-arrow-right" aria-hidden="true"></i> </h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-11 featuredContent mb-4">
+                                    <div class="row col-md-12 pl-0 pr-0">
+                                        <div class="col-md-12 d-none noEventMsg">
+                                            <p class="text-center"> No Records Found! </p>
+                                        </div>
+                                        <?php $row_count = 1;
+                                        foreach ($videos as $video) { ?>
+                                        <div class="col-md-3 showHideListDiv parent pl-2 pr-2">
+
+                                            <div class="card">
+                                                <?php
+                                                $AwsUrl = env('AWS_URL');
+                                                $videoUrl = "";
+                                                if (!empty($video->url)) {
+                                                    if($video->url_type == 1){
+                                                        $videoUrl = $AwsUrl . $video->url; ?>
+                                                        <!-- <a href="{{$videoUrl}}" target="_blank"> -->
+                                                            <a href="{{url('videos/'. $video->id)}}" target="_blank">
+                                                            <video class="" src="{{$videoUrl}}" width="100%" height="100%" controls="controls" style="border-radius: 6px 6px 0px 0px;"></video></a>
+                                                        <?php   }
+                                                        else{
+                                                            $videoUrl = $video->url; 
+                                                            if(strpos($videoUrl, 'youtube') !== false){
+                                                                $explodeUrl = explode('=', $videoUrl);
+                                                                $getLastWord = array_pop($explodeUrl);
+                                                                $url = "https://www.youtube.com/embed/" . $getLastWord;
+                                                            }else{
+                                                                $explodeUrl = explode('/', $videoUrl);
+                                                                $getLastWord = array_pop($explodeUrl);
+                                                                $url = "https://player.vimeo.com/video/" . $getLastWord;
+                                                            }
+                                                            ?>
+                                                            <!-- <a href="{{$url}}" target="_blank"> -->
+                                                                <a href="{{url('videos/'. $video->id)}}" target="_blank">
+                                                                <iframe width="232px" height="130px" src="{{$url}}" frameborder="0" class="" style="border-radius: 6px 6px 0px 0px;pointer-events: none;"></iframe></a>
+                                                            <?php  }
+                                                        }
+                                                        ?>
+                                                        
+
+                                                        <?php 
+                                                    $checkHeartFill = "d-none";
+                                                    $checkHeartEmpty = "";
+                                                    $checkVal = "";
+                                                    if(Auth::check()){
+                                                        foreach($eventFollowersList as $eventFollowerList){
+                                                            if(Auth::user()->id == $eventFollowerList->user_id && $video->eventFollowVideoId == $eventFollowerList->content_id && $eventFollowerList->discriminator == "v"){
+                                                                $checkHeartFill = "";
+                                                                $checkHeartEmpty = "d-none";
+                                                                $checkVal = "1";
+                                                            }
+                                                        }
+                                                    }
+                                                ?>
+                                                <a style="cursor: pointer;" onclick="followEvent(this);" data-event-id="{{$video->id}}" discriminator="v">
+                                                <span class="likeButtonSpan"><i aria-hidden="true" class="fa fa-heart-o emptyHeart {{$checkHeartEmpty}}" id="" style=""></i>
+                                                    <i aria-hidden="true" class="fa fa-heart {{$checkHeartFill}} fillHeart" style="color: #FD6568;" value="{{$checkVal}}"></i>
+                                                </span></a>
+
+
+                                                        <div class="card-body" style="padding: 10px;">
+                                                            <a href="{{url('videos/'. $video->id)}}" target="_blank">
+                                                            <div class="col-md-12 pr-0 pl-0">
+                                                                <h6> {{$video->title}} </h6>
+                                                            </div>
+
+                                                            <?php $eventDesc = "";
+                                            // $eventPrefix = "";
+                                                            $eventLink = "";
+                                                            $desc = "";
+                                                            $eventDescText = "";
+                                                            if($video->description == ''){
+                                                // $eventPrefix = "Event : ";
+                                                // $eventDesc = $eventPrefix.$video->event->title;
+                                                                $eventDesc = $video->eventDesc;
+                                                                $eventDescText = substr($eventDesc,0,80).'...';
+                                                            }
+                                                            else{
+                                                                $eventDesc = $video->description;
+                                                                $eventDescText = substr($eventDesc,0,80).'...';
+                                                            } 
+                                                            ?>
+                                                            
+                                                            <div class="col-md-12 pr-0 pl-0" style="color: black;">{{$eventDescText}}</div>
+
+                                <div class="col-md-12 pr-0 mt-2 pl-0" style="color:#9C9C9C;">Video </div> </a>
+
+                                                            <hr class="mt-2 mb-2">
+
+                                                            <a href="{{url('organizer/'. $video->userId)}}" target="_blank">
+                                                            <div class="row">
+                                                                <div class="pl-3">
+                                                                    <?php
+                                                                    $profileLogo = "";
+                                                                    if(!is_null($video->profile_pic) && $video->profile_pic != ""){
+                                                                       $profileLogo = env("AWS_URL"). $video->profile_pic; ?>
+                                                                       <img class="align-self-start profileImg" src="{{$profileLogo}}" alt="user avatar" style="width:40px !important;height:40px !important;">
+                                                                       <?php } else{ ?>
+                                                                       <img class="align-self-start profileImg" src="https://via.placeholder.com/110x110" alt="user avatar" style="width:40px !important;height:40px !important;">
+                                                                       <?php } ?>
+                                                                   </div>
+                                                                   <div class="">
+                                                                    <h6 class="mt-2 ml-2"> {{$video->name}} </h6>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+
+                                                        </div>
+                                                    </div>
+                                                </div> 
+                                                <?php } ?>
+
+                                            </div>
+                                        </div>
+
+
+    <?php } ?>
+
+
+
+    <?php if(count($podcasts) > 0){ ?>
+    <div class="col-md-11 featuredContent mb-4">
+        <div class="col-md-12 row MobDisplay">
+            <div class="col-md-4 pl-0">
+               <h4> Followed Podcasts &nbsp; <i class="fa fa-arrow-right" aria-hidden="true"></i> </h4>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-11 featuredContent mb-4">
+                                            <div class="row col-md-12 pl-0 pr-0">
+                                                <div class="col-md-12 d-none noEventMsg">
+                                            <p class="text-center"> No Records Found! </p>
+                                        </div>
+                                                <?php $row_count = 1;
+                                                foreach ($podcasts as $podcast) { ?>
+                                                <div class="col-md-3 parent showHideListDiv pl-2 pr-2">
+                                                    
+                                                    <div class="card">
+                                                        <a href="{{url('podcasts/'. $podcast->id)}}" target="_blank"><img src="assets/images-new/sample-image.png" class="" alt="" style="width: 100%;height: 130px;"></a>
+
+                                                        
+                                                        <?php 
+                                                    $checkHeartFill = "d-none";
+                                                    $checkHeartEmpty = "";
+                                                    $checkVal = "";
+                                                    if(Auth::check()){
+                                                        foreach($eventFollowersList as $eventFollowerList){
+                                                            if(Auth::user()->id == $eventFollowerList->user_id && $podcast->eventFollowPodcastId == $eventFollowerList->content_id && $eventFollowerList->discriminator == "p"){
+                                                                $checkHeartFill = "";
+                                                                $checkHeartEmpty = "d-none";
+                                                                $checkVal = "1";
+                                                            }
+                                                        }
+                                                    }
+                                                ?>
+                                                <a style="cursor: pointer;" onclick="followEvent(this);" data-event-id="{{$podcast->id}}" discriminator="p">
+                                                <span class="likeButtonSpan"><i aria-hidden="true" class="fa fa-heart-o emptyHeart {{$checkHeartEmpty}}" id="" style=""></i>
+                                                    <i aria-hidden="true" class="fa fa-heart {{$checkHeartFill}} fillHeart" style="color: #FD6568;" value="{{$checkVal}}"></i>
+                                                </span></a>
+
+
+
+                                                        <div class="card-body" style="padding: 10px;">
+                                                            <div class="col-md-12 row pr-0">
+                                                                <a href="{{url('podcasts/'. $podcast->id)}}" target="_blank"><h6> {{$podcast->title}} </h6></a>
+                                                            </div>
+
+                                                            <?php
+                            // $freeEventClass = "d-none";
+                            // if($event->is_paid != 1){
+                            //     $freeEventClass = "freeTextSpanClass";
+                            // }
+                                                            $sdStamp = strtotime($podcast->created_at);
+                                                            $dateStr = date("d",  $sdStamp);
+                                                            $MonthStr = date("M",  $sdStamp); 
+                                                            ?>
+                                                            <?php
+                                                            $videoPodcastUrl = "";
+                                                            $dnoneClass = "";
+                                                            if (!empty($podcast)) {
+                                                                $dnoneClass = "d-none";
+                                                                if(substr($podcast->url, 0, 8 ) != "https://"){
+                                                                    $videoPodcastUrl = $AwsUrl . $podcast->url;
+                                                                }
+                                                                else{
+                                                                    $videoPodcastUrl = $podcast->url;
+                                                                }
+                                                            }
+                                                            ?>
+                                                            <a href="{{$videoPodcastUrl}}" target="_blank"><audio controls  class="w-100"><source src="{{$videoPodcastUrl}}" type="audio/ogg" class="col-lg-7 pr-0 pl-0"></audio></a>
+
+                                                                <div class="col-md-12 pr-0 mt-2 pl-0" style="color:#9C9C9C;">Podcast </div>
+
+                                                                <hr class="mt-2 mb-2">
+
+                                                                <a href="{{url('organizer/'. $podcast->userId)}}" target="_blank">
+                                                                <div class="row">
+                                                                    <div class="pl-3">
+                                                                        <?php
+                                                                        $profileLogo = "";
+                                                                        if(!is_null($podcast->profile_pic) && $podcast->profile_pic != ""){
+                                                                           $profileLogo = env("AWS_URL"). $podcast->profile_pic; ?>
+                                                                           <img class="align-self-start profileImg" src="{{$profileLogo}}" alt="user avatar" style="width:40px !important;height:40px !important;">
+                                                                           <?php } else{ ?>
+                                                                           <img class="align-self-start profileImg" src="https://via.placeholder.com/110x110" alt="user avatar" style="width:40px !important;height:40px !important;">
+                                                                           <?php } ?>
+                                                                       </div>
+                                                                       <div class="">
+                                                                        <h6 class="mt-2 ml-2"> {{$podcast->name}} </h6>
+                                                                    </div>
+                                                                </div>
+                                                            </a>
+
+
+                                                            </div>
+                                                        </div>
+                                                    </div> 
+                                                    <?php } ?>
+
+                                                </div>
+    </div>
+
+    <?php } ?>
+
 
 
 

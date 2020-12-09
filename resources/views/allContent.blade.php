@@ -47,8 +47,14 @@
 
                                     <ul class="nav categoriesNav mt-2" style="">
                                         @foreach($categories as $category)
+                                        <?php
+                                            $activeCatClass = '';
+                                            if($categoryId == $category->id){
+                                                $activeCatClass = "active";
+                                            }
+                                         ?>
                                         <li class="nav-item mobileNav" style="margin-right: 1rem;">
-                                            <a class="nav-link" data-toggle="tab" href="javascript:void(0)" onclick="filterByCategories(this);" data-id="{{$category->id}}"><span class="" style="letter-spacing: 0px;">{{$category->name}}</span></a>
+                                            <a class="nav-link {{$activeCatClass}}" data-toggle="tab" href="javascript:void(0)" onclick="filterByCategories(this);" data-id="{{$category->id}}"><span class="" style="letter-spacing: 0px;">{{$category->name}}</span></a>
                                         </li>
                                         @endforeach
                                         <!-- <li class="nav-item ml-4">
@@ -372,7 +378,7 @@
                                                 <div class="col-md-3 parent showHideListDiv pl-2 pr-2">
                                                     
                                                     <div class="card">
-                                                        <a href="{{url('podcasts/'. $allData->podcastId)}}" target="_blank"><img src="../../../assets/images-new/sample-image.png" class="" alt="" style="width: 100%;height: 130px;"></a>
+                                                        <a href="{{url('podcasts/'. $allData->podcastId)}}" target="_blank"><img src="../../../../assets/images-new/sample-image.png" class="" alt="" style="width: 100%;height: 130px;"></a>
 
                                                         <?php 
                                                     $checkHeartFill = "d-none";
@@ -757,7 +763,7 @@
                                                 <div class="col-md-3 parent showHideListDiv pl-2 pr-2">
                                                     
                                                     <div class="card">
-                                                        <a href="{{url('podcasts/'. $allData->podcastId)}}" target="_blank"><img src="../../../assets/images-new/sample-image.png" class="" alt="" style="width: 100%;height: 130px;"></a>
+                                                        <a href="{{url('podcasts/'. $allData->podcastId)}}" target="_blank"><img src="../../../../assets/images-new/sample-image.png" class="" alt="" style="width: 100%;height: 130px;"></a>
 
                                                         <?php 
                                                     $checkHeartFill = "d-none";
@@ -861,8 +867,8 @@
             $str = substr(strrchr($link, '/'), 0);
             $redirectLink = str_replace($str, '', $link);
 //echo $redirectLink;
-            if ($dbRecordCount > 4) {
-                $pages = (int) ($dbRecordCount / 4);
+            if ($dbRecordCount > 32) {
+                $pages = (int) ($dbRecordCount / 32);
 
                 $pageNumber = substr(strrchr($link, '='), 1);
                 if (isset($pageNumber) && !is_null($pageNumber)) {

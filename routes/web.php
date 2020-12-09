@@ -131,9 +131,9 @@ Route::get('orgEvents/{id}', 'UserController@orgEventsList');
 
 //All routes according to new UI will be here.
 Route::get('/', 'HomeController@indexPage');
+Route::get('/{tabId}/{categoryId}/page={pageCount}', 'HomeController@indexPage');
 
-// Route::get('allContent/{tabId}', 'HomeController@allContent');
-Route::get('allContent/{tabId}/{categoryId}/page={pageCount}', 'HomeController@allContent');
+Route::get('allContent/{tabId}/{categoryId}/{searchName}/page={pageCount}', 'HomeController@allContent');
 
 Route::get('events/{eventid}', 'HomeController@eventDetail');
 Route::get('videos/{videoid}', 'HomeController@videoDetail');
@@ -143,4 +143,24 @@ Route::get('organizer/{orgid}', 'HomeController@organizerDetail');
 
 Route::post('saveEventFollower', 'HomeController@saveEventFollower');
 
-Route::get('myEvents', 'EventsController@myEvents');
+Route::get('myContent', 'UserController@myContent');
+
+Route::get('aboutUs', function () {
+    return view('aboutUs');
+});
+
+Route::get('information', function () {
+    return view('information');
+});
+
+Route::get('orgInfo', function () {
+    return view('orgInfo');
+});
+
+Route::get('createEventInfo', function () {
+    return view('createEventInfo');
+});
+
+Route::get('featureOverview', function () {
+    return view('featureOverview');
+});
