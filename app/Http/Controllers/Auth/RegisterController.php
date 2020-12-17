@@ -44,7 +44,7 @@ class RegisterController extends Controller
 
     public function __construct()
     {
-        $this->middleware('guest');
+        // $this->middleware('guest');
     }
 
     /**
@@ -57,7 +57,7 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             // 'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            // 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             // 'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
     }
@@ -78,12 +78,13 @@ class RegisterController extends Controller
                 'user_type' => 2,
             ]);
         } else{
-            if (array_key_exists("website", $data) && array_key_exists("businessName", $data)) {
+            if (array_key_exists("website", $data) && array_key_exists("businessName", $data) && array_key_exists("location", $data)) {
             // if($data['website']->exists() && $data['businessName']->exists()){
                 $lastID = User::orderBy('id', 'desc')->first();
                 return User::where('id', $lastID->id)->update([
                     'name' => $data['businessName'],
                     'website_url' => $data['website'],
+                    'location' => $data['location'],
                 ]);
                 // $users = User::findOrFail($lastID->id);
                 // $users->name = $data['businessName'];

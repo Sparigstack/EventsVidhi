@@ -1,10 +1,58 @@
 @extends('layouts.NewAppFront')
-
-
+@section('css')
+<style>
+.form-group input{
+    height: 45px;
+    width: 340px;
+}
+@media(max-width:40em) {
+    .form-group input{
+        width: auto !important;
+    }
+}
+</style>
+@endsection
 @section('content')
 <div class="container NewLogin" style="padding-top: 20px;">
 
+    <div class="col-md-12 col-lg-12 align-items-center mb-3 ml-5 backButton d-none" style="display: flex;">
+        <a class="" style="font-family: Open Sans;
+font-style: normal;
+font-weight: 300;
+font-size: 14px;
+line-height: 19px;
+/* identical to box height */
+
+display: flex;
+align-items: center;
+cursor:pointer;
+/* Text/Icon DarkGray */
+
+color: #9C9C9C;" onclick="GotoFirstStep();">
+                                                        <i class="fa fa-angle-left"></i>&nbsp; Back</a>
+    </div>
+
+    <div class="col-md-12 col-lg-12 align-items-center mb-3 ml-5 previousButton d-none" style="display: flex;">
+                                                        
+                                                         <a class="" style="font-family: Open Sans;
+font-style: normal;
+font-weight: 300;
+font-size: 14px;
+line-height: 19px;
+/* identical to box height */
+
+display: flex;
+align-items: center;
+cursor:pointer;
+/* Text/Icon DarkGray */
+
+color: #9C9C9C;" onclick="GotoPreviousStep();">
+                                                        <i class="fa fa-angle-left"></i>&nbsp; Previous Step</a>
+                                                        
+                                                    </div>
+
     <div class="row justify-content-center">
+
         
         <div class="col-md-12 row NextHide" style="    display: flex;
     justify-content: center;
@@ -62,24 +110,7 @@
                                                 </div>
                                                 
                                                 <div class="card-body ActualForm d-none" >
-                                                    <div class="card-title  text-center py-3">
-                                                        
-                                                         <a class="" style="font-family: Open Sans;
-font-style: normal;
-font-weight: 300;
-font-size: 14px;
-line-height: 19px;
-/* identical to box height */
-
-display: flex;
-align-items: center;
-cursor:pointer;
-/* Text/Icon DarkGray */
-
-color: #9C9C9C;" onclick="GotoFirstStep();">
-                                                        <i class="fa fa-angle-left"></i>&nbsp; Back</a>
-                                                        
-                                                    </div>
+                                                    
             <!--<form method="POST" action="{{ route('register') }}" style="margin:0 auto; width:80%;" class="Nexthidden">-->
                 <form method="POST" action="" style="margin:0 auto; width:80%;" class="Nexthidden">
 
@@ -103,10 +134,10 @@ color: #9C9C9C;" onclick="GotoFirstStep();">
                 <input type="hidden" name="checkUrl" value="1">
                 <div class="card-content p-2 MobWidth">
                     
-                    <div class="card-title text-center py-3">
+                    <div class="card-title py-3 ml-5">
                     {{$labelSignUp}}</div>
                     
-                    <div class="SignUpSocial">
+                    <div class="SignUpSocial mr-4">
                         
                         <a href="javascript:void()" class="btn-social btn-social-circle btn-facebook waves-effect waves-light m-1 float-right"
                         style="color:white;"><i class="fa fa-facebook"></i></a>
@@ -202,25 +233,10 @@ color: #9C9C9C;" onclick="GotoFirstStep();">
     </div>
 
     <div class="card-body ActualOrgRegisterForm d-none" >
-                                                    <div class="card-title  text-center py-3">
-                                                        
-                                                         <a class="" style="font-family: Open Sans;
-font-style: normal;
-font-weight: 300;
-font-size: 14px;
-line-height: 19px;
-/* identical to box height */
-
-display: flex;
-align-items: center;
-cursor:pointer;
-/* Text/Icon DarkGray */
-
-color: #9C9C9C;" onclick="GotoFirstStep();">
-                                                        <i class="fa fa-angle-left"></i>&nbsp; Back</a>
-                                                        
-                                                    </div>
+                                                    
             <!--<form method="POST" action="{{ route('register') }}" style="margin:0 auto; width:80%;" class="Nexthidden">-->
+
+                <div class="col-md-12 row">
                 <form method="POST" action="" style="margin:0 auto; width:80%;" class="NexthiddenOrgReg">
 
                 <input class="urlStringOrgReg" type="hidden" value="{{ route('register') }}">
@@ -241,16 +257,16 @@ color: #9C9C9C;" onclick="GotoFirstStep();">
                 <input type="hidden" name="checkUrl" value="">
                 <div class="card-content p-2 MobWidth">
                     
-                    <div class="card-title text-center py-3">
+                    <div class="card-title py-3 ml-5">
                     {{$labelSignUp}}</div>
                     
-                    <!-- <div class="SignUpSocial">
+                    <div class="SignUpSocial mb-3">
                         
                         <a href="javascript:void()" class="btn-social btn-social-circle btn-facebook waves-effect waves-light m-1 float-right"
                         style="color:white;"><i class="fa fa-facebook"></i></a>
                         <a href="javascript:void()" class="btn-social btn-social-circle btn-linkedin waves-effect waves-light m-1 float-right"
                         style="color:white; background:#F14336; border-color:unset !important;"><i class="fa fa-google"></i></a>
-                    </div> -->
+                    </div>
 
                     
                     <div class="form-group emailValid">
@@ -325,6 +341,7 @@ color: #9C9C9C;" onclick="GotoFirstStep();">
 
 
             </form>
+        </div>
 
             
 
@@ -335,24 +352,6 @@ color: #9C9C9C;" onclick="GotoFirstStep();">
     </div>
 
     <div class="card-body ActualOrgRegisterFormNext d-none" >
-                                                    <div class="card-title  text-center py-3">
-                                                        
-                                                         <a class="" style="font-family: Open Sans;
-font-style: normal;
-font-weight: 300;
-font-size: 14px;
-line-height: 19px;
-/* identical to box height */
-
-display: flex;
-align-items: center;
-cursor:pointer;
-/* Text/Icon DarkGray */
-
-color: #9C9C9C;" onclick="GotoPreviousStep();">
-                                                        <i class="fa fa-angle-left"></i>&nbsp; Previous Step</a>
-                                                        
-                                                    </div>
             <!--<form method="POST" action="{{ route('register') }}" style="margin:0 auto; width:80%;" class="Nexthidden">-->
                 <form method="POST" action="" style="margin:0 auto; width:80%;" class="NexthiddenUpdateOrgReg">
 
@@ -368,32 +367,32 @@ color: #9C9C9C;" onclick="GotoPreviousStep();">
                $checkUrl = "";
                $dnoneClass = "";
                // $labelSignUp = "Organizer Sign Up";
-               $labelSignUp = "Create your Organiser account here";
+               $labelSignUp = "Tell us more about yourself";
                 if (strpos($_SERVER['REQUEST_URI'], '/userRegister') !== false) {
                         // $checkUrl = "1";
                         $dnoneClass = "d-none";
-                        $labelSignUp = "Create your Organiser account here";
+                        $labelSignUp = "Tell us more about yourself";
                 } ?>
                 @csrf
                 <input type="hidden" name="checkUrl" value="">
                 <div class="card-content p-2 MobWidth">
                     
-                    <div class="card-title text-center py-3">
+                    <div class="card-title py-5 ml-5 pl-2">
                     {{$labelSignUp}}</div>
                     
-                    <div class="SignUpSocial">
+                    <!-- <div class="SignUpSocial">
                         
                         <a href="javascript:void()" class="btn-social btn-social-circle btn-facebook waves-effect waves-light m-1 float-right"
                         style="color:white;"><i class="fa fa-facebook"></i></a>
                         <a href="javascript:void()" class="btn-social btn-social-circle btn-linkedin waves-effect waves-light m-1 float-right"
                         style="color:white; background:#F14336; border-color:unset !important;"><i class="fa fa-google"></i></a>
-                    </div>
+                    </div> -->
 
                     
                     <div class="form-group">
                         <label for="exampleInputBusinessName" class="sr-only">Business Name</label>
                         <div class="position-relative has-icon-right">
-                            <input id="businessName" type="text" class="form-control" name="businessName" value="{{ old('businessName') }}" required autocomplete="businessName" placeholder="Business Name" onchange="ChangeBusinessName(this)">
+                            <input id="businessName" type="text" class="form-control" name="businessName" value="{{ old('businessName') }}" required autocomplete="businessName" placeholder="Username" onchange="ChangeBusinessName(this)">
                             <div class="form-control-position">
                                 <!--<i class="icon-envelope-open"></i>-->
                             </div>
@@ -403,6 +402,15 @@ color: #9C9C9C;" onclick="GotoPreviousStep();">
                         <label for="exampleInputWebsite" class="sr-only">Website</label>
                         <div class="position-relative has-icon-right">
                             <input id="website" type="url" class="form-control" name="website" required autocomplete="website" placeholder="Website">
+                            <div class="form-control-position">
+                                <!--<i class="icon-lock"></i>-->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputLocation" class="sr-only">Location</label>
+                        <div class="position-relative has-icon-right">
+                            <input id="location" type="text" class="form-control" name="location" required autocomplete="location" placeholder="Location">
                             <div class="form-control-position">
                                 <!--<i class="icon-lock"></i>-->
                             </div>
@@ -463,6 +471,14 @@ color: #9C9C9C;" onclick="GotoPreviousStep();">
                                             
                                                 <div class="col-md-6 HiddenImageOnclick">
                                                      <img src="assets/images-new/Layer 7.png" class="">
+                                                </div>
+
+                                                <div class="col-md-3 HiddenOrgImageOnclick d-none">
+                                                     <img src="assets/images-new/Layer 2.png" class="">
+                                                </div>
+
+                                                <div class="col-md-3 HiddenUserImageOnclick d-none">
+                                                     <img src="assets/images-new/userRegister.png" class="">
                                                 </div>
         </div>
         
@@ -579,6 +595,8 @@ color: #9C9C9C;" onclick="GotoPreviousStep();">
         $(".StartupPage").addClass("d-none");
         $(".ActualForm").removeClass("d-none");
         $(".HiddenImageOnclick").addClass("d-none");
+        $(".HiddenUserImageOnclick").removeClass("d-none");
+        $(".backButton").removeClass("d-none");
     }
 
     function ShowFormOrgRegister(element){
@@ -586,6 +604,8 @@ color: #9C9C9C;" onclick="GotoPreviousStep();">
         $(".ActualForm").addClass("d-none");
         $(".ActualOrgRegisterForm").removeClass("d-none");
         $(".HiddenImageOnclick").addClass("d-none");
+        $(".HiddenOrgImageOnclick").removeClass("d-none");
+        $(".backButton").removeClass("d-none");
     }
 
     function GotoFirstStep(){
@@ -594,6 +614,9 @@ color: #9C9C9C;" onclick="GotoPreviousStep();">
          $(".ActualForm").addClass("d-none");
          $(".ActualOrgRegisterForm").addClass("d-none");
          $(".HiddenImageOnclick").removeClass("d-none");
+         $(".HiddenOrgImageOnclick").addClass("d-none");
+         $(".HiddenUserImageOnclick").addClass("d-none");
+         $(".backButton").addClass("d-none");
     }
 
     function GotoPreviousStep(){
@@ -602,6 +625,9 @@ color: #9C9C9C;" onclick="GotoPreviousStep();">
          // $(".ActualForm").addClass("d-none");
          $(".ActualOrgRegisterForm").removeClass("d-none");
          $(".ActualOrgRegisterFormNext").addClass("d-none");
+         $(".backButton").removeClass("d-none");
+         $(".HiddenOrgImageOnclick").removeClass("d-none");
+         $(".previousButton").addClass("d-none");
          // $(".HiddenImageOnclick").removeClass("d-none");
     }
 
@@ -635,11 +661,15 @@ color: #9C9C9C;" onclick="GotoPreviousStep();">
                                 // console.log(response);
                                 $(".NextHide").addClass("d-none");
                                 $(".LetsStart-Section").removeClass("d-none");
+                                $(".backButton").addClass("d-none");
+                                $(".HiddenUserImageOnclick").addClass("d-none");
                             },
                             error: function (err) {
                                 // console.log(err);
                                 $(".NextHide").addClass("d-none");
                                 $(".LetsStart-Section").removeClass("d-none");
+                                $(".backButton").addClass("d-none");
+                                $(".HiddenUserImageOnclick").addClass("d-none");
                             }
 
                         });
@@ -682,6 +712,9 @@ color: #9C9C9C;" onclick="GotoPreviousStep();">
                                 $(".ActualOrgRegisterForm").addClass("d-none");
                                 $(".newOrgId").val(response);
                                 $(".spinnerClass").addClass('d-none');
+                                $(".backButton").addClass("d-none");
+                                $(".previousButton").removeClass("d-none");
+                                $(".HiddenOrgImageOnclick").addClass("d-none");
                             },
                             error: function (err) {
                                 // console.log(err);
@@ -689,6 +722,9 @@ color: #9C9C9C;" onclick="GotoPreviousStep();">
                                 $(".ActualOrgRegisterForm").addClass("d-none");
                                 $(".newOrgId").val(err);
                                 $(".spinnerClass").addClass('d-none');
+                                $(".backButton").addClass("d-none");
+                                $(".previousButton").removeClass("d-none");
+                                $(".HiddenOrgImageOnclick").addClass("d-none");
                             }
 
                         });
@@ -700,7 +736,7 @@ color: #9C9C9C;" onclick="GotoPreviousStep();">
 
     function GoToNextOrgRegStep1(){
         
-            if($('#website').val()=='' || $('#businessName').val()==''){
+            if($('#website').val()=='' || $('#businessName').val()=='' || $('#location').val()==''){
                 alert('Please fill all fields');
                 // return;
             } else{
@@ -725,12 +761,16 @@ color: #9C9C9C;" onclick="GotoPreviousStep();">
                                 $(".ActualOrgRegisterFormNext").addClass("d-none");
                                 $(".LetsStartOrgReg-Section").removeClass("d-none");
                                 $(".spinnerClassNext").addClass('d-none');
+                                $(".previousButton").addClass("d-none");
+                                $(".backButton").addClass("d-none");
                             },
                             error: function (err) {
                                 // console.log(err);
                                 $(".ActualOrgRegisterFormNext").addClass("d-none");
                                 $(".LetsStartOrgReg-Section").removeClass("d-none");
                                 $(".spinnerClassNext").addClass('d-none');
+                                $(".previousButton").addClass("d-none");
+                                $(".backButton").addClass("d-none");
                             }
 
                         });

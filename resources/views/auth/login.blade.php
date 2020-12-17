@@ -1,4 +1,17 @@
 @extends('layouts.NewAppFront')
+@section('css')
+<style>
+.form-group input{
+    height: 45px;
+    width: 340px;
+}
+@media(max-width:40em) {
+    .form-group input{
+        width: auto !important;
+    }
+}
+</style>
+@endsection
 
 @section('content')
 <div class="container NewLogin" style="padding-top: 20px;">
@@ -25,13 +38,12 @@ justify-content:center;
 align-items: center;
 text-align: center;">Welcome back! <br/> Nice to see you again!</div>
 
-<div class="col-6 text-right pr-0" style="float:right; padding-bottom:10px;">
+<div class="SignUpSocial mr-5" style="float:right; padding-bottom:10px;">
                                                    
-
-                                                    <a href="javascript:void()" class="btn-social btn-social-circle btn-linkedin waves-effect waves-light m-1 float-right" style="color:white; background:#F14336; border-color:unset !important;"><i class="fa fa-google"></i></a>
                                                      <a href="javascript:void()" class="btn-social btn-social-circle btn-facebook waves-effect waves-light m-1 float-right" style="color:white;"><i class="fa fa-facebook"></i></a>
+                                                     <a href="javascript:void()" class="btn-social btn-social-circle btn-linkedin waves-effect waves-light m-1 float-right" style="color:white; background:#F14336; border-color:unset !important;"><i class="fa fa-google"></i></a>
                                                 </div>
-                    <div class="form-group">
+                    <div class="form-group" style="padding-left: 15%;">
                         <label for="exampleInputUsername" class="sr-only">Username</label>
                         <div class="position-relative has-icon-right">
                             <input id="email" type="email" class="form-control @error('email') is-invalid @enderror newloginform" name="email" value="{{ old('email') }}" required autocomplete="email" placeholder="E-mail" autofocus>
@@ -46,7 +58,7 @@ text-align: center;">Welcome back! <br/> Nice to see you again!</div>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" style="padding-left: 15%;">
                         <label for="exampleInputPassword" class="sr-only">Password</label>
                         <div class="position-relative has-icon-right">
                             <input id="password" type="password" class="form-control @error('password') is-invalid @enderror newloginform" name="password" required autocomplete="current-password" placeholder="Password">
@@ -61,7 +73,7 @@ text-align: center;">Welcome back! <br/> Nice to see you again!</div>
                             </div>
                         </div>
                     </div>
-                    <div class="form-row">
+                    <div class="form-row" style="padding-left: 15%;">
                         <div class="form-group col-6">
                             <div class="icheck-material-primary form-check pl-0 CustomCheckbox">
 
@@ -72,6 +84,10 @@ text-align: center;">Welcome back! <br/> Nice to see you again!</div>
                                 </label>
 
                             </div>
+                        </div>
+
+                        <div class="SignUpLink col-6">
+                             <p class="" style="color: #9C9C9C;text-decoration:underline;font-weight: bold;"> <a style="color: #9C9C9C;font-weight: bold;" href="#">Forgot Password?</a></p>
                         </div>
                         <!--<div class="form-group col-6 text-right pr-0">-->
                         <!--    @if (Route::has('password.request'))-->
@@ -84,11 +100,11 @@ text-align: center;">Welcome back! <br/> Nice to see you again!</div>
                  
 
                     <div class="sign-in-button col-md-12">
-                        <div class="SubmitButton col-md-6">
-                           <button type="submit" class="btn btn-primary btn-block New-Login">Sign In</button>
+                        <div class="SubmitButton col-md-6" style="padding-left: 15% !important;">
+                           <button type="submit" class="btn btn-primary btn-block New-Login">Log In</button>
                         </div>
                         <div class="SignUpLink col-md-6">
-                             <p class="text-dark mb-0" style="color:#000; text-decoration:underline;"> <a style="color:#000;" href="{{ url('userRegister') }}">Or Sign Up here</a></p>
+                             <p class="text-dark mb-0" style="color:#1E1E1E; text-decoration:underline;font-weight: bold;"> <a style="color:#1E1E1E;font-weight: bold;" href="{{ url('userRegister') }}">Or Sign Up</a></p>
                         </div>
                     </div>
             </form>
