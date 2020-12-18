@@ -356,7 +356,8 @@ border-radius: 6px !important;
     width: 80px !important;
     height: 80px !important;
     border-radius: 50% !important;
-    margin-top: -15%;
+    /*margin-top: -15%;*/
+    margin-top: -50%;
 }
 .tabSpan{
     font-weight: 500;
@@ -370,6 +371,7 @@ border-radius: 6px !important;
 .chevronClass[aria-expanded=false] .fa-chevron-up {
    display: none;
 }
+    
 #heart.red{
     /*color:red;*/
 }
@@ -405,18 +407,21 @@ border-radius: 6px !important;
     line-height: 49px;
 }
 .aboutUsCardCss{
-    background: #FED8C6;
+    /*background: #FED8C6;*/
+    background: #FFFFFF;
     border-radius: 6px;
-    padding-left: 18%;
-    padding-right: 18%;
+    /*padding-left: 18%;
+    padding-right: 18%;*/
+    padding-left: 10%;
+    padding-right: 10%;
     padding-top: 4%;
     padding-bottom: 4%;
 }
 .aboutPara{
     font-size: 20px;
-    line-height: 27px;
+    line-height: 34px;
     color: #1E1E1E;
-    font-weight: bold;
+    /*font-weight: bold;*/
 }
 .orgInfoButton, .userInfoButton{
     padding: 8px 40px;color:black;background: white;border: 2px solid #ECECEC;

@@ -24,6 +24,26 @@
     	</div>
     </div>
 
+    <div class="col-md-12 mb-5 card communityDiv">
+        <div class="card-body col-md-12 row">
+            <div class="col-md-6 text-center">
+                <h3 class="communityHeader ml-0"> <a style="color:#FD6568;"> JOIN </a> OUR <br> COMMUNITY! </h3> <br>
+                                                
+                <a href="#">
+                    <input type="button" id="" class="clickable createEventButton mt-3" value="I'm an Organizer!" style="margin-left:10%;padding-left: 30px;padding-right: 30px;"></a>
+                <a href="#">
+                    <input type="button" id="" class="clickable createEventButton buttonMobileSize mt-4 ml-3" value="I'm a User!" style="background: #FED8C6;color:black;padding-left: 30px;padding-right: 30px;">
+                </a>
+            </div>
+
+            <div class="col-md-6">
+                <img src="assets/images-new/Community 1.jpg" class="w-100">
+            </div>
+        </div>
+    </div>
+
+    </div>
+
 
 </div>
 
