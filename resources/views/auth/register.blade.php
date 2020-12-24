@@ -3,11 +3,16 @@
 <style>
 .form-group input{
     height: 45px;
-    width: 340px;
+    width: 350px;
 }
 @media(max-width:40em) {
     .form-group input{
-        width: auto !important;
+        /*width: auto !important;*/
+        width: 265px !important;
+    }
+    .form-group{
+        display: flex;
+        justify-content: center;
     }
 }
 </style>
@@ -83,6 +88,7 @@ color: #9C9C9C;" onclick="GotoPreviousStep();">
     align-items: center;
     text-align: center;
     color: #FFFFFF;
+    font-weight: bold;
     padding: 10px 25px;cursor:pointer;" onclick="ShowFormOrgRegister(this);" class="mr-5">I’m an Organizer!</span>
                                                    
                                                    <span style="background: #FD6568;
@@ -95,6 +101,7 @@ color: #9C9C9C;" onclick="GotoPreviousStep();">
     align-items: center;
     text-align: center;
     color: #FFFFFF;
+    font-weight: bold;
     padding: 10px 25px;cursor:pointer;" onclick="ShowForm(this);">I’m a User!</span>
                                                    </div> 
                                                    <div class="card-footer text-center py-3" style="border-top: unset;">
@@ -134,15 +141,17 @@ color: #9C9C9C;" onclick="GotoPreviousStep();">
                 <input type="hidden" name="checkUrl" value="1">
                 <div class="card-content p-2 MobWidth">
                     
-                    <div class="card-title py-3 ml-5">
+                    <div class="card-title py-3 ml-5" style="font-size: 18px;">
                     {{$labelSignUp}}</div>
                     
                     <div class="SignUpSocial mr-4">
                         
                         <a href="javascript:void()" class="btn-social btn-social-circle btn-facebook waves-effect waves-light m-1 float-right"
                         style="color:white;"><i class="fa fa-facebook"></i></a>
-                        <a href="javascript:void()" class="btn-social btn-social-circle btn-linkedin waves-effect waves-light m-1 float-right"
-                        style="color:white; background:#F14336; border-color:unset !important;"><i class="fa fa-google"></i></a>
+                        <!-- <a href="javascript:void()" class="btn-social btn-social-circle btn-linkedin waves-effect waves-light m-1 float-right"
+                        style="color:white; background:#F14336; border-color:unset !important;"><i class="fa fa-google"></i></a> -->
+                        <a href="javascript:void()" class="m-1 float-right ml-2"
+                        style="cursor: pointer;"><img src="assets/images-new/googleIcon.png" style="height: 35px;border-radius: 50%;width: 35px;"></a>
                     </div>
 
                     <div class="form-group SignUp-Four-Form" style="padding-top:20px;">
@@ -221,6 +230,7 @@ color: #9C9C9C;" onclick="GotoPreviousStep();">
     border: unset !important;
     width: auto;
     text-align: center;
+    font-weight: bold;
     text-transform:capitalize !important;
     align-content: center;">Next</button></div>
     
@@ -257,15 +267,17 @@ color: #9C9C9C;" onclick="GotoPreviousStep();">
                 <input type="hidden" name="checkUrl" value="">
                 <div class="card-content p-2 MobWidth">
                     
-                    <div class="card-title py-3 ml-5">
+                    <div class="card-title py-3 ml-5" style="font-size: 18px;">
                     {{$labelSignUp}}</div>
                     
                     <div class="SignUpSocial mb-3">
                         
                         <a href="javascript:void()" class="btn-social btn-social-circle btn-facebook waves-effect waves-light m-1 float-right"
                         style="color:white;"><i class="fa fa-facebook"></i></a>
-                        <a href="javascript:void()" class="btn-social btn-social-circle btn-linkedin waves-effect waves-light m-1 float-right"
-                        style="color:white; background:#F14336; border-color:unset !important;"><i class="fa fa-google"></i></a>
+                        <!-- <a href="javascript:void()" class="btn-social btn-social-circle btn-linkedin waves-effect waves-light m-1 float-right"
+                        style="color:white; background:#F14336; border-color:unset !important;"><i class="fa fa-google"></i></a> -->
+                        <a href="javascript:void()" class="m-1 float-right ml-2"
+                        style="cursor: pointer;"><img src="assets/images-new/googleIcon.png" style="height: 35px;border-radius: 50%;width: 35px;"></a>
                     </div>
 
                     
@@ -331,6 +343,7 @@ color: #9C9C9C;" onclick="GotoPreviousStep();">
     border: unset !important;
     width: auto;
     text-align: center;
+    font-weight: bold;
     text-transform:capitalize !important;
     align-content: center;">Done!</button>
 
@@ -450,6 +463,7 @@ color: #9C9C9C;" onclick="GotoPreviousStep();">
     border: unset !important;
     width: auto;
     text-align: center;
+    font-weight: bold;
     text-transform:capitalize !important;
     align-content: center;">Next</button>
 
@@ -473,11 +487,11 @@ color: #9C9C9C;" onclick="GotoPreviousStep();">
                                                      <img src="assets/images-new/Layer 7.png" class="">
                                                 </div>
 
-                                                <div class="col-md-3 HiddenOrgImageOnclick d-none">
+                                                <div class="col-md-3 HiddenOrgImageOnclick d-none text-center">
                                                      <img src="assets/images-new/Layer 2.png" class="">
                                                 </div>
 
-                                                <div class="col-md-3 HiddenUserImageOnclick d-none">
+                                                <div class="col-md-3 HiddenUserImageOnclick d-none text-center">
                                                      <img src="assets/images-new/userRegister.png" class="">
                                                 </div>
         </div>

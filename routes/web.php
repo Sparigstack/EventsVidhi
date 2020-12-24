@@ -164,3 +164,8 @@ Route::get('createEventInfo', function () {
 Route::get('featureOverview', function () {
     return view('featureOverview');
 });
+
+Route::get('forgotPassword', function () {
+    return view('auth/passwords/forgotPassword');
+});
+

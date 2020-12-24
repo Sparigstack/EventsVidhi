@@ -3,11 +3,20 @@
 <style>
 .form-group input{
     height: 45px;
-    width: 340px;
+    width: 350px;
 }
 @media(max-width:40em) {
     .form-group input{
+        /*width: auto !important;*/
+        width: 265px !important;
+    }
+    .col-md-12{
         width: auto !important;
+        padding-left: 0px !important;
+        padding-right: 0px !important;
+    }
+    .signUpAnchor{
+        margin-right: 3rem!important;
     }
 }
 </style>
@@ -41,7 +50,9 @@ text-align: center;">Welcome back! <br/> Nice to see you again!</div>
 <div class="SignUpSocial mr-5" style="float:right; padding-bottom:10px;">
                                                    
                                                      <a href="javascript:void()" class="btn-social btn-social-circle btn-facebook waves-effect waves-light m-1 float-right" style="color:white;"><i class="fa fa-facebook"></i></a>
-                                                     <a href="javascript:void()" class="btn-social btn-social-circle btn-linkedin waves-effect waves-light m-1 float-right" style="color:white; background:#F14336; border-color:unset !important;"><i class="fa fa-google"></i></a>
+                                                     <!-- <a href="javascript:void()" class="btn-social btn-social-circle btn-linkedin waves-effect waves-light m-1 float-right" style="color:white; background:#F14336; border-color:unset !important;"><i class="fa fa-google"></i></a> -->
+                                                     <a href="javascript:void()" class="m-1 float-right ml-2"
+                        style="cursor: pointer;"><img src="assets/images-new/googleIcon.png" style="height: 35px;border-radius: 50%;width: 35px;""></a>
                                                 </div>
                     <div class="form-group" style="padding-left: 15%;">
                         <label for="exampleInputUsername" class="sr-only">Username</label>
@@ -87,7 +98,7 @@ text-align: center;">Welcome back! <br/> Nice to see you again!</div>
                         </div>
 
                         <div class="SignUpLink col-6">
-                             <p class="" style="color: #9C9C9C;text-decoration:underline;font-weight: bold;"> <a style="color: #9C9C9C;font-weight: bold;" href="#">Forgot Password?</a></p>
+                             <p class="mr-5" style="color: #9C9C9C;text-decoration:underline;font-weight: bold;margin-right: 3rem;"> <a style="color: #9C9C9C;font-weight: bold;" href="{{url('forgotPassword')}}">Forgot Password?</a></p>
                         </div>
                         <!--<div class="form-group col-6 text-right pr-0">-->
                         <!--    @if (Route::has('password.request'))-->
@@ -104,7 +115,7 @@ text-align: center;">Welcome back! <br/> Nice to see you again!</div>
                            <button type="submit" class="btn btn-primary btn-block New-Login">Log In</button>
                         </div>
                         <div class="SignUpLink col-md-6">
-                             <p class="text-dark mb-0" style="color:#1E1E1E; text-decoration:underline;font-weight: bold;"> <a style="color:#1E1E1E;font-weight: bold;" href="{{ url('userRegister') }}">Or Sign Up</a></p>
+                             <p class="text-dark mb-0 ml-4 signUpAnchor" style="color:#1E1E1E; text-decoration:underline;font-weight: bold;"> <a style="color:#1E1E1E;font-weight: bold;" href="{{ url('userRegister') }}">Or Sign Up</a></p>
                         </div>
                     </div>
             </form>

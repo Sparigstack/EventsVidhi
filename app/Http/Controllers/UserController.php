@@ -108,7 +108,7 @@ class UserController extends Controller
                 $orgUserIds[] = $user->id;
         }
 
-        $orgEvents = Event::where('is_live', '1')->whereIn('user_id', $orgUserIds)->orderBy('id', 'DESC')->get();
+        $orgEvents = Event::where('is_live', '1')->whereIn('user_id', $orgUserIds)->where('date_time', '>=', date('Y-m-d', strtotime(now())))->orderBy('id', 'DESC')->get();
         
         return view('eventsList', compact('orgEvents'));
     }
