@@ -89,7 +89,7 @@
                              if(Auth::user()->user_type == 1){
                                 $marginLeft = "margin-left: 20%;";
                               ?>
-                                <a href="{{ url('org/events') }}">
+                                <a href="{{ url('org/events') }}" target="_blank">
                                     <input type="button" id="" class="clickable createEventButton" value="Create an Event" style="background: #FED8C6;color:black;padding: 8px 25px;"></a>
                                 <?php } ?>
 

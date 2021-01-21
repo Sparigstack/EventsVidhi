@@ -39,7 +39,7 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        $events = Event::where('date_time', '>=', date('Y-m-d', strtotime(now())))->take(12)->orderBy('id', 'DESC')
+        $events = Event::where('date_time', '>=', date('Y-m-d', strtotime(now())))->where('is_live', '1')->where('deleted_at', '=', NULL)->take(12)->orderBy('id', 'DESC')
             ->get();
         // $events = Event::where('date_time', '>=', date('Y-m-d', strtotime(now())))->where('country_id', '4')->take(12)->orderBy('id', 'DESC')
         //     ->get();

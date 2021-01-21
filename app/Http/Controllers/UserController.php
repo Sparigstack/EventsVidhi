@@ -108,14 +108,14 @@ class UserController extends Controller
                 $orgUserIds[] = $user->id;
         }
 
-        $orgEvents = Event::where('is_live', '1')->whereIn('user_id', $orgUserIds)->where('date_time', '>=', date('Y-m-d', strtotime(now())))->orderBy('id', 'DESC')->get();
+        $orgEvents = Event::where('is_live', '1')->whereIn('user_id', $orgUserIds)->where('date_time', '>=', date('Y-m-d', strtotime(now())))->where('deleted_at', '=', NULL)->orderBy('id', 'DESC')->get();
         
         return view('eventsList', compact('orgEvents'));
     }
 
     public function orgEventsList($id)
     {
-        $orgEvents = Event::where('user_id', $id)->orderBy('id', 'DESC')->get();
+        $orgEvents = Event::where('user_id', $id)->where('is_live', '1')->where('date_time', '>=', date('Y-m-d', strtotime(now())))->where('deleted_at', '=', NULL)->orderBy('id', 'DESC')->get();
         
         return view('orgEventsList', compact('orgEvents'));
     }

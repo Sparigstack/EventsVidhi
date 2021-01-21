@@ -29,7 +29,7 @@
     </div>
 
     <div class="col-md-9 featuredContent mb-4 d-block" style="">
-    	<h4 class="mb-3"> For Organizers </h4>
+    	<h4 class="mb-3" style="color: #FD6568;font-weight:bold;"> For Organizers </h4>
 
     	<div class="mb-3">
     		<h5> How to create an event? </h5>
@@ -43,7 +43,7 @@
 
     	<hr>
 
-    	<h4 class="mb-3"> For Users </h4>
+    	<h4 class="mb-3" style="color: #FD6568;font-weight:bold;"> For Users </h4>
 
     	<div class="mb-3">
     		<h5> How to order a ticket? </h5>

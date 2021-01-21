@@ -16,7 +16,7 @@
                                 <?php
                                 if(Auth::check()){ 
                                     if(Auth::user()->user_type == 1) {?>
-                                <a href="{{ url('org/events') }}">
+                                <a href="{{ url('org/events') }}" target="_blank">
                                     <input type="button" id="" class="clickable createEventButton buttonMobileSize mt-3" value="Create your event"></a>
                                 <?php } else{ ?>
                                     <!-- <a href="{{ route('register') }}">
