@@ -20,7 +20,7 @@
 @section('content')
 <div class="container NewLogin" style="padding-top: 20px;">
 
-    <div class="col-md-12 col-lg-12 align-items-center mb-3 ml-5 backButton d-none" style="display: flex;">
+    <div class="col-md-12 col-lg-12 align-items-center ml-5 backButton d-none" style="display: flex;">
         <a class="" style="font-family: Open Sans;
 font-style: normal;
 font-weight: 300;
@@ -37,7 +37,7 @@ color: #9C9C9C;" onclick="GotoFirstStep();">
                                                         <i class="fa fa-angle-left"></i>&nbsp; Back</a>
     </div>
 
-    <div class="col-md-12 col-lg-12 align-items-center mb-3 ml-5 previousButton d-none" style="display: flex;">
+    <div class="col-md-12 col-lg-12 align-items-center ml-5 previousButton d-none" style="display: flex;">
                                                         
                                                          <a class="" style="font-family: Open Sans;
 font-style: normal;
@@ -116,7 +116,7 @@ color: #9C9C9C;" onclick="GotoPreviousStep();">
     </div>
                                                 </div>
                                                 
-                                                <div class="card-body ActualForm d-none" >
+                                                <div class="card-body ActualForm d-none pt-0" >
                                                     
             <!--<form method="POST" action="{{ route('register') }}" style="margin:0 auto; width:80%;" class="Nexthidden">-->
                 <form method="POST" action="" style="margin:0 auto; width:80%;" class="Nexthidden">
@@ -154,10 +154,10 @@ color: #9C9C9C;" onclick="GotoPreviousStep();">
                         style="cursor: pointer;"><img src="assets/images-new/googleIcon.png" style="height: 35px;border-radius: 50%;width: 35px;"></a>
                     </div>
 
-                    <div class="form-group SignUp-Four-Form" style="padding-top:20px;">
+                    <div class="form-group SignUp-Four-Form" style="padding-top:10px;">
                         <label for="exampleInputName" class="sr-only">Name</label>
                         <div class="position-relative has-icon-right">
-                            <input id="name" onchange="ChangeName(this)" type="text" class="form-control @error('name') is-invalid @enderror RegName" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus placeholder="Name">
+                            <input id="name" onchange="ChangeName(this)" type="text" class="form-control @error('name') is-invalid @enderror RegName" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus placeholder="Username">
                             <div class="form-control-position">
                                 <!--<i class="icon-user"></i>-->
                             </div>
@@ -237,6 +237,9 @@ color: #9C9C9C;" onclick="GotoPreviousStep();">
    
 
             </form>
+
+            <p class="" style="color: #9C9C9C;font-weight: bold;"> By selecting ‘Next’, I agree I have read Panelhive’s <a style="color: #9C9C9C;font-weight: bold;text-decoration:underline;" href="#">Privacy Policy</a>
+and agree with <a style="color: #9C9C9C;font-weight: bold;text-decoration:underline;" href="#">Terms of Service!</a> </p>
         </div>
          
                     <p class="{{$dnoneClass}} d-none">Sign up for free account, you can create and showcase your events, manage customer data and use upto 3 gb space for your videos and podcasts.</p>
@@ -352,6 +355,9 @@ color: #9C9C9C;" onclick="GotoPreviousStep();">
 
 </div>
 
+<p class="" style="color: #9C9C9C;font-weight: bold;"> By selecting ‘Done!’, I agree I have read Panelhive’s <a style="color: #9C9C9C;font-weight: bold;text-decoration:underline;" href="#">Privacy Policy</a>
+and agree with <a style="color: #9C9C9C;font-weight: bold;text-decoration:underline;" href="#">Terms of Service!</a> </p>
+
 
             </form>
         </div>
@@ -366,6 +372,7 @@ color: #9C9C9C;" onclick="GotoPreviousStep();">
 
     <div class="card-body ActualOrgRegisterFormNext d-none" >
             <!--<form method="POST" action="{{ route('register') }}" style="margin:0 auto; width:80%;" class="Nexthidden">-->
+            <div class="col-md-12 row">
                 <form method="POST" action="" style="margin:0 auto; width:80%;" class="NexthiddenUpdateOrgReg">
 
                     <input class="urlStringUpdateOrgReg" type="hidden" value="{{ route('register') }}">
@@ -405,7 +412,7 @@ color: #9C9C9C;" onclick="GotoPreviousStep();">
                     <div class="form-group">
                         <label for="exampleInputBusinessName" class="sr-only">Business Name</label>
                         <div class="position-relative has-icon-right">
-                            <input id="businessName" type="text" class="form-control" name="businessName" value="{{ old('businessName') }}" required autocomplete="businessName" placeholder="Username" onchange="ChangeBusinessName(this)">
+                            <input id="businessName" type="text" class="form-control" name="businessName" value="{{ old('businessName') }}" required autocomplete="businessName" placeholder="Account Name" onchange="ChangeBusinessName(this)">
                             <div class="form-control-position">
                                 <!--<i class="icon-envelope-open"></i>-->
                             </div>
@@ -472,6 +479,7 @@ color: #9C9C9C;" onclick="GotoPreviousStep();">
 </div>
 
             </form>
+        </div>
 
 
         </div>
@@ -489,6 +497,10 @@ color: #9C9C9C;" onclick="GotoPreviousStep();">
 
                                                 <div class="col-md-3 HiddenOrgImageOnclick d-none text-center">
                                                      <img src="assets/images-new/Layer 2.png" class="">
+                                                </div>
+
+                                                <div class="col-md-6 HiddenOrgImageOnclick1 d-none ">
+                                                     <img src="assets/images-new/OrgRegister.png" class="">
                                                 </div>
 
                                                 <div class="col-md-3 HiddenUserImageOnclick d-none text-center">
@@ -618,7 +630,8 @@ color: #9C9C9C;" onclick="GotoPreviousStep();">
         $(".ActualForm").addClass("d-none");
         $(".ActualOrgRegisterForm").removeClass("d-none");
         $(".HiddenImageOnclick").addClass("d-none");
-        $(".HiddenOrgImageOnclick").removeClass("d-none");
+        $(".HiddenOrgImageOnclick").addClass("d-none");
+        $(".HiddenOrgImageOnclick1").removeClass("d-none");
         $(".backButton").removeClass("d-none");
     }
 
@@ -629,6 +642,7 @@ color: #9C9C9C;" onclick="GotoPreviousStep();">
          $(".ActualOrgRegisterForm").addClass("d-none");
          $(".HiddenImageOnclick").removeClass("d-none");
          $(".HiddenOrgImageOnclick").addClass("d-none");
+         $(".HiddenOrgImageOnclick1").addClass("d-none");
          $(".HiddenUserImageOnclick").addClass("d-none");
          $(".backButton").addClass("d-none");
     }
@@ -640,7 +654,8 @@ color: #9C9C9C;" onclick="GotoPreviousStep();">
          $(".ActualOrgRegisterForm").removeClass("d-none");
          $(".ActualOrgRegisterFormNext").addClass("d-none");
          $(".backButton").removeClass("d-none");
-         $(".HiddenOrgImageOnclick").removeClass("d-none");
+         $(".HiddenOrgImageOnclick").addClass("d-none");
+         $(".HiddenOrgImageOnclick1").removeClass("d-none");
          $(".previousButton").addClass("d-none");
          // $(".HiddenImageOnclick").removeClass("d-none");
     }
@@ -728,7 +743,8 @@ color: #9C9C9C;" onclick="GotoPreviousStep();">
                                 $(".spinnerClass").addClass('d-none');
                                 $(".backButton").addClass("d-none");
                                 $(".previousButton").removeClass("d-none");
-                                $(".HiddenOrgImageOnclick").addClass("d-none");
+                                $(".HiddenOrgImageOnclick").removeClass("d-none");
+                                $(".HiddenOrgImageOnclick1").addClass("d-none");
                             },
                             error: function (err) {
                                 // console.log(err);
@@ -738,7 +754,8 @@ color: #9C9C9C;" onclick="GotoPreviousStep();">
                                 $(".spinnerClass").addClass('d-none');
                                 $(".backButton").addClass("d-none");
                                 $(".previousButton").removeClass("d-none");
-                                $(".HiddenOrgImageOnclick").addClass("d-none");
+                                $(".HiddenOrgImageOnclick").removeClass("d-none");
+                                $(".HiddenOrgImageOnclick1").addClass("d-none");
                             }
 
                         });

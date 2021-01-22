@@ -169,3 +169,7 @@ Route::get('forgotPassword', function () {
     return view('auth/passwords/forgotPassword');
 });
 
+// Route::get('plans', function () {
+//     return view('plans');
+// });
+

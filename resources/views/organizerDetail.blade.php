@@ -61,7 +61,11 @@
                     
                     <h5 class="mt-5"> {{$organizer->name}} </h5>
 
-                    <p class="mt-3"> 254 Followers </p>
+                    <div class="row pt-2 pl-2">
+                        <i style="color: #9C9C9C;" aria-hidden="true" class="fa fa-location-arrow pr-1 pt-1"></i>
+                        <p style="color: #9C9C9C;">{{$organizer->location}}</p>&nbsp;&nbsp;&nbsp;
+                        <p class="ml-3" style="color: #9C9C9C;">254 followers </p>
+                    </div>
                     <hr>
 
                     <?php if($organizer->description != ""){ ?>

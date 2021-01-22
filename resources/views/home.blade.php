@@ -203,6 +203,7 @@
                                         </div>
                                         <?php $row_count = 1;
                                         if(count($allDataResult) > 0){
+                                            $countDivAdd = 0;
                                         foreach ($allDataResult as $allData) {
                                         if($allData->videoId == NULL && $allData->podcastId == NULL) { ?>
                                         <?php
@@ -295,11 +296,13 @@
                                                 </div>
                                             </div> 
                                         </div>
-                                        <?php }  ?>
+
+                                        <?php } ?>
 
                                         <?php 
                                         // $row_count = 1;
-                                        if($allData->videoId != NULL && $allData->podcastId == NULL){ ?>
+                                        if($allData->videoId != NULL && $allData->podcastId == NULL){
+                                         ?>
                                         <div class="col-md-3 parent showHideListDiv pl-2 pr-2">
                                            
                                             <div class="card">
@@ -412,11 +415,13 @@
                                                         </div>
                                                     </div>
                                                 </div> 
+
                                                 <?php } ?>
 
                                                  <?php 
                                                  // $row_count = 1;
-                                                if ($allData->videoId == NULL && $allData->podcastId != NULL) { ?>
+                                                if ($allData->videoId == NULL && $allData->podcastId != NULL) {
+                                                 ?>
                                                 <div class="col-md-3 parent showHideListDiv pl-2 pr-2">
 
                                                     <?php 
@@ -497,7 +502,31 @@
                                                             </div>
                                                         </div>
                                                     </div> 
-                                                    <?php } } ?>
+                                                    <?php } ?>
+
+                                                    <?php
+                                            if($countDivAdd/2 == 1){ ?>
+                                                <div class="col-md-3 showHideListDiv eventListDiv parent pl-2 pr-2">
+                                                    <div class="card" style="background: linear-gradient(180deg, #FED8C6 0%, #EBC0AB 100%);">
+                                                        <div class="card-body">
+                                                            <div class="d-flex justify-content-center mt-5">
+                                                            <h4> ORGANIZER? </h4>
+                                                        </div>
+
+                                                        <div class="row pt-2 pl-2 pr-2">
+                                                            <p class="text-center" style="">We are here to help you manage your content better!</p>
+                                                        </div>
+
+                    <div class="row d-flex justify-content-center mb-5 pb-2 pt-3">
+                        <a href="{{url('information')}}">
+                        <input type="button" id="" class="clickable createEventButton buttonMobileSize mt-2" value="Learn More" style="background: #F5F3F3;color:#1E1E1E;height:40px;"></a>
+                    </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                        <?php } ?>
+
+                                                    <?php $countDivAdd++; } ?>
 
 
                                                     <div class="col-md-12 mobileSeeMoreBtn" style="justify-content: center;display: flex;">
@@ -544,6 +573,7 @@
                                         </div>
                                         <?php $row_count = 1;
                                         if(count($allDataResult) > 0){
+                                            $countDivAdd = 0;
                                         foreach ($allDataResult as $allData) {
                                         if($allData->videoId == NULL && $allData->podcastId == NULL) {
                                          ?>
@@ -638,8 +668,30 @@
 
                                                 </div>
                                             </div>
-                                        </div> 
-                                        <?php } } ?>
+                                        </div>
+
+                                        <?php
+                                            if($countDivAdd/2 == 1){ ?>
+                                                <div class="col-md-3 showHideListDiv eventListDiv parent pl-2 pr-2">
+                                                    <div class="card" style="background: linear-gradient(180deg, #FED8C6 0%, #EBC0AB 100%);">
+                                                        <div class="card-body">
+                                                            <div class="d-flex justify-content-center mt-5">
+                                                            <h4> ORGANIZER? </h4>
+                                                        </div>
+
+                                                        <div class="row pt-2 pl-2 pr-2">
+                                                            <p class="text-center" style="">We are here to help you manage your content better!</p>
+                                                        </div>
+
+                    <div class="row d-flex justify-content-center mb-5 pb-2 pt-3">
+                        <a href="{{url('information')}}">
+                        <input type="button" id="" class="clickable createEventButton buttonMobileSize mt-2" value="Learn More" style="background: #F5F3F3;color:#1E1E1E;height:40px;"></a>
+                    </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                        <?php } ?> 
+                                        <?php } $countDivAdd++; } ?>
 
 
                                         <div class="col-md-12 mobileSeeMoreBtn" style="justify-content: center;display: flex;">
@@ -688,6 +740,7 @@
                                         </div>
                                         <?php $row_count = 1;
                                         if(count($allDataResult) > 0){
+                                            $countDivAdd = 0;
                                         foreach ($allDataResult as $allData) {
                                         if($allData->videoId != NULL && $allData->podcastId == NULL){ ?>
                                         <div class="col-md-3 showHideListDiv parent pl-2 pr-2">
@@ -793,7 +846,30 @@
                                                         </div>
                                                     </div>
                                                 </div> 
-                                                <?php } } ?>
+
+                                                <?php
+                                            if($countDivAdd/2 == 1){ ?>
+                                                <div class="col-md-3 showHideListDiv eventListDiv parent pl-2 pr-2">
+                                                    <div class="card" style="background: linear-gradient(180deg, #FED8C6 0%, #EBC0AB 100%);">
+                                                        <div class="card-body">
+                                                            <div class="d-flex justify-content-center mt-5">
+                                                            <h4> ORGANIZER? </h4>
+                                                        </div>
+
+                                                        <div class="row pt-2 pl-2 pr-2">
+                                                            <p class="text-center" style="">We are here to help you manage your content better!</p>
+                                                        </div>
+
+                    <div class="row d-flex justify-content-center mb-5 pb-2 pt-3">
+                        <a href="{{url('information')}}">
+                        <input type="button" id="" class="clickable createEventButton buttonMobileSize mt-2" value="Learn More" style="background: #F5F3F3;color:#1E1E1E;height:40px;"></a>
+                    </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                        <?php } ?>
+
+                                                <?php } $countDivAdd++; } ?>
 
 
                                                 <div class="col-md-12 mobileSeeMoreBtn" style="justify-content: center;display: flex;">
@@ -846,6 +922,7 @@
                                         </div>
                                                 <?php $row_count = 1;
                                                 if(count($allDataResult) > 0){
+                                                    $countDivAdd = 0;
                                                 foreach ($allDataResult as $allData) {
                                         if($allData->videoId == NULL && $allData->podcastId != NULL) {
                                                  ?>
@@ -929,7 +1006,30 @@
                                                             </div>
                                                         </div>
                                                     </div> 
-                                                    <?php } } ?>
+
+                                                    <?php
+                                            if($countDivAdd/2 == 1){ ?>
+                                                <div class="col-md-3 showHideListDiv eventListDiv parent pl-2 pr-2">
+                                                    <div class="card" style="background: linear-gradient(180deg, #FED8C6 0%, #EBC0AB 100%);">
+                                                        <div class="card-body">
+                                                            <div class="d-flex justify-content-center mt-5">
+                                                            <h4> ORGANIZER? </h4>
+                                                        </div>
+
+                                                        <div class="row pt-2 pl-2 pr-2">
+                                                            <p class="text-center" style="">We are here to help you manage your content better!</p>
+                                                        </div>
+
+                    <div class="row d-flex justify-content-center mb-5 pb-2 pt-3">
+                        <a href="{{url('information')}}">
+                        <input type="button" id="" class="clickable createEventButton buttonMobileSize mt-2" value="Learn More" style="background: #F5F3F3;color:#1E1E1E;height:40px;"></a>
+                    </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                        <?php } ?>
+
+                                                    <?php } $countDivAdd++; } ?>
 
 
                                                     <div class="col-md-12 mobileSeeMoreBtn" style="justify-content: center;display: flex;">

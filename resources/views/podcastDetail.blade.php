@@ -21,7 +21,7 @@
 
 	<div class="featuredContent mb-4 row" style="padding: 0px 40px;">
 
-		<div class="col-md-8 col-lg-8">
+		<div class="col-md-9 col-lg-9">
 			<div class="card w-100" style="border-radius: 6px;">
                 <div class="card-body p-0">
                 	<?php
@@ -101,7 +101,7 @@
         	</div>
     	</div>
 
-    	<div class="col-md-4 col-lg-4">
+    	<div class="col-md-3 col-lg-3">
             <a href="{{url('organizer/'. $podcast->user->id)}}" target="_blank">
 			<div class="card w-100 d-flex align-items-center" style="margin-top: 15%;border-radius: 6px;">
 				<?php
@@ -114,12 +114,19 @@
                 <?php } ?>
 
                 <div class="card-body pt-3">
-                	<h6> {{$podcast->user->name}} </h6>
-                	<p class="mt-3" style="color: black;"> 134 Followers </p>
+                    <div class="d-flex justify-content-center">
+                	   <h6> {{$podcast->user->name}} </h6>
+                    </div>
+                	
+                    <div class="row pt-2">
+                        <i style="color: #9C9C9C;" aria-hidden="true" class="fa fa-location-arrow pr-1 pt-1"></i>
+                        <p style="color: #9C9C9C;">{{$podcast->user->location}}</p>&nbsp;&nbsp;&nbsp;
+                        <p class="" style="color: #9C9C9C;">134 followers </p>
+                    </div>
 
-                	<div class="followingDiv row">
+                	<div class="followingDiv row d-flex justify-content-center">
      					<a href="#">
-                		<input type="button" id="" class="clickable createEventButton buttonMobileSize mt-4" value="Following" style="background: #FED8C6;color:black;padding-left: 30px;padding-right: 30px;"></a>
+                		<input type="button" id="" class="clickable createEventButton buttonMobileSize mt-2" value="Follow" style="background: #FED8C6;color:black;height:40px;"></a>
      				</div>
 
                 </div>
