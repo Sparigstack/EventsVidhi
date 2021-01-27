@@ -312,7 +312,10 @@ class HomeController extends Controller
         $eventCategoriesResult = DB::select(DB::raw($eventCategories));
         $videosList = Video::take(4)->orderBy('id', 'DESC')->get();
         $eventFollowersList = ContentFollower::all();
-        return view('videoDetail', compact('video', 'videosList', 'eventCategoriesResult', 'eventFollowersList'));
+        $orgFollowerCount = "SELECT c.content_id FROM content_followers c INNER JOIN videos v ON c.content_id = v.user_id WHERE c.discriminator = 'o' AND v.id =". $videoid;
+        $orgFollowerCount = DB::select(DB::raw($orgFollowerCount));
+        $orgFollowerCountResult = count($orgFollowerCount);
+        return view('videoDetail', compact('video', 'videosList', 'eventCategoriesResult', 'eventFollowersList', 'orgFollowerCountResult'));
     }
 
     public function podcastDetail($podcastid)
@@ -322,7 +325,10 @@ class HomeController extends Controller
         $eventCategoriesResult = DB::select(DB::raw($eventCategories));
         $podcastsList = Podcast::take(4)->orderBy('id', 'DESC')->get();
         $eventFollowersList = ContentFollower::all();
-        return view('podcastDetail', compact('podcast', 'podcastsList', 'eventCategoriesResult', 'eventFollowersList'));
+        $orgFollowerCount = "SELECT c.content_id FROM content_followers c INNER JOIN podcasts p ON c.content_id = p.user_id WHERE c.discriminator = 'o' AND p.id =". $podcastid;
+        $orgFollowerCount = DB::select(DB::raw($orgFollowerCount));
+        $orgFollowerCountResult = count($orgFollowerCount);
+        return view('podcastDetail', compact('podcast', 'podcastsList', 'eventCategoriesResult', 'eventFollowersList', 'orgFollowerCountResult'));
     }
 
     public function organizerDetail($orgid)
@@ -337,8 +343,9 @@ class HomeController extends Controller
         $videosList = Video::where('user_id', $orgid)->get();
         $podcastsList = Podcast::where('user_id', $orgid)->get();
         $eventFollowersList = ContentFollower::all();
+        $orgFollowerCount = ContentFollower::where('content_id', $orgid)->where('discriminator', 'o')->get();
         
-        return view('organizerDetail', compact('organizer', 'eventsList', 'orgPastEventsList', 'eventFollowersList', 'orgFutureEventsList', 'videosList', 'podcastsList'));
+        return view('organizerDetail', compact('organizer', 'eventsList', 'orgPastEventsList', 'eventFollowersList', 'orgFutureEventsList', 'videosList', 'podcastsList', 'orgFollowerCount'));
     }
 
     public function saveEventFollower(Request $request){
@@ -349,6 +356,20 @@ class HomeController extends Controller
             } else {
                 $contentFollower = new ContentFollower;
                 $contentFollower->content_id = $request->eventId;
+                $contentFollower->discriminator = $request->discriminator;
+                $contentFollower->user_id = $request->userIDFollow;
+                $contentFollower->save();
+            }
+        }
+    }
+    
+    public function saveOrgFollower(Request $request){
+        if($request->userIDFollow != ''){
+            if($request->followOrgText == 'Following'){
+                $orgFollowerDelete = ContentFollower::where('user_id', $request->userIDFollow)->where('content_id', $request->orgId)->where('discriminator', $request->discriminator)->delete();
+            } else {
+                $contentFollower = new ContentFollower;
+                $contentFollower->content_id = $request->orgId;
                 $contentFollower->discriminator = $request->discriminator;
                 $contentFollower->user_id = $request->userIDFollow;
                 $contentFollower->save();

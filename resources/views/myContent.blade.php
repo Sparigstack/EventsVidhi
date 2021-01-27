@@ -17,6 +17,26 @@
        <input type="hidden" class="saveEventFollower" value="{{url('saveEventFollower')}}">
        <input type="hidden" class="loginRoute" value="{{route('login')}}">
        <input type="hidden" class="userIDFollow" value="{{$getUserID}}">
+       <input type="hidden" class="saveOrgFollower" value="{{url('saveOrgFollower')}}">
+
+
+
+    <?php if(count($organizers) > 0) { ?>
+    <div class="col-md-11 featuredContent mb-4">
+        <div class="col-md-12 row MobDisplay">
+            <div class="col-md-4 pl-0">
+               <h4> Followed Organizers &nbsp; <i class="fa fa-arrow-right" aria-hidden="true"></i> </h4>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-11 featuredContent mb-4">
+        <div class="row col-md-12 pl-0 pr-0">
+            @include('layouts.orgDetailView', ['myContent' => $organizers])
+        </div>
+    </div>
+    <?php } ?>
+
 
     <?php if(count($events) > 0) { ?>
 	<div class="col-md-11 featuredContent mb-4">

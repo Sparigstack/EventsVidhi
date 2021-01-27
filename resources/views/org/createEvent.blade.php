@@ -783,8 +783,41 @@
                         echo "active";
                     } ?>
                      tab-pane " id="tabe-15">
-                        <div class="text-center m-4"><label class="">This feature is coming soon</label></div>
+                        <?php if(count($eventRegistrantsResult) > 0){ ?>
+                                   <div class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-body row">
+                                        <div id="eventParticipants" class="col-lg-12 m-auto p-0">
+                                            <?php
+                                            foreach ($eventRegistrantsResult as $eventRegistrantsResult) {
+                                                $sdStamp = strtotime($eventRegistrantsResult->registeredOn);
+                                                $sd = date("d M, Y", $sdStamp);
+                                                $st = date('H:i A', $sdStamp);
 
+                                                $dateStr = date("d M, Y", $sdStamp) . ' ' . $st;
+                                                ?>
+                                                <div class="parent">
+                                                    <ul class="list-group parent list-group-flush TicketList mb-2 col-lg-8">
+                                                        <li class="list-group-item">
+                                                            <div class="media align-items-center">
+                                                                <div class="media-body ml-3">
+                                                                    <h6 class="mb-0">{{$eventRegistrantsResult->name}} -- {{$eventRegistrantsResult->email}}</h6>
+                                                                    <small class="small-font">{{$eventRegistrantsResult->phone}}</small>
+                                                                    <small class="small-font">Registered On: {{$dateStr}}</small>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+
+                                                </div>
+                                            <?php } ?>
+                                        </div>
+                                    </div>
+                                </div>
+                                   </div>
+                        <?php } else { ?>
+                        <div class="text-center m-4"><label class="">This feature is coming soon</label></div>
+                        <?php } ?>
                     </div>
 
                     <?php if (!empty($event) && $event->is_paid == 1) { ?>

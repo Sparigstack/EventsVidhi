@@ -87,7 +87,7 @@
                             <?php
                             $marginLeft = "margin-left: 80%;";
                              if(Auth::user()->user_type == 1){
-                                $marginLeft = "margin-left: 20%;";
+                                $marginLeft = "";
                               ?>
                                 <a href="{{ url('org/events') }}" target="_blank">
                                     <input type="button" id="" class="clickable createEventButton" value="Create an Event" style="background: #FED8C6;color:black;padding: 8px 25px;"></a>
@@ -95,9 +95,9 @@
 
                             <span class="parent marginzeromobile" style="{{$marginLeft}}">
 
-                                <ul class="navbar-nav align-items-center right-nav-link">
+                                <ul class="navbar-nav" style="flex-direction:unset !important;">
 
-                    <li class="nav-item">
+                    <li class="nav-item ml-5 pl-5">
                         <a class="nav-link dropdown-toggle dropdown-toggle-nocaret UserIconWithText pt-0 pb-0" data-toggle="dropdown" href="#">
 
                             <div>
@@ -113,7 +113,7 @@
                                <?php } ?>
                             </div>
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-right" style="">
+                        <ul class="dropdown-menu dropdown-menu-right" style="display:none;">
                             <li class="dropdown-item user-details">
                                 <a href="javaScript:void();">
                                     <div class="media">
@@ -157,6 +157,38 @@
                                         document.getElementById('logout-form').submit();"><i class="icon-power mr-2"></i> Logout</a></li>
                         </ul>
                     </li>
+                    
+                    <li class="nav-item">
+      <a class="nav-link dropdown-toggle dropdown-toggle-nocaret mt-2" data-toggle="dropdown" href="#" style="color:black;">
+       <i class="icon-menu menu-icon" style="margin-left:30px;margin-right:20px !important;"></i>
+     </a>
+                                        
+                                        <ul class="dropdown-menu dropdown-menu-right" style="">
+                            
+
+                            <?php if(Auth::user()->user_type == 1){ ?>
+                            <li class="dropdown-item"><a style="color: #000000;font-weight: bold;" href="{{url('org/events')}}">Dashboard</a></li>
+                            <li class="dropdown-divider"></li>
+                            <?php } ?>
+
+                            <li class="dropdown-item"><a style="color: #000000;font-weight: bold;" href="#">Edit Profile</a></li>
+                            <li class="dropdown-divider"></li>
+
+                            <?php if(Auth::user()->user_type != 3){ ?>
+                                <li class="dropdown-item"><a style="color: #000000;font-weight: bold;" href="{{url('myContent')}}">My Content</a></li>
+                                <li class="dropdown-divider"></li>
+                            <?php } ?>
+
+                            <li class="dropdown-item"><a style="color: #000000;font-weight: bold;" href="#">Settings</a></li>
+                            <li class="dropdown-divider"></li>
+
+                            <li class="dropdown-item"><a style="color: #000000;font-weight: bold;" href="#">Notifications</a></li>
+                            <li class="dropdown-divider"></li>
+
+                            <li class="dropdown-item"><a class style="color:inherit" href="{{ route('logout') }}" onclick="event.preventDefault();
+                                        document.getElementById('logout-form').submit();"> Logout</a></li>
+                        </ul>
+    </li>
                 </ul>
 
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

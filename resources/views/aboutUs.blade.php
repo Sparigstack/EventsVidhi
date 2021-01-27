@@ -17,7 +17,7 @@
     </div>
 
     <div class="aboutUsDiv mb-5">
-    	<div class="aboutUsCardCss" style="">
+    	<div class="aboutUsCardCss text-center" style="">
 			<div class="bannerText">
                 <p class="fontSizeCss aboutPara mb-0" style=""> We strive to bring you events and other media to help you advance your skills and stay in sync with topics of your interest. With our advanced features, we wish to provide one-stop platform for organisers to organise events and workshops and for users to enjoy the content with ease. We hope to bring you the best experience!</p>
             </div>

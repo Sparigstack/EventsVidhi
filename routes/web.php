@@ -129,6 +129,8 @@ Route::get('organizers', 'UserController@orgList');
 Route::get('events', 'UserController@eventsList');
 Route::get('orgEvents/{id}', 'UserController@orgEventsList');
 
+Route::get('saveOrgFollower', 'HomeController@saveOrgFollower');
+
 //All routes according to new UI will be here.
 Route::get('/', 'HomeController@indexPage');
 Route::get('/{tabId}/{categoryId}/page={pageCount}', 'HomeController@indexPage');
@@ -142,6 +144,7 @@ Route::get('podcasts/{podcastid}', 'HomeController@podcastDetail');
 Route::get('organizer/{orgid}', 'HomeController@organizerDetail');
 
 Route::post('saveEventFollower', 'HomeController@saveEventFollower');
+Route::post('saveOrgFollower', 'HomeController@saveOrgFollower');
 
 Route::get('myContent', 'UserController@myContent');
 

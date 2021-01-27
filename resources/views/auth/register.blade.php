@@ -172,6 +172,7 @@ color: #9C9C9C;" onclick="GotoPreviousStep();">
                         <label for="exampleInputEmailId" class="sr-only">Email ID</label>
                         <div class="position-relative has-icon-right">
                             <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" placeholder="Email">
+                            <span class="text-danger emailValidation d-none">The email has already been taken</span>
                             <div class="form-control-position">
                                 <!--<i class="icon-envelope-open"></i>-->
                             </div>
@@ -186,6 +187,7 @@ color: #9C9C9C;" onclick="GotoPreviousStep();">
                         <label for="exampleInputPassword" class="sr-only">Password</label>
                         <div class="position-relative has-icon-right">
                             <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password" placeholder="Password">
+                            <span class="text-danger passValidation d-none">Password must be atleast 8 characters</span>
                             <div class="form-control-position">
                                 <!--<i class="icon-lock"></i>-->
                             </div>
@@ -201,6 +203,7 @@ color: #9C9C9C;" onclick="GotoPreviousStep();">
                         <label for="exampleInputPassword" class="sr-only">Confirm Password</label>
                         <div class="position-relative has-icon-right">
                             <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password" placeholder="Confirm Password">
+                            <span class="text-danger confirmpassValidation d-none">Password and confirm password must be same</span>
                             <div class="form-control-position">
                                 <!--<i class="icon-lock"></i>-->
                             </div>
@@ -232,7 +235,11 @@ color: #9C9C9C;" onclick="GotoPreviousStep();">
     text-align: center;
     font-weight: bold;
     text-transform:capitalize !important;
-    align-content: center;">Next</button></div>
+    align-content: center;">Next</button>
+
+        <i class="fa fa-spinner fa-spin fr d-none spinnerNext" style="font-size:24px;margin-left: 5px;"></i>
+
+</div>
     
    
 
@@ -288,6 +295,7 @@ and agree with <a style="color: #9C9C9C;font-weight: bold;text-decoration:underl
                         <label for="exampleInputEmailId" class="sr-only">Email ID</label>
                         <div class="position-relative has-icon-right">
                             <input id="email" type="email" class="form-control @error('email') is-invalid @enderror orgEmail" name="email" value="{{ old('email') }}" required autocomplete="email" placeholder="Email">
+                            <span class="text-danger emailValidation d-none">The email has already been taken</span>
                             <div class="form-control-position">
                                 <!--<i class="icon-envelope-open"></i>-->
                             </div>
@@ -302,6 +310,7 @@ and agree with <a style="color: #9C9C9C;font-weight: bold;text-decoration:underl
                         <label for="exampleInputPassword" class="sr-only">Password</label>
                         <div class="position-relative has-icon-right">
                             <input id="password" type="password" class="form-control @error('password') is-invalid @enderror orgPass" name="password" required autocomplete="new-password" placeholder="Password">
+                            <span class="text-danger passValidation d-none">Password must be atleast 8 characters</span>
                             <div class="form-control-position">
                                 <!--<i class="icon-lock"></i>-->
                             </div>
@@ -317,6 +326,7 @@ and agree with <a style="color: #9C9C9C;font-weight: bold;text-decoration:underl
                         <label for="exampleInputPassword" class="sr-only">Confirm Password</label>
                         <div class="position-relative has-icon-right">
                             <input id="password-confirm" type="password" class="form-control orgConfirmPass" name="password_confirmation" required autocomplete="new-password" placeholder="Confirm Password">
+                            <span class="text-danger confirmpassValidation d-none">Password and confirm password must be same</span>
                             <div class="form-control-position">
                                 <!--<i class="icon-lock"></i>-->
                             </div>
@@ -495,7 +505,7 @@ and agree with <a style="color: #9C9C9C;font-weight: bold;text-decoration:underl
                                                      <img src="assets/images-new/Layer 7.png" class="">
                                                 </div>
 
-                                                <div class="col-md-3 HiddenOrgImageOnclick d-none text-center">
+                                                <div class="col-md-6 HiddenOrgImageOnclick d-none text-center">
                                                      <img src="assets/images-new/Layer 2.png" class="">
                                                 </div>
 
@@ -503,7 +513,7 @@ and agree with <a style="color: #9C9C9C;font-weight: bold;text-decoration:underl
                                                      <img src="assets/images-new/OrgRegister.png" class="">
                                                 </div>
 
-                                                <div class="col-md-3 HiddenUserImageOnclick d-none text-center">
+                                                <div class="col-md-6 HiddenUserImageOnclick d-none text-center">
                                                      <img src="assets/images-new/userRegister.png" class="">
                                                 </div>
         </div>
@@ -519,10 +529,10 @@ and agree with <a style="color: #9C9C9C;font-weight: bold;text-decoration:underl
     align-items: center;
     justify-content: center;
     margin-top:25px;
-    text-align: left;
+    /*text-align: left;*/
     font-weight: 500;
     ">
-                        <p class="ml-3"> To add your first event, you simply need to verify your email address with us. Please click verification link that we have sent you at your email address. </p>
+                        <p class="ml-2"> Please click verification link that we have sent you at your email address to get started. </p>
 
 </div>
 
@@ -548,7 +558,7 @@ and agree with <a style="color: #9C9C9C;font-weight: bold;text-decoration:underl
     align-content: center;" onclick="redirecttohomepage();">Let's Start!</button></div>
                 </div>
                 
-                <div class="col-md-6 ">
+                <div class="col-md-6 text-center">
                     <img src="assets/images-new/OBJECTS.png" class="">
                 </div>
             </div>
@@ -563,10 +573,10 @@ and agree with <a style="color: #9C9C9C;font-weight: bold;text-decoration:underl
     align-items: center;
     justify-content: center;
     margin-top:25px;
-    text-align: left;
+    /*text-align: left;*/
     font-weight: 500;
     ">
-                        <p class="ml-3"> To add your first event, you simply need to verify your email address with us. Please click verification link that we have sent you at your email address. </p>
+                        <p class="ml-2">To add your first event, you simply need to verify your email address with us. Please click verification link that we have sent you at your email address. </p>
 
 </div>
 
@@ -592,7 +602,7 @@ and agree with <a style="color: #9C9C9C;font-weight: bold;text-decoration:underl
     align-content: center;" onclick="redirecttoorgprofilepage();">Let's Start!</button></div>
                 </div>
                 
-                <div class="col-md-6 ">
+                <div class="col-md-6 text-center">
                     <img src="assets/images-new/OBJECTS.png" class="">
                 </div>
             </div>
@@ -665,11 +675,15 @@ and agree with <a style="color: #9C9C9C;font-weight: bold;text-decoration:underl
                 alert('Please fill all fields');
                 // return;
             } else{
+                $(".passValidation").addClass('d-none');
+                $(".confirmpassValidation").addClass('d-none');
                 if($('#password').val().length < 8) {
-                    alert('Password must be atleast 8 characters');
+                    //alert('Password must be atleast 8 characters');
+                    $(".passValidation").removeClass('d-none');
                     return false;
                 } else if($('#password-confirm').val()!=$('#password').val()){
-                    alert('Password and confirm password must be same');
+                    //alert('Password and confirm password must be same');
+                    $(".confirmpassValidation").removeClass('d-none');
                     return false;
                 } else {
                     $('.Nexthidden').on('submit', function (e) {
@@ -678,6 +692,7 @@ and agree with <a style="color: #9C9C9C;font-weight: bold;text-decoration:underl
                         var formData = new FormData(this);
                         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr("content");
                         var urlStringUserReg = $(".urlStringUserReg").val();
+                        $(".spinnerNext").removeClass('d-none');
                         $.ajax({
                             url: urlStringUserReg,
                             method: "POST",
@@ -687,18 +702,34 @@ and agree with <a style="color: #9C9C9C;font-weight: bold;text-decoration:underl
                             cache: false,
                             processData: false,
                             success: function (response) {
-                                // console.log(response);
+                                //console.log(response);
+                                $(".spinnerNext").addClass('d-none');
+                                if(response.statusText == "Unprocessable Entity"){
+                                     //alert('The email has already been taken');
+                                     $(".emailValidation").removeClass("d-none");
+                                     return false;
+                                } else {
+                                    $(".emailValidation").addClass("d-none");
                                 $(".NextHide").addClass("d-none");
                                 $(".LetsStart-Section").removeClass("d-none");
                                 $(".backButton").addClass("d-none");
                                 $(".HiddenUserImageOnclick").addClass("d-none");
+                                }
                             },
                             error: function (err) {
-                                // console.log(err);
+                                //console.log(err);
+                                $(".spinnerNext").addClass('d-none');
+                                if(err.statusText == "Unprocessable Entity"){
+                                    //alert('The email has already been taken');
+                                    $(".emailValidation").removeClass("d-none");
+                                    return false;
+                                } else {
+                                    $(".emailValidation").addClass("d-none");
                                 $(".NextHide").addClass("d-none");
                                 $(".LetsStart-Section").removeClass("d-none");
                                 $(".backButton").addClass("d-none");
                                 $(".HiddenUserImageOnclick").addClass("d-none");
+                                 }
                             }
 
                         });
@@ -712,11 +743,15 @@ and agree with <a style="color: #9C9C9C;font-weight: bold;text-decoration:underl
                 alert('Please fill all fields');
                 // return;
             } else{
+                $(".passValidation").addClass('d-none');
+                $(".confirmpassValidation").addClass('d-none');
                 if($('.orgPass').val().length < 8) {
-                    alert('Password must be atleast 8 characters');
+                    //alert('Password must be atleast 8 characters');
+                    $(".passValidation").removeClass('d-none');
                     return false;
                 } else if($('.orgConfirmPass').val()!=$('.orgPass').val()){
-                    alert('Password and confirm password must be same');
+                    //alert('Password and confirm password must be same');
+                    $(".confirmpassValidation").removeClass('d-none');
                     return false;
                 } else {
                     $('.NexthiddenOrgReg').on('submit', function (e) {
@@ -736,26 +771,42 @@ and agree with <a style="color: #9C9C9C;font-weight: bold;text-decoration:underl
                             cache: false,
                             processData: false,
                             success: function (response) {
-                                // console.log(response);
+                                 //console.log(response);
+                                 $(".spinnerClass").addClass('d-none');
+                                if(response.statusText == "Unprocessable Entity"){
+                                     //alert('The email has already been taken');
+                                     $(".emailValidation").removeClass("d-none");
+                                     return false;
+                                } else {
+                                    $(".emailValidation").addClass("d-none");
                                 $(".ActualOrgRegisterFormNext").removeClass("d-none");
                                 $(".ActualOrgRegisterForm").addClass("d-none");
                                 $(".newOrgId").val(response);
-                                $(".spinnerClass").addClass('d-none');
+                                //$(".spinnerClass").addClass('d-none');
                                 $(".backButton").addClass("d-none");
                                 $(".previousButton").removeClass("d-none");
                                 $(".HiddenOrgImageOnclick").removeClass("d-none");
                                 $(".HiddenOrgImageOnclick1").addClass("d-none");
+                                }
                             },
                             error: function (err) {
-                                // console.log(err);
+                                 //console.log(err);
+                                 $(".spinnerClass").addClass('d-none');
+                                if(err.statusText == "Unprocessable Entity"){
+                                     //alert('The email has already been taken');
+                                     $(".emailValidation").removeClass("d-none");
+                                     return false;
+                                } else {
+                                $(".emailValidation").addClass("d-none");
                                 $(".ActualOrgRegisterFormNext").removeClass("d-none");
                                 $(".ActualOrgRegisterForm").addClass("d-none");
                                 $(".newOrgId").val(err);
-                                $(".spinnerClass").addClass('d-none');
+                                //$(".spinnerClass").addClass('d-none');
                                 $(".backButton").addClass("d-none");
                                 $(".previousButton").removeClass("d-none");
                                 $(".HiddenOrgImageOnclick").removeClass("d-none");
                                 $(".HiddenOrgImageOnclick1").addClass("d-none");
+                                }
                             }
 
                         });
@@ -794,6 +845,7 @@ and agree with <a style="color: #9C9C9C;font-weight: bold;text-decoration:underl
                                 $(".spinnerClassNext").addClass('d-none');
                                 $(".previousButton").addClass("d-none");
                                 $(".backButton").addClass("d-none");
+                                $(".HiddenOrgImageOnclick").addClass("d-none");
                             },
                             error: function (err) {
                                 // console.log(err);
@@ -802,6 +854,7 @@ and agree with <a style="color: #9C9C9C;font-weight: bold;text-decoration:underl
                                 $(".spinnerClassNext").addClass('d-none');
                                 $(".previousButton").addClass("d-none");
                                 $(".backButton").addClass("d-none");
+                                $(".HiddenOrgImageOnclick").addClass("d-none");
                             }
 
                         });

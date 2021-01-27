@@ -1062,7 +1062,7 @@
                                             <div class="col-md-6">
                                                 <h3 class="communityHeader"> <a style="color:#FD6568;"> JOIN </a> OUR <br> COMMUNITY! </h3> <br>
                                                 <p class="communityText"> As an Organiser, you can list your events, manage them, showcase videos and podcasts of previous events.</p>
-                                                <a href="#">
+                                                <a href="{{url('information')}}">
                                                     <input type="button" id="" class="clickable createEventButton mt-3" value="Learn More" style="margin-left:18%;"></a>
                                                 </div>
 

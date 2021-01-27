@@ -56,6 +56,7 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
+            'email' => 'unique:users',
             // 'name' => ['required', 'string', 'max:255'],
             // 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             // 'password' => ['required', 'string', 'min:8', 'confirmed'],
@@ -70,7 +71,15 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        if($data['checkUrl'] == "1"){
+        $validator = Validator::make($data, [
+        'email' => 'unique:users',
+        ]);
+
+        if ($validator->fails()) {
+            $errors = "Email ID already Exists";
+            return $errors;
+        } else {
+                if($data['checkUrl'] == "1"){
             return User::create([
                 'name' => $data['name'],
                 'email' => $data['email'],
@@ -101,6 +110,7 @@ class RegisterController extends Controller
                 // return $lastID->id;
             }
 
+        }
         }
     }
 }

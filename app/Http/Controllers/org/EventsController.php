@@ -18,6 +18,7 @@ use App\Podcast;
 use App\Speaker;
 use App\Ticket;
 use App\ContentFollower;
+use App\EventRegistrant;
 use DateTime;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\UploadedFile;
@@ -457,7 +458,12 @@ class EventsController extends Controller
         $videos = Video::where('event_id', $event->id)->orderBy('id', 'DESC')->get();
         $tickets = Ticket::where('event_id', $event->id)->orderBy('id', 'DESC')->get();
         $podcasts = Podcast::where('event_id', $event->id)->orderBy('id', 'DESC')->get();
-        return view('org/createEvent', compact('categories', 'cities', 'event', 'cityTimeZones', 'eventTypes', 'IsNew', 'countries', 'states', 'tabe', 'videos', 'podcasts', 'speakers', 'tickets'));
+        
+//        $eventRegistrants = EventRegistrant::where('event_id', $event->id)->get();
+        $eventRegistrants = "SELECT u.name,u.email,u.phone,er.created_at AS registeredOn FROM users u JOIN event_registrant er ON u.id = er.contact_id WHERE
+                er.event_id=". $event->id;
+        $eventRegistrantsResult = DB::select(DB::raw($eventRegistrants));
+        return view('org/createEvent', compact('categories', 'cities', 'event', 'cityTimeZones', 'eventTypes', 'IsNew', 'countries', 'states', 'tabe', 'videos', 'podcasts', 'speakers', 'tickets', 'eventRegistrantsResult'));
     }
 
     /**

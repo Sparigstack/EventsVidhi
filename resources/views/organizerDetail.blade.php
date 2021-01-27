@@ -24,6 +24,7 @@
                             <input type="hidden" class="saveEventFollower" value="{{url('saveEventFollower')}}">
                             <input type="hidden" class="loginRoute" value="{{route('login')}}">
                             <input type="hidden" class="userIDFollow" value="{{$getUserID}}">
+                            <input type="hidden" class="saveOrgFollower" value="{{url('saveOrgFollower')}}">
 
 	<div class="col-md-12 col-lg-12 d-flex align-items-center mb-3">
 		<a href="{{url('/')}}" style="color: #9C9C9C;font-weight: 100;" class="ml-4"><i class="fa fa-angle-left"></i>&nbsp; Back</a>
@@ -51,9 +52,28 @@
                                 <img class="align-self-start profileImg" src="{{$profileLogo}}" alt="user avatar" style="width: 200px !important;height:200px !important;">
                              <?php } ?>
                           </div>
+                                    
+                                    <?php
+                    $checkFollow = "Follow";
+                    $hideFollow = "";
+                    $tickIcon = "d-none";
+                    $backcolor = "background: #fed8c680;";
+                    if (Auth::check()) {
+                        if (Auth::user()->id == $organizer->id) {
+                            $hideFollow = "d-none";
+                        }
+                        foreach ($eventFollowersList as $eventFollowerList) {
+                            if (Auth::user()->id == $eventFollowerList->user_id && $organizer->id == $eventFollowerList->content_id && $eventFollowerList->discriminator == "o") {
+                                $checkFollow = "Following";
+                                $tickIcon = "";
+                                $backcolor = "background: #FED8C6;";
+                            }
+                        }
+                    }
+                    ?>
 
-                          <div class="col-md-3" style="margin-top: 22%;">
-                          		<a href="#"><input type="button" id="" class="clickable createEventButton buttonMobileSize" value="Following"></a>
+                          <div class="col-md-3 {{$hideFollow}}" style="margin-top: 22%;">
+                          		<a style="cursor: pointer;" onclick="followOrganizer(this);" data-org-id="{{$organizer->id}}" discriminator="o"><button type="button" id="followOrg" class="clickable createEventButton buttonMobileSize mt-2 row" value="{{$checkFollow}}" style="{{$backcolor}}color:black;height:40px;display: block;"><i aria-hidden="true" class="fa fa-check-square-o mr-2 followIcon {{$tickIcon}}" style="font-size: 17px;"></i>{{$checkFollow}}</button></a>
                           </div>
 
                     </div>
@@ -64,7 +84,7 @@
                     <div class="row pt-2 pl-2">
                         <i style="color: #9C9C9C;" aria-hidden="true" class="fa fa-location-arrow pr-1 pt-1"></i>
                         <p style="color: #9C9C9C;">{{$organizer->location}}</p>&nbsp;&nbsp;&nbsp;
-                        <p class="ml-3" style="color: #9C9C9C;">254 followers </p>
+                        <p class="ml-3" style="color: #9C9C9C;">{{count($orgFollowerCount)}} followers </p>
                     </div>
                     <hr>
 
@@ -352,13 +372,7 @@
      		<i aria-hidden="true" class="fa fa-globe"></i>
      		<i aria-hidden="true" class="fa fa-linkedin"></i> -->
 
-     		<h5 class="mt-4"> Share </h5>
-
-     		<div class="col-md-12 col-lg-12 row">
-     			<a href="javascript:void()" class="btn-social btn-social-circle waves-effect waves-light m-1 float-right" style="background-color:white;"><i aria-hidden="true" class="fa fa-link" style="color: #9C9C9C;"></i></a>
-     			<a href="javascript:void()" class="btn-social btn-social-circle btn-linkedin waves-effect waves-light m-1 float-right" style="color:white;"><i class="fa fa-linkedin"></i></a>
-     			<a href="javascript:void()" class="btn-social btn-social-circle btn-facebook waves-effect waves-light m-1 float-right" style="color:white;"><i class="fa fa-facebook"></i></a>
-     		</div>
+     		@include('layouts.appShare')
 
 
      		<?php if(count($orgPastEventsList) > 0) { ?>

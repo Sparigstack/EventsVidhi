@@ -83,7 +83,6 @@ function followEvent(eventid){
         data: {_token : CSRF_TOKEN,discriminator:discriminator,eventId:eventId,userIDFollow:userIDFollow,fillHeartValue:fillHeartValue},
         success: function (response) {
             console.log(response);
-            // if(userIDFollow != '') {
                 if(userIDFollow == '') {
                 alert('You need to log in/sign up first to follow');
                 window.location.href = loginRoute;
@@ -97,8 +96,6 @@ function followEvent(eventid){
                     $(likeButtonSpan).find(".fillHeart").removeClass('d-none');
                     $(likeButtonSpan).find(".fillHeart").attr('value', '1');
                 }
-                // $(likeButtonSpan).find(".emptyHeart").addClass('d-none');
-                // $(likeButtonSpan).find(".fillHeart").removeClass('d-none');
             }
         },
         error: function (err) {
@@ -168,4 +165,85 @@ function searchTitle(){
         //        alert(url);
         window.location.replace(url);
 
+}
+
+function followOrganizer(orgid){
+    var orgId = $(orgid).attr("data-org-id");
+    var discriminator = $(orgid).attr("discriminator");
+    var saveOrgFollower = $('.saveOrgFollower').val();
+    var userIDFollow = $('.userIDFollow').val();
+    var loginRoute = $('.loginRoute').val();
+    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr("content");
+    var followOrgText = $(orgid).find('#followOrg').text();
+
+    $.ajax({
+        url: saveOrgFollower,
+        method: "POST",
+        data: {_token : CSRF_TOKEN,discriminator:discriminator,orgId:orgId,userIDFollow:userIDFollow,followOrgText:followOrgText},
+        success: function (response) {
+            console.log(response);
+            if (userIDFollow == '') {
+                alert('You need to log in/sign up first to follow');
+                window.location.href = loginRoute;
+            } else {
+                if (followOrgText == 'Follow') {
+                    //$("#followOrg").val('Following');
+                    $('#followOrg').css("background","#FED8C6");
+                    $("#followOrg").html('<i aria-hidden="true" class="fa fa-check-square-o mr-2 followIcon" style="font-size: 17px;"></i>Following');
+                    $(".followIcon").removeClass("d-none");
+                } else {
+                    //$("#followOrg").val('Follow');
+                    $('#followOrg').css("background","#fed8c680");
+                    $("#followOrg").html('Follow');
+                    $(".followIcon").addClass("d-none");
+                }
+            }
+        },
+        error: function (err) {
+            console.log(err);
+        }
+
+    });
+}
+
+function shareLink(){
+    var $temp = $("<input>");
+    var url = window.location.href;
+    $("body").append($temp);
+    $temp.val(url).select();
+    document.execCommand('copy');
+    if (url.indexOf("events") >= 0){
+        $(".copied").text("Events Copied to clipboard").show();
+    }
+    if (url.indexOf("videos") >= 0){
+        $(".copied").text("Videos Copied to clipboard").show();
+    }
+    if (url.indexOf("podcasts") >= 0){
+        $(".copied").text("Podcasts Copied to clipboard").show();
+    }
+    if (url.indexOf("organizer") >= 0){
+        $(".copied").text("Organizers Copied to clipboard").show();
+    }
+    $temp.remove();
+}
+
+function fbs_click() {
+    u=window.location.href;
+    t=document.title;
+    window.open('http://www.facebook.com/sharer.php?u='+encodeURIComponent(u)+'&t='+encodeURIComponent(t),'sharer','toolbar=0,status=0,width=626,height=436');
+    return false;
+}
+
+function moreCommentShowHide(){
+    var comment = $(".morecmtbtn").val();
+    if(comment == "More Comments"){
+        $(".morecmtbtn").attr("value","Less Comments");
+        $(".commentSection").removeClass("d-none");
+        $(".show_hide").text("Show More");
+        $('.fullContent').addClass('d-none');
+        $('.shortContent').removeClass('d-none');
+    } else {
+        $(".morecmtbtn").attr("value","More Comments");
+        $(".commentSection").addClass("d-none");
+    }
 }

@@ -844,6 +844,7 @@ function ValidateEventForm(element) {
     }
 
 }
+
 function ChangeCustomUrl(element) {
     var currentText = $(element).val();
     var actualUrl = $('#HumanFriendlyUrl').attr('data');
