@@ -816,7 +816,7 @@
                                 </div>
                                    </div>
                         <?php } else { ?>
-                        <div class="text-center m-4"><label class="">This feature is coming soon</label></div>
+                        <div class="text-center m-4"><label class="">There are no participants</label></div>
                         <?php } ?>
                     </div>
 

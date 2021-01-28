@@ -65,6 +65,7 @@ class EventsController extends Controller
      */
     public function create()
     {
+        $user = Auth::id();
         $IsNew = true;
         $categories = Category::all();
         $cities = City::all();
@@ -73,7 +74,8 @@ class EventsController extends Controller
         $cityTimeZones = Timezone::all();
         $eventTypes = EventType::all();
         $tabe = 0;
-        return view('org/createEvent', compact('categories', 'cities', 'cityTimeZones', 'eventTypes', 'IsNew', 'countries', 'tabe'));
+        $eventRegistrantsResult = EventRegistrant::where('contact_id', $user)->get();
+        return view('org/createEvent', compact('categories', 'cities', 'cityTimeZones', 'eventTypes', 'IsNew', 'countries', 'tabe', 'eventRegistrantsResult'));
     }
 
     /**
@@ -1083,6 +1085,16 @@ class EventsController extends Controller
         $event = Event::findOrFail($id);
         $tickets = Ticket::where('event_id', $event->id)->orderBy('id', 'DESC')->get();
         return view('org/eventPreview', compact('event', 'tickets'));
+    }
+
+    public function updateIsFeaturedEvent(Request $request){
+        $event = Event::findOrFail($request->eventId);
+        if($request->isFeatureCheck == "0"){
+            $event->is_featured = "1";
+        } else {
+            $event->is_featured = "0";
+        }
+        $event->save();
     }
 
 }

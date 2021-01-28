@@ -128,6 +128,7 @@ Route::post('userProfile/update', 'UserController@update');
 Route::get('organizers', 'UserController@orgList');
 Route::get('events', 'UserController@eventsList');
 Route::get('orgEvents/{id}', 'UserController@orgEventsList');
+Route::post('updateIsFeaturedEvent', 'org\EventsController@updateIsFeaturedEvent');
 
 Route::get('saveOrgFollower', 'HomeController@saveOrgFollower');
 

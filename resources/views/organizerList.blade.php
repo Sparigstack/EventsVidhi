@@ -23,14 +23,16 @@
                                     <tr>
                                         <th width="35%">Organizer Name</th>
                                         <th>Organizer Email</th>
+                                        <th>Organizer Location</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php foreach ($organizers as $organizer) {
                                         ?>
                                     <tr class="parent">
-                                        <td width="35%"> <a href="{{ url("orgEvents/$organizer->id") }}" style="color:inherit;"> <u> {{$organizer->name}} </u> </a> </td> 
+                                        <td width="35%"> <a href="{{ url("orgEvents/$organizer->id") }}" style="color:inherit;" target="_blank"> <u> {{$organizer->name}} </u> </a> </td> 
                                         <td> {{$organizer->email}} </td>
+                                        <td> {{$organizer->location}} </td>
                                     </tr>
                                 <?php } ?>
                             </tbody>

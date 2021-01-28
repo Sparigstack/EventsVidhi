@@ -5,6 +5,7 @@
 <link href="{{ asset('assets/plugins/bootstrap-datatable/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
 @endsection
 @section('content')
+<?php $v = "1.0.1"; ?>
 <div class="container-fluid">
     <div class="Data-Table">
 
@@ -18,33 +19,23 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive" id="default-datatable_wrapper">
+                            <input class="csrf-token" type="hidden" value="{{ csrf_token() }}">
                             <!-- <table id="default-datatable" class="table table-bordered"> -->
                             <table id="default-datatable" class="table" style="border-collapse: collapse !important;">
                                 <thead style="background-color: #6c757d29;">
                                     <tr>
                                         <th>Event Title</th>
-                                        <th>Event Status</th>
-                                        <th>Event Date & Time</th>
+                                        <th style="width:100px;">Event Date & Time</th>
+                                        <th style="width:100px;">Event Location</th>
+                                        <th>Featured</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php foreach ($orgEvents as $orgEvent) { ?>
                                     <tr class="parent">
                                     <?php
-                                    $eventStatus = "";
-                                    if ($orgEvent->is_live == 0) {
-                                        $eventStatus = "Draft";
-                                    } else if ($orgEvent->is_live == 1){
-                                        $eventStatus = "Live";
-                                    } else if ($orgEvent->is_live == 2){
-                                        $eventStatus = "Paused";
-                                    } else {
-                                        $eventStatus = "Cancelled";
-                                    }
-                                    ?>
-
-                                    <?php
                                     $dateStr = "";
+                                    $splitString = "";
 
                                     $sdStamp = strtotime($orgEvent->date_time);
                                     $sd = date("d M, Y", $sdStamp);
@@ -54,14 +45,33 @@
                                     $ed = date("d M, Y", $edStamp);
                                     $et = date('H:i A', $edStamp);
                                     if ($sd == $ed) {
-                                        $dateStr = date("d M, Y", $sdStamp) . ' ' . $st . ' to ' . $et;
+                                        $dateStr = date("d M, Y", $sdStamp) . ' ' . $st.' to ';
+                                        $splitString = $et;
                                     } else {
-                                        $dateStr = date("d M, Y", $sdStamp) . ' ' . $st . ' to ' . date("d M, Y", $edStamp) . ' ' . $et;
+                                        $dateStr = date("d M, Y", $sdStamp) . ' ' . $st.' to ';
+                                        $splitString = date("d M, Y", $edStamp) . ' ' . $et;
                                     }
                                     ?>
-                                    <td>{{$orgEvent->title}}</td>
-                                    <td>{{$eventStatus}}</td>
-                                    <td>{{$dateStr}}</td>
+                                    <td class="hoverEventTitle">{{$orgEvent->title}}</td>
+                                    <td style="width:100px;">{{$dateStr}}<br>{{$splitString}}</td>
+                                    <td style="width:100px;">
+                                        @if($orgEvent->is_online == '1')
+                                            Online
+                                        @else
+                                            {{$orgEvent->city}}, {{$orgEvent->country->name}}
+                                        @endif
+                                    </td>
+                                    <input type="hidden" class="updateIsFeatured" value="{{url('updateIsFeaturedEvent')}}">
+                                    <?php 
+                                        $checked = "";
+                                        $eventFeatureTrue = "0";
+                                        if($orgEvent->is_featured == 1) {
+                                            $checked = "checked";
+                                            $eventFeatureTrue = "1";
+                                        }
+                                    ?>
+
+                                    <td class="ml-5 pl-5"><input type="checkbox" class="isFeature" {{$checked}} data-id="{{$orgEvent->id}}" onclick="updateIsFeatured(this);" data-event="{{$eventFeatureTrue}}"></td>
                                 </tr>
                                 <?php } ?>
                             </tbody>
@@ -87,7 +97,7 @@
 @endsection
 
 @section('script')
-<!-- <script src="{{asset('/js/Events.js')}}" type="text/javascript"></script> -->
+<script src="{{asset('/js/customScript.js?v='.$v)}}" type="text/javascript"></script>
 <!-- Data Tables -->
 <script src="{{ asset('assets/plugins/bootstrap-datatable/js/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('assets/plugins/bootstrap-datatable/js/dataTables.bootstrap4.min.js') }}"></script>
