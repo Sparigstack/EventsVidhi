@@ -325,3 +325,29 @@ cursor: pointer;
     max-width: none !important;
     white-space: break-spaces !important;
 }
+.createEventButton{
+    height: 45px;
+    border: none;
+    background: #FD6568;
+    color: #FFF;
+    font-size: 17px;
+    padding: 8px 38px;
+    font-weight: 600;
+    border-radius: 25px;
+    font-family: inherit;
+}
+.plansCard{
+    border: 1px solid #BBBBBB !important;
+    border-radius: 6px !important;
+    padding: 20px 10px;
+    background: #F8F8F8 !important;
+}
+.mxwidthorg-30{
+    max-width: 30% !important;
+}
+.plansOuterImg{
+    left: 60%;
+    margin-left: -25vw;
+    margin-right: -25vw;
+    position: relative;
+}

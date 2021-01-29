@@ -100,7 +100,7 @@ class UserController extends Controller
         return view('organizerList', compact('organizers'));
     }
 
-    public function eventsList()
+    public function orgEventsList($orgId = NULL)
     {
         $users = User::where('user_type', '1')->get();
         $orgUserIds = [];
@@ -108,17 +108,14 @@ class UserController extends Controller
                 $orgUserIds[] = $user->id;
         }
 
-        $orgEvents = Event::where('is_live', '1')->whereIn('user_id', $orgUserIds)->where('date_time', '>=', date('Y-m-d', strtotime(now())))->where('deleted_at', '=', NULL)->orderBy('id', 'DESC')->get();
+        if($orgId == NULL){
+            $orgEvents = Event::where('is_live', '1')->whereIn('user_id', $orgUserIds)->where('date_time', '>=', date('Y-m-d', strtotime(now())))->where('deleted_at', '=', NULL)->orderBy('id', 'DESC')->get();
+        } else {
+            $orgEvents = Event::where('is_live', '1')->where('user_id', $orgId)->where('date_time', '>=', date('Y-m-d', strtotime(now())))->where('deleted_at', '=', NULL)->orderBy('id', 'DESC')->get();
+        }
 
         
-        return view('eventsList', compact('orgEvents', 'users'));
-    }
-
-    public function orgEventsList($id)
-    {
-        $orgEvents = Event::where('user_id', $id)->where('is_live', '1')->where('date_time', '>=', date('Y-m-d', strtotime(now())))->where('deleted_at', '=', NULL)->orderBy('id', 'DESC')->get();
-        
-        return view('orgEventsList', compact('orgEvents'));
+        return view('eventsList', compact('orgEvents', 'users', 'orgId'));
     }
 
     public function myContent(){

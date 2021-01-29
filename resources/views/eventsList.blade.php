@@ -11,7 +11,7 @@
 
         <div class="row">
             <div class="col-lg-12">
-
+                <input type="hidden" class="filterUrl" value="{{url('orgEvents')}}">
                 <div class="card">
                     <div class="card-header addNewEventButton">
                         <i class="fa fa-table pt-3"></i> List of Events
@@ -20,6 +20,7 @@
                     <div class="card-body">
                         <div class="table-responsive" id="default-datatable_wrapper">
                             <input class="csrf-token" type="hidden" value="{{ csrf_token() }}">
+                            <input type="hidden" class="filterByOrgEvents" value="{{url('filterByOrgEvents')}}">
                             <!-- <table id="default-datatable" class="table table-bordered"> -->
                             <table id="default-datatable" class="table parent" style="border-collapse: collapse !important;">
                                 <thead style="background-color: #6c757d29;">
@@ -114,6 +115,8 @@
             }
         ],
         });
+
+        $("#default-datatable_length").append('<?php $selected = ""; ?><label class="ml-4">Filter By Organizer <select name="organizer" style="width:160px!important;" class="form-control form-control-sm" onchange="filterByOrgEvents(this);"><option value="">Select Organizer</option>@foreach($users as $user)<?php if($orgId == $user->id){$selected = "selected";}else{$selected = "";} ?><option {{$selected}} value="<?php echo $user->id; ?>"><?php echo $user->name; ?></option>@endforeach</select></label>');
     });
 </script>
 @endsection

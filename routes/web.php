@@ -124,10 +124,16 @@ Route::get('userProfile', function () {
 Route::get('userProfile/{id}','UserController@index');
 Route::post('userProfile/update', 'UserController@update');
 
+Route::get('org/pricingPlans', function () {
+    return view('org/pricingPlans');
+});
+
 //All routes for Admin Panel will be here.
 Route::get('organizers', 'UserController@orgList');
-Route::get('events', 'UserController@eventsList');
+
+Route::get('orgEvents', 'UserController@orgEventsList');
 Route::get('orgEvents/{id}', 'UserController@orgEventsList');
+
 Route::post('updateIsFeaturedEvent', 'org\EventsController@updateIsFeaturedEvent');
 
 Route::get('saveOrgFollower', 'HomeController@saveOrgFollower');
@@ -173,7 +179,11 @@ Route::get('forgotPassword', function () {
     return view('auth/passwords/forgotPassword');
 });
 
-// Route::get('plans', function () {
-//     return view('plans');
-// });
+Route::get('pricingPlans', function () {
+    return view('pricingPlans');
+});
+
+Route::get('contactUs', function () {
+    return view('contactUs');
+});
 

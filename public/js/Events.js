@@ -40,10 +40,20 @@ $(document).ready(function () {
             cache: false,
             processData: false,
             beforeSend: function () {
-                $('#SaveVideoAjax').find('.progressBar').removeClass('d-none');
-                var percentVal = '0%';
-                bar.width(percentVal);
-                percent.html(percentVal);
+                $(".spaceFullError").addClass("d-none");
+                var availableStorage=$(".AvailableStorageValue").val();
+                // $(".AvailableStorageValue").val();
+                if(availableStorage == "3.000" && $('#SaveVideoAjax').find("#input_url").val() == ""){
+                    // alert("Please Upgrade Your Plan");
+                    // window.location.href = $('.plansPageRedirect').val();
+                    $(".spaceFullError").removeClass("d-none");
+                    clearInterval(auto_refresh);
+                } else { 
+                    $('#SaveVideoAjax').find('.progressBar').removeClass('d-none');
+                    var percentVal = '0%';
+                    bar.width(percentVal);
+                    percent.html(percentVal);
+                }
             },
             success: function (response) {
                 // console.log(response);
@@ -110,10 +120,20 @@ $(document).ready(function () {
             cache: false,
             processData: false,
             beforeSend: function () {
-                $('#SavePodCastAjax').find('.podcastProgressBar').removeClass('d-none');
-                var percentVal = '0%';
-                bar.width(percentVal);
-                percent.html(percentVal);
+                $(".spaceFullError").addClass("d-none");
+                var availableStorage=$(".AvailableStorageValue").val();
+                // $(".AvailableStorageValue").val();
+                if(availableStorage == "3.000" && $('#SavePodCastAjax').find("#input_url").val() == ""){
+                    // alert("Please Upgrade Your Plan");
+                    // window.location.href = $('.plansPageRedirect').val();
+                    $(".spaceFullError").removeClass("d-none");
+                    clearInterval(auto_refresh);
+                } else { 
+                    $('#SavePodCastAjax').find('.podcastProgressBar').removeClass('d-none');
+                    var percentVal = '0%';
+                    bar.width(percentVal);
+                    percent.html(percentVal);
+                }
             },
             success: function (response) {
                 if (response.error != '') {

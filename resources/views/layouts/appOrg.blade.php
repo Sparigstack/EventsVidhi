@@ -192,7 +192,7 @@
                             </li>
 
                             <li>
-                                <a href="{{url('events')}}" class="waves-effect">
+                                <a href="{{url('orgEvents')}}" class="waves-effect">
                                 <i class="zmdi zmdi-view-dashboard"></i>
                                 <span>Events</span>
                                 </a>
@@ -222,15 +222,18 @@
                 </ul>
 
                 <ul class="navbar-nav align-items-center right-nav-link">
+                    <li class="nav-item">
+                        <div class="mt-2"><button class="btn m-1 pull-right btn-primary"><a style="color:white;" href="{{url('org/pricingPlans')}}">Upgrade Plan</a></button></div>
+                    </li>
 
                     <li class="nav-item">
                         <a class="nav-link dropdown-toggle dropdown-toggle-nocaret UserIconWithText" data-toggle="dropdown" href="#">
 
-                            <?php if(Auth::user()->user_type != 3) { ?>
-
-                            <div class="mr-2 AvailableStorage">{{ number_format((float)$totalGb, 3, '.', '')}} GB Used out of 3GB</div>
+                            <?php if(Auth::user()->user_type != 3) { 
+                                $totalGbData = number_format((float)$totalGb, 3, '.', ''); ?>
+                            <div class="mr-2 AvailableStorage">{{$totalGbData}} GB Used out of 3GB</div>
                             <div class="mr-2 AvailableStorage"></div>
-
+                            <input type="hidden" class="AvailableStorageValue" value ="{{$totalGbData}}">
                             <?php } ?>
                             <div>
                                 <!-- <span class="user-profile"><img src="https://via.placeholder.com/110x110" class="img-circle" alt="user avatar"></span> -->
@@ -280,6 +283,7 @@
                                         document.getElementById('logout-form').submit();"><i class="icon-power mr-2"></i> Logout</a></li>
                         </ul>
                     </li>
+
                 </ul>
             </nav>
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

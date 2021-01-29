@@ -163,6 +163,7 @@
                         <div class='parent' style='width: 100%;'>
                             <div class='form-group  d-none uploadPodcastBox'>
                                 <!-- <label for='input_podfile'>Upload Podcast</label> -->
+                                <p class="text-danger spaceFullError d-none">You have occupied available cloud space according to your plan, please <u><a target="_blank" href="{{url('org/pricingPlans')}}">UPGRADE</a></u> your account.</p>
                                 <p for='input_podfile'>Select Podcast</p>
                                 <div class='dragFileContainer'>
                                     <input type="file" id='input_podfile' name='input_podfile' value="{{  old('input_podfile') }}" >
@@ -408,80 +409,66 @@
         $('.dragFileForm').ajaxForm({
             beforeSend: function () {
                 var url = $("#input_url").val();
+                $(".spaceFullError").addClass("d-none");
                 // regexp =  /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
                 var validExtensions = ['mp3','m4a','wma']; //array of valid extensions
                 var fileName = $("#input_podfile").val();
                 var fileNameExt = fileName.substr(fileName.lastIndexOf('.') + 1);
                 // if (regexp.test(url) || $.inArray(fileNameExt, validExtensions) != -1)
-                if ((url != '' || $.inArray(fileNameExt, validExtensions) != -1) && (!$(".checkPodcastExist").hasClass('d-none')))
-                {
-                    $('.podcastFileError').text('');
-                    $('.dragFileForm').find('.podcastProgressBar').removeClass('d-none');
-                    //status.empty();
-                    var percentVal = '0%';
-                    //var posterValue = $('input[name=input_vidfile]').fieldValue();
-                    bar.width(percentVal)
-                    percent.html(percentVal);
-                }
-                else
-                {
-                    if(url != ''){
-                        // $('.urlError').text('The input url format is invalid.');
-                        // return false;
-                        
-                    } else{
-                        alert("The podcast video file must be a file of type: mpga, m4a, wma.");
-                        $('.podcastFileError').text('The podcast video file must be a file of type: mpga, m4a, wma.');
-                        clearInterval(auto_refresh);
-                        // return false;
+                if ((url != '' || $.inArray(fileNameExt, validExtensions) != -1) && (!$(".checkPodcastExist").hasClass('d-none'))) {   
+                    if($.inArray(fileNameExt, validExtensions) != -1 && (!$(".checkPodcastExist").hasClass('d-none'))){
+                        var availableStorage=$(".AvailableStorageValue").val();
+                        // $(".AvailableStorageValue").val();
+                        if(availableStorage == "3.000"){
+                            $(".spaceFullError").removeClass("d-none");
+                            clearInterval(auto_refresh);
+                        } 
+                    } else {
+                        $('.podcastFileError').text('');
+                        $('.dragFileForm').find('.podcastProgressBar').removeClass('d-none');
+                        //status.empty();
+                        var percentVal = '0%';
+                        //var posterValue = $('input[name=input_vidfile]').fieldValue();
+                        bar.width(percentVal)
+                        percent.html(percentVal); }
                     }
-                    // $('.urlError').text('The input url format is invalid.');
-                    // return;
-                }
-                // $('.dragFileForm').find('.podcastProgressBar').removeClass('d-none');
-                // //status.empty();
-                // var percentVal = '0%';
-                // // var posterValue = $('input[name=input_podfile]').fieldValue();
-                // bar.width(percentVal)
-                // percent.html(percentVal);                
-            },
-            uploadProgress: function (event, position, total, percentComplete) {
-                var percentVal = percentComplete + '%';
-                bar.width(percentVal);
-                percent.html(percentVal);
-                if(!$('.dragFileForm').find('.podcastProgressBar').hasClass('d-none')){
-                if (percentComplete == 100) {
-                                                    LoaderStart();
-                                                    var interval = setInterval(function mak() {
-                                                        clearInterval(interval);
-                                                        window.location.href = $('#hdnRedirect').val();
-                                                        LoaderStop();
-                                                    }, 5000);
-                // LoaderStart();
-            }
-        } else if(!$("#ChangePodcastBtn").hasClass('d-none')){
-                                                LoaderStart();
-                                                window.location.href = $('#hdnRedirect').val();
-                                                        LoaderStop();
-                                            }
-                                            else{
+                    else {
+                        if(url != ''){
+                            // $('.urlError').text('The input url format is invalid.');
+                            // return false;
+                        } else{
+                            alert("The podcast video file must be a file of type: mpga, m4a, wma.");
+                            $('.podcastFileError').text('The podcast video file must be a file of type: mpga, m4a, wma.');
+                            clearInterval(auto_refresh);
+                            // return false;
+                        }
+                        // $('.urlError').text('The input url format is invalid.');
+                        // return;
+                    }
+                },
+                uploadProgress: function (event, position, total, percentComplete) {
+                    var percentVal = percentComplete + '%';
+                    bar.width(percentVal);
+                    percent.html(percentVal);
+                    if(!$('.dragFileForm').find('.podcastProgressBar').hasClass('d-none')){
+                        if (percentComplete == 100) {
+                            LoaderStart();
+                            var interval = setInterval(function mak() {
+                                clearInterval(interval);
+                                window.location.href = $('#hdnRedirect').val();
+                                LoaderStop();
+                                }, 5000);
+                        }
+                    } else if(!$("#ChangePodcastBtn").hasClass('d-none')){
+                        LoaderStart();
+                        window.location.href = $('#hdnRedirect').val();
+                        LoaderStop();
+                    }
+                    else{
                                                 
-                                            }
-            },
-            // success: function () {
-            //     LoaderStop();
-            //     var percentVal = 'Redirecting..';
-            //     bar.width(percentVal);
-            //     percent.html(percentVal);
-            // },
-            // complete: function (xhr) {
-            //     //status.html(xhr.responseText);
-            //     //alert('Uploaded Successfully');
-
-            //     window.location.href = $('#hdnRedirect').val();
-            // }
-        });
-
-    })();
+                    }
+                },
+            });
+        })();
 </script>
 @endsection

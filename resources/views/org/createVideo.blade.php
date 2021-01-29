@@ -169,6 +169,7 @@ $CardTitle = "Add New Video";
 
                         <div class='parent' style='width: 100%;'>
                             <div class='form-group  d-none uploadVideoBox'>
+                                <p class="text-danger spaceFullError d-none">You have occupied available cloud space according to your plan, please <u><a target="_blank" href="{{url('org/pricingPlans')}}">UPGRADE</a></u> your account.</p>
                                 <p for='input_vidfile'>Select Video</p>
                                 <div class='dragFileContainer'>
                                     <input type="file" id='input_vidfile' name='input_vidfile' value="{{  old('input_vidfile') }}">
@@ -360,100 +361,85 @@ $CardTitle = "Add New Video";
 <script src="{{ asset('assets/plugins/bootstrap-datatable/js/jquery.dataTables.min.js') }}"></script>
 <script>
 (function () {
+                var bar = $('.bar_upload');
+                var percent = $('.percent_upload');
+                //var status = $('#status');
 
-                                        var bar = $('.bar_upload');
-                                        var percent = $('.percent_upload');
-                                        //var status = $('#status');
-
-                                        $('.dragFileForm').ajaxForm({
-                                            beforeSend: function () {
-                                                var url = $("#input_url").val();
-                                                // regexp =  /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
-                                                // regexp =  /https:\/\/(?:www.)?(?:(vimeo).com\/(.*)|(youtube).com\/watch\?v=(.*?)&)/;
-                                                regexp = /^(http:\/\/|https:\/\/)(vimeo\.com|youtu\.be|www\.youtube\.com)\/([\w\/]+)([\?].*)?$/;
-                                                // if(url.match(regexp)){
-                                                //     $('.urlError').text('The input url format is invalid.');
-                                                //         return false;
-                                                // }
+                $('.dragFileForm').ajaxForm({
+                    beforeSend: function () {
+                        var url = $("#input_url").val();
+                        $(".spaceFullError").addClass("d-none");
+                        // regexp =  /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
+                        // regexp =  /https:\/\/(?:www.)?(?:(vimeo).com\/(.*)|(youtube).com\/watch\?v=(.*?)&)/;
+                        regexp = /^(http:\/\/|https:\/\/)(vimeo\.com|youtu\.be|www\.youtube\.com)\/([\w\/]+)([\?].*)?$/;
+                        // if(url.match(regexp)){
+                                //     $('.urlError').text('The input url format is invalid.');
+                                //         return false;
+                        // }
                                                 
-                                                var validExtensions = ['mov','mp4','wmv','flv','avi']; //array of valid extensions
-        var fileName = $("#input_vidfile").val();
-        var fileNameExt = fileName.substr(fileName.lastIndexOf('.') + 1);
-                                                // if (regexp.test(url) || $.inArray(fileNameExt, validExtensions) != -1)
-                                                // {
-                                                    if ((url.match(regexp) || $.inArray(fileNameExt, validExtensions) != -1) && (!$(".checkVideoExist").hasClass('d-none')))
-                                                    {
-                                                        $('.videoFileError').text('');
-                                                    $('.dragFileForm').find('.progressBar').removeClass('d-none');
-                                                    //status.empty();
-                                                    var percentVal = '0%';
-                                                    //var posterValue = $('input[name=input_vidfile]').fieldValue();
-                                                    bar.width(percentVal)
-                                                    percent.html(percentVal);
-                                                }
-                                                else
-                                                {
-                                                    if(url != ''){
-                                                        // alert("The input url format is invalid.");
-                                                        // $('.urlError').text('The input url format is invalid.');
-                                                        // clearInterval(auto_refresh);
-                                                        // return false;
-                                                    } 
-                                                    else{
-                                                        alert("The video file must be a file of type: mov, mp4, wmv, flv, avi.");
-                                                        $('.videoFileError').text('The video file must be a file of type: mov, mp4, wmv, flv, avi.');
-                                                        clearInterval(auto_refresh);
-                                                        // return false;
-                                                    }
-                                                    
-                                                }
-
-                                                // $('.dragFileForm').find('.progressBar').removeClass('d-none');
-                                                // //status.empty();
-                                                // var percentVal = '0%';
-                                                // //var posterValue = $('input[name=input_vidfile]').fieldValue();
-                                                // bar.width(percentVal)
-                                                // percent.html(percentVal);
-                                            },
-                                            uploadProgress: function (event, position, total, percentComplete) {
-                                                //$('.dragFileForm').find('.progressBar').removeClass('d-none');
-                                                var percentVal = percentComplete + '%';
-                                                bar.width(percentVal);
-                                                percent.html(percentVal);
-                                                if(!$('.dragFileForm').find('.progressBar').hasClass('d-none')){
-                                                if (percentComplete == 100) {
-                                                    LoaderStart();
-                                                    var interval = setInterval(function mak() {
-                                                        clearInterval(interval);
-                                                        window.location.href = $('#hdnRedirect').val();
-                                                        LoaderStop();
-                                                    }, 5000);
-                                                    // window.location.href = $('#hdnRedirect').val();
-                                                }
-                                            } else if(!$("#ChangeVideoBtn").hasClass('d-none')){
-                                                LoaderStart();
-                                                window.location.href = $('#hdnRedirect').val();
-                                                        LoaderStop();
+                        var validExtensions = ['mov','mp4','wmv','flv','avi']; //array of valid extensions
+                        var fileName = $("#input_vidfile").val();
+                        var fileNameExt = fileName.substr(fileName.lastIndexOf('.') + 1);
+                        // if (regexp.test(url) || $.inArray(fileNameExt, validExtensions) != -1) {
+                                if ((url.match(regexp) || $.inArray(fileNameExt, validExtensions) != -1) && (!$(".checkVideoExist").hasClass('d-none'))) {
+                                    if($.inArray(fileNameExt, validExtensions) != -1 && (!$(".checkVideoExist").hasClass('d-none'))){
+                                            var availableStorage=$(".AvailableStorageValue").val();
+                                            // $(".AvailableStorageValue").val();
+                                            if(availableStorage == "3.000"){
+                                                $(".spaceFullError").removeClass("d-none");
+                                                clearInterval(auto_refresh);
                                             }
-                                            else{
-                                                // event.preventDefault();
-                                            }
-                                            },
-                                            // success: function () {
-                                            //     LoaderStop();
-                                            //     var percentVal = 'Redirecting..';
-                                            //     bar.width(percentVal);
-                                            //     percent.html(percentVal);
-                                            // },
-                                            // complete: function (xhr) {
-                                            //     //status.html(xhr.responseText);
-                                            //     //alert('Uploaded Successfully');
+                                    } else {
+                                        $('.videoFileError').text('');
+                                        $('.dragFileForm').find('.progressBar').removeClass('d-none');
+                                        //status.empty();
+                                        var percentVal = '0%';
+                                        //var posterValue = $('input[name=input_vidfile]').fieldValue();
+                                        bar.width(percentVal)
+                                        percent.html(percentVal); 
+                                    }
+                                }
+                                else {
+                                        if(url != ''){
+                                            // alert("The input url format is invalid.");
+                                            // $('.urlError').text('The input url format is invalid.');
+                                            // clearInterval(auto_refresh);
+                                            // return false;
+                                        } 
+                                        else{
+                                            alert("The video file must be a file of type: mov, mp4, wmv, flv, avi.");
+                                            $('.videoFileError').text('The video file must be a file of type: mov, mp4, wmv, flv, avi.');
+                                            clearInterval(auto_refresh);
+                                            // return false;
+                                        }
+                                }
+                            },
+                            uploadProgress: function (event, position, total, percentComplete) {
+                                //$('.dragFileForm').find('.progressBar').removeClass('d-none');
+                                var percentVal = percentComplete + '%';
+                                bar.width(percentVal);
+                                percent.html(percentVal);
+                                if(!$('.dragFileForm').find('.progressBar').hasClass('d-none')){
+                                    if (percentComplete == 100) {
+                                        LoaderStart();
+                                        var interval = setInterval(function mak() {
+                                            clearInterval(interval);
+                                            window.location.href = $('#hdnRedirect').val();
+                                            LoaderStop();
+                                        }, 5000);
+                                    }
+                                } else if(!$("#ChangeVideoBtn").hasClass('d-none')){
+                                    LoaderStart();
+                                    window.location.href = $('#hdnRedirect').val();
+                                    LoaderStop();
+                                }
+                                else{
+                                    // event.preventDefault();
+                                }
+                            },
+                        });
 
-                                            //     window.location.href = $('#hdnRedirect').val();
-                                            // }
-                                        });
-
-                                    })();
+                    })();
 </script>
 
 @endsection

@@ -695,6 +695,7 @@
                                                 </div>
 
                                                 <div class='parent' style='width: 100%;'>
+                                                    <p class="text-danger spaceFullError d-none">You have occupied available cloud space according to your plan, please <u><a target="_blank" href="{{url('org/pricingPlans')}}">UPGRADE</a></u> your account.</p>
                                                     <div class='form-group  d-none uploadVideoBox'>
                                                         <div class='dragFileContainer'>
                                                             <input id='video_file' name='video_file' type="file">
@@ -740,7 +741,7 @@
                                                 </div>
 
                                                 <div class='parent' style='width: 100%;'>
-
+                                                    <p class="text-danger spaceFullError d-none">You have occupied available cloud space according to your plan, please <u><a target="_blank" href="{{url('org/pricingPlans')}}">UPGRADE</a></u> your account.</p>
                                                     <div class='form-group  d-none uploadPodcastVideo'>
                                                         <div class='dragFileContainer'>
                                                             <input id='podcast_video_file' name='podcast_video_file' type="file">

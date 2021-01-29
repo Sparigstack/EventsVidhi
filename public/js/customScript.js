@@ -601,3 +601,13 @@ function updateIsFeatured(element){
         }
     });
 }
+
+function filterByOrgEvents(element){
+    var parent = findParent(element);
+    var orgId = $(element).val();
+    var CSRF_TOKEN = $('.csrf-token').val();
+    var url = "0";
+    var filterUrl = $(".filterUrl").val();
+    url = filterUrl + "/" + orgId + "" ;
+    window.location.replace(url);
+}

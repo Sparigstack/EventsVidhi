@@ -455,6 +455,21 @@ border-radius: 6px !important;
     font-weight: bold;
     padding: 0px 15px;
 }
+.plansCard{
+    border: 1px solid #BBBBBB !important;
+    border-radius: 6px !important;
+    padding: 20px 10px;
+    background: #F8F8F8 !important;
+}
+.mxwidth-30{
+    max-width: 30% !important;
+}
+.plansOuterImg{
+    left: 60%;
+    margin-left: -25vw;
+    margin-right: -25vw;
+    position: relative;
+}
  
 @media(min-width:768px) and (max-width:1024px){
     .SignUpLink p a{
@@ -621,5 +636,8 @@ border-radius: 6px !important;
     padding-right: 20px !important;
     display: flex !important;
     flex-wrap: wrap;
+    }
+    .mxwidth-30{
+        max-width: none !important;
     }
 }

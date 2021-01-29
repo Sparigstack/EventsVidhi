@@ -219,10 +219,10 @@
                                                         </div>
                                                         <div class="col-md-4 footer-menu-second-column">
                                                             <a href="#" class="mob-pd-common">Privacy Policy</a> 
-                                                            <a href="{{url('plans')}}" class="mob-pd-common" style="padding-top:20px;">Pricing & Plans</a>
+                                                            <a href="{{url('pricingPlans')}}" class="mob-pd-common" style="padding-top:20px;">Pricing & Plans</a>
                                                         </div>
                                                         <div class="col-md-4 footer-menu-third-column">
-                                                            <a href="#" class="mob-pd-common">Contact Us</a>
+                                                            <a href="{{url('contactUs')}}" class="mob-pd-common">Contact Us</a>
                                                         </div>
                                                     </div>
                                                 </div>
