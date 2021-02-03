@@ -13,16 +13,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function () {
-//     return view('home');
-// });
-
-
-// Route::get('events/{eventid}', 'EventsController@show');
-
-
+//Auth Routes
 Auth::routes(['verify' => true]);
 // Auth::routes();
+
+Route::post('loginCheck', 'Auth\LoginController@determineLoginType')->middleware('guest');
+Route::get('userRegister', function () {
+    return view('auth/register');
+});
+Route::get('forgotPassword', function () {
+    return view('auth/passwords/forgotPassword');
+});
 
 // Route::get('/home', 'HomeController@index')->name('home');
 // Route::get('/', 'HomeController@index')->name('home');
@@ -112,11 +113,6 @@ Route::post('org/customFields/update/{id}', 'org\CustomFieldController@update');
 Route::post('org/customfield/delete/{id}', 'org\CustomFieldController@delete');
 Route::post('org/setting/update', 'org\SettingController@update');
 
-Route::post('loginCheck', 'Auth\LoginController@determineLoginType')->middleware('guest');
-Route::get('userRegister', function () {
-    return view('auth/register');
-});
-
 Route::get('myAccount', 'UserController@show');
 Route::get('userProfile', function () {
     return view('userProfileList');
@@ -175,15 +171,15 @@ Route::get('featureOverview', function () {
     return view('featureOverview');
 });
 
-Route::get('forgotPassword', function () {
-    return view('auth/passwords/forgotPassword');
-});
-
-Route::get('pricingPlans', function () {
-    return view('pricingPlans');
-});
-
+Route::get('pricingPlans','HomeController@pricingPlan');
 Route::get('contactUs', function () {
     return view('contactUs');
 });
 
+//Upgrade Plan Routes
+Route::get('planDetails/{id}','org\UpgradePlanController@planDetails');
+Route::get('payment/{id}/{type}', 'org\UpgradePlanController@payment');
+Route::post('upgradePlan', 'org\UpgradePlanController@upgradePlan')->name('stripe.post');
+Route::get('planUpgradation', function () {
+    return view('planUpgradation');
+});

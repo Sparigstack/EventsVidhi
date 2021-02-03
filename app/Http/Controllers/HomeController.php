@@ -19,6 +19,7 @@ use App\Category;
 use App\ContentFollower;
 use App\User;
 use App\Ticket;
+use App\Plan;
 
 class HomeController extends Controller
 {
@@ -375,5 +376,10 @@ class HomeController extends Controller
                 $contentFollower->save();
             }
         }
+    }
+
+    public function pricingPlan(){
+        $plans = Plan::orderBy('id', 'ASC')->get();
+        return view('pricingPlans', compact('plans'));
     }
 }

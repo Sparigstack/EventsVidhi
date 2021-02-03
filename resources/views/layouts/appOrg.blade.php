@@ -222,9 +222,11 @@
                 </ul>
 
                 <ul class="navbar-nav align-items-center right-nav-link">
+                    <?php if(Auth::user()->user_type != 3) { ?>
                     <li class="nav-item">
                         <div class="mt-2"><button class="btn m-1 pull-right btn-primary"><a style="color:white;" href="{{url('org/pricingPlans')}}">Upgrade Plan</a></button></div>
                     </li>
+                   <?php } ?>
 
                     <li class="nav-item">
                         <a class="nav-link dropdown-toggle dropdown-toggle-nocaret UserIconWithText" data-toggle="dropdown" href="#">

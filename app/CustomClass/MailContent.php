@@ -16,7 +16,7 @@ namespace App\CustomClass;
 class MailContent {
     //put your code here
     public $user_name;
-    // public $user_email;
+    public $transaction_id;
     public $event_title;
     public $org_name;
     public $event_datetime;

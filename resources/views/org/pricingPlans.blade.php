@@ -38,7 +38,7 @@
 					<h5 class="mt-4"> BASIC </h4>
 					<h4 class="mt-4"> Free </h4>
 					<p class="mt-4"> 3 gb of cloud space to upload & showcase content </p>
-					<a href="#" class="mt-4 mb-4"><input type="button" id="" class="clickable createEventButton buttonMobileSize" value="Want it!" style="padding: 8px 40px;"></a>
+					<a class="mt-4 mb-4"><input type="button" id="" class="clickable createEventButton buttonMobileSize" value="Want it!" style="padding: 8px 40px;" disabled="disabled"></a>
 				</div>
 			</div>
 
@@ -55,7 +55,7 @@
 						<p class="mt-1 ml-1">  billed monthly </p>
 					</div>
 					<p class="mt-3"> 10 gb of cloud space to upload & showcase content </p>
-					<a href="#" class="mt-4 mb-4"><input type="button" id="" class="clickable createEventButton buttonMobileSize" value="Want it!" style="padding: 8px 40px;"></a>
+					<a href="{{url('planDetails/2')}}" class="mt-4 mb-4"><input type="button" id="" class="clickable createEventButton buttonMobileSize" value="Want it!" style="padding: 8px 40px;"></a>
 				</div>
 			</div>
 
@@ -72,7 +72,7 @@
 						<p class="mt-1 ml-1"> billed monthly </p>
 					</div>
 					<p class="mt-3"> <b> Unlimited </b> of cloud space to upload & showcase content </p>
-					<a href="#" class="mt-4 mb-4"><input type="button" id="" class="clickable createEventButton buttonMobileSize" value="Want it!" style="padding: 8px 40px;"></a>
+					<a href="{{url('planDetails/3')}}" class="mt-4 mb-4"><input type="button" id="" class="clickable createEventButton buttonMobileSize" value="Want it!" style="padding: 8px 40px;"></a>
 				</div>
 			</div>
 

@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Event;
 use DB;
 use App\ContentFollower;
+use App\Plan;
 
 class UserController extends Controller
 {
@@ -130,5 +131,4 @@ class UserController extends Controller
         $orgFollowerCountResult = count($orgFollowerCount);
         return view('myContent', compact('events', 'videos', 'podcasts' ,'eventFollowersList', 'organizers', 'orgFollowerCountResult'));
     }
-
 }
