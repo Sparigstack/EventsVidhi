@@ -93,16 +93,12 @@ a {
                 <div class="row" style="min-height: 200px;
                      margin: 0;display: flex; align-items: center;justify-content: center;
                      ">
-                        <p> <b>Dear {{$mail_content->user_name}}</b>, <br> <br>
-
-                            Your plan is upgraded. <br>
-                            
-                            <br><br>
-
-                            Thank you, <br>
-                            Team PanelHive
-
-                        </p>
+    <p> Congratulations, your account has been upgraded to <b>{{$mail_content->planName}}</b><br>
+    Recurring charges - ${{$mail_content->amount}}/{{$mail_content->planDuration}} <br>
+    Benefits: {{$mail_content->benefits}}<br><br>
+    Thank you, <br>
+    Team PanelHive
+    </p>
                 </div>
             </div>
         </div>

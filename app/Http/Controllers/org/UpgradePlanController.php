@@ -4,6 +4,7 @@ namespace App\Http\Controllers\org;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Session;
 use Stripe;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -44,42 +45,43 @@ class UpgradePlanController extends Controller
             $customer = \Stripe\Customer::create(array(
                         'email' => $request->email,
                         'name' => $request->name_on_card,
-                        'source' => $request->stripeToken,
-                        'address' => [
-    //'line1' => '510 Townsend St',
-    //'postal_code' => '98140',
-    //'city' => 'San Francisco',
-    //'state' => 'CA',
-    //'country' => 'US'
-                        	'line1' => '510 Townsend St',
-    'postal_code' => '380001',
-    'city' => 'Ahmedabad',
-    'state' => 'Gujarat',
-    'country' => 'India'
-  ],
+                        'source' => $request->stripeToken
             ));
 
             $planName = $request->planName;
             $planId = $request->planId;
             $db_plan_id = "";
             $planIdName = "";
+            $selectedPlan= "";
+            $planDuration = "";
+            $benefits = "";
 
             if ($planName == "yearly") {
                 if($planId == 2){
                     $db_plan_id = 2;
-                    $planIdName = "price_1IGNFpIO92oFYq9N5PfkuYFA";
+                    $planIdName = "price_1IGgDVEQcfgVhdcDtNAbf90p";
+                    $selectedPlan = "Plus Yearly Plan";
+                    $benefits = "10 gb of cloud space to upload & showcase content";
                 } else {
                     $db_plan_id = 4;
-                    $planIdName = "price_1IGHqFIO92oFYq9Nn9iSevkI";
+                    $planIdName = "price_1IGgIDEQcfgVhdcDihMv5OTn";
+                    $selectedPlan = "Premium Yearly Plan";
+                    $benefits = "Unlimited of cloud space to upload & showcase content";
                 }
+                $planDuration = "year";
             } elseif ($planName == "monthly") {
                 if($planId == 2){
                     $db_plan_id = 1;
-                    $planIdName = "price_1IGHkOIO92oFYq9NS5iG0E43";
+                    $planIdName = "price_1IGfvfEQcfgVhdcDWAnM9cZn";
+                    $selectedPlan = "Plus Monthly Plan";
+                    $benefits = "10 gb of cloud space to upload & showcase content";
                 } else {
                     $db_plan_id = 3;
-                    $planIdName = "price_1IGHoiIO92oFYq9NqLtq648g";
+                    $planIdName = "price_1IGgFwEQcfgVhdcDe53zaX9a";
+                    $selectedPlan = "Premium Monthly Plan";
+                    $benefits = "Unlimited of cloud space to upload & showcase content";
                 }
+                 $planDuration = "month";
             }
 
             //create subscription
@@ -88,23 +90,15 @@ class UpgradePlanController extends Controller
                         "items" => [
                             [
                                 "plan" => $planIdName,
-                                // $planId
                             ],
                         ]
             ]);
 
-            //var_dump($subscription);return;
-
-            $start_date = date("m/d/y H:i:s");
-            // if (count($space->space_payments) > 0) {
-            //     $latest_payment = $space->latest_payment;
-            //     $start_date = $latest_payment->plan_expiry;
-            // }
-
+            $start_date = date("m-d-Y");
             if ($db_plan_id == 1 || $db_plan_id == 3) {
-                $expiry_date = date('y/m/d H:i:s', strtotime($start_date . ' + 30 days'));
+                $expiry_date = date('Y-m-d', strtotime($start_date . ' + 31 days'));
             } else if ($db_plan_id == 2 || $db_plan_id == 4) {
-                $expiry_date = date('y/m/d H:i:s', strtotime($start_date . ' + 365 days'));
+                $expiry_date = date('Y-m-d', strtotime($start_date . ' + 365 days'));
             }
 
             $userid = Auth::id();
@@ -112,7 +106,7 @@ class UpgradePlanController extends Controller
             $user->plan_id = $db_plan_id; //plan_id from plans table
             $user->transaction_id = $subscription->id;
             $user->expiry_date = $expiry_date;
-            //$user->save();
+            $user->save();
 
             Session::flash('success', 'Payment done successfully !');
             $success = "Payment done successfully !";
@@ -122,15 +116,18 @@ class UpgradePlanController extends Controller
             $amount = $request->selectedPrice;
 
             $mail_content = new MailContent();
-            $mail_content->user_name = Auth::user()->name;
-            $mail_content->transaction_id = $subscriptionid;
-            $data = ['view' => 'mails.upgradePlan', 'mail_content' => $mail_content, 'subject' => 'Upgrade Plan Successfully !'];
+            //$mail_content->transaction_id = $subscriptionid;
+            $mail_content->planName = $selectedPlan;
+            $mail_content->expiry_date = $expiry_date;
+            $mail_content->amount = $amount;
+            $mail_content->planDuration = $planDuration;
+            $mail_content->benefits = $benefits;
+            $data = ['view' => 'mails.upgradePlan', 'mail_content' => $mail_content, 'subject' => 'Upgrade Plan Successfully'];
             $emailOb = new Email($data);
-            // $request->email
-            //Mail::to("team.sprigstack@gmail.com")->send($emailOb);
+            // team.sprigstack@gmail.com
+            //Mail::to($request->email)->send($emailOb);
 
             return view('planUpgradation');
-            // compact('amount', 'subscriptionid', 'success', 'planName', 'user')
         } catch (Exception $e) {
             Session::flash('fail_message', "Error! Please Try again.");
             return $e;

@@ -475,6 +475,7 @@ border-radius: 6px !important;
 }
 .yearlyDiv, .monthlyDiv{
     cursor: pointer;
+    box-shadow: none !important;padding: 10px 10px !important;
 }
 .upgradeSuccessCard{
     padding: 15px 30px !important;
@@ -483,6 +484,9 @@ border-radius: 6px !important;
     box-sizing: border-box;
     box-shadow: 0px 0px 7px #D0987D, 5px 5px 30px rgba(193, 138, 111, 0.25) !important;
     border-radius: 6px !important;
+}
+.hiddenDiv{
+    visibility: hidden;
 }
  
 @media(min-width:768px) and (max-width:1024px){

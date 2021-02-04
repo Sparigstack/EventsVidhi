@@ -1,6 +1,6 @@
 @extends('layouts.appFront')
 @section('content')
-
+<?php $v = "1.0.1"; ?>
 <div class="container mainHomePageContainer pt-3 pb-3 pl-0 pr-0" style="">
 
 	<div class="col-md-12 col-lg-12 d-flex align-items-center mb-3">
@@ -47,7 +47,12 @@
 				</div>
 			</div>
 
-			<?php 
+			<?php
+				$getUserType= "";
+                if(Auth::check()){
+                    $getUserType = Auth::user()->user_type;
+                }
+
 				$plusMonthly = '';
 				$plusYearly = '';
 				$premiumMonthly = '';
@@ -59,13 +64,15 @@
 					$premiumYearly = $plans[3]->price;
 				}
 			?>
+			<input type="hidden" class="loginRoute" value="{{route('login')}}">
+			<input type="hidden" class="getUserType" value="{{$getUserType}}">
 
 			<div class="col-md-4 col-lg-4 col-sm-8 text-center mxwidth-30" style="">
 				<div class="card plansCard" style="border: 2px solid #FD6568 !important;">
 					<h5 class="mt-4"> PLUS </h4>
 					<p class="mt-2" style="color: #9C9C9C;"> *price per month </p>
 					<div class="d-flex justify-content-center">
-						<h4> ${{$plusYearly}} </h4>
+						<h4> ${{$plusYearly/12}} </h4>
 						<p class="mt-1 ml-1"> billed yearly </p>
 					</div>
 					<div class="d-flex justify-content-center">
@@ -73,7 +80,7 @@
 						<p class="mt-1 ml-1">  billed monthly </p>
 					</div>
 					<p class="mt-3"> 10 gb of cloud space to upload & showcase content </p>
-					<a href="{{url('planDetails/2')}}" class="mt-4 mb-4"><input type="button" id="" class="clickable createEventButton buttonMobileSize" value="Want it!" style="padding: 8px 40px;"></a>
+					<a onclick="checkOrgLogin(this);" class="mt-4 mb-4" data-attr="{{url('planDetails/2')}}"><input type="button" id="" class="clickable createEventButton buttonMobileSize" value="Want it!" style="padding: 8px 40px;"></a>
 				</div>
 			</div>
 
@@ -82,7 +89,7 @@
 					<h5 class="mt-4"> PREMIUM </h4>
 					<p class="mt-2" style="color: #9C9C9C;"> *price per month </p>
 					<div class="d-flex justify-content-center">
-						<h4> ${{$premiumYearly}} </h4>
+						<h4> ${{$premiumYearly/12}} </h4>
 						<p class="mt-1 ml-1"> billed yearly </p>
 					</div>
 					<div class="d-flex justify-content-center">
@@ -90,7 +97,7 @@
 						<p class="mt-1 ml-1"> billed monthly </p>
 					</div>
 					<p class="mt-3"> <b> Unlimited </b> of cloud space to upload & showcase content </p>
-					<a href="{{url('planDetails/3')}}" class="mt-4 mb-4"><input type="button" id="" class="clickable createEventButton buttonMobileSize" value="Want it!" style="padding: 8px 40px;"></a>
+					<a onclick="checkOrgLogin(this);" class="mt-4 mb-4" data-attr="{{url('planDetails/3')}}"><input type="button" id="" class="clickable createEventButton buttonMobileSize" value="Want it!" style="padding: 8px 40px;"></a>
 				</div>
 			</div>
 
@@ -107,4 +114,7 @@
     </div>
 
 </div>
+@endsection
+@section('script')
+<script src="{{asset('/js/payment.js?v='.$v)}}" type="text/javascript"></script>
 @endsection

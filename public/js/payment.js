@@ -53,15 +53,28 @@ $(function () {
                                         });
 
 function applyBorderColorPlan(element){
+    var price = $(".yearPrice").text().substring(1, $(".yearPrice").text().length);
 	if($(element).hasClass('yearlyDiv')){
-		$('.yearlyDiv').attr('style', 'border: 2px solid #FD6568 !important;background: white!important;box-shadow: none;');
-		$(".monthlyDiv").css({ 'border' : ''});
-		$(".contentPlanCard").css({ 'border' : ''});
+		//$('.yearlyDiv').attr('style', 'border: 2px solid #FD6568 !important;background: white!important;box-shadow: none;');
+		//$(".monthlyDiv").css({ 'border' : ''});
+		//$(".contentPlanCard").css({ 'border' : ''});
+        $(".yearlydot").removeClass("hiddenDiv");
+        $(".monthlydot").addClass("hiddenDiv");
+        $(".priceMonth").text($(".yearPrice").text());
+        $(".billedPara").text("Billed Yearly");
+        $(".subTotal").html("$" + parseInt(price) * parseInt(12));
+        $(".totalClass").html("$" + parseInt(price) * parseInt(12));
 		$('.planText').val('yearly');
 	} else {
-		$('.monthlyDiv').attr('style', 'border: 2px solid #FD6568 !important;background: white!important;box-shadow: none;');
-		$(".yearlyDiv").css({ 'border' : ''});
-		$(".contentPlanCard").css({ 'border' : ''});
+		// $('.monthlyDiv').attr('style', 'border: 2px solid #FD6568 !important;background: white!important;box-shadow: none;');
+		// $(".yearlyDiv").css({ 'border' : ''});
+		// $(".contentPlanCard").css({ 'border' : ''});
+        $(".yearlydot").addClass("hiddenDiv");
+        $(".monthlydot").removeClass("hiddenDiv");
+        $(".priceMonth").text($(".monthPrice").text());
+        $(".billedPara").text("Billed Monthly");
+        $(".subTotal").html($(".monthPrice").text());
+        $(".totalClass").html($(".monthPrice").text());
 		$('.yearlyDiv').attr('data-id', 'yearly');	
 		$('.planText').val('monthly');
 	}
@@ -76,4 +89,18 @@ function checkSelectedOption(){
 	} else {
 		window.location.href = "../payment/" +  planId + "/" + planText;
 	}
+}
+
+function checkOrgLogin(element){
+    var userType = $(".getUserType").val();
+    var url = $(element).attr("data-attr");
+    var loginRoute = $(".loginRoute").val();
+    if(userType == ""){
+        window.location.href = loginRoute;
+    } else if(userType == "1"){
+        window.location.href = url;
+    } else {
+        alert("Only organizer can upgrade plan");
+        return false;
+    }
 }

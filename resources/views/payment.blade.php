@@ -11,9 +11,9 @@
         $rupees = "";
         if ($type == "yearly") {
             if($id == 2){
-                $rupees = "3";
+                $rupees = "36";
             } else {
-                $rupees = "7";
+                $rupees = "84";
             }
         } elseif ($type == "monthly") {
             if($id == 2){

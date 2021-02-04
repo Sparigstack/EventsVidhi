@@ -41,16 +41,18 @@
 					?>
 
 					<div class="col-md-3 col-lg-3 col-sm-3 text-center" style="">
-						<div class="card plansCard yearlyDiv" style="background: white!important;box-shadow: none;" onclick="applyBorderColorPlan(this);">
-							<h5>$<?php if($id == 2) {echo $plusYearly;} if($id == 3) {echo $premiumYearly;} ?></h5>
+						<div class="card plansCard yearlyDiv" style="background: white !important;" onclick="applyBorderColorPlan(this);">
+							<div class="text-right yearlydot"><span class="dot" style="height:14px;width: 14px;"></span></div>
+							<h4 class="yearPrice">$<?php if($id == 2) {echo $plusYearly/12;} if($id == 3) {echo $premiumYearly/12;} ?></h4>
 							<p>billed yearly</p>
 							<p style="color: #9C9C9C;"> *price per month </p>
 						</div>
 					</div>
 
 					<div class="col-md-3 col-lg-3 col-sm-3 text-center" style="">
-						<div class="card plansCard monthlyDiv" style="background: white !important;box-shadow: none;" onclick="applyBorderColorPlan(this);">
-							<h5>$<?php if($id == 2) {echo $plusMonthly;} if($id == 3) {echo $premiumMonthly;} ?></h5>
+						<div class="card plansCard monthlyDiv" style="background: white !important;" onclick="applyBorderColorPlan(this);">
+							<div class="text-right monthlydot hiddenDiv"><span class="dot" style="height:14px;width: 14px;"></span></div>
+							<h4 class="monthPrice">$<?php if($id == 2) {echo $plusMonthly;} if($id == 3) {echo $premiumMonthly;} ?></h4>
 							<p>billed monthly</p>
 							<p style="color: #9C9C9C;"> *price per month </p>
 						</div>
@@ -77,20 +79,20 @@
 
 			<div class="row">
 				<div class="col-md-9"> <p> <b> Price per month </b> </p> </div>
-				<div class="col-md-3 text-right"> $<?php if($id == 2) {echo $plusYearly;} if($id == 3) {echo $premiumYearly;} ?> </div>
+				<div class="col-md-3 text-right priceMonth"> $<?php if($id == 2) {echo $plusYearly/12;} if($id == 3) {echo $premiumYearly/12;} ?> </div>
 			</div>
 
-			<p> Billed Yearly </p>
+			<p class="billedPara"> Billed Yearly </p>
 
 			<hr>
 			<div class="row">
 				<div class="col-md-9"> <p> Subtotal </p> </div>
-				<div class="col-md-3 text-right"> $<?php if($id == 2) {echo $plusYearly;} if($id == 3) {echo $premiumYearly;} ?> </div>
+				<div class="col-md-3 text-right subTotal"> $<?php if($id == 2) {echo $plusYearly;} if($id == 3) {echo $premiumYearly;} ?> </div>
 			</div>
 
 			<div class="row">
 				<div class="col-md-9"> <h5> Total </h5> </div>
-				<div class="col-md-3 text-right"> $<?php if($id == 2) {echo $plusYearly;} if($id == 3) {echo $premiumYearly;} ?> </div>
+				<div class="col-md-3 text-right totalClass"> $<?php if($id == 2) {echo $plusYearly;} if($id == 3) {echo $premiumYearly;} ?> </div>
 			</div>
     	</div>
 

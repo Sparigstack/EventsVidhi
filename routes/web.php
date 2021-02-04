@@ -13,10 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Auth Routes
-Auth::routes(['verify' => true]);
+//All routes for Aunthentication will be here.
 // Auth::routes();
-
+Auth::routes(['verify' => true]);
 Route::post('loginCheck', 'Auth\LoginController@determineLoginType')->middleware('guest');
 Route::get('userRegister', function () {
     return view('auth/register');
@@ -24,10 +23,6 @@ Route::get('userRegister', function () {
 Route::get('forgotPassword', function () {
     return view('auth/passwords/forgotPassword');
 });
-
-// Route::get('/home', 'HomeController@index')->name('home');
-// Route::get('/', 'HomeController@index')->name('home');
-//Route::get('/home/create', 'HomeController@create')->name('home');
 
 //All routes for Organizer Panel will be here.
 Route::get('org/events', 'org\EventsController@index')->name('orgEvents');
@@ -58,10 +53,6 @@ Route::get('org/videos', 'org\VideosController@index');
 Route::get('org/videos/new', 'org\VideosController@create');
 Route::post('org/videos/store', 'org\VideosController@store');
 Route::post('org/videos/store_demo', 'org\VideosController@store_demo');
-//Route::post('org/videos/store_demo', function () {
-//    $msg = "from here";
-//    return view('createVideo_t', compact('msg'));
-//});
 Route::get('org/videos/{videoid}', 'org\VideosController@edit');
 Route::post('org/videos/edit/{id}', 'org\VideosController@update');
 Route::post('deleteVideo', 'org\VideosController@destroy');
@@ -83,23 +74,14 @@ Route::post('deleteContact', 'org\ContactsController@destroy');
 Route::post('deleteSelectedContacts', 'org\ContactsController@deleteSelectedContacts');
 Route::post('org/contact/approve/{id}', 'org\ContactsController@approve');
 
-
 Route::post('getState', 'org\EventsController@getState');
 Route::post('getCity', 'org\EventsController@getCity');
-
-Route::post('org/csv/import', 'org\CsvImportController@store');
 
 Route::get('org/profile', function () {
     return view('org/profileList');
 });
 Route::get('org/profile/{id}','org\ProfileController@index');
 Route::post('org/profile/update', 'org\ProfileController@update');
-
-Route::get('account', function () {
-    return view('account');
-});
-Route::get('org/csvImport', 'org\CsvImportController@index');
-Route::get('org/settings','org\SettingController@index');
 
 Route::get('org/tags', 'org\TagsController@show');
 Route::post('org/tags/store', 'org\TagsController@store');
@@ -113,7 +95,6 @@ Route::post('org/customFields/update/{id}', 'org\CustomFieldController@update');
 Route::post('org/customfield/delete/{id}', 'org\CustomFieldController@delete');
 Route::post('org/setting/update', 'org\SettingController@update');
 
-Route::get('myAccount', 'UserController@show');
 Route::get('userProfile', function () {
     return view('userProfileList');
 });
@@ -124,14 +105,19 @@ Route::get('org/pricingPlans', function () {
     return view('org/pricingPlans');
 });
 
+Route::get('myAccount', 'UserController@show');
+Route::post('org/csv/import', 'org\CsvImportController@store');
+Route::get('account', function () {
+    return view('account');
+});
+Route::get('org/csvImport', 'org\CsvImportController@index');
+Route::get('org/settings','org\SettingController@index');
+
 //All routes for Admin Panel will be here.
 Route::get('organizers', 'UserController@orgList');
-
 Route::get('orgEvents', 'UserController@orgEventsList');
 Route::get('orgEvents/{id}', 'UserController@orgEventsList');
-
 Route::post('updateIsFeaturedEvent', 'org\EventsController@updateIsFeaturedEvent');
-
 Route::get('saveOrgFollower', 'HomeController@saveOrgFollower');
 
 //All routes according to new UI will be here.
@@ -143,7 +129,6 @@ Route::get('allContent/{tabId}/{categoryId}/{searchName}/page={pageCount}', 'Hom
 Route::get('events/{eventid}', 'HomeController@eventDetail');
 Route::get('videos/{videoid}', 'HomeController@videoDetail');
 Route::get('podcasts/{podcastid}', 'HomeController@podcastDetail');
-
 Route::get('organizer/{orgid}', 'HomeController@organizerDetail');
 
 Route::post('saveEventFollower', 'HomeController@saveEventFollower');
@@ -154,23 +139,18 @@ Route::get('myContent', 'UserController@myContent');
 Route::get('aboutUs', function () {
     return view('aboutUs');
 });
-
 Route::get('information', function () {
     return view('information');
 });
-
 Route::get('orgInfo', function () {
     return view('orgInfo');
 });
-
 Route::get('createEventInfo', function () {
     return view('createEventInfo');
 });
-
 Route::get('featureOverview', function () {
     return view('featureOverview');
 });
-
 Route::get('pricingPlans','HomeController@pricingPlan');
 Route::get('contactUs', function () {
     return view('contactUs');
