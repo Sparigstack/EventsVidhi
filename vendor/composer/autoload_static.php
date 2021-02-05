@@ -80,6 +80,8 @@ class ComposerStaticInit64b7fcf415f12f33f2fc750a4da7e832
             'Symfony\\Component\\CssSelector\\' => 30,
             'Symfony\\Component\\Console\\' => 26,
             'Stripe\\' => 7,
+            'Spatie\\WebhookClient\\' => 21,
+            'Spatie\\StripeWebhooks\\' => 22,
             'SoareCostin\\FileVault\\' => 22,
         ),
         'R' => 
@@ -296,6 +298,14 @@ class ComposerStaticInit64b7fcf415f12f33f2fc750a4da7e832
         'Stripe\\' => 
         array (
             0 => __DIR__ . '/..' . '/stripe/stripe-php/lib',
+        ),
+        'Spatie\\WebhookClient\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/spatie/laravel-webhook-client/src',
+        ),
+        'Spatie\\StripeWebhooks\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/spatie/laravel-stripe-webhooks/src',
         ),
         'SoareCostin\\FileVault\\' => 
         array (
@@ -4737,6 +4747,27 @@ class ComposerStaticInit64b7fcf415f12f33f2fc750a4da7e832
         'SoareCostin\\FileVault\\FileEncrypter' => __DIR__ . '/..' . '/soarecostin/file-vault/src/FileEncrypter.php',
         'SoareCostin\\FileVault\\FileVault' => __DIR__ . '/..' . '/soarecostin/file-vault/src/FileVault.php',
         'SoareCostin\\FileVault\\FileVaultServiceProvider' => __DIR__ . '/..' . '/soarecostin/file-vault/src/FileVaultServiceProvider.php',
+        'Spatie\\StripeWebhooks\\Exceptions\\WebhookFailed' => __DIR__ . '/..' . '/spatie/laravel-stripe-webhooks/src/Exceptions/WebhookFailed.php',
+        'Spatie\\StripeWebhooks\\ProcessStripeWebhookJob' => __DIR__ . '/..' . '/spatie/laravel-stripe-webhooks/src/ProcessStripeWebhookJob.php',
+        'Spatie\\StripeWebhooks\\StripeSignatureValidator' => __DIR__ . '/..' . '/spatie/laravel-stripe-webhooks/src/StripeSignatureValidator.php',
+        'Spatie\\StripeWebhooks\\StripeWebhooksController' => __DIR__ . '/..' . '/spatie/laravel-stripe-webhooks/src/StripeWebhooksController.php',
+        'Spatie\\StripeWebhooks\\StripeWebhooksServiceProvider' => __DIR__ . '/..' . '/spatie/laravel-stripe-webhooks/src/StripeWebhooksServiceProvider.php',
+        'Spatie\\WebhookClient\\Events\\InvalidSignatureEvent' => __DIR__ . '/..' . '/spatie/laravel-webhook-client/src/Events/InvalidSignatureEvent.php',
+        'Spatie\\WebhookClient\\Exceptions\\InvalidConfig' => __DIR__ . '/..' . '/spatie/laravel-webhook-client/src/Exceptions/InvalidConfig.php',
+        'Spatie\\WebhookClient\\Exceptions\\WebhookFailed' => __DIR__ . '/..' . '/spatie/laravel-webhook-client/src/Exceptions/WebhookFailed.php',
+        'Spatie\\WebhookClient\\Models\\WebhookCall' => __DIR__ . '/..' . '/spatie/laravel-webhook-client/src/Models/WebhookCall.php',
+        'Spatie\\WebhookClient\\ProcessWebhookJob' => __DIR__ . '/..' . '/spatie/laravel-webhook-client/src/ProcessWebhookJob.php',
+        'Spatie\\WebhookClient\\SignatureValidator\\DefaultSignatureValidator' => __DIR__ . '/..' . '/spatie/laravel-webhook-client/src/SignatureValidator/DefaultSignatureValidator.php',
+        'Spatie\\WebhookClient\\SignatureValidator\\SignatureValidator' => __DIR__ . '/..' . '/spatie/laravel-webhook-client/src/SignatureValidator/SignatureValidator.php',
+        'Spatie\\WebhookClient\\WebhookClientServiceProvider' => __DIR__ . '/..' . '/spatie/laravel-webhook-client/src/WebhookClientServiceProvider.php',
+        'Spatie\\WebhookClient\\WebhookConfig' => __DIR__ . '/..' . '/spatie/laravel-webhook-client/src/WebhookConfig.php',
+        'Spatie\\WebhookClient\\WebhookConfigRepository' => __DIR__ . '/..' . '/spatie/laravel-webhook-client/src/WebhookConfigRepository.php',
+        'Spatie\\WebhookClient\\WebhookController' => __DIR__ . '/..' . '/spatie/laravel-webhook-client/src/WebhookController.php',
+        'Spatie\\WebhookClient\\WebhookProcessor' => __DIR__ . '/..' . '/spatie/laravel-webhook-client/src/WebhookProcessor.php',
+        'Spatie\\WebhookClient\\WebhookProfile\\ProcessEverythingWebhookProfile' => __DIR__ . '/..' . '/spatie/laravel-webhook-client/src/WebhookProfile/ProcessEverythingWebhookProfile.php',
+        'Spatie\\WebhookClient\\WebhookProfile\\WebhookProfile' => __DIR__ . '/..' . '/spatie/laravel-webhook-client/src/WebhookProfile/WebhookProfile.php',
+        'Spatie\\WebhookClient\\WebhookResponse\\DefaultRespondsTo' => __DIR__ . '/..' . '/spatie/laravel-webhook-client/src/WebhookResponse/DefaultRespondsTo.php',
+        'Spatie\\WebhookClient\\WebhookResponse\\RespondsToWebhook' => __DIR__ . '/..' . '/spatie/laravel-webhook-client/src/WebhookResponse/RespondsToWebhook.php',
         'Stripe\\Account' => __DIR__ . '/..' . '/stripe/stripe-php/lib/Account.php',
         'Stripe\\AccountLink' => __DIR__ . '/..' . '/stripe/stripe-php/lib/AccountLink.php',
         'Stripe\\AlipayAccount' => __DIR__ . '/..' . '/stripe/stripe-php/lib/AlipayAccount.php',

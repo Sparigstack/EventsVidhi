@@ -163,3 +163,7 @@ Route::post('upgradePlan', 'org\UpgradePlanController@upgradePlan')->name('strip
 Route::get('planUpgradation', function () {
     return view('planUpgradation');
 });
+
+//webhook call for recurringSubscription
+Route::get('updateRecurringSubscription', 'org\UpgradePlanController@updateRecurringSubscription');
+Route::stripeWebhooks('recurringSubscription');

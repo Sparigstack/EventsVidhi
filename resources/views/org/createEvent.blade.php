@@ -682,6 +682,7 @@
                                                     <input type="text" class="form-control" id="input_title" name='input_title' value="{{  old('input_title') }}" placeholder="Enter Video Title" required>
                                                 </div>
                                                 <div class='form-group videoUrl'>
+                                                    <p class="text-danger spaceFullUrlError d-none">You have occupied available cloud space according to your plan, please <u><a target="_blank" href="{{url('org/pricingPlans')}}">UPGRADE</a></u> your account.</p>
                                                     <label for='input_url'>Video URL</label><span style="font-size: 11px;font-weight: 600;">&nbsp;&nbsp;(YouTube or Vimeo url)</span>
                                                     <input type="text" class="form-control" id="input_url" name="input_url" value="{{  old('input_url') }}" placeholder="Enter Video URL" required>
                                                     <small class="text-danger urlError"></small>
@@ -728,6 +729,7 @@
                                                     <input type="text" class="form-control" id="input_title" name='input_title' value="{{  old('input_title') }}" placeholder="Enter Podcast Title" required>
                                                 </div>
                                                 <div class='form-group videoUrl PodcastUrl'>
+                                                    <p class="text-danger spaceFullUrlError d-none">You have occupied available cloud space according to your plan, please <u><a target="_blank" href="{{url('org/pricingPlans')}}">UPGRADE</a></u> your account.</p>
                                                     <label for='input_url'>Podcast URL</label><span style="font-size: 11px;font-weight: 600;">&nbsp;&nbsp;(YouTube or Vimeo url)</span>
                                                     <input type="text" class="form-control" id="input_url" name="input_url" value="{{  old('input_url') }}" placeholder="Enter Podcast URL" required>
                                                     <small class="text-danger podcastUrlError"></small>

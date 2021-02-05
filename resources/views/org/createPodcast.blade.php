@@ -146,6 +146,7 @@
                             <label> You can either save your Youtube or Vimeo podcast URL OR you can upload your own podcast.</label>
                         </div>
                         <div class="form-group {{$dnoneClass}} checkPodcastExist">
+                            <p class="text-danger spaceFullUrlError d-none">You have occupied available cloud space according to your plan, please <u><a target="_blank" href="{{url('org/pricingPlans')}}">UPGRADE</a></u> your account.</p>
                             <p for='input_url' class="float-left">Podcast URL</p><span style="font-size: 11px;font-weight: 600;">&nbsp;&nbsp;(YouTube or Vimeo url)</span>
                             <input type="text" class="form-control" id="input_url" onkeyup="pocastUrlCheck(this);" onchange="pocastUrlCheck(this);" name="input_url" value="{{  old('input_url', $desription) }}" placeholder="Enter Podcast URL" required>
                             <small class="text-danger urlError">{{ $errors->first('input_url') }}</small>
@@ -410,6 +411,7 @@
             beforeSend: function () {
                 var url = $("#input_url").val();
                 $(".spaceFullError").addClass("d-none");
+                $(".spaceFullUrlError").addClass("d-none");
                 // regexp =  /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
                 var validExtensions = ['mp3','m4a','wma']; //array of valid extensions
                 var fileName = $("#input_podfile").val();
@@ -418,12 +420,19 @@
                 if ((url != '' || $.inArray(fileNameExt, validExtensions) != -1) && (!$(".checkPodcastExist").hasClass('d-none'))) {   
                     if($.inArray(fileNameExt, validExtensions) != -1 && (!$(".checkPodcastExist").hasClass('d-none'))){
                         var availableStorage=$(".AvailableStorageValue").val();
-                        // $(".AvailableStorageValue").val();
-                        if(availableStorage == "3.000"){
+                        var planChooseGB=$(".planChooseGB").val();
+                        if(availableStorage == planChooseGB){
                             $(".spaceFullError").removeClass("d-none");
+                            $(".spaceFullUrlError").addClass("d-none");
                             clearInterval(auto_refresh);
                         } 
                     } else {
+                        var podcastUrlCount=$(".podcastUrlCount").val();
+                        if(podcastUrlCount != ""){
+                            $(".spaceFullUrlError").removeClass("d-none");
+                            $(".spaceFullError").addClass("d-none");
+                            clearInterval(auto_refresh);
+                        }
                         $('.podcastFileError').text('');
                         $('.dragFileForm').find('.podcastProgressBar').removeClass('d-none');
                         //status.empty();

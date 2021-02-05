@@ -155,6 +155,7 @@ $CardTitle = "Add New Video";
                         
 
                         <div class='form-group {{$dnoneClass}} checkVideoExist'>
+                            <p class="text-danger spaceFullUrlError d-none">You have occupied available cloud space according to your plan, please <u><a target="_blank" href="{{url('org/pricingPlans')}}">UPGRADE</a></u> your account.</p>
                             <p for='input_url' class="float-left">Video URL</p><span style="font-size: 11px;font-weight: 600;">&nbsp;&nbsp;(YouTube or Vimeo url)</span>
                             <input type="text" class="form-control" id="input_url" onkeyup="videoUrlCheck(this);" onchange="videoUrlCheck(this);" name="input_url" value="{{  old('input_url', $desription) }}" placeholder="Enter Video URL" required>
                             <small class="text-danger urlError">{{ $errors->first('input_url') }}</small>
@@ -369,6 +370,7 @@ $CardTitle = "Add New Video";
                     beforeSend: function () {
                         var url = $("#input_url").val();
                         $(".spaceFullError").addClass("d-none");
+                        $(".spaceFullUrlError").addClass("d-none");
                         // regexp =  /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
                         // regexp =  /https:\/\/(?:www.)?(?:(vimeo).com\/(.*)|(youtube).com\/watch\?v=(.*?)&)/;
                         regexp = /^(http:\/\/|https:\/\/)(vimeo\.com|youtu\.be|www\.youtube\.com)\/([\w\/]+)([\?].*)?$/;
@@ -384,12 +386,19 @@ $CardTitle = "Add New Video";
                                 if ((url.match(regexp) || $.inArray(fileNameExt, validExtensions) != -1) && (!$(".checkVideoExist").hasClass('d-none'))) {
                                     if($.inArray(fileNameExt, validExtensions) != -1 && (!$(".checkVideoExist").hasClass('d-none'))){
                                             var availableStorage=$(".AvailableStorageValue").val();
-                                            // $(".AvailableStorageValue").val();
-                                            if(availableStorage == "3.000"){
+                                            var planChooseGB=$(".planChooseGB").val();
+                                            if(availableStorage == planChooseGB){
                                                 $(".spaceFullError").removeClass("d-none");
+                                                $(".spaceFullUrlError").addClass("d-none");
                                                 clearInterval(auto_refresh);
                                             }
                                     } else {
+                                        var videoUrlCount=$(".videoUrlCount").val();
+                                        if(videoUrlCount != ""){
+                                            $(".spaceFullUrlError").removeClass("d-none");
+                                            $(".spaceFullError").addClass("d-none");
+                                            clearInterval(auto_refresh);
+                                        }
                                         $('.videoFileError').text('');
                                         $('.dragFileForm').find('.progressBar').removeClass('d-none');
                                         //status.empty();

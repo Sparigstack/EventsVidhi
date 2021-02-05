@@ -36,6 +36,8 @@ return array(
     'Symfony\\Component\\CssSelector\\' => array($vendorDir . '/symfony/css-selector'),
     'Symfony\\Component\\Console\\' => array($vendorDir . '/symfony/console'),
     'Stripe\\' => array($vendorDir . '/stripe/stripe-php/lib'),
+    'Spatie\\WebhookClient\\' => array($vendorDir . '/spatie/laravel-webhook-client/src'),
+    'Spatie\\StripeWebhooks\\' => array($vendorDir . '/spatie/laravel-stripe-webhooks/src'),
     'SoareCostin\\FileVault\\' => array($vendorDir . '/soarecostin/file-vault/src'),
     'Ramsey\\Uuid\\' => array($vendorDir . '/ramsey/uuid/src'),
     'Ramsey\\Collection\\' => array($vendorDir . '/ramsey/collection/src'),

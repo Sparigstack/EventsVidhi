@@ -41,13 +41,24 @@ $(document).ready(function () {
             processData: false,
             beforeSend: function () {
                 $(".spaceFullError").addClass("d-none");
+                $(".spaceFullUrlError").addClass("d-none");
                 var availableStorage=$(".AvailableStorageValue").val();
-                // $(".AvailableStorageValue").val();
-                if(availableStorage == "3.000" && $('#SaveVideoAjax').find("#input_url").val() == ""){
+                var planChooseGB=$(".planChooseGB").val();
+                if(availableStorage == planChooseGB && $('#SaveVideoAjax').find("#input_url").val() == ""){
                     // alert("Please Upgrade Your Plan");
                     // window.location.href = $('.plansPageRedirect').val();
+                    LoaderStop();
                     $(".spaceFullError").removeClass("d-none");
+                    $(".spaceFullUrlError").addClass("d-none");
                     clearInterval(auto_refresh);
+                } else if ($('#SaveVideoAjax').find("#input_url").val() != "") {
+                    var videoUrlCount=$(".videoUrlCount").val();
+                    if(videoUrlCount != ""){
+                        LoaderStop();
+                        $(".spaceFullUrlError").removeClass("d-none");
+                        $(".spaceFullError").addClass("d-none");
+                        clearInterval(auto_refresh);
+                    }
                 } else { 
                     $('#SaveVideoAjax').find('.progressBar').removeClass('d-none');
                     var percentVal = '0%';
@@ -121,13 +132,24 @@ $(document).ready(function () {
             processData: false,
             beforeSend: function () {
                 $(".spaceFullError").addClass("d-none");
+                $(".spaceFullUrlError").addClass("d-none");
                 var availableStorage=$(".AvailableStorageValue").val();
-                // $(".AvailableStorageValue").val();
-                if(availableStorage == "3.000" && $('#SavePodCastAjax').find("#input_url").val() == ""){
+                var planChooseGB=$(".planChooseGB").val();
+                if(availableStorage == planChooseGB && $('#SavePodCastAjax').find("#input_url").val() == ""){
                     // alert("Please Upgrade Your Plan");
                     // window.location.href = $('.plansPageRedirect').val();
+                    LoaderStop();
                     $(".spaceFullError").removeClass("d-none");
+                    $(".spaceFullUrlError").addClass("d-none");
                     clearInterval(auto_refresh);
+                } else if ($('#SavePodCastAjax').find("#input_url").val() != "") {
+                    var podcastUrlCount=$(".podcastUrlCount").val();
+                    if(podcastUrlCount != ""){
+                        LoaderStop();
+                        $(".spaceFullUrlError").removeClass("d-none");
+                        $(".spaceFullError").addClass("d-none");
+                        clearInterval(auto_refresh);
+                    }
                 } else { 
                     $('#SavePodCastAjax').find('.podcastProgressBar').removeClass('d-none');
                     var percentVal = '0%';

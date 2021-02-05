@@ -62,6 +62,40 @@
 {{$total=$vidSize+$podSize}}
 {{$totalGb=$total/1073741824}}
 
+<?php
+    use App\Video;
+    use APP\Podcast; 
+
+    $loginUser = Auth::user();
+    $vidUrlCount = Video::where("user_id" , $loginUser->id)->where("file_size" , NULL)->get();
+    $podUrlCount = Podcast::where("user_id" , $loginUser->id)->where("file_size" , NULL)->get();
+    $videoUrlCount = "";
+    $podcastUrlCount = "";
+
+    if($loginUser->plan_id == NULL){
+        if(count($vidUrlCount) > 3){
+            $videoUrlCount = "3";
+        }
+        if(count($podUrlCount) > 3){
+            $podcastUrlCount = "3";
+        }
+    } else if($loginUser->plan_id == 1 || $loginUser->plan_id == 2){
+        if(count($vidUrlCount) > 10){
+            $videoUrlCount = "10";
+        }
+        if(count($podUrlCount) > 10){
+            $podcastUrlCount = "10";
+        }
+    } else {
+        if(count($vidUrlCount) > 10){
+            $videoUrlCount = "";
+        }
+        if(count($podUrlCount) > 10){
+            $podcastUrlCount = "";
+        }
+    }
+?>
+
     <div id="pageloader-overlay" class="visible incoming" style="display: none;">
         <div class="loader-wrapper-outer">
             <div class="loader-wrapper-inner">
@@ -81,10 +115,12 @@
             <div class="simplebar-scroll-content" style="padding-right: 17px; margin-bottom: -34px;">
                 <div class="simplebar-content" style="padding-bottom: 17px; margin-right: -17px;">
                     <div class="brand-logo">
-                        <a href="{{ url('/') }}">
+                        <!-- <a href="{{ url('/') }}">
                             <img src="{{ asset('assets/images/logo-icon.png') }}" class="logo-icon" alt="logo icon">
                             <h5 class="logo-text">Vidhi's Events</h5>
-                        </a>
+                        </a> -->
+                        <a href="{{ url('/') }}" style="color: white;">
+                        <h4 style="" class="mt-1 logo-text OrgLogoText"> <span class="dot1"></span> <span class="dot"></span>  panelhive </h4> </a> 
                     </div>
                     <div class="user-details">
                         <div class="media align-items-center" data-toggle="collapse">
@@ -230,12 +266,26 @@
 
                     <li class="nav-item">
                         <a class="nav-link dropdown-toggle dropdown-toggle-nocaret UserIconWithText" data-toggle="dropdown" href="#">
-
                             <?php if(Auth::user()->user_type != 3) { 
-                                $totalGbData = number_format((float)$totalGb, 3, '.', ''); ?>
-                            <div class="mr-2 AvailableStorage">{{$totalGbData}} GB Used out of 3GB</div>
+                                $totalGbData = number_format((float)$totalGb, 3, '.', ''); 
+                                $outofspace = "";
+                                $planChooseGB = "";
+                                if(Auth::user()->plan_id == NULL){
+                                    $outofspace = "out of 3GB";
+                                    $planChooseGB = "3.000";
+                                }
+                                if(Auth::user()->plan_id == 1 || Auth::user()->plan_id == 2)  {
+                                    $outofspace = "out of 10GB";
+                                    $planChooseGB = "10.000";
+                                }
+                            ?>
+                            <div class="mr-2 AvailableStorage">{{$totalGbData}} GB Used {{$outofspace}}</div>
                             <div class="mr-2 AvailableStorage"></div>
                             <input type="hidden" class="AvailableStorageValue" value ="{{$totalGbData}}">
+                            <input type="hidden" class="planChooseGB" value ="{{$planChooseGB}}">
+                            <input type="hidden" class="videoUrlCount" value="{{$videoUrlCount}}">
+                            <input type="hidden" class="podcastUrlCount" value="{{$podcastUrlCount}}">
+
                             <?php } ?>
                             <div>
                                 <!-- <span class="user-profile"><img src="https://via.placeholder.com/110x110" class="img-circle" alt="user avatar"></span> -->

@@ -133,4 +133,25 @@ class UpgradePlanController extends Controller
             return $e;
         }
     }
+
+    public function updateRecurringSubscription($webhookRequest){
+        $subscriptionid = $webhookRequest['data']['object']['lines']['data'][0]['subscription'];
+        $planInterval = $webhookRequest['data']['object']['lines']['data'][0]['price']['recurring']['interval'];
+        
+        $transactionid = User::where('transaction_id', $subscriptionid)->first();
+        $db_expiry_date = "";
+
+        if($transactionid){
+            $db_expiry_date = $transactionid->expiry_date;
+            if($planInterval == "month"){
+                $expiry_date = date('Y-m-d', strtotime($db_expiry_date . ' + 31 days'));
+            } else {
+            $expiry_date = date('Y-m-d', strtotime($db_expiry_date . ' + 365 days'));
+            }
+
+            $user = User::findOrFail($transactionid->id);
+            $user->expiry_date = $expiry_date;
+            $user->save();
+        }
+    }
 }
