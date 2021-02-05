@@ -125,7 +125,7 @@ class UpgradePlanController extends Controller
             $data = ['view' => 'mails.upgradePlan', 'mail_content' => $mail_content, 'subject' => 'Upgrade Plan Successfully'];
             $emailOb = new Email($data);
             // team.sprigstack@gmail.com
-            //Mail::to($request->email)->send($emailOb);
+            Mail::to($request->email)->send($emailOb);
 
             return view('planUpgradation');
         } catch (Exception $e) {
@@ -153,5 +153,19 @@ class UpgradePlanController extends Controller
             $user->expiry_date = $expiry_date;
             $user->save();
         }
+    }
+
+    public function cancelSubscription(Request $request){
+        Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+
+        //cancel subscription in stripe
+        $sub = \Stripe\Subscription::retrieve($getUser->transaction_id);
+        $sub->cancel();
+
+        //Update plan_id to basic plan
+        $userId = $request->userId;
+        $getUser = User::findOrFail($userId);
+        $getUser->plan_id = 5;
+        $getUser->save();
     }
 }

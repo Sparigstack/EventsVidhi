@@ -94,6 +94,7 @@ class RegisterController extends Controller
                     'name' => $data['businessName'],
                     'website_url' => $data['website'],
                     'location' => $data['location'],
+                    'plan_id' => 5,
                 ]);
                 // $users = User::findOrFail($lastID->id);
                 // $users->name = $data['businessName'];

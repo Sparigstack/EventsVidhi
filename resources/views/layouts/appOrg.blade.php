@@ -72,7 +72,10 @@
     $videoUrlCount = "";
     $podcastUrlCount = "";
 
-    if($loginUser->plan_id == NULL){
+    $totalVidCount = count($vidUrlCount);
+    $totalPodCount = count($podUrlCount);
+
+    if($loginUser->plan_id == 5){
         if(count($vidUrlCount) > 3){
             $videoUrlCount = "3";
         }
@@ -258,7 +261,7 @@
                 </ul>
 
                 <ul class="navbar-nav align-items-center right-nav-link">
-                    <?php if(Auth::user()->user_type != 3) { ?>
+                    <?php if(Auth::user()->user_type != 3 && Auth::user()->plan_id != 3 && Auth::user()->plan_id != 4) { ?>
                     <li class="nav-item">
                         <div class="mt-2"><button class="btn m-1 pull-right btn-primary"><a style="color:white;" href="{{url('org/pricingPlans')}}">Upgrade Plan</a></button></div>
                     </li>
@@ -270,7 +273,7 @@
                                 $totalGbData = number_format((float)$totalGb, 3, '.', ''); 
                                 $outofspace = "";
                                 $planChooseGB = "";
-                                if(Auth::user()->plan_id == NULL){
+                                if(Auth::user()->plan_id == 5){
                                     $outofspace = "out of 3GB";
                                     $planChooseGB = "3.000";
                                 }
@@ -285,6 +288,8 @@
                             <input type="hidden" class="planChooseGB" value ="{{$planChooseGB}}">
                             <input type="hidden" class="videoUrlCount" value="{{$videoUrlCount}}">
                             <input type="hidden" class="podcastUrlCount" value="{{$podcastUrlCount}}">
+                            <input type="hidden" class="totalVidCount" value="{{$totalVidCount}}">
+                            <input type="hidden" class="totalPodCount" value="{{$totalPodCount}}">
 
                             <?php } ?>
                             <div>

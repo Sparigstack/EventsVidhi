@@ -167,3 +167,4 @@ Route::get('planUpgradation', function () {
 //webhook call for recurringSubscription
 Route::get('updateRecurringSubscription', 'org\UpgradePlanController@updateRecurringSubscription');
 Route::stripeWebhooks('recurringSubscription');
+Route::post('cancelSubscription', 'org\UpgradePlanController@cancelSubscription');

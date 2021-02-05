@@ -1,3 +1,16 @@
+$(function () {
+    var availableStorage=$(".AvailableStorageValue").val();
+    var totalVidCount=$(".totalVidCount").val();
+    var totalPodCount=$(".totalPodCount").val();
+    if(parseFloat(availableStorage) > 3.000 || parseInt(totalVidCount) > 3 || parseInt(totalPodCount) > 3){
+        $(".notCancelPlan").removeClass("d-none");
+        $(".CancelPlan").addClass("d-none");
+    } else{
+        $(".notCancelPlan").addClass("d-none");
+        $(".CancelPlan").removeClass("d-none");
+    }
+});
+
 function SaveUserSetting(element){
   
     LoaderStart();
@@ -36,5 +49,24 @@ function SaveUserSetting(element){
             LoaderStop();
              // console.log(response);
          }
+    });
+}
+
+function CancelSubscription(element){
+    var planName = $('.planName').val();
+    var confirmCancel = confirm("Are you sure you want to cancel your " + planName + " and move to Basic Plan?");
+    if (!confirmCancel)
+        return;
+    var userId = $(element).attr('data-id');
+    var CSRF_TOKEN = $('.csrf-token').val();
+    var urlString = $('.cancelSubscription').val();
+    $.ajax({
+        url: urlString,
+        type: 'post',
+        data: { _token: CSRF_TOKEN, userId: userId },
+        success: function (response) {
+            //console.log(response);
+            location.reload();
+        }
     });
 }
