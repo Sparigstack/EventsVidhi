@@ -488,6 +488,15 @@ border-radius: 6px !important;
 .hiddenDiv{
     visibility: hidden;
 }
+.smileyCard{
+    background: #FED8C6 !important;border-radius: 6px !important;
+}
+.smileyCard1{
+    background: #ECECEC !important;border-radius: 6px !important;
+}
+.smileyCountDiv{
+    font-size: 32px;
+}
  
 @media(min-width:768px) and (max-width:1024px){
     .SignUpLink p a{

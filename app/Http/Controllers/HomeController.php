@@ -20,6 +20,7 @@ use App\ContentFollower;
 use App\User;
 use App\Ticket;
 use App\Plan;
+use App\Speaker;
 
 class HomeController extends Controller
 {
@@ -303,7 +304,11 @@ class HomeController extends Controller
         $videosList = Video::where('event_id', $eventid)->get();
         $podcastsList = Podcast::where('event_id', $eventid)->get();
         $ticketsList = Ticket::where('event_id',$eventid)->get();
-        return view('eventDetail', compact('event', 'eventsList', 'countryName', 'eventFollowersList', 'videosList', 'podcastsList', 'ticketsList'));
+        $orgFollowerCount = "SELECT c.content_id FROM content_followers c INNER JOIN events e ON c.content_id = e.user_id WHERE c.discriminator = 'o' AND e.id =". $eventid;
+        $orgFollowerCount = DB::select(DB::raw($orgFollowerCount));
+        $orgFollowerCountResult = count($orgFollowerCount);
+        $speakersList = Speaker::where('event_id',$eventid)->get();
+        return view('eventDetail', compact('event', 'eventsList', 'countryName', 'eventFollowersList', 'videosList', 'podcastsList', 'ticketsList', 'orgFollowerCountResult', 'speakersList'));
     }
 
     public function videoDetail($videoid)
