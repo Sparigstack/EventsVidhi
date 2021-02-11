@@ -213,7 +213,7 @@
                                             <div class="col-md-12 row">
                                                 <div class="col-md-6 footer-menu-column">
                                                     <div class="col-md-12 row">
-                                                        <div class="col-md-4 footer-menu-first-column">
+                                                        <div class="col-md-3 footer-menu-first-column">
                                                             <a href="{{url('aboutUs')}}" class="mob-pd-common">About Us</a> 
                                                             <a href="{{url('information')}}" class="mob-pd-common" style="padding-top:20px">Help</a>
                                                         </div>
@@ -221,8 +221,9 @@
                                                             <a href="#" class="mob-pd-common">Privacy Policy</a> 
                                                             <a href="{{url('pricingPlans')}}" class="mob-pd-common" style="padding-top:20px;">Pricing & Plans</a>
                                                         </div>
-                                                        <div class="col-md-4 footer-menu-third-column">
-                                                            <a href="{{url('contactUs')}}" class="mob-pd-common">Contact Us</a>
+                                                        <div class="col-md-5 footer-menu-third-column">
+                                                            <a href="{{url('whyBecomeOrg')}}" class="mob-pd-common">Why Become Organizer?</a>
+                                                            <a href="{{url('contactUs')}}" class="mob-pd-common" style="padding-top: 20px;">Contact Us</a>
                                                         </div>
                                                     </div>
                                                 </div>

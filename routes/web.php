@@ -155,6 +155,11 @@ Route::get('pricingPlans','HomeController@pricingPlan');
 Route::get('contactUs', function () {
     return view('contactUs');
 });
+Route::get('whyBecomeOrg', function () {
+    return view('whyBecomeOrg');
+});
+Route::get('eventRegConfirm/{eventid}','UserController@eventRegConfirm');
+Route::get('ticketPaymentConfirm/{eventid}','UserController@ticketPaymentConfirm');
 
 //Upgrade Plan Routes
 Route::get('planDetails/{id}','org\UpgradePlanController@planDetails');

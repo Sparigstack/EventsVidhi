@@ -213,16 +213,16 @@ function shareLink(){
     $temp.val(url).select();
     document.execCommand('copy');
     if (url.indexOf("events") >= 0){
-        $(".copied").text("Events Copied to clipboard").show();
+        $(".copied").text("Event Copied to clipboard").show();
     }
     if (url.indexOf("videos") >= 0){
-        $(".copied").text("Videos Copied to clipboard").show();
+        $(".copied").text("Video Copied to clipboard").show();
     }
     if (url.indexOf("podcasts") >= 0){
-        $(".copied").text("Podcasts Copied to clipboard").show();
+        $(".copied").text("Podcast Copied to clipboard").show();
     }
     if (url.indexOf("organizer") >= 0){
-        $(".copied").text("Organizers Copied to clipboard").show();
+        $(".copied").text("Organizer Copied to clipboard").show();
     }
     $temp.remove();
 }

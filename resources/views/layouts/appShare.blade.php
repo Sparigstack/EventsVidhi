@@ -7,4 +7,4 @@
      			<a href="http://www.facebook.com/share.php?u=<?php echo $actual_link; ?>" onclick="return fbs_click();" target="_blank" class="btn-social btn-social-circle btn-facebook waves-effect waves-light m-1 float-right" style="color:white;"><i class="fa fa-facebook"></i></a>
      		</div>
 
-     		<div class="copied mt-2"></div>
+     		<div class="copied mt-2" style="color: green;font-size: 13px;"></div>

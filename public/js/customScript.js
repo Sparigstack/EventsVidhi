@@ -324,24 +324,19 @@ $("#EventProfilePicImage").change(function(e) {
            if ((file = this.files[0])){
         image = new Image();
           image.onload = function() {
-//            alert(this.width + "@" + this.height);
-            // if(this.width === 845 && this.height === 445){
-//              $('#TempText').remove();
-//        document.getElementById('bannerImage').src = window.URL.createObjectURL(this.files[0]);
-//        document.getElementById('bannerImage').classList.remove('d-none');
-                // return true;
-              // }
-            if(this.width< 420 && this.height < 360){
+            // if(this.width< 420 && this.height < 360){
+                if(this.width<= 170 && this.height <= 170){
                 $("#profilePicImage").addClass("SmallImages");
                 $(".removeprofilepic").removeClass("d-none");
                 $(".picText").addClass("d-none");
                 return true;
-            }else if(this.width === 420 && this.height === 360){
+            }else if(this.width === 170 && this.height === 170){
                 $(".removeprofilepic").removeClass("d-none");
                 $(".picText").addClass("d-none");
                 return true;
             }else{
-                alert("Maximum image dimension allowed is : 420x360 pixels.");
+                // alert("Maximum image dimension allowed is : 420x360 pixels.");
+                alert("Maximum image dimension allowed is : 170x170 pixels.");
                 $('#profilePicImage').attr("src", "");
                 $('#EventProfilePicImage').val("");
                 $(".removeprofilepic").addClass("d-none");

@@ -16,12 +16,12 @@
                             <input type="hidden" class="userIDFollow" value="{{$getUserID}}">
                             <input type="hidden" class="saveOrgFollower" value="{{url('saveOrgFollower')}}">
 
-	<div class="col-md-12 col-lg-12 d-flex align-items-center mb-3">
-		<a href="{{url('/')}}" style="color: #9C9C9C;font-weight: 100;" class="ml-4"><i class="fa fa-angle-left"></i>&nbsp; Back</a>
+	<div class="col-md-12 col-lg-12 d-flex align-items-center mb-3 pl-0">
+		<a href="{{url('/')}}" style="color: #9C9C9C;font-weight: 100;" class=""><i class="fa fa-angle-left"></i>&nbsp; Back</a>
 	</div>
 
-	<div class="featuredContent mb-4 row" style="padding: 0px 40px;">
-
+	<div class="featuredContent mb-4 row" style="">
+        <!-- padding: 0px 40px; -->
 		<div class="col-md-9 col-lg-9">
 			<div class="card w-100" style="border-radius: 6px;">
                 <div class="card-body p-0">
@@ -82,7 +82,8 @@
 
 	</div>
 
-	<div class="col-md-12 podcastsList mb-4" style="padding: 0px 40px;padding-bottom: 50px;">
+	<div class="col-md-12 podcastsList mb-4" style="padding-bottom: 50px;">
+        <!-- padding: 0px 40px; -->
      	<h5 class="mb-4"> Podcasts you may like </h5>
 
      	<div class="row col-md-12 pl-0 pr-0">

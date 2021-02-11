@@ -26,11 +26,12 @@
                             <input type="hidden" class="userIDFollow" value="{{$getUserID}}">
                             <input type="hidden" class="saveOrgFollower" value="{{url('saveOrgFollower')}}">
 
-	<div class="col-md-12 col-lg-12 d-flex align-items-center mb-3">
-		<a href="{{url('/')}}" style="color: #9C9C9C;font-weight: 100;" class="ml-4"><i class="fa fa-angle-left"></i>&nbsp; Back</a>
+	<div class="col-md-12 col-lg-12 d-flex align-items-center mb-3 pl-0">
+		<a href="{{url('/')}}" style="color: #9C9C9C;font-weight: 100;" class=""><i class="fa fa-angle-left"></i>&nbsp; Back</a>
 	</div>
 
-	<div class="featuredContent mb-4 row" style="padding: 0px 40px;">
+	<div class="featuredContent mb-4 row" style="">
+        <!-- padding: 0px 40px; -->
      	<div class="col-md-9 col-lg-9">
      		<div class="card w-100">
 
@@ -73,7 +74,7 @@
                     ?>
 
                           <div class="col-md-3 {{$hideFollow}}" style="margin-top: 22%;">
-                          		<a style="cursor: pointer;" onclick="followOrganizer(this);" data-org-id="{{$organizer->id}}" discriminator="o"><button type="button" id="followOrg" class="clickable createEventButton buttonMobileSize mt-2 row" value="{{$checkFollow}}" style="{{$backcolor}}color:black;height:40px;display: block;"><i aria-hidden="true" class="fa fa-check-square-o mr-2 followIcon {{$tickIcon}}" style="font-size: 17px;"></i>{{$checkFollow}}</button></a>
+                          		<a style="cursor: pointer;" onclick="followOrganizer(this);" data-org-id="{{$organizer->id}}" discriminator="o"><button type="button" id="followOrg" class="clickable createEventButton buttonMobileSize mt-2 row ml-3" value="{{$checkFollow}}" style="{{$backcolor}}color:black;height:40px;display: block;"><i aria-hidden="true" class="fa fa-check-square-o mr-2 followIcon {{$tickIcon}}" style="font-size: 17px;"></i>{{$checkFollow}}</button></a>
                           </div>
 
                     </div>
@@ -200,7 +201,7 @@
                                                 }
                                         ?>
                                         <a href="{{url('videos/'. $videoList->id)}}" target="_blank">
-                                            <iframe width="218px" height="125px" src="{{$url}}" frameborder="0" class="vFrame" style="border-radius: 6px 6px 0px 0px;pointer-events: none;"></iframe>
+                                            <iframe width="235px" height="135px" src="{{$url}}" frameborder="0" class="vFrame" style="border-radius: 6px 6px 0px 0px;pointer-events: none;"></iframe>
                                         </a>
                                     <?php  }
                                 } ?>
@@ -479,7 +480,8 @@
 
 
 
-    <div class="col-md-12 eventsList mb-4" style="padding: 0px 40px;">
+    <div class="col-md-12 eventsList mb-4" style="">
+        <!-- padding: 0px 40px; -->
      	<h5 class="mb-4"> Events you may like &nbsp; <i class="fa fa-arrow-right" aria-hidden="true"></i> </h5>
 
      	<div class="row col-md-12 pl-0 pr-0">

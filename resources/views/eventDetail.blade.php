@@ -46,16 +46,17 @@ if ($event_date >= $date_now) {
      	<div class="col-md-9 col-lg-9">
      		<div class="card w-100">
                 <div class="card-body eventDetailCardBody pt-0">
-                    <div class="col-md-12 col-lg-12 d-flex align-items-center mb-3" style="background:url('{{$bannerImage}}'); background-size:cover; background-position:center;
-                    background-repeat:no-repeat; min-height:294px; padding:unset;border-radius:6px;">
+                    <div class="col-md-12 col-lg-12 d-flex align-items-center" style="background:url('{{$bannerImage}}'); background-size:cover; background-position:center;
+                    background-repeat:no-repeat; min-height:290px; padding:unset;border-radius:6px;">
+                    <!-- 294px -->
                     </div>
 
                     <div class="col-md-12 row" style="padding: 0px 25px;">
-                        <div class="col-md-8">
-                            <h5 style="font-size: 22px;line-height: 30px;"> {{$event->title}} </h5>
+                        <div class="col-md-7">
+                            <h5 class="mt-3" style="font-size: 20px;line-height: 30px;"> {{$event->title}} </h5>
                         </div>
                         <hr>
-                        <div class="col-md-4">
+                        <div class="col-md-5 pr-0">
                             <?php
                                     $dateStr = "";
                                     $timeStr = "";
@@ -75,10 +76,12 @@ if ($event_date >= $date_now) {
                                         $timeStr = $st . " - " . $et;
                                     }
                                     ?>
-                            <div style="border-left: 1px solid rgba(0, 0, 0, 0.1);height: 100px;">
-                                <h5 style="font-size: 18px;" class="ml-3"> {{$dateStr}} </h5>
-                                <h5 style="font-size: 18px;" class="ml-3"> {{$timeStr}} </h5>
-                                <p style="font-weight: bold;" class="ml-3"> {{$event->timezone->abbreviation}} </p>
+                            <div style="border-left: 1px solid rgba(0, 0, 0, 0.1);height: 60px;">
+                                <h5 style="font-size: 16px;" class="ml-3 mt-3"> {{$dateStr}} </h5>
+                                <div class="row col-md-12">
+                                    <h5 style="font-size: 16px;" class="ml-3"> {{$timeStr}} </h5>
+                                    <p style="font-weight: bold;" class="ml-3"> {{$event->timezone->abbreviation}} </p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -97,12 +100,12 @@ if ($event_date >= $date_now) {
                         </div>
 
                         <div class="col-md-8 row" style="align-items: center;">
-                            <div class="col-md-12 row mb-4" style="margin-left: -8%;">
-                            <h5 class="mt-3 mr-2"> Speakers </h5><span class="dot1 mt-4"></span> <span class="dot ml-1 mt-4"></span></div>
+                            <div class="col-md-12 row mb-3 mt-3" style="margin-left: -8%;">
+                            <h4 class="mt-2 pt-1 mr-2" style="font-size: 22px;"> Speakers </h4><span class="dot1 mt-4"></span> <span class="dot ml-1 mt-4"></span></div>
 
                             <?php 
                             foreach($speakersList as $speakerList) { ?>
-                            <div class="row mb-4" style="margin-left: -45%;">
+                            <div class="row mb-5" style="margin-left: -45%;">
                                 <div class="pl-3 col-md-3">
                                     <?php
                             $speakerProfileLogo = "";
@@ -112,14 +115,14 @@ if ($event_date >= $date_now) {
                                 $speakerProfileLogo = env("AWS_URL")."no-image-logo.jpg"; 
                             }
                                ?>
-                                    <img class="align-self-start profileImg" src="{{$speakerProfileLogo}}" alt="user avatar" style="width: 150px !important;height: 150px !important;border-radius: 6px !important;">
+                                    <img class="align-self-start profileImg" src="{{$speakerProfileLogo}}" alt="user avatar" style="width: 170px !important;height: 170px !important;border-radius: 6px !important;">
                                     </div>
                                     <div class="col-md-9">
-                                        <h6 class="mb-0 pb-1"> {{$speakerList->name}}
+                                        <h5 class="mb-0 pb-1 mt-2"> {{$speakerList->name}}
                                             <?php if($speakerList->linkedin_url != '') { ?> 
                                             <a href="{{$speakerList->linkedin_url}}" target="_blank" class="btn-social btn-social-circle btn-linkedin waves-effect waves-light m-1 float-right" style="color:white;height: 30px;width:30px;"><i class="fa fa-linkedin pt-1 d-flex justify-content-center"></i></a>
                                             <?php } ?> 
-                                        </h6>
+                                        </h5>
                                         <p class="" style="color: #9C9C9C;">{{$speakerList->title}} </p> 
                                         <p class="mt-2"> {{$speakerList->description}} </p>
                                     </div>
@@ -131,80 +134,9 @@ if ($event_date >= $date_now) {
                     </div>
                     <?php } ?>
 
-                    <?php if(count($ticketsList) > 0) { ?>
-                    <hr class="d-none">
-                    <h5 class="mt-3 d-none" style="padding: 0px 25px;"> Event Tickets </h5>
-
-                    <div class="ticketsDiv row d-none" style="padding: 0px 25px;padding-left: 52px;">
-
-                        @foreach($ticketsList as $ticketList)
-                        <div class="col-md-5 eventTicket">
-                            <div class="card" style="border: 1px solid #BBBBBB;border-radius: 6px;">
-
-                                <?php
-                                    $dateStr = "";
-
-                                    $salesStart = strtotime($ticketList->sales_start);
-                                    $startDate = date("d M", $salesStart);
-                                    $startTime = date('H:i', $salesStart);
-
-                                    $salesEnd = strtotime(($ticketList->sales_end));
-                                    $endDate = date("d M", $salesEnd);
-                                    $endTime = date('H:i', $salesEnd);
-                                    if($startDate == $endDate){
-                                        $dateStr = $startDate. ', '.$startTime. ' - '.$endTime;
-                                    } else {
-                                        $dateStr = $startDate.', '.$startTime. ' to '.$endDate. ' '. $endTime;
-                                    }
-                                ?>
-
-                                <div class="card-body">
-
-                                    <h6 class="text-center mb-3"> {{$ticketList->name}} </h6>
-
-                                    <div class="row dateTimeDiv">
-                                        <div class="col-md-12 col-lg-12">
-                                            <h6 class="mb-0"> Date & Time </h6>
-                                            <p class="text-uppercase">{{$dateStr}}</p>
-                                        </div>
-                                    </div>
-
-                                    <div class="row priceDiv">
-                                        <div class="col-md-6 col-lg-6">
-                                            <h6 class="mb-0"> Quantity </h6>
-                                            <p>{{$ticketList->quantity}} Tickets</p>
-                                        </div>
-                                        <div class="col-md-6 col-lg-6">
-                                            <h6 class="mb-0"> Price </h6>
-                                            <p class="text-uppercase">${{$ticketList->price}}</p>
-                                        </div>
-                                    </div>
-
-                                    <div class="row purchaseTicketDiv" style="justify-content: center;">
-                                        <a href="#">
-                                            <input type="button" id="" class="clickable createEventButton buttonMobileSize" value="Purchase Ticket" style="padding: 5px 15px;height: 35px;"></a>
-                                    </div>
-
-                                </div>
-
-                            </div>
-                        </div>
-                        @endforeach
-
-                    </div>
-
-                    <?php } ?>
-
-                   <!--  <div class="col-md-4">
-                            <div class="ticketBoxes"></div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="ticketBoxes"></div>
-                        </div> -->
-
                     <?php if(count($videosList) > 0 || count($podcastsList) > 0) { ?>
                 	<!-- <h5 style="padding: 0px 45px;"> Event Media </h5> -->
-                    <hr>
+                    <hr class="mt-0">
                     <?php if(count($videosList) > 0) {
                      ?>
                     <h5 style="padding: 0px 25px;"> Videos &nbsp; <i class="fa fa-arrow-right" aria-hidden="true"> </i> </h5>
@@ -416,7 +348,49 @@ if ($event_date >= $date_now) {
                         </div>
                     </div>
                 </div>
-            <?php } ?>
+            <?php } 
+                if($event->is_paid == 1 && $checkDate == "1" && count($ticketsList) > 0) { ?>
+                    <div class="card w-100" style="margin-top: 15%;border-radius: 6px;">
+                        <div class="card-body pt-3 pb-2">
+                            <h5> Tickets </h5>
+                            <?php
+                                $countForColor = 1; 
+                            ?>
+                            @foreach($ticketsList as $ticketList)
+                            <?php 
+                                if($countForColor%2 == 0){
+                                    $addColorStyle = "";
+                                } else {
+                                    $addColorStyle = "background: #FED8C6;border-radius: 0px 6px 6px 0px;";   
+                                }
+                            ?>
+                        <div class="col-md-12 eventTicket pl-0 pr-0">
+                            <div class="card mb-3" style="background: #F1F2F2;border-radius: 5px;box-shadow: none;">
+
+                                <div class="card-body p-0">
+                                    <div class="row priceDiv pl-0 pr-0 mr-0">
+                                        <div class="col-md-8 col-lg-8 pr-0 d-flex justify-content-center">
+                                            <p class="mt-4 mb-4" style="font-weight: 600;color: #1E1E1E;"> {{$ticketList->name}} </p>
+                                        </div>
+                                        <div class="col-md-4 col-lg-4 pl-0 pr-0 d-flex justify-content-center" style="{{$addColorStyle}}">
+                                            <h5 class="mb-0 mt-4 mb-4">${{round($ticketList->price, 0)}}</h5>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <?php $countForColor++; ?>
+                        @endforeach
+
+                        <div class="registerEvent mt-3 d-flex justify-content-center">
+                            <a href="#">
+                            <input type="button" id="" class="clickable createEventButton buttonMobileSize" value="Purchase" style="padding: 8px 30px;"></a>
+                        </div>
+
+                        </div>
+                    </div>
+                <?php } ?>
 
             <div class="card w-100" style="margin-top: 15%;border-radius: 6px;">
                 <div class="card-body pt-3 pb-2">
@@ -449,22 +423,36 @@ if ($event_date >= $date_now) {
                                 </a>
                                 <a href="http://www.linkedin.com/shareArticle?mini=true&url=<?php echo $actual_link; ?>" target="_blank" class="btn-social btn-social-circle btn-linkedin waves-effect waves-light m-1" style="width: 35px;height: 35px;background: #BBBBBB;border-color: white;"><i class="fa fa-linkedin pt-2" style="color: white;display: flex;justify-content: center;"></i></a>
                 <a href="http://www.facebook.com/share.php?u=<?php echo $actual_link; ?>" onclick="return fbs_click();" target="_blank" class="btn-social btn-social-circle btn-facebook waves-effect waves-light m-1" style="width: 35px;height: 35px;background: #BBBBBB;border-color: white;"><i class="fa fa-facebook pt-2" style="color: white;display: flex;justify-content: center;"></i></a>
-                                <div class="copied mt-2"></div>
-                            </div>
-
+            </div>
+                        <div class="copied mt-2 ml-4 pl-2" style="color: green;font-size: 13px;"></div>
                                             </div>
 
                 </div>
             </div>
 
             <?php
-                $address = "";
+                //$cityName = "";
+                $fullAddress = "";
                 $countryNameAdd = "";
-                $cityName = "";
                 if($event->country_id && $countryName && $checkDate == "1"){
-                    $address = $event->address;
                     $countryNameAdd = $countryName->name;
-                    $cityName = $event->city; ?>
+                    //$cityName = $event->city;
+                    $fullAddress .=  $event->address;
+
+                    if($event->address_line2 != ''){
+                        $fullAddress .= ", " . $event->address_line2;
+                    }
+                    if($event->city != ''){
+                        $fullAddress .= ", " . $event->city;
+                    }
+                    if($event->state != ''){
+                        $fullAddress .= ", " . $event->state;
+                    }
+                    if($event->postal_code != ''){
+                        $fullAddress .= ", " . $event->postal_code;
+                    }
+                    $fullAddress .= ", " . $countryNameAdd;
+                ?>
                 
      		<h5 class=""> Location </h5>
 
@@ -472,15 +460,15 @@ if ($event_date >= $date_now) {
      			<!--Google map-->
 				<div id="map-container-google-1" class="z-depth-1-half map-container" style="">
   					<!-- <iframe src="https://maps.google.com/maps?q=manhatan&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0" style="border:0" allowfullscreen></iframe> -->
-                    <iframe src="https://maps.google.com/maps?q={{$cityName}}&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0" style="border:0" allowfullscreen></iframe>
+                    <iframe src="https://maps.google.com/maps?q={{$fullAddress}}&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0" style="border:0;width:265px;" allowfullscreen></iframe>
 				</div>
 				<!--Google Maps-->
 
-				<p class="mt-2"> {{$address}} ({{$cityName}}) </p>
+				<p class="mt-2"> {{$fullAddress}}</p>
      		</div>
             <?php } ?>
 
-     		<h5 class="mt-5"> Tags </h5>
+     		<h5 class="mt-3"> Tags </h5>
 
      		<div class="TagNames row">
      			@foreach($event->categories as $eventCategory)
