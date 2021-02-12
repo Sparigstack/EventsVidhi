@@ -34,6 +34,7 @@ if ($event_date >= $date_now) {
                             <input type="hidden" class="loginRoute" value="{{route('login')}}">
                             <input type="hidden" class="userIDFollow" value="{{$getUserID}}">
                              <input type="hidden" class="saveOrgFollower" value="{{url('saveOrgFollower')}}">
+                             <input type="hidden" class="saveUserSuggestion" value="{{url('saveUserSuggestion')}}">
 
 	<div class="col-md-12 col-lg-12 d-flex align-items-center mb-3 pl-0">
 		<a href="{{url('/')}}" style="color: #9C9C9C;font-weight: 100;" class=""><i class="fa fa-angle-left"></i>&nbsp; Back</a>
@@ -300,33 +301,11 @@ if ($event_date >= $date_now) {
 
             <?php } } ?>
 
-                    <!-- <a href="{{url('organizer/'. $event->user->id)}}" target="_blank"> -->
-                    <!-- </a> -->
                     <hr class="mt-0">
-                    @include('layouts.commentsView', ['comment' => 'comment'])
+                    @include('layouts.giveSuggestionView', ['section' => $event])
 
                     <hr>
-                    <h5 style="padding: 0px 40px;"> Interesting for you? </h5>
-
-                    <div class="row pt-2" style="padding: 0px 55px;">
-                        <div class="card mb-0 mr-3 smileyCard h-25" style="">
-                            <div class="card-body pt-0 pb-0 row pl-4 mr-1">
-                                <p class="smileyCountDiv mb-0" style="" class="mb-0">&#128516; </p>&nbsp;<p class="pt-3"> (1)</p>
-                            </div>
-                        </div>
-
-                        <div class="card mb-0 mr-3 smileyCard1 h-25" style="">
-                            <div class="card-body pt-0 pb-0 row pl-4 mr-1">
-                                <p class="smileyCountDiv mb-0" style="" class="mb-0">&#128578; </p>&nbsp;<p class="pt-3"> (0)</p>
-                            </div>
-                        </div>
-
-                        <div class="card mb-0 smileyCard1 h-25" style="">
-                            <div class="card-body pt-0 pb-0 row pl-4 mr-1">
-                                <p class="smileyCountDiv mb-0" style="" class="mb-0">&#128528; </p>&nbsp;<p class="pt-3"> (132)</p>
-                            </div>
-                        </div>
-                    </div>
+                    @include('layouts.commentsView', ['comment' => 'comment'])
 
 
                 </div>

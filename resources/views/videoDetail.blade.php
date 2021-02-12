@@ -15,6 +15,7 @@
                             <input type="hidden" class="loginRoute" value="{{route('login')}}">
                             <input type="hidden" class="userIDFollow" value="{{$getUserID}}">
                             <input type="hidden" class="saveOrgFollower" value="{{url('saveOrgFollower')}}">
+                            <input type="hidden" class="saveUserSuggestion" value="{{url('saveUserSuggestion')}}">
 
 	<div class="col-md-12 col-lg-12 d-flex align-items-center mb-3 pl-0">
 		<a href="{{url('/')}}" style="color: #9C9C9C;font-weight: 100;" class=""><i class="fa fa-angle-left"></i>&nbsp; Back</a>
@@ -63,6 +64,9 @@
                     } ?>
                 	<p class="mt-3">{{$videoDesc}}</p>
                 </div>
+
+                    <hr class="mt-0">
+                    @include('layouts.giveSuggestionView', ['sectionvideo' => $video])
 
                 	<hr>
                     @include('layouts.commentsView', ['comment' => 'comment'])

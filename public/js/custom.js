@@ -82,7 +82,7 @@ function followEvent(eventid){
         method: "POST",
         data: {_token : CSRF_TOKEN,discriminator:discriminator,eventId:eventId,userIDFollow:userIDFollow,fillHeartValue:fillHeartValue},
         success: function (response) {
-            console.log(response);
+            //console.log(response);
                 if(userIDFollow == '') {
                 alert('You need to log in/sign up first to follow');
                 window.location.href = loginRoute;
@@ -181,7 +181,7 @@ function followOrganizer(orgid){
         method: "POST",
         data: {_token : CSRF_TOKEN,discriminator:discriminator,orgId:orgId,userIDFollow:userIDFollow,followOrgText:followOrgText},
         success: function (response) {
-            console.log(response);
+            //console.log(response);
             if (userIDFollow == '') {
                 alert('You need to log in/sign up first to follow');
                 window.location.href = loginRoute;
@@ -246,4 +246,47 @@ function moreCommentShowHide(){
         $(".morecmtbtn").attr("value","More Comments");
         $(".commentSection").addClass("d-none");
     }
+}
+
+function saveUserSuggestions(element){
+    var contentId = $(element).attr("data-content-id");
+    var dataId = $(element).attr("data-id");
+    var discriminator = $(element).attr("discriminator");
+    var userIDFollow = $('.userIDFollow').val();
+    var saveUserSuggestion = $('.saveUserSuggestion').val();
+    var loginRoute = $('.loginRoute').val();
+    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr("content");
+    var fillBox = $(element).parent();
+    var fillBoxValue = $(element).attr('value');
+    var smileyCardColorLength = $(".smileyCardColor").length;
+
+    $.ajax({
+        url: saveUserSuggestion,
+        method: "POST",
+        data: {_token : CSRF_TOKEN,discriminator:discriminator,contentId:contentId,dataId:dataId,userIDFollow:userIDFollow, fillBoxValue:fillBoxValue, smileyCardColorLength:smileyCardColorLength},
+        success: function (response) {
+            //console.log(response);
+                if(userIDFollow == '') {
+                alert('You need to log in/sign up first to give suggestion');
+                window.location.href = loginRoute;
+            } else if($(".smileyCardColor").length == 1 && $(element).attr('value') == ""){
+                alert('You already give suggestion');
+                return false;
+            } else {
+                if($(fillBox).hasClass('smileyCard')){
+                    $(fillBox).removeClass('smileyCard');
+                    $(fillBox).addClass('smileyCardColor');
+                    $(element).attr('value', '1');
+                } else {
+                    $(fillBox).addClass('smileyCard');
+                    $(fillBox).removeClass('smileyCardColor');
+                    $(element).attr('value', '');
+                }
+            }
+        },
+        error: function (err) {
+            console.log(err);
+        }
+
+    });
 }

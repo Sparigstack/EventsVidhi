@@ -460,7 +460,7 @@
                                                         </div><br>
 
                                                         <div class="form-group col-lg-12">
-                                                            <label for="BlankLabel">Is this event public?</label><br>
+                                                            <label for="BlankLabel">Is this Event public or Registration is required?</label><br>
                                                             <div class="icheck-material-primary icheck-inline">
                                                                 <input type="radio" id="inline-radio-primary" value="true" name="IsPublic" <?php if (!empty($event)) {
                                                                                                                                                 if ($event->is_public == 1) {
@@ -469,7 +469,7 @@
                                                                                                                                             } else {
                                                                                                                                                 echo "checked";
                                                                                                                                             } ?>>
-                                                                <label for="inline-radio-primary">Public</label>
+                                                                <label for="inline-radio-primary">Public Event</label>
                                                             </div>
                                                             <div class="icheck-material-primary icheck-inline">
                                                                 <input type="radio" id="inline-radio-info" value="false" name="IsPublic" <?php if (!empty($event)) {
@@ -477,7 +477,7 @@
                                                                                                                                                     echo "checked";
                                                                                                                                                 }
                                                                                                                                             } ?>>
-                                                                <label for="inline-radio-info">Registrants</label>
+                                                                <label for="inline-radio-info"> Registration Required</label>
                                                             </div>
                                                         </div><br>
 

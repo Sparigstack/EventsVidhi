@@ -21,6 +21,7 @@ use App\User;
 use App\Ticket;
 use App\Plan;
 use App\Speaker;
+use App\ContentSuggestion;
 
 class HomeController extends Controller
 {
@@ -308,7 +309,21 @@ class HomeController extends Controller
         $orgFollowerCount = DB::select(DB::raw($orgFollowerCount));
         $orgFollowerCountResult = count($orgFollowerCount);
         $speakersList = Speaker::where('event_id',$eventid)->get();
-        return view('eventDetail', compact('event', 'eventsList', 'countryName', 'eventFollowersList', 'videosList', 'podcastsList', 'ticketsList', 'orgFollowerCountResult', 'speakersList'));
+        $suggestionsList = ContentSuggestion::all();
+
+        $suggestionsListCount1 = "SELECT cs.content_id FROM content_suggestions cs INNER JOIN events e ON cs.content_id = e.id WHERE cs.discriminator = 'e' AND e.id =". $eventid ." AND cs.suggestion_id = 1";
+        $suggestionsListCount1 = DB::select(DB::raw($suggestionsListCount1));
+        $suggestionsListCountResult1 = count($suggestionsListCount1);
+
+        $suggestionsListCount2 = "SELECT cs.content_id FROM content_suggestions cs INNER JOIN events e ON cs.content_id = e.id WHERE cs.discriminator = 'e' AND e.id =". $eventid ." AND cs.suggestion_id = 2";
+        $suggestionsListCount2 = DB::select(DB::raw($suggestionsListCount2));
+        $suggestionsListCountResult2 = count($suggestionsListCount2);
+
+        $suggestionsListCount3 = "SELECT cs.content_id FROM content_suggestions cs INNER JOIN events e ON cs.content_id = e.id WHERE cs.discriminator = 'e' AND e.id =". $eventid ." AND cs.suggestion_id = 3";
+        $suggestionsListCount3 = DB::select(DB::raw($suggestionsListCount3));
+        $suggestionsListCountResult3 = count($suggestionsListCount3);
+
+        return view('eventDetail', compact('event', 'eventsList', 'countryName', 'eventFollowersList', 'videosList', 'podcastsList', 'ticketsList', 'orgFollowerCountResult', 'speakersList', 'suggestionsList', 'suggestionsListCountResult1', 'suggestionsListCountResult2', 'suggestionsListCountResult3'));
     }
 
     public function videoDetail($videoid)
@@ -321,7 +336,22 @@ class HomeController extends Controller
         $orgFollowerCount = "SELECT c.content_id FROM content_followers c INNER JOIN videos v ON c.content_id = v.user_id WHERE c.discriminator = 'o' AND v.id =". $videoid;
         $orgFollowerCount = DB::select(DB::raw($orgFollowerCount));
         $orgFollowerCountResult = count($orgFollowerCount);
-        return view('videoDetail', compact('video', 'videosList', 'eventCategoriesResult', 'eventFollowersList', 'orgFollowerCountResult'));
+
+        $suggestionsList = ContentSuggestion::all();
+
+        $suggestionsListCount1 = "SELECT cs.content_id FROM content_suggestions cs INNER JOIN videos v ON cs.content_id = v.id WHERE cs.discriminator = 'v' AND v.id =". $videoid ." AND cs.suggestion_id = 1";
+        $suggestionsListCount1 = DB::select(DB::raw($suggestionsListCount1));
+        $suggestionsListCountResult1 = count($suggestionsListCount1);
+
+        $suggestionsListCount2 = "SELECT cs.content_id FROM content_suggestions cs INNER JOIN videos v ON cs.content_id = v.id WHERE cs.discriminator = 'v' AND v.id =". $videoid ." AND cs.suggestion_id = 2";
+        $suggestionsListCount2 = DB::select(DB::raw($suggestionsListCount2));
+        $suggestionsListCountResult2 = count($suggestionsListCount2);
+
+        $suggestionsListCount3 = "SELECT cs.content_id FROM content_suggestions cs INNER JOIN videos v ON cs.content_id = v.id WHERE cs.discriminator = 'v' AND v.id =". $videoid ." AND cs.suggestion_id = 3";
+        $suggestionsListCount3 = DB::select(DB::raw($suggestionsListCount3));
+        $suggestionsListCountResult3 = count($suggestionsListCount3);
+
+        return view('videoDetail', compact('video', 'videosList', 'eventCategoriesResult', 'eventFollowersList', 'orgFollowerCountResult', 'suggestionsList', 'suggestionsListCountResult1', 'suggestionsListCountResult2', 'suggestionsListCountResult3'));
     }
 
     public function podcastDetail($podcastid)
@@ -334,7 +364,22 @@ class HomeController extends Controller
         $orgFollowerCount = "SELECT c.content_id FROM content_followers c INNER JOIN podcasts p ON c.content_id = p.user_id WHERE c.discriminator = 'o' AND p.id =". $podcastid;
         $orgFollowerCount = DB::select(DB::raw($orgFollowerCount));
         $orgFollowerCountResult = count($orgFollowerCount);
-        return view('podcastDetail', compact('podcast', 'podcastsList', 'eventCategoriesResult', 'eventFollowersList', 'orgFollowerCountResult'));
+
+        $suggestionsList = ContentSuggestion::all();
+
+        $suggestionsListCount1 = "SELECT cs.content_id FROM content_suggestions cs INNER JOIN podcasts p ON cs.content_id = p.id WHERE cs.discriminator = 'p' AND p.id =". $podcastid ." AND cs.suggestion_id = 1";
+        $suggestionsListCount1 = DB::select(DB::raw($suggestionsListCount1));
+        $suggestionsListCountResult1 = count($suggestionsListCount1);
+
+        $suggestionsListCount2 = "SELECT cs.content_id FROM content_suggestions cs INNER JOIN podcasts p ON cs.content_id = p.id WHERE cs.discriminator = 'p' AND p.id =". $podcastid ." AND cs.suggestion_id = 2";
+        $suggestionsListCount2 = DB::select(DB::raw($suggestionsListCount2));
+        $suggestionsListCountResult2 = count($suggestionsListCount2);
+
+        $suggestionsListCount3 = "SELECT cs.content_id FROM content_suggestions cs INNER JOIN podcasts p ON cs.content_id = p.id WHERE cs.discriminator = 'p' AND p.id =". $podcastid ." AND cs.suggestion_id = 3";
+        $suggestionsListCount3 = DB::select(DB::raw($suggestionsListCount3));
+        $suggestionsListCountResult3 = count($suggestionsListCount3);
+
+        return view('podcastDetail', compact('podcast', 'podcastsList', 'eventCategoriesResult', 'eventFollowersList', 'orgFollowerCountResult', 'suggestionsList', 'suggestionsListCountResult1', 'suggestionsListCountResult2', 'suggestionsListCountResult3'));
     }
 
     public function organizerDetail($orgid)
@@ -379,6 +424,24 @@ class HomeController extends Controller
                 $contentFollower->discriminator = $request->discriminator;
                 $contentFollower->user_id = $request->userIDFollow;
                 $contentFollower->save();
+            }
+        }
+    }
+
+    public function saveUserSuggestion(Request $request){
+        if($request->userIDFollow != ''){
+            if($request->fillBoxValue == '1' && $request->smileyCardColorLength == '1'){
+                $contentSuggestionDelete = ContentSuggestion::where('user_id', $request->userIDFollow)->where('content_id', $request->contentId)->where('suggestion_id', $request->dataId)->where('discriminator', $request->discriminator)->delete();
+            } else if ($request->fillBoxValue == '' && $request->smileyCardColorLength == '1'){
+                return 'false';
+            } 
+            else {
+                $contentSuggestion = new ContentSuggestion;
+                $contentSuggestion->content_id = $request->contentId;
+                $contentSuggestion->discriminator = $request->discriminator;
+                $contentSuggestion->user_id = $request->userIDFollow;
+                $contentSuggestion->suggestion_id = $request->dataId;
+                $contentSuggestion->save();
             }
         }
     }

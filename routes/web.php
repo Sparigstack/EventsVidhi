@@ -134,6 +134,8 @@ Route::get('organizer/{orgid}', 'HomeController@organizerDetail');
 Route::post('saveEventFollower', 'HomeController@saveEventFollower');
 Route::post('saveOrgFollower', 'HomeController@saveOrgFollower');
 
+Route::post('saveUserSuggestion', 'HomeController@saveUserSuggestion');
+
 Route::get('myContent', 'UserController@myContent');
 
 Route::get('aboutUs', function () {

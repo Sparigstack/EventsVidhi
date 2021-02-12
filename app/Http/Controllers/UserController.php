@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Event;
 use DB;
 use App\ContentFollower;
+use App\ContentSuggestion;
 use App\Plan;
 
 class UserController extends Controller

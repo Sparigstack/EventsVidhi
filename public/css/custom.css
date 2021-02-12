@@ -488,10 +488,10 @@ border-radius: 6px !important;
 .hiddenDiv{
     visibility: hidden;
 }
-.smileyCard{
+.smileyCardColor{
     background: #FED8C6 !important;border-radius: 6px !important;
 }
-.smileyCard1{
+.smileyCard{
     background: #ECECEC !important;border-radius: 6px !important;
 }
 .smileyCountDiv{
