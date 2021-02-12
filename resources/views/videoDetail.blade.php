@@ -132,7 +132,7 @@
                                 $url = "https://player.vimeo.com/video/" . $getLastWord;
                             } ?>
                             <a href="{{url('videos/'. $videoList->id)}}" target="_blank">
-                            <iframe width="240px" height="130px" src="{{$url}}" frameborder="0" class="videoIframe" style="border-radius: 6px 6px 0px 0px;pointer-events: none;"></iframe></a>
+                            <iframe width="100%" height="145px" src="{{$url}}" frameborder="0" class="videoIframe" style="border-radius: 6px 6px 0px 0px;pointer-events: none;"></iframe></a>
                         <?php  }
                     } ?>
                     

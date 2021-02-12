@@ -74,7 +74,7 @@
                     ?>
 
                           <div class="col-md-3 {{$hideFollow}}" style="margin-top: 22%;">
-                          		<a style="cursor: pointer;" onclick="followOrganizer(this);" data-org-id="{{$organizer->id}}" discriminator="o"><button type="button" id="followOrg" class="clickable createEventButton buttonMobileSize mt-2 row ml-3" value="{{$checkFollow}}" style="{{$backcolor}}color:black;height:40px;display: block;"><i aria-hidden="true" class="fa fa-check-square-o mr-2 followIcon {{$tickIcon}}" style="font-size: 17px;"></i>{{$checkFollow}}</button></a>
+                          		<a style="cursor: pointer;" onclick="followOrganizer(this);" data-org-id="{{$organizer->id}}" discriminator="o" class="row"><button type="button" id="followOrg" class="clickable createEventButton buttonMobileSize mt-2 row ml-3" value="{{$checkFollow}}" style="{{$backcolor}}color:black;height:40px;display: block;"><i aria-hidden="true" class="fa fa-check-square-o mr-2 followIcon {{$tickIcon}}" style="font-size: 17px;"></i>{{$checkFollow}}</button></a>
                           </div>
 
                     </div>
@@ -201,7 +201,7 @@
                                                 }
                                         ?>
                                         <a href="{{url('videos/'. $videoList->id)}}" target="_blank">
-                                            <iframe width="235px" height="135px" src="{{$url}}" frameborder="0" class="vFrame" style="border-radius: 6px 6px 0px 0px;pointer-events: none;"></iframe>
+                                            <iframe width="100%" height="135px" src="{{$url}}" frameborder="0" class="vFrame" style="border-radius: 6px 6px 0px 0px;pointer-events: none;"></iframe>
                                         </a>
                                     <?php  }
                                 } ?>
