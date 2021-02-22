@@ -1102,3 +1102,24 @@ function removeDisable(){
         $('#EventEndDateTime').addAttr("disabled");
     }
 }
+
+function checkPublicOrRegistration(element){
+    if($(element).hasClass("IsPublic")){
+        $(".regDiv").addClass("d-none");
+        // $("#hiddenAnswerValues").text("");
+        // $(".multiple-select1 option").each(function() {
+        //     $(this).removeAttr('selected');
+        // });
+    } else {
+        $(".regDiv").removeClass("d-none");
+    }
+}
+
+// function checkSelectionValue(element){
+//     var selectedOption = $('#regFormsSelect option:selected').val();
+//     if(selectedOption != '1'){
+//         $(".answerDiv").removeClass("d-none");
+//     } else {
+//         $(".answerDiv").addClass("d-none");
+//     }
+// }

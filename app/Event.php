@@ -55,4 +55,8 @@ class Event extends Model
         return $this->hasMany('App\Ticket');
     }
 
+     public function eventRegFormMappings() {
+        return $this->belongsToMany('App\EventRegFormMapping', 'event_reg_form_mappings');
+    }
+
 }

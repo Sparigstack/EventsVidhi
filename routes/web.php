@@ -113,6 +113,13 @@ Route::get('account', function () {
 Route::get('org/csvImport', 'org\CsvImportController@index');
 Route::get('org/settings','org\SettingController@index');
 
+Route::get('org/regForms', 'org\RegistrationFormController@index');
+Route::get('org/regForm/new', 'org\RegistrationFormController@create');
+Route::post('org/regForm/store', 'org\RegistrationFormController@store');
+Route::get('org/regForm/{regFormid}', 'org\RegistrationFormController@edit');
+Route::post('org/regForm/edit/{regFormid}', 'org\RegistrationFormController@update');
+Route::post('deleteRegForm', 'org\RegistrationFormController@destroy');
+
 //All routes for Admin Panel will be here.
 Route::get('organizers', 'UserController@orgList');
 Route::get('orgEvents', 'UserController@orgEventsList');

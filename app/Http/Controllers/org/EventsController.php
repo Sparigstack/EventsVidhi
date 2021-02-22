@@ -28,6 +28,9 @@ use Mail;
 use App\CustomClass\MailContent;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
+use App\RegForm;
+use App\RegFormInput;
+use App\EventRegFormMapping;
 
 class EventsController extends Controller
 {
@@ -75,7 +78,8 @@ class EventsController extends Controller
         $eventTypes = EventType::all();
         $tabe = 0;
         $eventRegistrantsResult = EventRegistrant::where('contact_id', $user)->get();
-        return view('org/createEvent', compact('categories', 'cities', 'cityTimeZones', 'eventTypes', 'IsNew', 'countries', 'tabe', 'eventRegistrantsResult'));
+        $regForms = RegForm::all();
+        return view('org/createEvent', compact('categories', 'cities', 'cityTimeZones', 'eventTypes', 'IsNew', 'countries', 'tabe', 'eventRegistrantsResult', 'regForms'));
     }
 
     /**
@@ -204,6 +208,23 @@ class EventsController extends Controller
                 $eventCategory->save();
             }
         }
+
+        //event registrant form entries
+        if($events->is_public == '0'){
+            //EventRegFormMapping Entry
+            $removeLastCommas = rtrim($request->hiddenAnswerValues, ',');
+            $hiddenAnswerValues = ltrim($removeLastCommas, ',');
+            $strSplit = preg_replace("/,+/", ",", $hiddenAnswerValues);
+            $eventRegFormMappingIDs = preg_split("/\,/", $strSplit);
+            foreach ($eventRegFormMappingIDs as $eventRegFormMappingID) {
+                $eventRegFormMapping = new EventRegFormMapping;
+                $eventRegFormMapping->event_id = $events->id;
+                $eventRegFormMapping->reg_form_id = (int) $eventRegFormMappingID;
+                $eventRegFormMapping->user_id = $events->user_id;
+                $eventRegFormMapping->save();
+            }
+        }
+
         return redirect("org/events/" . $events->id . "/1");
     }
 
@@ -460,12 +481,19 @@ class EventsController extends Controller
         $videos = Video::where('event_id', $event->id)->orderBy('id', 'DESC')->get();
         $tickets = Ticket::where('event_id', $event->id)->orderBy('id', 'DESC')->get();
         $podcasts = Podcast::where('event_id', $event->id)->orderBy('id', 'DESC')->get();
-        
+
+        $regForms = RegForm::all(); 
+        $regFormInputs = RegFormInput::all();
+        $eventRegFormMappings = EventRegFormMapping::where('event_id', $event->id)->orderBy('id', 'DESC')->get();
+
+        $eventAttachformValues = "select rf.title, rf.id as regFormID from event_reg_form_mappings erfm join reg_forminputs rfi on erfm.reg_form_id = rfi.reg_form_id join reg_forms rf on rfi.reg_form_id = rf.id where erfm.event_id = " .$event->id;
+        $eventAttachformValueResults = DB::select(DB::raw($eventAttachformValues));
+
 //        $eventRegistrants = EventRegistrant::where('event_id', $event->id)->get();
         $eventRegistrants = "SELECT u.name,u.email,u.phone,er.created_at AS registeredOn FROM users u JOIN event_registrant er ON u.id = er.contact_id WHERE
                 er.event_id=". $event->id;
         $eventRegistrantsResult = DB::select(DB::raw($eventRegistrants));
-        return view('org/createEvent', compact('categories', 'cities', 'event', 'cityTimeZones', 'eventTypes', 'IsNew', 'countries', 'states', 'tabe', 'videos', 'podcasts', 'speakers', 'tickets', 'eventRegistrantsResult'));
+        return view('org/createEvent', compact('categories', 'cities', 'event', 'cityTimeZones', 'eventTypes', 'IsNew', 'countries', 'states', 'tabe', 'videos', 'podcasts', 'speakers', 'tickets', 'eventRegistrantsResult', 'regForms','eventRegFormMappings', 'regFormInputs', 'eventAttachformValueResults'));
     }
 
     /**
@@ -610,6 +638,39 @@ class EventsController extends Controller
         }
 
         $events->save();
+
+        //EventRegFormMapping Entry
+        if($events->is_public == '0'){
+            $removeLastCommas = rtrim($request->hiddenAnswerValues, ',');
+            $hiddenAnswerValues = ltrim($removeLastCommas, ',');
+            $strSplit = preg_replace("/,+/", ",", $hiddenAnswerValues);
+            $eventRegFormMappingIDs = preg_split("/\,/", $strSplit);
+            EventRegFormMapping::where('event_id', $events->id)->delete();
+            foreach ($eventRegFormMappingIDs as $eventRegFormMappingID) {
+                $eventRegFormMapping = new EventRegFormMapping;
+                $eventRegFormMapping->event_id = $events->id;
+                $eventRegFormMapping->reg_form_id = (int) $eventRegFormMappingID;
+                $eventRegFormMapping->user_id = $events->user_id;
+                $eventRegFormMapping->save();
+            }
+        } else {
+            if($request->IsPublic != "true"){
+                $removeLastCommas = rtrim($request->hiddenAnswerValues, ',');
+                $hiddenAnswerValues = ltrim($removeLastCommas, ',');
+                $strSplit = preg_replace("/,+/", ",", $hiddenAnswerValues);
+                $eventRegFormMappingIDs = preg_split("/\,/", $strSplit);
+                EventRegFormMapping::where('event_id', $events->id)->delete();
+                foreach ($eventRegFormMappingIDs as $eventRegFormMappingID) {
+                    $eventRegFormMapping = new EventRegFormMapping;
+                    $eventRegFormMapping->event_id = $events->id;
+                    $eventRegFormMapping->reg_form_id = (int) $eventRegFormMappingID;
+                    $eventRegFormMapping->user_id = $events->user_id;
+                    $eventRegFormMapping->save();
+                }
+            } else {
+                EventRegFormMapping::where('event_id', $events->id)->delete();
+            } 
+        } 
 
         // $followEventUsers = ContentFollower::where('content_id', $events->id)->where('discriminator', 'e')->get();
 

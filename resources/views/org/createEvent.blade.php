@@ -4,6 +4,11 @@
 <link href="{{ asset('assets/plugins/select2/css/select2.min.css') }}" rel="stylesheet" />
 <!-- datetimepicker -->
 <link href="{{ asset('assets/plugins/datetimepicker-master/jquery.datetimepicker.css') }}" rel="stylesheet">
+<style>
+    .regDiv .select2-container--default .select2-selection--multiple {
+    height: auto !important;
+}
+</style>
 @endsection
 @section('content')
 <div class="container-fluid mt-3 createEventContainer">
@@ -448,21 +453,12 @@
                                                         <div class="col-lg-12 mt-3">
                                                             <h5>Publish Event Info </h5>
                                                         </div>
-                                                        <div class="form-group col-lg-12">
-                                                            <!-- <label for="BlankLabel"></label> -->
-                                                            <!-- <div class="icheck-material-primary">
-                                                                <input type="checkbox" id="IsPublish" {{$IsLive}} name="IsPublish" @if(old('IsPublish')) checked @endif>
-                                                                <label for="IsPublish"> Do you want to publish this event?</label>
-                                                            </div> -->
-                                                            <!-- <input type="hidden" class="publishEvent" name="IsPublish" value="{{$IsLive}}">
-                                                            <button type="button" class="btn btn-primary mr-2 mt-2 publishButton" name="IsPublish" value="" id="publishButton" onclick="isPublishEvent(this);">Publish</button>
-                                            <button type="button" class="btn btn-primary mt-2 draftButton" id="draftButton" value="" onclick="isPublishEvent(this);"> Save as Draft</button> -->
-                                                        </div><br>
+                                                        <br>
 
                                                         <div class="form-group col-lg-12">
                                                             <label for="BlankLabel">Is this Event public or Registration is required?</label><br>
                                                             <div class="icheck-material-primary icheck-inline">
-                                                                <input type="radio" id="inline-radio-primary" value="true" name="IsPublic" <?php if (!empty($event)) {
+                                                                <input type="radio" id="inline-radio-primary" class="IsPublic" value="true" onclick="checkPublicOrRegistration(this);" name="IsPublic" <?php if (!empty($event)) {
                                                                                                                                                 if ($event->is_public == 1) {
                                                                                                                                                     echo "checked";
                                                                                                                                                 }
@@ -472,14 +468,60 @@
                                                                 <label for="inline-radio-primary">Public Event</label>
                                                             </div>
                                                             <div class="icheck-material-primary icheck-inline">
-                                                                <input type="radio" id="inline-radio-info" value="false" name="IsPublic" <?php if (!empty($event)) {
+                                                                <?php 
+                                                                    $regDivDnone = "d-none";
+                                                                    if(count($eventAttachformValueResults) > 0){
+                                                                        $regDivDnone = "";
+                                                                    }
+                                                                ?>
+                                                                <input type="radio" class="IsReg" id="inline-radio-info" onclick="checkPublicOrRegistration(this);" value="false" name="IsPublic" <?php if (!empty($event)) {
                                                                                                                                                 if ($event->is_public == 0) {
                                                                                                                                                     echo "checked";
                                                                                                                                                 }
                                                                                                                                             } ?>>
                                                                 <label for="inline-radio-info"> Registration Required</label>
                                                             </div>
-                                                        </div><br>
+                                                        </div>
+                                                        <!-- <br> -->
+                                                        <div class="form-group col-lg-12 regDiv {{$regDivDnone}}">
+                                                            <select class="form-control multiple-select1" multiple="multiple" name="regFormList" id="regFormList" required>
+                                                                <?php 
+                                                                    if(count($eventAttachformValueResults) > 0){
+                                                                        foreach($regForms as $regForm)
+                                                                        {
+                                                                            $IsSelected1 = "";
+                                                                        foreach($eventAttachformValueResults as $eventAttachformValueResult){
+                                                                            if($eventAttachformValueResult->regFormID == $regForm->id){
+                                                                                $IsSelected1 = "selected";
+                                                                            }
+                                                                            
+                                                                       }
+                                                                     ?>
+                                                            <option value="{{$regForm->id}}" {{$IsSelected1}}><?php echo $regForm->title; ?> </option>
+                                                        <?php   }
+                                                                         }
+                                                     else {
+                                                                ?>
+                                                                @foreach($regForms as $regForm)
+                                                                    <option value="{{$regForm->id}}">{{$regForm->title}}</option>
+                                                                @endforeach
+                                                    <?php } ?>
+                                                    </select>
+
+                                                        </div>
+
+                                                        <?php 
+                                                            $ids = array();
+                                                            if(isset($eventRegFormMappings)){
+                                                                foreach ($eventRegFormMappings as $eventRegFormMapping)  
+                                                                {
+                                                                    $ids[] = $eventRegFormMapping->reg_form_id; 
+                                                                } 
+                                                                $hiddenAnswerIds =  implode(", ", $ids);
+                                                            } 
+                                                        ?>
+
+                                                        <textarea id="hiddenAnswerValues" name="hiddenAnswerValues" class="form-controld d-none" title="hiddenAnswerValues" placeholder="hiddenAnswerValues" autocomplete="off" rows="4">{{$hiddenAnswerIds}}</textarea>
 
                                                         <div class="form-group col-lg-12">
                                                             <label for="BlankLabel">Is this event free or paid?</label><br>
@@ -1094,7 +1136,6 @@
 <script src="{{ asset('assets/plugins/datetimepicker-master/jquery.datetimepicker.js') }}"></script>
 <script>
     $(document).ready(function() {
-        $('.single-select').select2();
 
         $('.multiple-select').select2({
             placeholder: "Select categories",
@@ -1112,11 +1153,31 @@
             MultiSlectCounter += 1;
         });
         $('.multiple-select').on('select2:unselecting', function(e) {
-            console.log(e.params.args.data.id);
+            //console.log(e.params.args.data.id);
             var str = $('#HiddenCategoyID').val();
             var res = str.replace(e.params.args.data.id, "");
             $('#HiddenCategoyID').empty();
             $('#HiddenCategoyID').append(res);
+        });
+
+        //For registration forms attached to this event
+        $('.multiple-select1').select2({
+            placeholder: "Select categories",
+            allowClear: true
+        });
+        //var MultiSlectCounter1 = 0;
+        $('.multiple-select1').on('select2:select', function(e) {
+            //console.log(e.params.data.id);
+            $('#hiddenAnswerValues').append("," + e.params.data.id);
+
+            //MultiSlectCounter1 += 1;
+        });
+        $('.multiple-select1').on('select2:unselecting', function(e) {
+            //console.log(e.params.args.data.id);
+            var str = $('#hiddenAnswerValues').val();
+            var res = str.replace(e.params.args.data.id, "");
+            $('#hiddenAnswerValues').empty();
+            $('#hiddenAnswerValues').append(res);
         });
 
 

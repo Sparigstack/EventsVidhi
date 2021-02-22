@@ -214,7 +214,8 @@
                                 <i class="zmdi zmdi-format-list-bulleted"></i> <span>Forms</span><i class="fa fa-angle-left pull-right"></i>
                             </a>
                             <ul class="sidebar-submenu in">
-                                <li class="active"><a href="{{url('/')}}" class="active"><i class="zmdi zmdi-long-arrow-right"></i> Registration Form</a></li>
+                                <li class="active"><a href="{{url('org/regForm/new')}}" class="active"><i class="zmdi zmdi-long-arrow-right"></i>Add Registration Form</a></li>
+                                <li class=""><a href="{{url('org/regForms')}}" class="active"><i class="zmdi zmdi-long-arrow-right"></i> Registration Forms</a></li>
                                 <li class=""><a href="{{url('/')}}" class="active"><i class="zmdi zmdi-long-arrow-right"></i> Feedback Form</a></li>
                                 <li class=""><a href="{{url('/')}}" class="active"><i class="zmdi zmdi-long-arrow-right"></i> Custom Form</a></li>
 
