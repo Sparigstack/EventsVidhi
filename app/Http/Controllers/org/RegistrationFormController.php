@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use App\RegForm;
 use App\RegFormInput;
 use App\EventRegFormMapping;
+use App\EventRegistration;
+use App\EventRegAnswer;
 
 class RegistrationFormController extends Controller
 {
@@ -51,31 +53,58 @@ class RegistrationFormController extends Controller
         $regForm->save();
 
         //RegFormInput Entry
-        $regFormInput = new RegFormInput;
-        $regFormInput->reg_form_id = $regForm->id;
-        $regFormInput->answer_type = $request->regFormsSelect;
+        $questionInputArray = $request->question_inputs;
+        for ($i = 0; $i < count($questionInputArray); $i++) {
+            $regFormInput = new RegFormInput;
+            $regFormInput->reg_form_id = $regForm->id;
+            $regFormInput->question = $questionInputArray[$i]['question_value'];
 
-        if($request->regFormsSelect != 1){
-        	$removeLastCommas = rtrim($request->hiddenAnswerValues, ',');
-    		$hiddenAnswerValues = ltrim($removeLastCommas, ',');
-    		$strSplit = preg_replace("/,+/", ",", $hiddenAnswerValues);
-    		$strSplit1 = preg_split("/\,/", $strSplit);
-			$answerValues = implode("@~@", $strSplit1);
-			$regFormInput->answer_values = $answerValues;
-        } else {
-        	$regFormInput->answer_values = "";
+            if($questionInputArray[$i]['IsRequired'] == "true"){
+                $regFormInput->is_inputRequired = 1;
+            } else {
+                $regFormInput->is_inputRequired = 0;
+            }
+
+            $regFormInput->answer_type = $questionInputArray[$i]['answer_type'];
+            if($questionInputArray[$i]['answer_type'] != "1"){
+                $regFormInput->answer_values = $questionInputArray[$i]['answerValues'];
+            } else {
+                $regFormInput->answer_values = "";
+            }
+            $regFormInput->save();
         }
 
-        $regFormInput->question = $request->question;
-        if (isset($request->IsRequired)) {
-            $regFormInput->is_inputRequired = 1;
-        } else {
-            $regFormInput->is_inputRequired = 0;
-        }
+   //      //RegForm Entry
+   //      $regForm = new RegForm;
+   //      $regForm->title = $request->RegTitle;
+   //      $regForm->save();
 
-        $regFormInput->save();
+   //      //RegFormInput Entry
+   //      $regFormInput = new RegFormInput;
+   //      $regFormInput->reg_form_id = $regForm->id;
+   //      $regFormInput->answer_type = $request->regFormsSelect;
 
-        return redirect('org/regForms');
+   //      if($request->regFormsSelect != 1){
+   //      	$removeLastCommas = rtrim($request->hiddenAnswerValues, ',');
+   //  		$hiddenAnswerValues = ltrim($removeLastCommas, ',');
+   //  		$strSplit = preg_replace("/,+/", ",", $hiddenAnswerValues);
+   //  		$strSplit1 = preg_split("/\,/", $strSplit);
+			// $answerValues = implode("@~@", $strSplit1);
+			// $regFormInput->answer_values = $answerValues;
+   //      } else {
+   //      	$regFormInput->answer_values = "";
+   //      }
+
+   //      $regFormInput->question = $request->question;
+   //      if (isset($request->IsRequired)) {
+   //          $regFormInput->is_inputRequired = 1;
+   //      } else {
+   //          $regFormInput->is_inputRequired = 0;
+   //      }
+
+   //      $regFormInput->save();
+
+   //      return redirect('org/regForms');
     }
 
     /**
@@ -88,7 +117,7 @@ class RegistrationFormController extends Controller
     {
         $user = Auth::user();
         $regForm = RegForm::findOrFail($regFormid);
-        $regFormInput =RegFormInput::where("reg_form_id", $regForm->id)->first();
+        $regFormInput =RegFormInput::where("reg_form_id", $regForm->id)->orderBy('id', 'ASC')->get();
 
         return view('org/createRegistrationForm', compact('regForm', 'regFormInput'));
     }
@@ -108,30 +137,59 @@ class RegistrationFormController extends Controller
         $regForm->save();
 
         //RegFormInput Entry
-        $regFormInput =RegFormInput::where("reg_form_id", $regForm->id)->first();
-        $regFormInput->reg_form_id = $regForm->id;
-        $regFormInput->answer_type = $request->regFormsSelect;
-        $regFormInput->question = $request->question;
-        if (isset($request->IsRequired)) {
-            $regFormInput->is_inputRequired = 1;
-        } else {
-            $regFormInput->is_inputRequired = 0;
+        $questionInputArray = $request->question_inputs;
+        $regFormInput =RegFormInput::where("reg_form_id", $regForm->id)->delete();
+        for ($i = 0; $i < count($questionInputArray); $i++) {
+            $regFormInput = new RegFormInput;
+            $regFormInput->reg_form_id = $regForm->id;
+            $regFormInput->question = $questionInputArray[$i]['question_value'];
+
+            if($questionInputArray[$i]['IsRequired'] == "true"){
+                $regFormInput->is_inputRequired = 1;
+            } else {
+                $regFormInput->is_inputRequired = 0;
+            }
+
+            $regFormInput->answer_type = $questionInputArray[$i]['answer_type'];
+            if($questionInputArray[$i]['answer_type'] != "1"){
+                $regFormInput->answer_values = $questionInputArray[$i]['answerValues'];
+            } else {
+                $regFormInput->answer_values = "";
+            }
+            $regFormInput->save();
         }
+
+
+   //      //RegForm Entry
+   //      $regForm = RegForm::findOrFail($regFormid);
+   //      $regForm->title = $request->RegTitle;
+   //      $regForm->save();
+
+   //      //RegFormInput Entry
+   //      $regFormInput =RegFormInput::where("reg_form_id", $regForm->id)->first();
+   //      $regFormInput->reg_form_id = $regForm->id;
+   //      $regFormInput->answer_type = $request->regFormsSelect;
+   //      $regFormInput->question = $request->question;
+   //      if (isset($request->IsRequired)) {
+   //          $regFormInput->is_inputRequired = 1;
+   //      } else {
+   //          $regFormInput->is_inputRequired = 0;
+   //      }
         
-        if($request->regFormsSelect != 1){
-    		$removeLastCommas = rtrim($request->hiddenAnswerValues, ',');
-    		$hiddenAnswerValues = ltrim($removeLastCommas, ',');
-    		$strSplit = preg_replace("/,+/", ",", $hiddenAnswerValues);
-    		$strSplit1 = preg_split("/\,/", $strSplit);
-			$answerValues = implode("@~@", $strSplit1);
-			$regFormInput->answer_values = $answerValues;
-        } else {
-        	$regFormInput->answer_values = "";
-        }
+   //      if($request->regFormsSelect != 1){
+   //  		$removeLastCommas = rtrim($request->hiddenAnswerValues, ',');
+   //  		$hiddenAnswerValues = ltrim($removeLastCommas, ',');
+   //  		$strSplit = preg_replace("/,+/", ",", $hiddenAnswerValues);
+   //  		$strSplit1 = preg_split("/\,/", $strSplit);
+			// $answerValues = implode("@~@", $strSplit1);
+			// $regFormInput->answer_values = $answerValues;
+   //      } else {
+   //      	$regFormInput->answer_values = "";
+   //      }
 
-        $regFormInput->save();
+   //      $regFormInput->save();
 
-        return redirect('org/regForms');
+   //      return redirect('org/regForms');
     }
 
     /**
@@ -146,5 +204,10 @@ class RegistrationFormController extends Controller
         EventRegFormMapping::where("reg_form_id", $request->regFormDeleteId)->delete();
         RegFormInput::where("reg_form_id", $request->regFormDeleteId)->delete();
         RegForm::find($request->regFormDeleteId)->delete();
+    }
+
+    public function deleteThisQue(Request $request)
+    {
+        RegFormInput::find($request->queFormDeleteId)->delete();
     }
 }

@@ -1106,12 +1106,14 @@ function removeDisable(){
 function checkPublicOrRegistration(element){
     if($(element).hasClass("IsPublic")){
         $(".regDiv").addClass("d-none");
+        $("#regFormList").removeAttr("required");
         // $("#hiddenAnswerValues").text("");
         // $(".multiple-select1 option").each(function() {
         //     $(this).removeAttr('selected');
         // });
     } else {
         $(".regDiv").removeClass("d-none");
+        $("#regFormList").attr("required", "");
     }
 }
 

@@ -119,6 +119,10 @@ Route::post('org/regForm/store', 'org\RegistrationFormController@store');
 Route::get('org/regForm/{regFormid}', 'org\RegistrationFormController@edit');
 Route::post('org/regForm/edit/{regFormid}', 'org\RegistrationFormController@update');
 Route::post('deleteRegForm', 'org\RegistrationFormController@destroy');
+Route::post('deleteThisQue', 'org\RegistrationFormController@deleteThisQue');
+
+Route::post('saveUserAnswers', 'HomeController@saveUserAnswers');
+
 
 //All routes for Admin Panel will be here.
 Route::get('organizers', 'UserController@orgList');
@@ -182,3 +186,7 @@ Route::get('planUpgradation', function () {
 Route::get('updateRecurringSubscription', 'org\UpgradePlanController@updateRecurringSubscription');
 Route::stripeWebhooks('recurringSubscription');
 Route::post('cancelSubscription', 'org\UpgradePlanController@cancelSubscription');
+
+//Ticket Purchase Routes
+Route::get('ticketDetails/{eventid}', 'TicketsController@ticketDetails');
+Route::get('ticketCheckout/{eventid}', 'TicketsController@ticketCheckout');

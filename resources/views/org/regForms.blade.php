@@ -24,7 +24,7 @@
                                 <table id="default-datatable-formRegister" class="table" style="border-collapse: collapse !important;">
                                 <thead style="background-color: #6c757d29;">
                                     <tr>
-                                        <th width="42.5%" style="border-right:unset !important;">Title</th>
+                                        <th style="border-right:unset !important;">Title</th>
                                         <th> Events attached to Forms </th>
                                         <th></th>
                                     </tr>
@@ -35,9 +35,9 @@
                                     @foreach($regFormResults as $regFormResult)
                                    <tr class="parent">
                                         <td>{{$regFormResult->title}}</td>
-                                        <td>{{$regFormResult->eventTitle}}<td>
+                                        <td>{{$regFormResult->eventTitle}}</td>
 
-                                        <td class="pt-4">
+                                        <td>
                                         <div class="card-action float-none">
                                             <div class="dropdown">
                                                 <a href="javascript:void();" class="dropdown-toggle dropdown-toggle-nocaret" data-toggle="dropdown" title="View More Actions">

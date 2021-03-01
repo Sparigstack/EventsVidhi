@@ -290,3 +290,116 @@ function saveUserSuggestions(element){
 
     });
 }
+
+
+function submitUserAnswers(element){
+    event.preventDefault();
+
+    var answerValues = new Array();
+    var answerValue;
+
+    var QueAnswerForm = $(element).parent().parent().find(".questionAnsDiv");
+
+    var isAlert = false;
+
+    $(QueAnswerForm).each(function () {
+        if($(this).find(".textAnswer").attr("required") && $(this).find(".textAnswer").val() == ''){
+            isAlert = true;
+            //$(this).find(".textAnswer").focus();
+        }
+        if($(this).find(".multipleAnswer").length > 0 && $(this).find(".multipleAnswer").attr("required") && $(this).find('input[name=multipleAnswer]').filter(':checked').length == 0){
+            isAlert = true;
+        }
+        if($(this).find(".singleAnswer").length > 0 && $(this).find(".singleAnswer").attr("required") && $(this).find('input[name=singleAnswer]').filter(':checked').length == 0){
+            isAlert = true;
+        }
+    });
+
+    if(isAlert == true){
+        alert("Please fill required fields");
+        return;
+    }
+
+    $(".successMsg").addClass("d-none");
+    $(".spinnerSubmit").removeClass("d-none");
+    
+    $(QueAnswerForm).each(function () {
+        answerValue = new Object();
+        answerValue.regFormInputID = $(this).find(".regFormInputID").val();
+
+        var singleAnswer = $(this).find(".singleAnswer");
+        var multipleAnswer = $(this).find(".multipleAnswer");
+
+        if ($(singleAnswer).length > 0) {
+            var singleAnswerVal = $(this).find('input[name=singleAnswer]:checked', $(this)).val();
+            if(singleAnswerVal == undefined){
+                answerValue.answer_value = "";
+            } else {
+                answerValue.answer_value = singleAnswerVal;
+            }
+        } else if($(multipleAnswer).length > 0){
+            var multipleAnswerString = "";
+            
+            $(this).find('input[name=multipleAnswer]:checked').each(function() {
+                multipleAnswerString +=  $(this).val() + ",";
+            });
+            var multipleCheckBoxAns = multipleAnswerString.replace(/,\s*$/,'');
+            var strSplit = multipleCheckBoxAns.split(",").join("@~@");
+            answerValue.answer_value = strSplit;
+        } else {
+            answerValue.answer_value = $(this).find(".textAnswer").val();
+        }
+
+        answerValues.push(answerValue);
+        //console.log(answerValues);
+    });
+
+    var loginRoute = $('.loginRoute').val();
+    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr("content");
+    var loginuserID = $('.userIDFollow').val();
+
+    var regFormID = $('.regFormID').val();
+    var eventID = $('.eventID').val();
+    var saveUserAnswers = $('.saveUserAnswers').val();
+
+    $.ajax({
+        url: saveUserAnswers,
+        method: "POST",
+        data: {_token : CSRF_TOKEN, eventID:eventID, answerValues:answerValues, regFormID:regFormID, loginuserID:loginuserID},
+        success: function (response) {
+            //console.log(response);
+            $(".spinnerSubmit").addClass("d-none");
+            $(".successMsg").removeClass("d-none");
+            //$('#openQuestionPopup').modal('toggle');
+        },
+        error: function (err) {
+            console.log(err);
+        }
+
+    });
+}
+
+function checkLogin(element){
+    var loginRoute = $('.loginRoute').val();
+    var loginuserID = $('.userIDFollow').val();
+    if(loginuserID == '') {
+        $(element).attr("data-target", "");
+        alert('You need to log in/sign up');
+        //$('#openQuestionPopup').modal('toggle');
+        window.location.href = loginRoute;
+    } else {
+        $(element).attr("data-target", "#openQuestionPopup");
+    }
+}
+
+function checkLoginUser(element){
+    var loginRoute = $('.loginRoute').val();
+    var loginuserID = $('.userIDFollow').val();
+    var eventid = $(element).attr("data-event-id");
+    if(loginuserID == '') {
+        alert('You need to log in/sign up');
+        window.location.href = loginRoute;
+    } else {
+        window.location.href = "../ticketDetails/" + eventid;
+    }
+}

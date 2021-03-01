@@ -42,7 +42,7 @@ if(!empty($user)){
                         <label for="profileBannerImage">Organizer Banner Image (optional)</label>
                         <input type="hidden" name="userBanner" class="userBanner" value="{{$BannerUrl}}">
                         <div class="dragFileContainer orgDragBannerFile" id="orgDragBannerFile">
-                            <input type="file" accept="image/*" id="profileBannerImage" name="profileBannerImage" class="form-control files">
+                            <input type="file" accept="image/*" id="profileBannerImage" name="profileBannerImage" class="form-control files setWidthHeight">
                             <img id="profileBannerImageSrc" src="{{$BannerUrl}}" class="{{$BannerHidden}} bannerRadius w-100" alt="your image" />
                             <?php
                                 if (empty($BannerUrl)) { ?>

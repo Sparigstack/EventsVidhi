@@ -372,3 +372,7 @@ cursor: pointer;
     font-size: 25px !important;
     letter-spacing: 1px !important;
 }
+.setWidthHeight{
+    width: 97% !important;
+    height: 83% !important;
+}

@@ -470,8 +470,10 @@
                                                             <div class="icheck-material-primary icheck-inline">
                                                                 <?php 
                                                                     $regDivDnone = "d-none";
-                                                                    if(count($eventAttachformValueResults) > 0){
+                                                                    $requiredDropdown = "";
+                                                                    if(isset($eventAttachformValueResults) && count($eventAttachformValueResults) > 0){
                                                                         $regDivDnone = "";
+                                                                        $requiredDropdown = "required";
                                                                     }
                                                                 ?>
                                                                 <input type="radio" class="IsReg" id="inline-radio-info" onclick="checkPublicOrRegistration(this);" value="false" name="IsPublic" <?php if (!empty($event)) {
@@ -484,9 +486,11 @@
                                                         </div>
                                                         <!-- <br> -->
                                                         <div class="form-group col-lg-12 regDiv {{$regDivDnone}}">
-                                                            <select class="form-control multiple-select1" multiple="multiple" name="regFormList" id="regFormList" required>
+                                                            <label> Select Form you want to attach to this event </label>
+                                                            <select class="form-control" name="regFormList" id="regFormList" {{$requiredDropdown}}>
+                                                                <!-- <option value="">  </option> -->
                                                                 <?php 
-                                                                    if(count($eventAttachformValueResults) > 0){
+                                                                    if(isset($eventAttachformValueResults) && count($eventAttachformValueResults) > 0){
                                                                         foreach($regForms as $regForm)
                                                                         {
                                                                             $IsSelected1 = "";
@@ -509,19 +513,6 @@
                                                     </select>
 
                                                         </div>
-
-                                                        <?php 
-                                                            $ids = array();
-                                                            if(isset($eventRegFormMappings)){
-                                                                foreach ($eventRegFormMappings as $eventRegFormMapping)  
-                                                                {
-                                                                    $ids[] = $eventRegFormMapping->reg_form_id; 
-                                                                } 
-                                                                $hiddenAnswerIds =  implode(", ", $ids);
-                                                            } 
-                                                        ?>
-
-                                                        <textarea id="hiddenAnswerValues" name="hiddenAnswerValues" class="form-controld d-none" title="hiddenAnswerValues" placeholder="hiddenAnswerValues" autocomplete="off" rows="4">{{$hiddenAnswerIds}}</textarea>
 
                                                         <div class="form-group col-lg-12">
                                                             <label for="BlankLabel">Is this event free or paid?</label><br>
@@ -1158,26 +1149,6 @@
             var res = str.replace(e.params.args.data.id, "");
             $('#HiddenCategoyID').empty();
             $('#HiddenCategoyID').append(res);
-        });
-
-        //For registration forms attached to this event
-        $('.multiple-select1').select2({
-            placeholder: "Select categories",
-            allowClear: true
-        });
-        //var MultiSlectCounter1 = 0;
-        $('.multiple-select1').on('select2:select', function(e) {
-            //console.log(e.params.data.id);
-            $('#hiddenAnswerValues').append("," + e.params.data.id);
-
-            //MultiSlectCounter1 += 1;
-        });
-        $('.multiple-select1').on('select2:unselecting', function(e) {
-            //console.log(e.params.args.data.id);
-            var str = $('#hiddenAnswerValues').val();
-            var res = str.replace(e.params.args.data.id, "");
-            $('#hiddenAnswerValues').empty();
-            $('#hiddenAnswerValues').append(res);
         });
 
 

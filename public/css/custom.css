@@ -497,6 +497,19 @@ border-radius: 6px !important;
 .smileyCountDiv{
     font-size: 32px;
 }
+.ansFontStyle{
+    color: #585858;
+    font-size: inherit;
+    text-transform: none;
+    letter-spacing: inherit;
+    font-weight: inherit;
+}
+
+/*ticket purchase page*/
+.eventDateTimeBorder{
+    border-right: 1px solid rgba(0, 0, 0, 0.1);height: 20px;
+}
+/*ticket purchase page*/
  
 @media(min-width:768px) and (max-width:1024px){
     .SignUpLink p a{

@@ -36,6 +36,8 @@ if ($event_date >= $date_now) {
                              <input type="hidden" class="saveOrgFollower" value="{{url('saveOrgFollower')}}">
                              <input type="hidden" class="saveUserSuggestion" value="{{url('saveUserSuggestion')}}">
 
+                             <input type="hidden" class="saveUserAnswers" value="{{url('saveUserAnswers')}}">
+
 	<div class="col-md-12 col-lg-12 d-flex align-items-center mb-3 pl-0">
 		<a href="{{url('/')}}" style="color: #9C9C9C;font-weight: 100;" class=""><i class="fa fa-angle-left"></i>&nbsp; Back</a>
 	</div>
@@ -43,6 +45,101 @@ if ($event_date >= $date_now) {
 	
 
      <div class="featuredContent mb-4 row" style="">
+
+        <!-- Question popup -->
+                <div class="modal fade" id="openQuestionPopup" style="display:none;padding:17px!important;" aria-hidden="true">
+                    <input class="csrf-token" type="hidden" value="{{ csrf_token() }}">
+                    
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header pb-2 pt-3" style="font-size:25px;">
+                                <h5 for="title" class="headerTitle">User Information</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span></button>
+                            </div>
+                            <div class="modal-body pt-0">
+                                @if(count($regQueFormInputResults) > 0)
+                                    <!-- <form class="parent" method="POST" enctype="multipart/form-data"> -->
+                                        {{ csrf_field() }}
+                                    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+                                    <?php $requiredInput = ""; 
+                                          $requiredText = "d-none";
+                                    ?>
+                                    @foreach($regQueFormInputResults as $regQueFormInputResult)
+
+                                    <div class="questionAnsDiv">
+
+                                    <input type="hidden" class="regFormID" value="{{$regQueFormInputResult->reg_form_id}}">
+                                    <input type="hidden" class="regFormInputID" value="{{$regQueFormInputResult->id}}">
+                                    <input type="hidden" class="eventID" value="{{$event->id}}">
+
+                                        <?php
+                                            if($regQueFormInputResult->is_inputRequired == 1){
+                                                $requiredInput  = "required";
+                                                $requiredText = "";
+                                            } else {
+                                                $requiredInput = "";
+                                                $requiredText = "d-none";
+                                            }
+                                        ?>
+                                        <div class="col-md-12 mt-3 row pl-4">
+                                            <h6>{{$regQueFormInputResult->question}}</h6><span class="text-danger reqTxt {{$requiredText}}">*</span>
+                                        </div>
+
+                                        <div class="col-md-12 pl-2">
+                                            @if($regQueFormInputResult->answer_type == 1)
+                                                <input type="text" id="" class="textAnswer w-100 form-control" placeholder="Type Your Answer..." value="" {{$requiredInput}}>
+                                            @elseif($regQueFormInputResult->answer_type == 2)
+                                                <?php
+                                                    $answeValues = $regQueFormInputResult->answer_values;
+                                                    $answerValuesDB = explode("@~@", $regQueFormInputResult->answer_values);
+                                                ?>
+                                                @foreach($answerValuesDB as $answerValueDB)
+                                                <div class="row pl-2">
+                                                    <input type="radio" class="mt-1 singleAnswer mr-2 ml-2" id="{{$answerValueDB}}" name="singleAnswer" value="{{$answerValueDB}}" {{$requiredInput}}>
+                                                    <label for="{{$answerValueDB}}" class="mr-1 mb-1 ansFontStyle">{{$answerValueDB}}</label>
+                                                </div>
+
+                                                <!-- <input type="radio" class="mr-1 singleAnswer" id="{{$answerValueDB}}" name="singleAnswer" value="{{$answerValueDB}}" {{$requiredInput}}>
+                                                <label class="mr-1" for="{{$answerValueDB}}">{{$answerValueDB}}</label> --><!-- <br> -->
+                                                @endforeach
+                                            @else
+                                                <?php
+                                                    $answeValues = $regQueFormInputResult->answer_values;
+                                                    $answerValuesDB = explode("@~@", $regQueFormInputResult->answer_values);
+                                                ?>
+                                                @foreach($answerValuesDB as $answerValueDB)
+                                                <div class="row pl-2">
+                                                    <input type="checkbox" class="mt-1 multipleAnswer mr-2 ml-2" id="{{$answerValueDB}}" name="multipleAnswer" value="{{$answerValueDB}}" {{$requiredInput}}>
+                                                    <label for="{{$answerValueDB}}" class="mr-1 mb-1 ansFontStyle">{{$answerValueDB}}</label>
+                                                </div>
+                                                <!-- <input type="checkbox" id="{{$answerValueDB}}" class="multipleAnswer mr-1" name="multipleAnswer" value="{{$answerValueDB}}" {{$requiredInput}}>
+                                                <label for="{{$answerValueDB}}" class="mr-1">{{$answerValueDB}}</label><br> -->
+                                                @endforeach
+                                            @endif
+                                        </div>
+                                    </div>
+                                    @endforeach
+                                        <!-- <button class="btn btn-primary pull-right" name="submit" onclick="return submitUserAnswers(this);">Submit Answers</button> -->
+                                        
+                                        <div class="col-md-12 mt-3 pr-0 justify-content-center">
+                                        <button onclick="return submitUserAnswers(this);" class="clickable createEventButton buttonMobileSize" style="padding: 8px 30px;margin-left: 25%;">Submit Answers</button><i class="fa fa-spinner fa-spin spinnerSubmit d-none mt-2" style="font-size: 24px;margin-left: 5px;"></i>
+                                        </div>
+
+                                    <div class="successMsg mt-2 justify-content-center d-none" style="color: green;font-size: 13px;display: flex;">
+                                        Thank you for your information!
+                                    </div>
+                                <!-- </form> -->
+                                @endif
+                                
+
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                <!-- Question popup -->
+
         <!-- padding: 0px 40px; -->
      	<div class="col-md-9 col-lg-9">
      		<div class="card w-100">
@@ -321,10 +418,7 @@ if ($event_date >= $date_now) {
                         <div class="d-flex justify-content-center">
                             <h5> Free Event </h5>
                         </div>
-                        <div class="registerEvent col-md-12 row mt-3">
-                            <a href="#">
-                            <input type="button" id="" class="clickable createEventButton buttonMobileSize" value="Register" style="padding: 8px 30px;"></a>
-                        </div>
+
                     </div>
                 </div>
             <?php } 
@@ -362,14 +456,25 @@ if ($event_date >= $date_now) {
                         <?php $countForColor++; ?>
                         @endforeach
 
-                        <div class="registerEvent mt-3 d-flex justify-content-center">
-                            <a href="#">
+                        <div class="col-md-12 mt-3 d-flex justify-content-center">
+                            <a onclick="checkLoginUser(this);" data-event-id="{{$event->id}}">
                             <input type="button" id="" class="clickable createEventButton buttonMobileSize" value="Purchase" style="padding: 8px 30px;"></a>
                         </div>
 
                         </div>
                     </div>
                 <?php } ?>
+
+            <?php if($event->is_public == 0) { ?>
+            <div class="card w-100 d-flex align-items-center" style="margin-top: 15%;border-radius: 6px;">
+                    <div class="card-body pt-3">
+                        <div class="registerEvent d-flex justify-content-center">
+                            <a href="javascript:void();" onclick="checkLogin(this);" data-toggle="modal" data-target="#openQuestionPopup">
+                            <input type="button" id="" class="clickable createEventButton buttonMobileSize" value="Register" style="padding: 8px 30px;"></a>
+                        </div>
+                    </div>
+                </div>
+            <?php } ?>
 
             <div class="card w-100" style="margin-top: 15%;border-radius: 6px;">
                 <div class="card-body pt-3 pb-2">

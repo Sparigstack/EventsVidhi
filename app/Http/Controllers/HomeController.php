@@ -22,6 +22,11 @@ use App\Ticket;
 use App\Plan;
 use App\Speaker;
 use App\ContentSuggestion;
+use App\RegForm;
+use App\RegFormInput;
+use App\EventRegFormMapping;
+use App\EventRegistration;
+use App\EventRegAnswer;
 
 class HomeController extends Controller
 {
@@ -323,7 +328,10 @@ class HomeController extends Controller
         $suggestionsListCount3 = DB::select(DB::raw($suggestionsListCount3));
         $suggestionsListCountResult3 = count($suggestionsListCount3);
 
-        return view('eventDetail', compact('event', 'eventsList', 'countryName', 'eventFollowersList', 'videosList', 'podcastsList', 'ticketsList', 'orgFollowerCountResult', 'speakersList', 'suggestionsList', 'suggestionsListCountResult1', 'suggestionsListCountResult2', 'suggestionsListCountResult3'));
+        $regQueFormInputs = "SELECT rfi.* FROM event_reg_form_mappings erfm JOIN  reg_forminputs rfi ON erfm.reg_form_id = rfi.reg_form_id WHERE erfm.event_id =" . $eventid . " ORDER BY rfi.id ASC"; 
+        $regQueFormInputResults = DB::select(DB::raw($regQueFormInputs));
+
+        return view('eventDetail', compact('event', 'eventsList', 'countryName', 'eventFollowersList', 'videosList', 'podcastsList', 'ticketsList', 'orgFollowerCountResult', 'speakersList', 'suggestionsList', 'suggestionsListCountResult1', 'suggestionsListCountResult2', 'suggestionsListCountResult3' , 'regQueFormInputResults'));
     }
 
     public function videoDetail($videoid)
@@ -449,5 +457,33 @@ class HomeController extends Controller
     public function pricingPlan(){
         $plans = Plan::orderBy('id', 'ASC')->get();
         return view('pricingPlans', compact('plans'));
+    }
+
+    public function saveUserAnswers(Request $request){
+      //EventRegistration Entry
+      //if($request->loginuserID != ''){ 
+      // $eventRegDelID = EventRegistration::where('event_id', $request->eventID)->where('user_id', $request->loginuserID)->first();
+
+      // if(isset($eventRegDelID)){
+      //   EventRegAnswer::where("event_reg_id", $eventRegDelID->id)->delete();
+      //   EventRegistration::where('event_id', $request->eventID)->where('user_id', $request->loginuserID)->delete();
+      // } 
+      
+      $eventReg = new EventRegistration;
+      $eventReg->event_id = $request->eventID;
+      $eventReg->reg_form_id = $request->regFormID;
+      $eventReg->user_id = $request->loginuserID;
+      $eventReg->save();
+
+      //EventRegAnswers Entry
+      $queAnsInputArray = $request->answerValues;
+      for ($i = 0; $i < count($queAnsInputArray); $i++) {
+          $queAnsInput = new EventRegAnswer;
+          $queAnsInput->event_reg_id = $eventReg->id;
+          $queAnsInput->reg_forminput_id = $queAnsInputArray[$i]['regFormInputID'];
+          $queAnsInput->answer = $queAnsInputArray[$i]['answer_value'];
+          $queAnsInput->save();
+      }
+    //}
     }
 }

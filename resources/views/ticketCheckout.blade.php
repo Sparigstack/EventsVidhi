@@ -4,33 +4,16 @@
 <div class="container mainHomePageContainer pt-3 pb-5 pl-0 pr-0" style="">
 
 	<div class="col-md-12 col-lg-12 d-flex align-items-center mb-3">
-		<a href="{{url('pricingPlans')}}" style="color: #9C9C9C;font-weight: 100;" class=""><i class="fa fa-angle-left"></i>&nbsp; Back</a>
+		<a href="{{url('ticketDetails')}}" style="color: #9C9C9C;font-weight: 100;" class=""><i class="fa fa-angle-left"></i>&nbsp; Back</a>
 	</div>
-
-    <?php
-        $rupees = "";
-        if ($type == "yearly") {
-            if($id == 2){
-                $rupees = "36";
-            } else {
-                $rupees = "84";
-            }
-        } elseif ($type == "monthly") {
-            if($id == 2){
-                $rupees = "4.5";
-            } else {
-                $rupees = "12";
-            }
-        }
-    ?>
 
 	<div class="card col-md-8 m-auto container" style="padding: 15px 30px;">
 		<form role="form" action="{{ route('stripe.post') }}" method="post" class="require-validation" data-cc-on-file="false" data-stripe-publishable-key="{{env('STRIPE_KEY')}}" id="payment-form">
                                 {{ csrf_field() }}
 
-                                <input type="hidden" name="planName" value="{{$type}}">
-                                <input type="hidden" name="planId" value="{{$id}}">
-                                <input type="hidden" name="selectedPrice" class="" id="selectedPrice" value="{{$rupees}}">
+                                <input type="hidden" name="planName" value="">
+                                <input type="hidden" name="planId" value="">
+                                <input type="hidden" name="selectedPrice" class="" id="selectedPrice" value="">
 
                                 <div class="form-group">
                                     <label for="input-1">Name on Card</label>
@@ -68,10 +51,6 @@
                                             again.</div>
                                     </div>
                                 </div>
-
-                                <!-- <div class="form-group">
-                                    <h5 class="pull-right">${{$rupees}}</h5>
-                                </div> -->
 
                                 <div class="form-group">
                                     <input type="submit" id="" class="clickable createEventButton buttonMobileSize px-5 pull-right" value="Pay Now" style="padding: 8px 30px;">

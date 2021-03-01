@@ -212,17 +212,11 @@ class EventsController extends Controller
         //event registrant form entries
         if($events->is_public == '0'){
             //EventRegFormMapping Entry
-            $removeLastCommas = rtrim($request->hiddenAnswerValues, ',');
-            $hiddenAnswerValues = ltrim($removeLastCommas, ',');
-            $strSplit = preg_replace("/,+/", ",", $hiddenAnswerValues);
-            $eventRegFormMappingIDs = preg_split("/\,/", $strSplit);
-            foreach ($eventRegFormMappingIDs as $eventRegFormMappingID) {
-                $eventRegFormMapping = new EventRegFormMapping;
-                $eventRegFormMapping->event_id = $events->id;
-                $eventRegFormMapping->reg_form_id = (int) $eventRegFormMappingID;
-                $eventRegFormMapping->user_id = $events->user_id;
-                $eventRegFormMapping->save();
-            }
+            $eventRegFormMapping = new EventRegFormMapping;
+            $eventRegFormMapping->event_id = $events->id;
+            $eventRegFormMapping->reg_form_id = $request->regFormList;
+            $eventRegFormMapping->user_id = $events->user_id;
+            $eventRegFormMapping->save();
         }
 
         return redirect("org/events/" . $events->id . "/1");
@@ -602,12 +596,6 @@ class EventsController extends Controller
             $events->postal_code = $request->PostalCode;
         }
 
-        // if (isset($request->IsPublish)) {
-        //     $events->is_live = '1';
-        // } else {
-        //     $events->is_live = '0';
-        // }
-
         if ($request->IsPublish == "true") {
             $events->is_live = '1';
         } else {
@@ -640,39 +628,16 @@ class EventsController extends Controller
         $events->save();
 
         //EventRegFormMapping Entry
-        if($events->is_public == '0'){
-            $removeLastCommas = rtrim($request->hiddenAnswerValues, ',');
-            $hiddenAnswerValues = ltrim($removeLastCommas, ',');
-            $strSplit = preg_replace("/,+/", ",", $hiddenAnswerValues);
-            $eventRegFormMappingIDs = preg_split("/\,/", $strSplit);
-            EventRegFormMapping::where('event_id', $events->id)->delete();
-            foreach ($eventRegFormMappingIDs as $eventRegFormMappingID) {
-                $eventRegFormMapping = new EventRegFormMapping;
-                $eventRegFormMapping->event_id = $events->id;
-                $eventRegFormMapping->reg_form_id = (int) $eventRegFormMappingID;
-                $eventRegFormMapping->user_id = $events->user_id;
-                $eventRegFormMapping->save();
-            }
+        if($events->is_public == '1'){
+           EventRegFormMapping::where("event_id", $events->id)->delete();
         } else {
-            if($request->IsPublic != "true"){
-                $removeLastCommas = rtrim($request->hiddenAnswerValues, ',');
-                $hiddenAnswerValues = ltrim($removeLastCommas, ',');
-                $strSplit = preg_replace("/,+/", ",", $hiddenAnswerValues);
-                $eventRegFormMappingIDs = preg_split("/\,/", $strSplit);
-                EventRegFormMapping::where('event_id', $events->id)->delete();
-                foreach ($eventRegFormMappingIDs as $eventRegFormMappingID) {
-                    $eventRegFormMapping = new EventRegFormMapping;
-                    $eventRegFormMapping->event_id = $events->id;
-                    $eventRegFormMapping->reg_form_id = (int) $eventRegFormMappingID;
-                    $eventRegFormMapping->user_id = $events->user_id;
-                    $eventRegFormMapping->save();
-                }
-            } else {
-                EventRegFormMapping::where('event_id', $events->id)->delete();
-            } 
-        } 
-
-        // $followEventUsers = ContentFollower::where('content_id', $events->id)->where('discriminator', 'e')->get();
+            EventRegFormMapping::where("event_id", $events->id)->delete();
+           $eventRegFormMapping = new EventRegFormMapping;
+           $eventRegFormMapping->event_id = $events->id;
+           $eventRegFormMapping->reg_form_id = $request->regFormList;
+           $eventRegFormMapping->user_id = $events->user_id;
+           $eventRegFormMapping->save();
+        }
 
         $eventDetails = Event::where('id', $events->id)->first();
 
