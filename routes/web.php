@@ -189,4 +189,5 @@ Route::post('cancelSubscription', 'org\UpgradePlanController@cancelSubscription'
 
 //Ticket Purchase Routes
 Route::get('ticketDetails/{eventid}', 'TicketsController@ticketDetails');
-Route::get('ticketCheckout/{eventid}', 'TicketsController@ticketCheckout');
+Route::get('ticketCheckout/{eventid}/{amount}/{tids}/{tqty}', 'TicketsController@ticketCheckout');
+Route::post('purchaseTicket', 'TicketsController@purchaseTicket')->name('stripe.post1');

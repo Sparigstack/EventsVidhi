@@ -51,31 +51,59 @@
 				<h4 class="mb-4"> Tickets </h4>
 
 				@foreach($ticketDetail as $key => $ticketDetails)
-				<div class="row mt-2">
-					<div class="col-md-8">
-						<h5> {{$ticketDetails->name}} </h5>
-						<p> ${{$ticketDetails->price}} </p>
+				<?php
+					$backcolor = "";
+					$disableBtn = "";
+					$qtyVal = "1";
+					$soldOut = "d-none";
+					$hideDiv = "";
+					$backcolor1 = "";
+
+					$ticketDateStr = "";
+			        $ticketTimeStr = "";
+
+        			$ticketEndDate = date("D, M d, Y", strtotime($ticketDetails->sales_end));
+        			$ticketEndTime = date('h:i A', strtotime($ticketDetails->sales_end));
+
+					if($ticketDetails->quantity == 0){
+						$backcolor = "color: #8C8C8C;";
+						$disableBtn = "disabled";
+						$qtyVal = "0";
+						$soldOut = "";
+						$hideDiv = "d-none";
+						$backcolor1 = "background: #9C9C9C;";
+					}
+				?>
+				<div class="row mt-2 ticketdetailDiv">
+					<div class="col-md-10 ticketsDiv">
+						<h5 class="ticketName" style="{{$backcolor}}" data-id="{{$ticketDetails->id}}"> {{$ticketDetails->name}} </h5>
+						<div class="col-md-12 pl-0 row">
+							<p class="ticketPrice col-md-4" value="{{$ticketDetails->price}}">${{$ticketDetails->price}}</p>
+    						<p class="soldOutClass {{$soldOut}} col-md-6">sold out</p>
+						</div>
+
+						<div class="{{$hideDiv}}">
+							<p style="color: #9C9C9C;"> Ticket sales end on {{$ticketEndDate}} {{$ticketEndTime}} </p>
+						</div>
+						<!-- <p class="ticketPrice" value="{{$ticketDetails->price}}"> ${{$ticketDetails->price}} </p> -->
 					</div>
 
-					<div class="col-md-4">
-							<!-- plus minus sign bootstrap -->
-								<div class="center">
-    <div class="input-group" >
-          <span class="input-group-btn">
-              <button style="
-    " type="button" class="btn btn-danger btn-number"  data-type="minus" data-field="quant[2]">
-                <span class="fa fa-minus"></span>
-              </button>
-          </span>
-          <input type="text" name="quant[2]" class="form-control input-number" value="10" min="1" max="100">
-          <span class="input-group-btn">
-              <button type="button" class="btn btn-success btn-number" data-type="plus" data-field="quant[2]">
-                  <span class="fa fa-plus"></span>
-              </button>
-          </span>
-      </div>
-</div>
-							<!-- plus minus sign bootstrap -->
+					<div class="col-md-2 parent mt-3">
+						<!-- plus minus sign bootstrap -->
+      					<div class="input-group w-100">
+  							<div class="input-group-prepend">
+  								<button {{$disableBtn}} style="" type="button" class="btn btn-number" onclick="setPurchaseTicketValues(this);" data-type="minus" data-field="quant[2]">
+                					<span class="fa fa-minus" style="color: #9C9C9C;"></span>
+              					</button>
+  							</div>
+  							<input style="border: 1px solid #ECECEC;" type="text" name="quant[2]" data-tkt-name="{{$ticketDetails->name}}" class="form-control input-number text-center" value="{{$qtyVal}}" min="0" max="{{$ticketDetails->quantity}}" onchange="setPurchaseTicketValues(this);">
+  							<div class="input-group-append">
+  								<button {{$disableBtn}} style="{{$backcolor1}}" type="button" class="btn btn-number" onclick="setPurchaseTicketValues(this);" data-type="plus" data-field="quant[2]">
+                  					<span class="fa fa-plus"></span>
+              					</button>
+  							</div>
+						</div>
+						<!-- plus minus sign bootstrap -->
 					</div>
 				</div>
 				@if ($key + 1 != $ticketCount)
@@ -83,9 +111,9 @@
                 @endif
 				@endforeach
 
-				<div class="row justify-content-center mt-4" style="">
+				<!-- <div class="row justify-content-center mt-4" style="">
 					<p style="color: #9C9C9C;"> Ticket sales end on Thurs, Nov 10, 2021 12 AM </p>
-				</div>
+				</div> -->
 
 			</div>
 			</div>
@@ -109,41 +137,43 @@
 				<div class="col-md-3 text-right"> <span class="dot1"></span> <span class="dot"></span> </div>
 			</div>
 
-			<p style="color: #9C9C9C;">{{count($ticketDetail)}} tickets</p>
+			<p style="color: #9C9C9C;" class="countTkt"></p>
 
 			@foreach($ticketDetail as $ticketDetails)
-			<div class="row">
-				<div class="col-md-7"> <p> {{$ticketDetails->name}} </p> </div>
-				<div class="col-md-2"> x1 </div>
-				<div class="col-md-3 text-right"> ${{$ticketDetails->price * 1}} </div>
+			@if($ticketDetails->quantity != 0)
+			<div class="row orderSummary">
+				<div class="col-md-7"> <p class="orderTktName">{{$ticketDetails->name}}</p> </div>
+				<div class="col-md-2 orderTktCnt">x1</div>
+				<div class="col-md-3 text-right"><p class="orderTktPrice" value="{{$ticketDetails->price * 1}}">${{$ticketDetails->price * 1}}</p></div>
 			</div>
+			@endif
 			@endforeach
 
 			<hr>
 			<div class="row">
 				<div class="col-md-9"> <p> Subtotal </p> </div>
-				<div class="col-md-3 text-right subTotal"> $10 </div>
+				<div class="col-md-3 text-right subTotal">$10</div>
 			</div>
 
 			<div class="row">
 				<div class="col-md-9"> <p> Fees* </p> </div>
-				<div class="col-md-3 text-right subTotal"> $10 </div>
+				<div class="col-md-3 text-right">$0</div>
 			</div>
 
 			<div class="row">
 				<div class="col-md-9"> <p> Promo Discount </p> </div>
-				<div class="col-md-3 text-right subTotal"> $10 </div>
+				<div class="col-md-3 text-right">-$0</div>
 			</div>
 
 			<div class="row">
-				<div class="col-md-9"> <h5> Total </h5> </div>
-				<div class="col-md-3 text-right"> <h5 class="finalTicketTotal" value="10"> $10 </h5> </div>
+				<div class="col-md-6"> <h5> Total </h5> </div>
+				<div class="col-md-6 text-right"> <h5 class="finalTicketTotal" value="10">$10.00</h5> </div>
 			</div>
     	</div>
 
     	<div class="mt-3">
-    		<a href="{{url('ticketCheckout/'. $eventRecord->id)}}" class="d-flex justify-content-center">
-            <input type="button" id="" class="clickable createEventButton buttonMobileSize" value="Checkout" style="padding: 8px 30px;"></a>
+    		<a class="d-flex justify-content-center" onclick="ticketCheckoutPage(this);" data-event-id="{{$eventRecord->id}}">
+            <input type="button" id="" class="clickable createEventButton buttonMobileSize chekoutBtn" value="Checkout" style="padding: 8px 30px;"></a>
             <p class="mt-4" style="color: #9C9C9C;">*Panelhive’s fees are non-refundable</p>
     	</div>
 
@@ -153,79 +183,63 @@
 </div>
 @endsection
 @section('script')
+<script src="{{asset('/js/payment.js?v='.$v)}}" type="text/javascript"></script>
 <script>
-		//plugin bootstrap minus and plus
-//http://jsfiddle.net/laelitenetwork/puJ6G/
-$('.btn-number').click(function(e){
-    e.preventDefault();
-    
-    fieldName = $(this).attr('data-field');
-    type      = $(this).attr('data-type');
-    var input = $("input[name='"+fieldName+"']");
-    var currentVal = parseInt(input.val());
-    if (!isNaN(currentVal)) {
-        if(type == 'minus') {
-            
-            if(currentVal > input.attr('min')) {
-                input.val(currentVal - 1).change();
-            } 
-            if(parseInt(input.val()) == input.attr('min')) {
-                $(this).attr('disabled', true);
-            }
+	$(document).ready(function () {
+		var sum = 0;
+		var cnt = 0;
+		$(".ticketsDiv").each(function() {
+			if(!$(this).parent().find("button").is('[disabled=disabled]')){
+				sum += parseInt($(this).find(".ticketPrice").attr("value"));
+				cnt++;
+			}
+    	});
 
-        } else if(type == 'plus') {
+		$(".finalTicketTotal").attr("value", sum);
+		$(".finalTicketTotal").text("$"+ sum);
+		$(".subTotal").text("$"+ sum);
+		$(".countTkt").text(cnt + " tickets");
+	});
 
-            if(currentVal < input.attr('max')) {
-                input.val(currentVal + 1).change();
-            }
-            if(parseInt(input.val()) == input.attr('max')) {
-                $(this).attr('disabled', true);
-            }
-
-        }
-    } else {
-        input.val(0);
-    }
-});
-$('.input-number').focusin(function(){
-   $(this).data('oldValue', $(this).val());
-});
-$('.input-number').change(function() {
+// $('.input-number').focusin(function(){
+//    $(this).data('oldValue', $(this).val());
+// });
+// $('.input-number').change(function() {
     
-    minValue =  parseInt($(this).attr('min'));
-    maxValue =  parseInt($(this).attr('max'));
-    valueCurrent = parseInt($(this).val());
+//     minValue =  parseInt($(this).attr('min'));
+//     maxValue =  parseInt($(this).attr('max'));
+//     valueCurrent = parseInt($(this).val());
     
-    name = $(this).attr('name');
-    if(valueCurrent >= minValue) {
-        $(".btn-number[data-type='minus'][data-field='"+name+"']").removeAttr('disabled')
-    } else {
-        alert('Sorry, the minimum value was reached');
-        $(this).val($(this).data('oldValue'));
-    }
-    if(valueCurrent <= maxValue) {
-        $(".btn-number[data-type='plus'][data-field='"+name+"']").removeAttr('disabled')
-    } else {
-        alert('Sorry, the maximum value was reached');
-        $(this).val($(this).data('oldValue'));
-    }
+//     name = $(this).attr('name');
+//     if(valueCurrent >= minValue) {
+//         $(".btn-number[data-type='minus'][data-field='"+name+"']").removeAttr('disabled')
+//     } else {
+//         alert('Sorry, the minimum value was reached');
+//         $(this).val($(this).data('oldValue'));
+//     }
+//     if(valueCurrent <= maxValue) {
+//         $(".btn-number[data-type='plus'][data-field='"+name+"']").removeAttr('disabled')
+//     } else {
+//         alert('Sorry, the maximum value was reached');
+//         $(this).val($(this).data('oldValue'));
+//     }
     
     
-});
-$(".input-number").keydown(function (e) {
-        // Allow: backspace, delete, tab, escape, enter and .
-        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 190]) !== -1 ||
-             // Allow: Ctrl+A
-            (e.keyCode == 65 && e.ctrlKey === true) || 
-             // Allow: home, end, left, right
-            (e.keyCode >= 35 && e.keyCode <= 39)) {
-                 // let it happen, don't do anything
-                 return;
-        }
-        // Ensure that it is a number and stop the keypress
-        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
-            e.preventDefault();
-        }
-    });
+// });
+// $(".input-number").keydown(function (e) {
+//         // Allow: backspace, delete, tab, escape, enter and .
+//         if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 190]) !== -1 ||
+//              // Allow: Ctrl+A
+//             (e.keyCode == 65 && e.ctrlKey === true) || 
+//              // Allow: home, end, left, right
+//             (e.keyCode >= 35 && e.keyCode <= 39)) {
+//                  // let it happen, don't do anything
+//                  return;
+//         }
+//         // Ensure that it is a number and stop the keypress
+//         if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+//             e.preventDefault();
+//         }
+//     });
 </script>
 @endsection

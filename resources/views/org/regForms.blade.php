@@ -30,10 +30,10 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <input class="csrf-token" type="hidden" value="{{ csrf_token() }}">
-                                    <input type="hidden"  class="deleteRegForm" value="{{url('deleteRegForm')}}">
                                     @foreach($regFormResults as $regFormResult)
                                    <tr class="parent">
+                                        <input class="csrf-token" type="hidden" value="{{ csrf_token() }}">
+                                        <input type="hidden"  class="deleteRegForm" value="{{url('deleteRegForm')}}">
                                         <td>{{$regFormResult->title}}</td>
                                         <td>{{$regFormResult->eventTitle}}</td>
 

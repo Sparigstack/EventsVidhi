@@ -1,9 +1,9 @@
 @extends('layouts.appFront')
 @section('content')
 
-<div class="m-auto col-md-11 col-lg-11 d-flex align-items-center pl-4 pt-4">
+<!-- <div class="m-auto col-md-11 col-lg-11 d-flex align-items-center pl-4 pt-4">
 		<a href="{{url('/')}}" style="color: #9C9C9C;font-weight: 100;" class="ml-4 pl-2"><i class="fa fa-angle-left"></i>&nbsp; Back</a>
-	</div>
+	</div> -->
 
 <div class="container mainHomePageContainer mt-3 mb-5 pl-0 pr-0 pb-5" style="">
 	<?php

@@ -24,6 +24,6 @@ class MailContent {
     public $amount;
     public $planDuration;
     public $benefits;
-    //public $transaction_id;
+    public $transaction_id;
     //public $expiry_date;
 }

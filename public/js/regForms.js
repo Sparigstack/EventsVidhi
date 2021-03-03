@@ -116,7 +116,7 @@ function deleteRegForm(element){
         return;
     var parent = findParent(element);
     var regFormDeleteId = $(element).attr('db-delete-id');
-    var CSRF_TOKEN = $('.csrf-token').val();
+    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
     var urlString = $('.deleteRegForm').val();
     $.ajax({
         url: urlString,
@@ -125,6 +125,9 @@ function deleteRegForm(element){
         success: function (response) {
         	//console.log(response);
             location.reload();
+        },
+        error:function(response){
+            console.log(response);
         }
     });
 }

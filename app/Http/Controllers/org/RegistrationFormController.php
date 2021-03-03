@@ -23,7 +23,7 @@ class RegistrationFormController extends Controller
     {
         $user = Auth::user();
 
-        $regForms = "select rf.*, group_concat(e.title SEPARATOR ', ') as eventTitle from reg_forms rf left join event_reg_form_mappings erfm on rf.id = erfm.reg_form_id left join events e on erfm.event_id = e.id GROUP BY rf.id";
+        $regForms = "select rf.*, group_concat(e.title SEPARATOR ', ') as eventTitle from reg_forms rf left join event_reg_form_mappings erfm on rf.id = erfm.reg_form_id left join events e on erfm.event_id = e.id WHERE rf.deleted_at IS NULL GROUP BY rf.id";
 
         $regFormResults = DB::select(DB::raw($regForms));
 
@@ -200,7 +200,6 @@ class RegistrationFormController extends Controller
      */
     public function destroy(Request $request)
     {
-    	//return $request->regFormDeleteId;
         EventRegFormMapping::where("reg_form_id", $request->regFormDeleteId)->delete();
         RegFormInput::where("reg_form_id", $request->regFormDeleteId)->delete();
         RegForm::find($request->regFormDeleteId)->delete();

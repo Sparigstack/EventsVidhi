@@ -507,7 +507,23 @@ border-radius: 6px !important;
 
 /*ticket purchase page*/
 .eventDateTimeBorder{
-    border-right: 1px solid rgba(0, 0, 0, 0.1);height: 20px;
+    border-right: 1px solid #675C5C;height: 20px;
+}
+.input-group-prepend button{
+    border-radius: 25px 0px 0px 25px;background-color: white;border: 1px solid #ECECEC;border-right-style:none;
+}
+.input-group-append button{
+    border-radius: 0px 25px 25px 0px;background: #FD6568;border: 1px solid #ECECEC;
+}
+.input-group-prepend button:hover, .input-group-append button:hover{
+    border: 1px solid #ECECEC;background: #FD6568;
+}
+.input-group-prepend button span:hover, .input-group-prepend button:hover, .input-group-append button span{
+    color:white !important;
+}
+.soldOutClass{
+    font-style: italic;
+    color: #000000;
 }
 /*ticket purchase page*/
  
