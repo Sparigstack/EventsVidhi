@@ -23,7 +23,7 @@ use App\CustomClass\MailContent;
 class TicketsController extends Controller
 {
 	public function ticketDetails($eventid){
-		$ticketDetail = Ticket::where("event_id", $eventid)->get();
+		$ticketDetail = Ticket::where("event_id", $eventid)->orderBy("id" , "ASC")->get();
 		$eventRecord = Event::where("id", $eventid)->first();
 
 		return view("ticketDetails", compact('ticketDetail', 'eventRecord'));
@@ -66,20 +66,22 @@ class TicketsController extends Controller
             $eventId = $request->eventId;
 
             //update ticket quantity
-            // $ticketId = explode(',' , $request->tktId);
-            // $ticketQty = explode(',', $request->tktQty);
-            // $ticketDetail = Ticket::whereIn("id" , $ticketId)->get();
-            
-            // foreach($ticketDetail as $ticketDetails){
-            // 	foreach($ticketId as $ticketIds){  
-            // 		if($ticketDetails->id == $ticketIds) {
-            // 			$ticketUpdate = Ticket::where("id" , $ticketDetails->id)->first();
-            // 			$ticketUpdate->quantity = $ticketUpdate->quantity - 3;
-            // 			//$ticketUpdate->save();
-            // 			var_dump($ticketUpdate->quantity - 3);
-            // 		}
-            // 	}
-            // }
+            $ticketId = explode(',' , $request->tktId);
+            $ticketQty = explode(',', $request->tktQty);
+            $ticketDetail = Ticket::whereIn("id" , $ticketId)->get();
+            $tQty = 0;
+
+            foreach($ticketDetail as $ticketDetails){
+            	if(in_array($ticketDetails->id, $ticketId)) {            			
+            		if(count($ticketQty) > 1) {
+            			$ticketUpdate = Ticket::where("id" , $ticketDetails->id)->first();
+            			$ticketUpdate->quantity = $ticketUpdate->quantity - $ticketQty[$tQty];
+            			$ticketUpdate->save();
+            			$tQty++;
+            			continue;
+            		}
+            	}
+            }
 
             //save stripe related data
             $paymentInfo = new PaymentInfo;

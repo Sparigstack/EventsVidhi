@@ -419,6 +419,13 @@ if ($event_date >= $date_now) {
                             <h5> Free Event </h5>
                         </div>
 
+                        <?php if($event->is_public == 0) { ?>
+                                <div class="registerEvent mt-3 d-flex justify-content-center">
+                            <a href="javascript:void();" onclick="checkLogin(this);" data-toggle="modal" data-target="#openQuestionPopup">
+                            <input type="button" id="" class="clickable createEventButton buttonMobileSize" value="Register" style="padding: 8px 30px;"></a>
+                        </div>
+                        <?php } ?>
+
                     </div>
                 </div>
             <?php } 
@@ -465,7 +472,7 @@ if ($event_date >= $date_now) {
                     </div>
                 <?php } ?>
 
-            <?php if($event->is_public == 0) { ?>
+            <?php if($event->is_public == 0 && $event->is_paid == 1) { ?>
             <div class="card w-100 d-flex align-items-center" style="margin-top: 15%;border-radius: 6px;">
                     <div class="card-body pt-3">
                         <div class="registerEvent d-flex justify-content-center">

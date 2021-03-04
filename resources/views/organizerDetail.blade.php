@@ -165,9 +165,9 @@
                     </div>
                 </div>
             </div> 
-            <?php }  } ?>
-
-        </div>
+            <?php }  ?>
+            </div>
+            <?php } ?>
 
 
         <?php if(count($videosList) > 0) { ?>
@@ -476,7 +476,7 @@
      	</div>
 
 
-    </div>
+    <!-- </div> -->
 
 
 

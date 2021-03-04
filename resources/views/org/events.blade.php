@@ -3,6 +3,8 @@
 <!-- Data Tables -->
 <link href="{{ asset('assets/plugins/bootstrap-datatable/css/buttons.bootstrap4.min.css') }}" rel="stylesheet">
 <link href="{{ asset('assets/plugins/bootstrap-datatable/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+<!-- datetimepicker -->
+<link href="{{ asset('assets/plugins/datetimepicker-master/jquery.datetimepicker.css') }}" rel="stylesheet">
 @endsection
 @section('content')
 <?php $AwsUrl = env('AWS_URL'); ?>
@@ -154,9 +156,7 @@
 
                                     
                                     <!-- <td class="max-w-table-100">{{$dateStr}}</td> -->
-                                    <td class="pt-4">
-                                        {{$event->category->name}}
-                                    </td>
+                                    <td class="pt-4">{{$event->category->name}}</td>
                                     <!-- <td class="max-w-table-100 text-center p-1 align-middle">
                                         <button  onclick="window.location ='{{ url("org/events/$event->id") }}'" type="button" class="btn btn-outline-success waves-effect waves-light secondary "> Edit </button>
                                         <button onclick="deleteEvent(this);" db-delete-id="{{$event->id}}"type="button" class="btn btn-outline-danger waves-effect waves-light secondary"> Delete </button>
@@ -224,6 +224,8 @@
 @endsection
 
 @section('script')
+<!-- datetimepicker -->
+<script src="{{ asset('assets/plugins/datetimepicker-master/jquery.datetimepicker.js') }}"></script>
 <script src="{{asset('/js/Events.js')}}" type="text/javascript"></script>
 <!-- Data Tables -->
 <script src="{{ asset('assets/plugins/bootstrap-datatable/js/jquery.dataTables.min.js') }}"></script>
