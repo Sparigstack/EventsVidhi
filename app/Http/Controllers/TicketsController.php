@@ -38,14 +38,21 @@ class TicketsController extends Controller
 
         try {
             //add customer to stripe
-            $customer = \Stripe\Customer::create(array(
+            $user = Auth::user();
+            if($user->stripe_customer_id == ""){
+                $customer = \Stripe\Customer::create(array(
                         'email' => $request->email,
                         'name' => $request->name_on_card,
                         'source' => $request->stripeToken
-            ));
+                ));
 
-            //retrieve customer id
-            // $retrieveCustomer = \Stripe\Customer::retrieve($customer->stripe_customer_id);
+                $users = User::findOrFail($user->id);
+                $users->stripe_customer_id = $customer->id;
+                $users->save();
+            } else {
+                //retrieve customer id
+                $customer = \Stripe\Customer::retrieve($user->stripe_customer_id);
+            }
 
             $totalPrice = $request->selectedPrice;
 
@@ -62,18 +69,31 @@ class TicketsController extends Controller
             Session::flash('success', 'Payment done successfully !');
             $success = "Payment done successfully !";
 
-            $user = Auth::user();
             $eventId = $request->eventId;
 
+            $b = array();
+
             //update ticket quantity
-            $ticketId = explode(',' , $request->tktId);
-            $ticketQty = explode(',', $request->tktQty);
+            if( strpos($request->tktId, ',') !== false ) {
+                $ticketId = explode(',' , $request->tktId);
+            } else {
+                $ticketId = array();
+                array_push($ticketId, $request->tktId);
+            }
+
+            if( strpos($request->tktQty, ',') !== false ) {
+                $ticketQty = explode(',', $request->tktQty);
+            } else {
+                $ticketQty = array();
+                array_push($ticketQty, $request->tktQty);
+            }
+
             $ticketDetail = Ticket::whereIn("id" , $ticketId)->get();
             $tQty = 0;
 
             foreach($ticketDetail as $ticketDetails){
             	if(in_array($ticketDetails->id, $ticketId)) {            			
-            		if(count($ticketQty) > 1) {
+            		if(count($ticketQty) > 0) {
             			$ticketUpdate = Ticket::where("id" , $ticketDetails->id)->first();
             			$ticketUpdate->quantity = $ticketUpdate->quantity - $ticketQty[$tQty];
             			$ticketUpdate->save();

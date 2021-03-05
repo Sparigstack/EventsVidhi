@@ -4,11 +4,11 @@
 <?php $AwsUrl = env('AWS_URL'); ?>
 
 <div class="container mainHomePageContainer pt-3" style="">
-	<div class="col-md-12 col-lg-12 d-flex align-items-center mb-3">
-		<a href="{{url('/')}}" style="color: #9C9C9C;font-weight: 100;" class="ml-4 pl-2"><i class="fa fa-angle-left"></i>&nbsp; Back</a>
+	<div class="col-md-12 col-lg-12 d-flex align-items-center mb-3 pl-0 pr-0">
+		<a href="{{url('/')}}" style="color: #9C9C9C;font-weight: 100;" class=""><i class="fa fa-angle-left"></i>&nbsp; Back</a>
 	</div>
 
-    <div class="col-md-11 featuredContent mb-4">
+    <div class="col-md-12 featuredContent mb-4">
 
                             <?php 
                                 $getUserID = "";
@@ -137,7 +137,7 @@
     
         <div class="tab-content">
                             <div class="row tab-pane <?php if($tabId == 1){ echo $activeClass;} ?>" id="contentTab">
-                                <div class="col-md-11 featuredContent mb-4">
+                                <div class="col-md-12 featuredContent mb-4">
                                     <div class="col-md-12 row MobDisplay">
                                         <div class="col-md-4 pl-0">
                                             <h4> All Content &nbsp; <i class="fa fa-arrow-right" aria-hidden="true"></i> </h4>
@@ -154,7 +154,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-11 featuredContent mb-4">
+                                <div class="col-md-12 featuredContent mb-4">
                                     <div class="row col-md-12 pl-0 pr-0">
                                         <div class="col-md-12 d-none noEventMsg">
                                             <p class="text-center"> No Records Found! </p>
@@ -296,7 +296,7 @@
                                                             ?>
                                                             <!-- <a href="{{$url}}" target="_blank"> -->
                                                                 <a href="{{url('videos/'. $allData->videoId)}}" target="_blank">
-                                                                <iframe class="MobFrame" width="240px" height="130px" frameborder="0" src="{{$url}}" style="border-radius: 6px 6px 0px 0px;pointer-events: none;"></iframe>
+                                                                <iframe class="MobFrame" width="262px" height="150px" frameborder="0" src="{{$url}}" style="border-radius: 6px 6px 0px 0px;pointer-events: none;"></iframe>
                                                             </a>
                                                             <?php  }
                                                         }
@@ -481,7 +481,7 @@
                             </div>
 
                             <div class="row tab-pane <?php if($tabId == 2){ echo $activeClass;} ?>" id= "eventsTab">
-                                <div class="col-md-11 featuredContent mb-4">
+                                <div class="col-md-12 featuredContent mb-4">
                                     <div class="col-md-12 row MobDisplay">
                                         <div class="col-md-4 pl-0">
                                             <h4> Events &nbsp; <i class="fa fa-arrow-right" aria-hidden="true"></i></h4>
@@ -498,7 +498,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-11 featuredContent mb-4">
+                                <div class="col-md-12 featuredContent mb-4">
                                     <div class="row col-md-12 pl-0 pr-0">
                                         <div class="col-md-12 d-none noEventMsg">
                                             <p class="text-center"> No Records Found! </p>
@@ -636,7 +636,7 @@
                             </div>
 
                             <div class="row tab-pane <?php if($tabId == 3){ echo $activeClass;} ?>" id= "videoTab">
-                                <div class="col-md-11 featuredContent mb-4">
+                                <div class="col-md-12 featuredContent mb-4">
                                     <div class="col-md-12 row MobDisplay">
                                         <div class="col-md-4 pl-0">
                                             <h4>Videos &nbsp; <i class="fa fa-arrow-right" aria-hidden="true"></i></h4>
@@ -653,7 +653,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-11 featuredContent mb-4">
+                                <div class="col-md-12 featuredContent mb-4">
                                     <div class="row col-md-12 pl-0 pr-0">
                                         <div class="col-md-12 d-none noEventMsg">
                                             <p class="text-center"> No Records Found! </p>
@@ -691,7 +691,7 @@
                                                             ?>
                                                             <!-- <a href="{{$url}}" target="_blank"> -->
                                                                 <a href="{{url('videos/'. $allData->videoId)}}" target="_blank">
-                                                                <iframe width="240px" height="130px" src="{{$url}}" frameborder="0" class="" style="border-radius: 6px 6px 0px 0px;pointer-events: none;"></iframe></a>
+                                                                <iframe width="262px" height="150px" src="{{$url}}" frameborder="0" class="" style="border-radius: 6px 6px 0px 0px;pointer-events: none;"></iframe></a>
                                                             <?php  }
                                                         }
                                                         ?>
@@ -804,7 +804,7 @@
 
 
                                     <div class="row tab-pane <?php if($tabId == 4){ echo $activeClass;} ?>" id= "audioTab">
-                                        <div class="col-md-11 featuredContent mb-4">
+                                        <div class="col-md-12 featuredContent mb-4">
                                             <div class="col-md-12 row MobDisplay">
                                                 <div class="col-md-4 pl-0">
                                                     <h4>Podcasts &nbsp; <i class="fa fa-arrow-right" aria-hidden="true"></i></h4>
@@ -821,7 +821,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-11 featuredContent mb-4">
+                                        <div class="col-md-12 featuredContent mb-4">
                                             <div class="row col-md-12 pl-0 pr-0">
                                                 <div class="col-md-12 d-none noEventMsg">
                                             <p class="text-center"> No Records Found! </p>
