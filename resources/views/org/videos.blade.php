@@ -75,7 +75,7 @@
                                                     }
 
                                                 ?>
-                                                <a href="{{$url}}" target="_blank"><iframe width="100" height="70" src="{{$url}}"></iframe></a>
+                                                <a href="{{$url}}" target="_blank"><iframe width="100" height="70" src="{{$url}}" style="pointer-events: none;"></iframe></a>
                                                 <?php  }
                                             }
                                             ?>

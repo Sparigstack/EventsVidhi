@@ -136,7 +136,7 @@ $CardTitle = "Add New Video";
                                                 }
 
                                                 ?>
-                                                <a href="{{$url}}" target="_blank" class="videoIframe"><iframe src="{{$url}}"></iframe></a>
+                                                <a href="{{$url}}" target="_blank" class="videoIframe"><iframe src="{{$url}}" style="pointer-events: none;"></iframe></a>
                                             <?php  } ?>
                                             <?php 
                                             $dNoneClassVideo = "d-none";
@@ -293,7 +293,7 @@ $CardTitle = "Add New Video";
                                                     $url = "https://player.vimeo.com/video/" . $getLastWord;
                                                 } 
                                                 ?>
-                                                <a href="{{$url}}" target="_blank"><iframe width="100" height="70" src="{{$url}}"></iframe></a>
+                                                <a href="{{$url}}" target="_blank"><iframe width="100" height="70" src="{{$url}}" style="pointer-events: none;"></iframe></a>
                                           <?php  }
                                         }
                                 ?>

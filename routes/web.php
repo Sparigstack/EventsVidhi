@@ -171,7 +171,7 @@ Route::get('contactUs', function () {
 Route::get('whyBecomeOrg', function () {
     return view('whyBecomeOrg');
 });
-Route::get('eventRegConfirm/{eventid}','UserController@eventRegConfirm');
+Route::get('eventRegConfirm/{eventid}/{userid}','UserController@eventRegConfirm');
 Route::get('ticketPaymentConfirm/{eventid}','UserController@ticketPaymentConfirm');
 
 //Upgrade Plan Routes
@@ -191,3 +191,5 @@ Route::post('cancelSubscription', 'org\UpgradePlanController@cancelSubscription'
 Route::get('ticketDetails/{eventid}', 'TicketsController@ticketDetails');
 Route::get('ticketCheckout/{eventid}/{amount}/{tids}/{tqty}', 'TicketsController@ticketCheckout');
 Route::post('purchaseTicket', 'TicketsController@purchaseTicket')->name('stripe.post1');
+
+Route::post('getRegisterAnsData/{userid}/{eventid}', 'org\EventsController@getRegisterAnsData');

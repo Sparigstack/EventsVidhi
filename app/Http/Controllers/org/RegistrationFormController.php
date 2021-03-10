@@ -23,7 +23,7 @@ class RegistrationFormController extends Controller
     {
         $user = Auth::user();
 
-        $regForms = "select rf.*, group_concat(e.title SEPARATOR ', ') as eventTitle from reg_forms rf left join event_reg_form_mappings erfm on rf.id = erfm.reg_form_id left join events e on erfm.event_id = e.id WHERE rf.deleted_at IS NULL GROUP BY rf.id";
+        $regForms = "select rf.*, group_concat(e.title SEPARATOR ', ') as eventTitle from reg_forms rf left join event_reg_form_mappings erfm on rf.id = erfm.reg_form_id left join events e on erfm.event_id = e.id WHERE rf.deleted_at IS NULL AND rf.user_id = " . $user->id . " GROUP BY rf.id";
 
         $regFormResults = DB::select(DB::raw($regForms));
 
@@ -50,6 +50,7 @@ class RegistrationFormController extends Controller
         //RegForm Entry
         $regForm = new RegForm;
         $regForm->title = $request->RegTitle;
+        $regForm->user_id = Auth::user()->id;
         $regForm->save();
 
         //RegFormInput Entry
@@ -134,6 +135,7 @@ class RegistrationFormController extends Controller
         //RegForm Entry
         $regForm = RegForm::findOrFail($regFormid);
         $regForm->title = $request->RegTitle;
+        $regForm->user_id = Auth::user()->id;
         $regForm->save();
 
         //RegFormInput Entry

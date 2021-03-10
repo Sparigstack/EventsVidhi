@@ -124,7 +124,7 @@ if ($event_date >= $date_now) {
                                         <!-- <button class="btn btn-primary pull-right" name="submit" onclick="return submitUserAnswers(this);">Submit Answers</button> -->
                                         
                                         <div class="col-md-12 mt-3 pr-0 justify-content-center">
-                                        <button onclick="return submitUserAnswers(this);" class="clickable createEventButton buttonMobileSize" style="padding: 8px 30px;margin-left: 25%;">Submit Answers</button><i class="fa fa-spinner fa-spin spinnerSubmit d-none mt-2" style="font-size: 24px;margin-left: 5px;"></i>
+                                        <button onclick="return submitUserAnswers(this);" class="clickable createEventButton buttonMobileSize" style="padding: 8px 30px;margin-left: 30%;">Register</button><i class="fa fa-spinner fa-spin spinnerSubmit d-none mt-2" style="font-size: 24px;margin-left: 5px;"></i>
                                         </div>
 
                                     <div class="successMsg mt-2 justify-content-center d-none" style="color: green;font-size: 13px;display: flex;">
@@ -197,7 +197,7 @@ if ($event_date >= $date_now) {
     background-color: #FED8C6;"> </div>
                         </div>
 
-                        <div class="col-md-8 row" style="align-items: center;">
+                        <div class="col-md-8" style="align-items: center;">
                             <div class="col-md-12 row mb-3 mt-3" style="margin-left: -8%;">
                             <h4 class="mt-2 pt-1 mr-2" style="font-size: 22px;"> Speakers </h4><span class="dot1 mt-4"></span> <span class="dot ml-1 mt-4"></span></div>
 

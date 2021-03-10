@@ -87,12 +87,18 @@ class RegisterController extends Controller
                 'user_type' => 2,
             ]);
         } else{
-            if (array_key_exists("website", $data) && array_key_exists("businessName", $data) && array_key_exists("location", $data)) {
-            // if($data['website']->exists() && $data['businessName']->exists()){
+            if (array_key_exists("location", $data) && array_key_exists("businessName", $data)) {
+                $websiteAdd = "";
+                if(array_key_exists("website", $data)){
+                    $websiteAdd = $data['website'];
+                } else {
+                    $websiteAdd = "";
+                }
+                // && array_key_exists("website", $data)
                 $lastID = User::orderBy('id', 'desc')->first();
                 return User::where('id', $lastID->id)->update([
                     'name' => $data['businessName'],
-                    'website_url' => $data['website'],
+                    'website_url' => $websiteAdd,
                     'location' => $data['location'],
                     'plan_id' => 5,
                 ]);

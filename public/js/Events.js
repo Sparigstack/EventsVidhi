@@ -867,9 +867,20 @@ function ValidateEventForm(element) {
     var EventDateTime = $("#EventDateTime").val();
     var EventEndDateTime = $("#EventEndDateTime").val();
     var cityTimezone = $("#cityTimezone").val();
-    // $(".checkYes").val("");
-
-
+    
+    var idClicked = event.submitter.id;
+    if($(".regDiv").find("#regFormList").length == 0) {
+        event.preventDefault();
+        alert("For event registration, you need to add form then you can attach form with this event.");
+        return;
+    }
+    if (idClicked == "publishButton") {
+        var confirmPublish = confirm("Are you sure want to publish this event?");
+        if (!confirmPublish){
+            event.preventDefault();
+            return;
+        }
+    }
     if(checkUrl.includes('new')== false && ((eventStartDateChange != EventDateTime) || (eventEndDateChange != EventEndDateTime) || (eventTimezoneChange != cityTimezone))){
         event.preventDefault();
         doConfirm("Do you want to inform all attendees about this change?", function yes() {
@@ -1117,11 +1128,30 @@ function checkPublicOrRegistration(element){
     }
 }
 
-// function checkSelectionValue(element){
-//     var selectedOption = $('#regFormsSelect option:selected').val();
-//     if(selectedOption != '1'){
-//         $(".answerDiv").removeClass("d-none");
-//     } else {
-//         $(".answerDiv").addClass("d-none");
-//     }
-// }
+function showRegAns(element){
+    $(".questionAnsDiv").remove();
+    event.preventDefault();
+    var id = $(element).attr('db-user-id');   
+    var eventid = $('.eventId').val();
+    var urlString = $('.getRegisterAnsData').val();
+    urlString += "/" + id + "/" + eventid;
+    var CSRF_TOKEN = $('.csrf-token').val();
+    var countryId = $(element).val();
+    LoaderStart();
+    $("#openEventRegistrationPopup").removeClass("show");
+
+    $.ajax({
+        url: urlString,
+        type: 'post',
+        data: { _token: CSRF_TOKEN, id: id, eventid: eventid },
+        success: function (response) {
+            //console.log(response);
+            LoaderStop();
+            $("#openEventRegistrationPopup").find(".modal-body").append(response);
+            $("#openEventRegistrationPopup").addClass("show");
+        },
+        error: function (error) {
+            console.log(error);
+        }
+    });
+}

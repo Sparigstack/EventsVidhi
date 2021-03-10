@@ -20,7 +20,13 @@ class RedirectIfAuthenticated
     {
         if (Auth::guard($guard)->check()) {
             // return redirect(RouteServiceProvider::HOME);
-            return redirect(RouteServiceProvider::OrgLanding);
+            if(Auth::user()->user_type == "3"){
+                return redirect('/organizers');
+            } else {
+                return redirect()->intended('/');
+            }
+            
+            //return redirect(RouteServiceProvider::OrgLanding);
         }
 
         return $next($request);

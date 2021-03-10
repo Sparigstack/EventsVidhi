@@ -368,9 +368,10 @@ function submitUserAnswers(element){
         data: {_token : CSRF_TOKEN, eventID:eventID, answerValues:answerValues, regFormID:regFormID, loginuserID:loginuserID},
         success: function (response) {
             //console.log(response);
-            $(".spinnerSubmit").addClass("d-none");
-            $(".successMsg").removeClass("d-none");
-            //$('#openQuestionPopup').modal('toggle');
+            //$(".spinnerSubmit").addClass("d-none");
+            //$(".successMsg").removeClass("d-none");
+            $('#openQuestionPopup').modal('toggle');
+            window.location.href = "../eventRegConfirm/" + eventID + "/" + loginuserID;
         },
         error: function (err) {
             console.log(err);

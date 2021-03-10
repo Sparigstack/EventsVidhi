@@ -78,7 +78,7 @@ display: none;
 
                         <div class="answerDiv d-none mt-3">
                             <label for="Question" class="mb-0">Answer Values</label>
-                            <p style="font-size: 13px;">[Note: If you have value in the textbox and hit enter, you can add more answer values.]</p>
+                            <p style="font-size: 13px;">[Hint: type your value below and hit enter so your value will be saved in a box below. You can have multiple value options.]</p>
                             <input id="answerVal" type="text" name="answerVal" class="form-control answerVal mb-4" title="Answer Values" placeholder="Answer Values" autocomplete="off" rows="0" value="" onkeyup="setMultipleAnswerValues(this,event);">
                             <select multiple="multiple" class="form-control multiple-select1 multipleAnsVal" name="multipleAnsVal" id="multiple-select" placeholder="" onchange="return removeAnswerValues(this);"></select>
                                 <textarea id="hiddenAnswerValues" name="hiddenAnswerValues" class="form-control d-none hiddenAnswerValues" title="hiddenAnswerValues" placeholder="hiddenAnswerValues" autocomplete="off" rows="4"></textarea>
@@ -164,7 +164,7 @@ display: none;
 
                         <div class="answerDiv {{$dNoneAnswer}} mt-3">
                             <label class="mb-0" for="Question">Answer Values</label>
-                            <p style="font-size: 13px;">[Note: If you have value in the textbox and hit enter, you can add more answer values.]</p>
+                            <p style="font-size: 13px;">[Hint: type your value below and hit enter so your value will be saved in a box below. You can have multiple value options.]</p>
                             <input id="answerVal" type="text" name="answerVal" class="form-control answerVal mb-4" title="Answer Values" placeholder="Answer Values" autocomplete="off" rows="0" value="" onkeyup="setMultipleAnswerValues(this,event);">
                             <select multiple="multiple" class="form-control multiple-select multipleAnsVal" name="multipleAnsVal" id="" placeholder=""> 
                                 <!-- multipleAnsVal -->
@@ -217,7 +217,7 @@ display: none;
 
                         <div class="answerDiv d-none mt-3">
                             <label class="mb-0" for="Question">Answer Values</label>
-                            <p style="font-size: 13px;">[Note: If you have value in the textbox and hit enter, you can add more answer values.]</p>
+                            <p style="font-size: 13px;">[Hint: type your value below and hit enter so your value will be saved in a box below. You can have multiple value options.]</p>
                             <input id="answerVal" type="text" name="answerVal" class="form-control answerVal mb-4" title="Answer Values" placeholder="Answer Values" autocomplete="off" rows="0" value="" onkeyup="setMultipleAnswerValues(this,event);">
                             <select multiple="multiple" class="form-control multiple-select multipleAnsVal" name="multipleAnsVal" id="multiple-select" placeholder=""></select>
                                 <textarea id="hiddenAnswerValues" name="hiddenAnswerValues" class="form-control d-none hiddenAnswerValues" title="hiddenAnswerValues" placeholder="hiddenAnswerValues" autocomplete="off" rows="4"></textarea>

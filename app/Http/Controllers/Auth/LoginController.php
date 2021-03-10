@@ -7,6 +7,7 @@ use App\Providers\RouteServiceProvider;
 use App\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -45,26 +46,25 @@ class LoginController extends Controller
             // return '/myAccount';
             return '/';
         } else if(auth()->user()->user_type == "3"){
-            return '/organizers';
+            //return '/organizers';
+            session()->put('url.intended', '/organizers');
         }
-        return '/';
+        //return '/';
     }
 
     public function __construct()
     {
+        // Get URLs
+        $urlPrevious = url()->previous();
+        $urlBase = url()->to('/');
+
+        // Set the previous url that we came from to redirect to after successful login but only if is internal
+
+        if(($urlPrevious != $urlBase . '/login') && (substr($urlPrevious, 0, strlen($urlBase)) === $urlBase)) {
+            session()->put('url.intended', $urlPrevious);
+        }
+
         $this->middleware('guest')->except('logout');
     }
-
-    // public function determineLoginType(Request $request)
-    // {
-
-    //     $user = User::where('email', $request->email)->first();
-
-    //     if ($user && $user->user_type == 2) { // Check if the user exists & check their type.
-    //         $this->redirectTo = '/home';
-    //     }else{
-    //         $this->redirectTo = '/org/events';
-    //     }
-    // }
 
 }

@@ -54,6 +54,8 @@
     $state = "";
     $FinalUrl = "";
     $timezoneChangeId = 0;
+    $publishVal = "";
+    $draftVal = "";
     if (!empty($event)) {
         $event_id = $event->id;
         $ActionCall = url('org/events/edit/' . $event->id);
@@ -113,6 +115,12 @@
             $CustomHumanReadableUrl = $event->custom_url;
             $FinalUrl = env('APP_URL_Custom'). $event->custom_url;
         }
+        if($event->is_live == 1){
+            $publishVal = "true";
+        }
+        if($event->is_live == 0){
+            $draftVal = "true";
+        }
     }
     $IsLocationFields = "disabled";
     if ($IsOnline != "checked") {
@@ -126,6 +134,24 @@
     }
 
     ?>
+
+    <!-- Event Registration popup -->
+                <div class="modal fade" id="openEventRegistrationPopup" style="display:none;padding:17px!important;" aria-hidden="true">
+                    <!-- <input class="csrf-token" type="hidden" value="{{ csrf_token() }}"> -->
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header pb-2 pt-3" style="font-size:25px;">
+                                <h5 for="title" class="headerTitle">User Information</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span></button>
+                            </div>
+                            <div class="modal-body pt-0">
+
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                <!-- Event Registration popup -->
     
     <h5 class="mb-3">{{$CardTitle}}</h5>
     <div class="row">
@@ -486,6 +512,7 @@
                                                         </div>
                                                         <!-- <br> -->
                                                         <div class="form-group col-lg-12 regDiv {{$regDivDnone}}">
+                                                            <?php if(count($regForms) > 0) { ?>
                                                             <label> Select Form you want to attach to this event </label>
                                                             <select class="form-control" name="regFormList" id="regFormList" {{$requiredDropdown}}>
                                                                 <!-- <option value="">  </option> -->
@@ -511,6 +538,9 @@
                                                                 @endforeach
                                                     <?php } ?>
                                                     </select>
+                                                    <?php } else { ?>
+                                                        <p class="text-danger"> For event registration, you need to add form then you can attach form with this event. </p>
+                                                    <?php } ?>
 
                                                         </div>
 
@@ -581,8 +611,8 @@
 
                                         <div class="form-group col-lg-12">
                                             <!-- <button type="submit" id="Submit" class="btn btn-primary px-5 pull-right"> Save Event</button> -->
-                                            <button type="submit" class="btn btn-primary mr-2 publishButton pull-right" name="IsPublish" value="" id="publishButton">Publish Event</button>
-                                            <button type="submit" class="btn btn-primary mr-2 draftButton pull-right" id="draftButton" value=""> Save as Draft</button>
+                                            <button type="submit" class="btn btn-primary mr-2 publishButton pull-right" name="IsPublish" value="{{$publishVal}}" id="publishButton">Publish Event</button>
+                                            <button type="submit" class="btn btn-primary mr-2 draftButton pull-right" id="draftButton" value="{{$draftVal}}"> Save as Draft</button>
                                             <a class="pull-right" href="{{url('org/events')}}"><button type="button" class="btn btn-light mr-2">Cancel</button></a>
                                         </div>
 
@@ -651,7 +681,7 @@
                                                     $videoUrl = "https://player.vimeo.com/video/" . $getLastWord;
                                                 }
                                                 ?>
-                                                <a class="pull-left" href="{{$videoUrl}}" target="_blank"><iframe width="100" height="70" src="{{$videoUrl}}" class="pull-left"></iframe></a>
+                                                <a class="pull-left" href="{{$videoUrl}}" target="_blank"><iframe width="100" height="70" src="{{$videoUrl}}" class="pull-left" style="pointer-events: none;"></iframe></a>
                                                                       <?php  }
                                                                     } ?>
                                                                 <!-- <a class="pull-left" href="{{$videoUrl}}" target="_blank"><video class="pull-left" src="{{$videoUrl}}" width="100px" height="100px"></video></a> -->
@@ -819,28 +849,28 @@
                         echo "active";
                     } ?>
                      tab-pane " id="tabe-15">
-                        <?php if(count($eventRegistrantsResult) > 0){ ?>
+                        <?php if(count($eventRegistrationsResult) > 0){ ?>
                                    <div class="col-lg-12">
+                                    <input type="hidden" class="getRegisterAnsData" value="{{url('getRegisterAnsData')}}">
+                                    <input type="hidden" class="eventId" value="{{$event_id}}">
+                                    <input class="csrf-token" type="hidden" value="{{ csrf_token() }}">
                                 <div class="card">
                                     <div class="card-body row">
                                         <div id="eventParticipants" class="col-lg-12 m-auto p-0">
                                             <?php
-                                            foreach ($eventRegistrantsResult as $eventRegistrantsResult) {
-                                                $sdStamp = strtotime($eventRegistrantsResult->registeredOn);
-                                                $sd = date("d M, Y", $sdStamp);
-                                                $st = date('H:i A', $sdStamp);
-
-                                                $dateStr = date("d M, Y", $sdStamp) . ' ' . $st;
+                                            foreach ($eventRegistrationsResult as $eventRegistrationResult) {
                                                 ?>
                                                 <div class="parent">
                                                     <ul class="list-group parent list-group-flush TicketList mb-2 col-lg-8">
-                                                        <li class="list-group-item">
+                                                        <li class="list-group-item p-0">
                                                             <div class="media align-items-center">
                                                                 <div class="media-body ml-3">
-                                                                    <h6 class="mb-0">{{$eventRegistrantsResult->name}} -- {{$eventRegistrantsResult->email}}</h6>
-                                                                    <small class="small-font">{{$eventRegistrantsResult->phone}}</small>
-                                                                    <small class="small-font">Registered On: {{$dateStr}}</small>
+                                                                    <h6 class="mb-0">{{$eventRegistrationResult->name}} -- {{$eventRegistrationResult->email}}</h6>
                                                                 </div>
+
+                                                                <div data-id="" onclick="" class="mr-2"><a class="dropdown-item backColorDropdownItem" href="javascript:void();" data-toggle="modal" data-target="#openEventRegistrationPopup" db-user-id="{{$eventRegistrationResult->userId}}" onclick="showRegAns(this);"><i class="fa icon fas fa-info-circle clickable" style="font-size: 22px;cursor: pointer;"></i></a>
+                                                                </div>
+
                                                             </div>
                                                         </li>
                                                     </ul>

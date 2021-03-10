@@ -8,7 +8,7 @@
 		<a href="{{url('/')}}" style="color: #9C9C9C;font-weight: 100;" class=""><i class="fa fa-angle-left"></i>&nbsp; Back</a>
 	</div>
 
-    <div class="col-md-12 featuredContent mb-4">
+    <div class="col-md-12 featuredContent mb-4 pl-0 pr-0">
 
                             <?php 
                                 $getUserID = "";

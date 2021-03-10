@@ -133,9 +133,10 @@ class UserController extends Controller
         return view('myContent', compact('events', 'videos', 'podcasts' ,'eventFollowersList', 'organizers', 'orgFollowerCountResult'));
     }
 
-    public function eventRegConfirm($eventid){
+    public function eventRegConfirm($eventid, $userid){
         $event = Event::where('id' , $eventid)->first();
-        return view('eventRegConfirm' , compact('event'));
+        $user = Auth::id();
+        return view('eventRegConfirm' , compact('event', 'user'));
     }
 
     public function ticketPaymentConfirm($eventid){

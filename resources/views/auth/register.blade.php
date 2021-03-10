@@ -431,7 +431,7 @@ and agree with <a style="color: #9C9C9C;font-weight: bold;text-decoration:underl
                     <div class="form-group">
                         <label for="exampleInputWebsite" class="sr-only">Website</label>
                         <div class="position-relative has-icon-right">
-                            <input id="website" type="url" class="form-control" name="website" required autocomplete="website" placeholder="Website">
+                            <input id="website" type="url" class="form-control" name="website" autocomplete="website" placeholder="Website">
                             <div class="form-control-position">
                                 <!--<i class="icon-lock"></i>-->
                             </div>
@@ -672,7 +672,7 @@ and agree with <a style="color: #9C9C9C;font-weight: bold;text-decoration:underl
 
     function GoToNextStep(element){
             if($('#name').val()=='' || $('#email').val()=='' || $('#password').val()=='' || $('#password-confirm').val()==''){
-                alert('Please fill all fields');
+                //alert('Please fill all fields');
                 // return;
             } else{
                 $(".passValidation").addClass('d-none');
@@ -740,7 +740,7 @@ and agree with <a style="color: #9C9C9C;font-weight: bold;text-decoration:underl
     }
     function GoToNextOrgRegStep(){
             if($('.orgEmail').val()=='' || $('.orgPass').val()=='' || $('.orgConfirmPass').val()==''){
-                alert('Please fill all fields');
+                //alert('Please fill all fields');
                 // return;
             } else{
                 $(".passValidation").addClass('d-none');
@@ -818,8 +818,8 @@ and agree with <a style="color: #9C9C9C;font-weight: bold;text-decoration:underl
 
     function GoToNextOrgRegStep1(){
         
-            if($('#website').val()=='' || $('#businessName').val()=='' || $('#location').val()==''){
-                alert('Please fill all fields');
+            if($('#businessName').val()=='' || $('#location').val()==''){
+                //alert('Please fill all fields');
                 // return;
             } else{
                     $('.NexthiddenUpdateOrgReg').on('submit', function (e) {

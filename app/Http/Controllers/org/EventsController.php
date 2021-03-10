@@ -77,9 +77,13 @@ class EventsController extends Controller
         $cityTimeZones = Timezone::all();
         $eventTypes = EventType::all();
         $tabe = 0;
-        $eventRegistrantsResult = EventRegistrant::where('contact_id', $user)->get();
-        $regForms = RegForm::all();
-        return view('org/createEvent', compact('categories', 'cities', 'cityTimeZones', 'eventTypes', 'IsNew', 'countries', 'tabe', 'eventRegistrantsResult', 'regForms'));
+        //$eventRegistrantsResult = EventRegistrant::where('contact_id', $user)->get();
+        $regForms = RegForm::where("user_id" , $user)->get();
+
+        $eventRegistrations = "SELECT u.name,u.email,u.id as userId FROM users u JOIN event_registrations er ON u.id = er.user_id WHERE
+                er.event_id=0";
+        $eventRegistrationsResult = DB::select(DB::raw($eventRegistrations));
+        return view('org/createEvent', compact('categories', 'cities', 'cityTimeZones', 'eventTypes', 'IsNew', 'countries', 'tabe', 'eventRegistrationsResult', 'regForms'));
     }
 
     /**
@@ -476,18 +480,25 @@ class EventsController extends Controller
         $tickets = Ticket::where('event_id', $event->id)->orderBy('id', 'DESC')->get();
         $podcasts = Podcast::where('event_id', $event->id)->orderBy('id', 'DESC')->get();
 
-        $regForms = RegForm::all(); 
+        $regForms = RegForm::where("user_id", Auth::id())->get(); 
         $regFormInputs = RegFormInput::all();
         $eventRegFormMappings = EventRegFormMapping::where('event_id', $event->id)->orderBy('id', 'DESC')->get();
 
         $eventAttachformValues = "select rf.title, rf.id as regFormID from event_reg_form_mappings erfm join reg_forminputs rfi on erfm.reg_form_id = rfi.reg_form_id join reg_forms rf on rfi.reg_form_id = rf.id where erfm.event_id = " .$event->id;
         $eventAttachformValueResults = DB::select(DB::raw($eventAttachformValues));
 
-//        $eventRegistrants = EventRegistrant::where('event_id', $event->id)->get();
-        $eventRegistrants = "SELECT u.name,u.email,u.phone,er.created_at AS registeredOn FROM users u JOIN event_registrant er ON u.id = er.contact_id WHERE
+        // $eventRegistrants = "SELECT u.name,u.email,u.phone,er.created_at AS registeredOn FROM users u JOIN event_registrant er ON u.id = er.contact_id WHERE
+        //         er.event_id=". $event->id;
+        // $eventRegistrantsResult = DB::select(DB::raw($eventRegistrants));
+
+        $eventRegistrations = "SELECT u.name,u.email,u.id as userId FROM users u JOIN event_registrations er ON u.id = er.user_id WHERE
                 er.event_id=". $event->id;
-        $eventRegistrantsResult = DB::select(DB::raw($eventRegistrants));
-        return view('org/createEvent', compact('categories', 'cities', 'event', 'cityTimeZones', 'eventTypes', 'IsNew', 'countries', 'states', 'tabe', 'videos', 'podcasts', 'speakers', 'tickets', 'eventRegistrantsResult', 'regForms','eventRegFormMappings', 'regFormInputs', 'eventAttachformValueResults'));
+        $eventRegistrationsResult = DB::select(DB::raw($eventRegistrations));
+
+        // $regQueFormInputs = "SELECT rfi.*, era.answer FROM event_registrations er JOIN  event_reg_answers era ON er.id = era.event_reg_id JOIN reg_forminputs rfi ON era.reg_forminput_id = rfi.id JOIN reg_forms rf ON rfi.reg_form_id = rf.id WHERE er.event_id =" .$event->id. " GROUP BY rfi.id"; 
+        // $regQueFormInputResults = DB::select(DB::raw($regQueFormInputs));
+
+        return view('org/createEvent', compact('categories', 'cities', 'event', 'cityTimeZones', 'eventTypes', 'IsNew', 'countries', 'states', 'tabe', 'videos', 'podcasts', 'speakers', 'tickets', 'eventRegistrationsResult', 'regForms','eventRegFormMappings', 'regFormInputs', 'eventAttachformValueResults'));
     }
 
     /**
@@ -1121,6 +1132,53 @@ class EventsController extends Controller
             $event->is_featured = "0";
         }
         $event->save();
+    }
+
+    public function getRegisterAnsData(Request $request, $userid, $eventid){
+        $regQueFormInputs = "select fi.*,era.answer from event_reg_answers era 
+        join reg_forminputs fi  on era.reg_forminput_id = fi.id  
+        join event_registrations er on er.id= era.event_reg_id
+        where er.event_id =" .$eventid. " AND er.user_id =" .$userid.  ""; 
+
+        //         SELECT rfi.*,era.answer FROM event_registrations er
+        // JOIN reg_forminputs rfi ON er.reg_form_id = rfi.reg_form_id
+        // JOIN  event_reg_answers era ON er.id = era.event_reg_id 
+        // JOIN reg_forms rf ON er.reg_form_id = rf.id
+        // WHERE er.event_id =" .$eventid. " AND er.user_id =" .$userid.  " GROUP BY era.answer 
+
+        $regQueFormInputResults = DB::select(DB::raw($regQueFormInputs));
+
+        $htmlContent = "";
+        $answerVal = "";
+
+        if(count($regQueFormInputResults) > 0){
+            foreach($regQueFormInputResults as $regQueFormInputResult){
+            if($regQueFormInputResult->answer != ''){
+                $htmlContent .='<div class="questionAnsDiv">
+                    <div class="col-md-12 mt-3 row pl-4">
+                        <h6>' . $regQueFormInputResult->question . '</h6>
+                    </div>
+
+                    <div class="col-md-12 pl-2">';
+                if($regQueFormInputResult->answer_type == 1){
+                    $htmlContent .= '<p class="textValue">'.$regQueFormInputResult->answer.'</p>';
+                }
+                else{
+                    if( strpos($regQueFormInputResult->answer, "@~@") !== false ) {
+                        $answerValuesDB = explode("@~@", $regQueFormInputResult->answer);
+                        $answerVal = implode(', ', $answerValuesDB);
+                    } else {
+                        $answerVal = $regQueFormInputResult->answer;
+                    }
+                    $htmlContent .= '<p class="textValue">' .$answerVal. '</p>';
+                }
+                $htmlContent .= '</div> </div>';
+            }
+            }
+            return $htmlContent;
+        }
+
+        
     }
 
 }
