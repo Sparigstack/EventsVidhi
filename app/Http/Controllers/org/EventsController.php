@@ -31,6 +31,8 @@ use Illuminate\Support\Facades\Storage;
 use App\RegForm;
 use App\RegFormInput;
 use App\EventRegFormMapping;
+use App\PaymentInfo;
+use App\PaymentInfoDetail;
 
 class EventsController extends Controller
 {
@@ -83,7 +85,12 @@ class EventsController extends Controller
         $eventRegistrations = "SELECT u.name,u.email,u.id as userId FROM users u JOIN event_registrations er ON u.id = er.user_id WHERE
                 er.event_id=0";
         $eventRegistrationsResult = DB::select(DB::raw($eventRegistrations));
-        return view('org/createEvent', compact('categories', 'cities', 'cityTimeZones', 'eventTypes', 'IsNew', 'countries', 'tabe', 'eventRegistrationsResult', 'regForms'));
+
+        $eventTicketPurchaseData = "SELECT u.name as userName, u.email, GROUP_CONCAT(pid.qty SEPARATOR ',') AS qty, GROUP_CONCAT(pid.price SEPARATOR ',') AS price, GROUP_CONCAT(t.name SEPARATOR ',') as ticketName FROM tickets t JOIN payment_info_detail pid ON t.id = pid.ticket_id JOIN payment_info pi ON pid.payment_info_id = pi.id JOIN users u ON pi.user_id = u.id WHERE t.event_id = 0 GROUP BY u.name ORDER BY t.name";
+
+        $eventTicketPurchaseDataResults = DB::select(DB::raw($eventTicketPurchaseData));
+
+        return view('org/createEvent', compact('categories', 'cities', 'cityTimeZones', 'eventTypes', 'IsNew', 'countries', 'tabe', 'eventRegistrationsResult', 'regForms', 'eventTicketPurchaseDataResults'));
     }
 
     /**
@@ -487,18 +494,16 @@ class EventsController extends Controller
         $eventAttachformValues = "select rf.title, rf.id as regFormID from event_reg_form_mappings erfm join reg_forminputs rfi on erfm.reg_form_id = rfi.reg_form_id join reg_forms rf on rfi.reg_form_id = rf.id where erfm.event_id = " .$event->id;
         $eventAttachformValueResults = DB::select(DB::raw($eventAttachformValues));
 
-        // $eventRegistrants = "SELECT u.name,u.email,u.phone,er.created_at AS registeredOn FROM users u JOIN event_registrant er ON u.id = er.contact_id WHERE
-        //         er.event_id=". $event->id;
-        // $eventRegistrantsResult = DB::select(DB::raw($eventRegistrants));
-
         $eventRegistrations = "SELECT u.name,u.email,u.id as userId FROM users u JOIN event_registrations er ON u.id = er.user_id WHERE
                 er.event_id=". $event->id;
         $eventRegistrationsResult = DB::select(DB::raw($eventRegistrations));
 
-        // $regQueFormInputs = "SELECT rfi.*, era.answer FROM event_registrations er JOIN  event_reg_answers era ON er.id = era.event_reg_id JOIN reg_forminputs rfi ON era.reg_forminput_id = rfi.id JOIN reg_forms rf ON rfi.reg_form_id = rf.id WHERE er.event_id =" .$event->id. " GROUP BY rfi.id"; 
-        // $regQueFormInputResults = DB::select(DB::raw($regQueFormInputs));
+        $eventTicketPurchaseData = "SELECT u.name as userName, u.email, GROUP_CONCAT(pid.qty SEPARATOR ', ') AS qty, GROUP_CONCAT(pid.price SEPARATOR ', ') AS price, GROUP_CONCAT(t.name SEPARATOR ', ') as ticketName FROM tickets t JOIN payment_info_detail pid ON t.id = pid.ticket_id JOIN payment_info pi ON pid.payment_info_id = pi.id JOIN users u ON pi.user_id = u.id WHERE t.event_id =" .$event->id. " GROUP BY u.name ORDER BY t.name";
 
-        return view('org/createEvent', compact('categories', 'cities', 'event', 'cityTimeZones', 'eventTypes', 'IsNew', 'countries', 'states', 'tabe', 'videos', 'podcasts', 'speakers', 'tickets', 'eventRegistrationsResult', 'regForms','eventRegFormMappings', 'regFormInputs', 'eventAttachformValueResults'));
+        // SELECT DISTINCT(u.name) as userName, pid.qty, pid.price, t.name as ticketName FROM tickets t JOIN payment_info_detail pid ON t.id = pid.ticket_id JOIN payment_info pi ON pid.payment_info_id = pi.id JOIN users u ON pi.user_id = u.id WHERE t.event_id=" . $event->id 
+        $eventTicketPurchaseDataResults = DB::select(DB::raw($eventTicketPurchaseData));
+
+        return view('org/createEvent', compact('categories', 'cities', 'event', 'cityTimeZones', 'eventTypes', 'IsNew', 'countries', 'states', 'tabe', 'videos', 'podcasts', 'speakers', 'tickets', 'eventRegistrationsResult', 'regForms','eventRegFormMappings', 'regFormInputs', 'eventAttachformValueResults', 'eventTicketPurchaseDataResults'));
     }
 
     /**
@@ -1139,12 +1144,6 @@ class EventsController extends Controller
         join reg_forminputs fi  on era.reg_forminput_id = fi.id  
         join event_registrations er on er.id= era.event_reg_id
         where er.event_id =" .$eventid. " AND er.user_id =" .$userid.  ""; 
-
-        //         SELECT rfi.*,era.answer FROM event_registrations er
-        // JOIN reg_forminputs rfi ON er.reg_form_id = rfi.reg_form_id
-        // JOIN  event_reg_answers era ON er.id = era.event_reg_id 
-        // JOIN reg_forms rf ON er.reg_form_id = rf.id
-        // WHERE er.event_id =" .$eventid. " AND er.user_id =" .$userid.  " GROUP BY era.answer 
 
         $regQueFormInputResults = DB::select(DB::raw($regQueFormInputs));
 

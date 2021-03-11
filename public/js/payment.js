@@ -37,6 +37,7 @@ $(function () {
         if (response.error) {
             $('.error').removeClass('d-none').find('.alert').text(response.error.message);
         } else {
+            $(".spinnerSubmit").removeClass("d-none");
             // token contains id, last4, and card type
             var token = response['id'];
             // insert the token into the form so it gets submitted to the server
@@ -120,7 +121,6 @@ function ticketCheckoutPage(element){
         });
         var tid = ticketids.join(",");
         var tqty = ticketQty.join(",");
-        //var a = "../ticketCheckout/" + eventId + "/" + finalTicketTotal + "/" + tid + "/" + tqty;
         window.location.href = "../ticketCheckout/" + eventId + "/" + finalTicketTotal + "/" + tid + "/" + tqty;
     }
 }
@@ -145,11 +145,11 @@ function setPurchaseTicketValues(element){
 
                 $(".orderSummary").each(function() {
                     var orderTktCnt = $(this).find(".orderTktCnt");
-                    var orderTktPrice = $(this).find(".orderTktPrice").text();
+                    //var orderTktPrice = $(this).find(".orderTktPrice").text();
 
                     if(tktName == $(this).find(".orderTktName").text()){
                         orderTktCnt.html("x" + (currentVal - 1)) ;
-                        var tktPrice = $(this).find(".orderTktPrice").text("$" + (price * (currentVal - 1)));
+                        //var tktPrice = $(this).find(".orderTktPrice").text("$" + (price * (currentVal - 1)));
                         $(this).find(".orderTktPrice").attr("value", price * (currentVal - 1));
                     }
                     sum += parseInt($(this).find(".orderTktPrice").attr("value"));
@@ -159,9 +159,6 @@ function setPurchaseTicketValues(element){
                 $(".finalTicketTotal").text("$"+ sum);
                 $(".subTotal").text("$"+ sum);
             } 
-            // if(parseInt(input.val()) == input.attr('min')) {
-            //     $(element).attr('disabled', true);
-            // }
         } else if(type == 'plus') {
             if(currentVal < input.attr('max')) {
                 input.val(currentVal + 1).change();
@@ -170,11 +167,11 @@ function setPurchaseTicketValues(element){
 
                 $(".orderSummary").each(function() {
                     var orderTktCnt = $(this).find(".orderTktCnt");
-                    var orderTktPrice = $(this).find(".orderTktPrice").text();
+                    //var orderTktPrice = $(this).find(".orderTktPrice").text();
 
                     if(tktName == $(this).find(".orderTktName").text()){
                         orderTktCnt.html("x" + (currentVal + 1)) ;
-                        var tktPrice = $(this).find(".orderTktPrice").text("$" + (price * (currentVal + 1)));
+                        //var tktPrice = $(this).find(".orderTktPrice").text("$" + (price * (currentVal + 1)));
                         $(this).find(".orderTktPrice").attr("value", price * (currentVal + 1));
                     }
                     sum += parseInt($(this).find(".orderTktPrice").attr("value"));
@@ -185,9 +182,6 @@ function setPurchaseTicketValues(element){
                 $(".subTotal").text("$"+ sum);
 
             }
-            // if(parseInt(input.val()) == input.attr('max')) {
-            //     $(element).attr('disabled', true);
-            // }
         }
     } else {
         input.val(0);

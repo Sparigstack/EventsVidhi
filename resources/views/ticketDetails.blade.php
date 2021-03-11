@@ -65,7 +65,7 @@
         			$ticketEndDate = date("D, M d, Y", strtotime($ticketDetails->sales_end));
         			$ticketEndTime = date('h:i A', strtotime($ticketDetails->sales_end));
 
-					if($ticketDetails->quantity == 0){
+					if($ticketDetails->quantity == $ticketDetails->sold_out){
 						$backcolor = "color: #8C8C8C;";
 						$disableBtn = "disabled";
 						$qtyVal = "0";
@@ -96,7 +96,7 @@
                 					<span class="fa fa-minus" style="color: #9C9C9C;"></span>
               					</button>
   							</div>
-  							<input style="border: 1px solid #ECECEC;" type="text" name="quant[2]" data-tkt-name="{{$ticketDetails->name}}" class="form-control input-number text-center" value="{{$qtyVal}}" min="0" max="{{$ticketDetails->quantity}}" onchange="setPurchaseTicketValues(this);">
+  							<input style="border: 1px solid #ECECEC;" type="text" name="quant[2]" data-tkt-name="{{$ticketDetails->name}}" class="form-control input-number text-center" value="{{$qtyVal}}" min="0" max="{{$ticketDetails->quantity - $ticketDetails->sold_out}}" onchange="setPurchaseTicketValues(this);">
   							<div class="input-group-append">
   								<button {{$disableBtn}} style="{{$backcolor1}}" type="button" class="btn btn-number" onclick="setPurchaseTicketValues(this);" data-type="plus" data-field="quant[2]">
                   					<span class="fa fa-plus"></span>
@@ -140,7 +140,7 @@
 			<p style="color: #9C9C9C;" class="countTkt"></p>
 
 			@foreach($ticketDetail as $ticketDetails)
-			@if($ticketDetails->quantity != 0)
+			@if($ticketDetails->quantity != $ticketDetails->sold_out)
 			<div class="row orderSummary">
 				<div class="col-md-7"> <p class="orderTktName">{{$ticketDetails->name}}</p> </div>
 				<div class="col-md-2 orderTktCnt">x1</div>

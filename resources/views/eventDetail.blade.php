@@ -145,7 +145,7 @@ if ($event_date >= $date_now) {
      		<div class="card w-100">
                 <div class="card-body eventDetailCardBody pt-0">
                     <div class="col-md-12 col-lg-12 d-flex align-items-center" style="background:url('{{$bannerImage}}'); background-size:cover; background-position:center;
-                    background-repeat:no-repeat; min-height:290px; padding:unset;border-radius:6px;">
+                    background-repeat:no-repeat; min-height:290px; padding:unset;border-radius:6px;min-width: 790px;">
                     <!-- 294px -->
                     </div>
 
@@ -433,26 +433,16 @@ if ($event_date >= $date_now) {
                     <div class="card w-100" style="margin-top: 15%;border-radius: 6px;">
                         <div class="card-body pt-3 pb-2">
                             <h5> Tickets </h5>
-                            <?php
-                                $countForColor = 1; 
-                            ?>
                             @foreach($ticketsList as $ticketList)
-                            <?php 
-                                if($countForColor%2 == 0){
-                                    $addColorStyle = "";
-                                } else {
-                                    $addColorStyle = "background: #FED8C6;border-radius: 0px 6px 6px 0px;";   
-                                }
-                            ?>
                         <div class="col-md-12 eventTicket pl-0 pr-0">
                             <div class="card mb-3" style="background: #F1F2F2;border-radius: 5px;box-shadow: none;">
 
                                 <div class="card-body p-0">
                                     <div class="row priceDiv pl-0 pr-0 mr-0">
-                                        <div class="col-md-8 col-lg-8 pr-0 d-flex justify-content-center">
+                                        <div class="col-md-8 col-lg-8 pr-0 d-flex pl-4">
                                             <p class="mt-4 mb-4" style="font-weight: 600;color: #1E1E1E;"> {{$ticketList->name}} </p>
                                         </div>
-                                        <div class="col-md-4 col-lg-4 pl-0 pr-0 d-flex justify-content-center" style="{{$addColorStyle}}">
+                                        <div class="col-md-4 col-lg-4 pl-0 pr-0 d-flex justify-content-center" style="background: #FED8C6;border-radius: 0px 6px 6px 0px;">
                                             <h5 class="mb-0 mt-4 mb-4">${{round($ticketList->price, 0)}}</h5>
                                         </div>
                                     </div>
@@ -460,7 +450,6 @@ if ($event_date >= $date_now) {
 
                             </div>
                         </div>
-                        <?php $countForColor++; ?>
                         @endforeach
 
                         <div class="col-md-12 mt-3 d-flex justify-content-center">

@@ -226,7 +226,9 @@
                                         <div class="col-lg-12 row mt-2">
                                             <div class="form-group col-lg-12">
                                                 <label for="EventBannerImage">Banner Image (optional)</label>
-                                                <p style="font-size: .7pc;">Preferred image size is 970 &#10005; 330 px and maximum 4MB allowed.</p>
+                                                <p style="font-size: .7pc;"><!-- Preferred image size is 970 &#10005; 330 px and maximum 4MB allowed. -->
+                                                    Preferred image size is 790 &#10005; 290 px and maximum 4MB allowed.
+                                                </p>
                                                 <!-- <input type="file" accept="image/*" id="EventBannerImage" name="EventBannerImage" class="form-control files" onchange="document.getElementById('bannerImage').src = window.URL.createObjectURL(this.files[0]);document.getElementById('bannerImage').classList.remove('d-none');"> -->
                                                 <input type="hidden" name="eventBannerPic" class="eventBannerPic" value="{{$BannerUrl}}">
                                                 <div class="dragFileContainer" id="dragfile" style="text-align:center;">
@@ -849,6 +851,80 @@
                         echo "active";
                     } ?>
                      tab-pane " id="tabe-15">
+                                   <div class="col-lg-12">
+                                    <input type="hidden" class="getRegisterAnsData" value="{{url('getRegisterAnsData')}}">
+                                    <input type="hidden" class="eventId" value="{{$event_id}}">
+                                    <input class="csrf-token" type="hidden" value="{{ csrf_token() }}">
+                                <div class="card">
+                                    <div class="card-body row">
+
+                                        <ul class="nav nav-tabs nav-tabs-info nav-justified col-md-7 m-auto pl-0 pr-0">
+                                            <li class="nav-item">
+                                                <a class="nav-link active" data-toggle="tab" href="#buyersTab"><span class="hidden-xs">Buyers</span></a>
+                                            </li>
+
+                                            <li class="nav-item">
+                                                <a class="nav-link" data-toggle="tab" href="#registrantsTab"><span class="hidden-xs">Registrants</span></a>
+                                            </li>
+                                        </ul>
+
+
+                <div class="tab-content col-md-10 m-auto">
+                    <div class="row tab-pane active" id="buyersTab">
+                        <?php if(count($eventTicketPurchaseDataResults) > 0){ ?>
+                                   <div class="col-lg-12">
+                                    <input type="hidden" class="getRegisterAnsData" value="{{url('getRegisterAnsData')}}">
+                                    <input type="hidden" class="eventId" value="{{$event_id}}">
+                                    <input class="csrf-token" type="hidden" value="{{ csrf_token() }}">
+                                <div class="card">
+                                    <div class="card-body row">
+                                        <div id="eventBuyers" class="col-lg-12 m-auto p-0">
+                                            <?php
+                                            $ticketName = "";
+                                            $price = "";
+                                            $qty = "";
+                                            foreach ($eventTicketPurchaseDataResults as $eventTicketPurchaseDataResult) {
+                                                if(strpos($eventTicketPurchaseDataResult->ticketName, ',') != false){
+                                                    $ticketName = explode(',', $eventTicketPurchaseDataResult->ticketName);
+                                                    $price = explode(',', $eventTicketPurchaseDataResult->price);
+                                                    $qty = explode(',', $eventTicketPurchaseDataResult->qty);
+                                                } else {
+                                                    $ticketName = array();
+                                                    array_push($ticketName, $eventTicketPurchaseDataResult->ticketName);
+                                                    $price = array();
+                                                    array_push($price, $eventTicketPurchaseDataResult->price);
+                                                    $qty = array();
+                                                    array_push($qty, $eventTicketPurchaseDataResult->qty);
+                                                }
+
+                                                ?>
+                                                <div class="parent mb-4">
+                                                    <ul class="list-group parent list-group-flush TicketList mb-2 col-lg-8">
+                                                        <li class="list-group-item p-0">
+                                                            <div class="media align-items-center">
+                                                                <div class="media-body ml-3 mt-2 mb-2">
+                                                                    <h6 class="mb-0">{{$eventTicketPurchaseDataResult->userName}} -- {{$eventTicketPurchaseDataResult->email}}</h6>
+                                                                    @for($i=0; $i < count($ticketName); $i++)
+                                                                    <p class="mb-0">{{$ticketName[$i]}} -- {{$qty[$i]}} Tickets -- ${{$price[$i]}}/ticket</p>
+                                                                    @endfor
+                                                                </div>
+
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+
+                                                </div>
+                                            <?php } ?>
+                                        </div>
+                                    </div>
+                                </div>
+                                   </div>
+                        <?php } else { ?>
+                        <div class="text-center m-4"><label class="">There are no buyers</label></div>
+                        <?php } ?>
+                    </div>
+
+                    <div class="row tab-pane" id="registrantsTab">
                         <?php if(count($eventRegistrationsResult) > 0){ ?>
                                    <div class="col-lg-12">
                                     <input type="hidden" class="getRegisterAnsData" value="{{url('getRegisterAnsData')}}">
@@ -882,9 +958,17 @@
                                 </div>
                                    </div>
                         <?php } else { ?>
-                        <div class="text-center m-4"><label class="">There are no participants</label></div>
+                        <div class="text-center m-4"><label class="">There are no registrants</label></div>
                         <?php } ?>
                     </div>
+
+                </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
 
                     <?php if (!empty($event) && $event->is_paid == 1) { ?>
                         <div class="parent row tab-pane " id="TicketsTab">

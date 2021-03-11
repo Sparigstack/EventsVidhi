@@ -68,7 +68,7 @@ $MultSelectTags = "";
                     <div class="card-header addNewEventButton">
                         <i class="fa fa-table pt-3"></i> All Contacts
                         <button id="" class="btn m-1 pull-right btn-primary" style=""><a href="{{url("org/contacts/new")}}">Add New Contact</a></button>
-                        <button id="" class="btn m-1 pull-right btn-success" style=""><a href="{{url("org/contacts/export")}}">Export Contact's</a></button>
+                        <!-- <button id="" class="btn m-1 pull-right btn-success" style=""><a href="{{url("org/contacts/export")}}">Export Contact's</a></button> -->
                         <!-- <button id="" class="btn m-1 pull-right" style="border:1px solid transparent;"><a href="{{url("org/events/new")}}">Add New Event</a></button> -->
                     </div>
                     <div class="card-body">

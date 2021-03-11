@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Event;
 use App\Ticket;
 use App\PaymentInfo;
+use App\PaymentInfoDetail;
 use DB;
 use App\Mail\Email;
 use Mail;
@@ -71,8 +72,6 @@ class TicketsController extends Controller
 
             $eventId = $request->eventId;
 
-            $b = array();
-
             //update ticket quantity
             if( strpos($request->tktId, ',') !== false ) {
                 $ticketId = explode(',' , $request->tktId);
@@ -90,18 +89,7 @@ class TicketsController extends Controller
 
             $ticketDetail = Ticket::whereIn("id" , $ticketId)->get();
             $tQty = 0;
-
-            foreach($ticketDetail as $ticketDetails){
-            	if(in_array($ticketDetails->id, $ticketId)) {            			
-            		if(count($ticketQty) > 0) {
-            			$ticketUpdate = Ticket::where("id" , $ticketDetails->id)->first();
-            			$ticketUpdate->quantity = $ticketUpdate->quantity - $ticketQty[$tQty];
-            			$ticketUpdate->save();
-            			$tQty++;
-            			continue;
-            		}
-            	}
-            }
+            $tQty1 = 0;
 
             //save stripe related data
             $paymentInfo = new PaymentInfo;
@@ -111,6 +99,27 @@ class TicketsController extends Controller
             $paymentInfo->transaction_id = $charge->id;
             $paymentInfo->stripe_customer_id = $customer->id;
             $paymentInfo->save();
+
+            foreach($ticketDetail as $ticketDetails){
+            	if(in_array($ticketDetails->id, $ticketId)) {            			
+            		if(count($ticketQty) > 0) {
+            			$ticketUpdate = Ticket::where("id" , $ticketDetails->id)->first();
+            			$ticketUpdate->sold_out = $ticketUpdate->sold_out + $ticketQty[$tQty];
+            			$ticketUpdate->save();
+
+                        $paymentInfoDetail = new PaymentInfoDetail;
+                        $paymentInfoDetail->payment_info_id = $paymentInfo->id;
+                        $paymentInfoDetail->ticket_id = $ticketDetails->id;
+                        $paymentInfoDetail->qty = $ticketQty[$tQty1];
+                        $paymentInfoDetail->price = $ticketDetails->price;
+                        $paymentInfoDetail->save();
+
+            			$tQty++;
+                        $tQty1++;
+            			continue;
+            		}
+            	}
+            }
 
             //mail sent to user
             $eventDetails = Event::where("id" , $eventId)->first();
@@ -129,8 +138,8 @@ class TicketsController extends Controller
             $mail_content->transaction_id = $charge->id;
             $data = ['view' => 'mails.ticketConfirmation', 'mail_content' => $mail_content, 'subject' => 'Payment done successfully!'];
             $emailOb = new Email($data);
-            //$request->email
-            //Mail::to("team.sprigstack@gmail.com")->send($emailOb);
+            //team.sprigstack@gmail.com
+            Mail::to($request->email)->send($emailOb);
 
             return redirect("ticketPaymentConfirm/". $eventId);
         } catch (Exception $e) {

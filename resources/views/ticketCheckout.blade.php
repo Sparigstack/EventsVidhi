@@ -41,7 +41,7 @@
                                     </div>
                                     <div class='col-xs-12 col-md-4 form-group expiration required'>
                                         <label class='control-label'>Expiration Year</label> <input
-                                            class='form-control card-expiry-year' required name="card-expiry-year" value="" id="card-expiry-year" placeholder='YYYY' size='4'
+                                            class='form-control card-expiry-year' required name="card-expiry-year" value="" id="card-expiry-year" placeholder='YY' size='2'
                                             type='text'>
                                     </div>
                                 </div>
@@ -54,8 +54,8 @@
                                 </div>
 
                                 <div class="form-group">
+                                    <i class="fa fa-spinner fa-spin spinnerSubmit mt-2 pull-right d-none" style="font-size: 24px;margin-left: 5px;"></i>
                                     <input type="submit" id="" class="clickable createEventButton buttonMobileSize px-5 pull-right" value="Pay Now ${{$total}}" style="padding: 8px 30px;">
-                                    <!-- <button type="submit" class="btn createEventButton buttonMobileSize px-5 pull-right" style="font-weight: bold;">Pay Now</button> -->
                                 </div>
                              </form>
          </div>

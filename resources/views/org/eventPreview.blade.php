@@ -69,6 +69,7 @@
                             </div>
                         </div>
 
+                        @if(count($tickets) > 0)
                         <div class="form-group mt-4">
                             <div class="col-lg-12">
                                 <label for="ticketSales" class="mb-0">Ticket Sales</label>
@@ -90,13 +91,14 @@
                                     <tr class="parent">
                                         <td>{{$ticket->name}}</td> 
                                         <td>${{$ticket->price}}</td>
-                                        <td>0/{{$ticket->quantity}}</td>
+                                        <td>{{$ticket->sold_out}}/{{$ticket->quantity}}</td>
                                         <td>$0.00</td>
                                     </tr>
                                     @endforeach
                                 </tbody>
                             </table>
                         </div>
+                        @endif
 
                         <div class="form-group col-lg-12">
                             <label for="registrationTab" class="mb-0"> Check all Registrations <a target="_blank" href="{{ url("org/events/$event->id/3") }}"> here </a></label>

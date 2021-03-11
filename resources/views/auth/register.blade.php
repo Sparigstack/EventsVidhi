@@ -522,7 +522,7 @@ and agree with <a style="color: #9C9C9C;font-weight: bold;text-decoration:underl
             <div class="col-md-12 row LetsStart-Section d-none ">
         
                 <div class="col-md-6  card-title text-center py-3">
-                    Congratulations, <span class="register-user-name"></span> ! Now you are part of the community!
+                    Congratulations, <span class="register-user-name"></span> ! <br>Now you are part of the community!
 
                     <div class="form-group" style="
     display: flex;
@@ -566,7 +566,7 @@ and agree with <a style="color: #9C9C9C;font-weight: bold;text-decoration:underl
             <div class="col-md-12 row LetsStartOrgReg-Section d-none ">
         
                 <div class="col-md-6  card-title text-center py-3">
-                    Congratulations, <span class="register-user-name"></span> ! Now you are part of the community!
+                    Congratulations, <span class="register-user-name"></span> !<br> Now you are part of the community!
 
                     <div class="form-group" style="
     display: flex;
@@ -622,6 +622,12 @@ and agree with <a style="color: #9C9C9C;font-weight: bold;text-decoration:underl
 <script>
 
     $(document).ready(function () {
+        $('form input').keydown(function (e) {
+            if (e.keyCode == 13) {
+                e.preventDefault();
+                return false;
+            }
+        });
         // $('#SignUpButton').on('submit', function (event) {
         //     event.preventDefault();
         // });
