@@ -140,6 +140,42 @@ if ($event_date >= $date_now) {
                 </div>
                 <!-- Question popup -->
 
+        <!-- Comment popup -->
+                <div class="modal fade" id="openCommentPopup" style="display:none;padding:17px!important;" aria-hidden="true">
+                    <input class="csrf-token" type="hidden" value="{{ csrf_token() }}">
+                    
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header pb-2 pt-3" style="font-size:25px;">
+                                <h5 for="title" class="headerTitle">Add Comment</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span></button>
+                            </div>
+                            <div class="modal-body pt-0">
+                                        {{ csrf_field() }}
+                                    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+                                    <div class="commentAnswerDiv">
+                                    <input type="hidden" class="eventID" value="{{$event->id}}">
+                                    <input type="hidden" class="saveUserComments" value="{{url('saveUserComments')}}">
+
+                                        <div class="col-md-12 pl-2 mt-3">
+                                            <label>Add your comment</label>
+                                            <textarea required="" id="" class="commentAns w-100 form-control" placeholder="Type Your Comment..." value=""></textarea>
+                                            <span class="text-danger commenterror d-none"> Please add your comment</span>
+                                        </div>
+
+                                        <div class="col-md-12 mt-3 pr-0 justify-content-center" style="margin-left: 32%;">
+                                        <button onclick="addComment(this);" class="clickable createEventButton buttonMobileSize" style="padding: 8px 30px;">Submit</button><i class="fa fa-spinner fa-spin spinnerSubmit d-none mt-2" style="font-size: 24px;margin-left: 5px;"></i>
+                                        </div>
+
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+                <!-- Comment popup -->
+
         <!-- padding: 0px 40px; -->
      	<div class="col-md-9 col-lg-9">
      		<div class="card w-100">
@@ -235,11 +271,11 @@ if ($event_date >= $date_now) {
                     <?php if(count($videosList) > 0 || count($podcastsList) > 0) { ?>
                 	<!-- <h5 style="padding: 0px 45px;"> Event Media </h5> -->
                     <hr class="mt-0">
-                    <?php if(count($videosList) > 0) {
-                     ?>
+                    <?php if(count($videosList) > 0) { ?>
                     <h5 style="padding: 0px 25px;"> Videos &nbsp; <i class="fa fa-arrow-right" aria-hidden="true"> </i> </h5>
                     <div class="eventVideosList row" style="padding: 0px 25px;padding-left: 35px !important;">
 
+                        <?php if(Auth::check() && count($getRegisterOrPurchaseEventResult) > 0){ ?>
                         @foreach($videosList as $videoList)
                         <div class="col-md-4 showHideListDiv parent pl-2 pr-2">
                             <div class="card" style="border: 1px solid #BBBBBB;border-radius: 6px;">
@@ -317,8 +353,14 @@ if ($event_date >= $date_now) {
                                         </div>
                                     </div>
                             </div> 
-                            @endforeach
-
+                        @endforeach
+                        <?php } else { ?>
+                            <div class="card col-md-4 pl-2 pr-2" style="border: 1px solid #BBBBBB;border-radius: 6px;">
+                                <div class="card-body clickable text-center" title="Content Hidden">
+                                    <i class="fa fa-lock" style="font-size: 140px;"></i>
+                                </div>
+                            </div>
+                        <?php } ?>
 
                     </div>
 
@@ -328,7 +370,7 @@ if ($event_date >= $date_now) {
                     <?php if(count($podcastsList) > 0) { ?>
                     <h5 style="padding: 0px 25px;"> Podcasts &nbsp; <i class="fa fa-arrow-right" aria-hidden="true"> </i> </h5>
                     <div class="eventPodcastsList row" style="padding: 0px 25px;padding-left: 35px !important;">
-
+                        <?php if(Auth::check() && count($getRegisterOrPurchaseEventResult) > 0){ ?>
                         @foreach($podcastsList as $podcastList)
 
                             <div class="col-md-4 showHideListDiv parent pl-2 pr-2">
@@ -392,14 +434,20 @@ if ($event_date >= $date_now) {
 
 
                         @endforeach
+                        <?php } else { ?>
+                            <div class="card col-md-4 pl-2 pr-2" style="border: 1px solid #BBBBBB;border-radius: 6px;">
+                                <div class="card-body clickable text-center" title="Content Hidden">
+                                    <i class="fa fa-lock" style="font-size: 140px;"></i>
+                                </div>
+                            </div>
+                        <?php } ?>
 
                     </div>
 
 
             <?php } } ?>
 
-                    <hr class="mt-0">
-                    @include('layouts.giveSuggestionView', ['section' => $event])
+                    <!-- <hr class="mt-0"> -->
 
                     <hr>
                     @include('layouts.commentsView', ['comment' => 'comment'])
@@ -667,18 +715,6 @@ if ($event_date >= $date_now) {
 @endsection
 
 @section('script')
-<script>
-    function showHideComments(comment){
-        var txt = $(comment).parent().parent().find(".contentDiv").is(':visible') ? 'Show More' : 'Show Less';
-        var txtData = $(comment).parent().parent().find(".show_hide").text(txt);
-        if(txt == 'Show Less'){
-            $(comment).parent().parent().find('.fullContent').removeClass('d-none');
-            $(comment).parent().parent().find('.shortContent').addClass('d-none');
-        } else {
-            $(comment).parent().parent().find('.fullContent').addClass('d-none');
-            $(comment).parent().parent().find('.shortContent').removeClass('d-none');
-        }
-    }
-</script>
 <script src="{{asset('/js/custom.js?v='.$v)}}" type="text/javascript"></script>
+<script src="{{asset('/js/comments.js?v='.$v)}}" type="text/javascript"></script>
 @endsection

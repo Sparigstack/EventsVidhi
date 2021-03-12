@@ -20,8 +20,6 @@
        <input type="hidden" class="saveOrgFollower" value="{{url('saveOrgFollower')}}">
 
 
-
-    <?php if(count($organizers) > 0) { ?>
     <div class="col-md-11 featuredContent mb-4">
         <div class="col-md-12 row MobDisplay">
             <div class="col-md-4 pl-0">
@@ -30,15 +28,19 @@
         </div>
     </div>
 
+    <?php if(count($organizers) > 0) { ?>
     <div class="col-md-11 featuredContent mb-4">
         <div class="row col-md-12 pl-0 pr-0">
             @include('layouts.orgDetailView', ['myContent' => $organizers])
         </div>
     </div>
+    <?php } else { ?>
+        <div class="col-md-12 noEventMsg mb-5">
+            <p class="text-center"> No Records Found! </p>
+        </div>
     <?php } ?>
 
 
-    <?php if(count($events) > 0) { ?>
 	<div class="col-md-11 featuredContent mb-4">
         <div class="col-md-12 row MobDisplay">
             <div class="col-md-4 pl-0">
@@ -47,6 +49,7 @@
         </div>
     </div>
 
+    <?php if(count($events) > 0) { ?>
     <div class="col-md-11 featuredContent mb-4">
         <div class="row col-md-12 pl-0 pr-0">
             <div class="col-md-12 d-none noEventMsg">
@@ -153,11 +156,12 @@
 
 
 
+    <?php } else { ?>
+        <div class="col-md-12 noEventMsg mb-5">
+            <p class="text-center"> No Records Found! </p>
+        </div>
     <?php } ?>
 
-
-
-    <?php if(count($videos) > 0) { ?>
     <div class="col-md-11 featuredContent mb-4">
         <div class="col-md-12 row MobDisplay">
             <div class="col-md-4 pl-0">
@@ -166,6 +170,7 @@
         </div>
     </div>
 
+    <?php if(count($videos) > 0) { ?>
     <div class="col-md-11 featuredContent mb-4">
                                     <div class="row col-md-12 pl-0 pr-0">
                                         <div class="col-md-12 d-none noEventMsg">
@@ -282,11 +287,14 @@
                                         </div>
 
 
+    <?php } else { ?>
+        <div class="col-md-12 noEventMsg mb-5">
+            <p class="text-center"> No Records Found! </p>
+        </div>
     <?php } ?>
 
 
 
-    <?php if(count($podcasts) > 0){ ?>
     <div class="col-md-11 featuredContent mb-4">
         <div class="col-md-12 row MobDisplay">
             <div class="col-md-4 pl-0">
@@ -295,7 +303,7 @@
         </div>
     </div>
 
-
+    <?php if(count($podcasts) > 0){ ?>
     <div class="col-md-11 featuredContent mb-4">
                                             <div class="row col-md-12 pl-0 pr-0">
                                                 <div class="col-md-12 d-none noEventMsg">
@@ -390,6 +398,10 @@
                                                 </div>
     </div>
 
+    <?php } else { ?>
+        <div class="col-md-12 noEventMsg mb-5">
+            <p class="text-center"> No Records Found! </p>
+        </div>
     <?php } ?>
 
 

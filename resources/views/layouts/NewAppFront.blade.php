@@ -47,7 +47,8 @@
         <div class="container">
             <div class="row" style="padding: 15px 0px;">
                 <div class="col-md-3 col-lg-3" style="display: flex;justify-content: center;align-items: center;align-content: center;">
-                    <h4 style="font-family: rockwell;font-weight: 400;" class=""> <span class="dot1"></span> <span class="dot"></span> <a href="{{ url('/') }}" style="color: black;"> panelhive </a> </h4>
+                    <a href="{{ url('/') }}" style="color: black;">
+                    <h4 style="font-family: rockwell;font-weight: 400;" class=""> <span class="dot1"></span> <span class="dot"></span> panelhive </h4></a>
                 </div>
 
                 

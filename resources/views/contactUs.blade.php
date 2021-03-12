@@ -47,7 +47,8 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-4 mt-4" style="">
-					<h4 style="font-family: rockwell;font-weight: 400;" class="mt-1 mb-5"> <span class="dot1"></span> <span class="dot"></span> <a href="{{ url('/') }}" style="color: black;"> panelhive </a> </h4>
+                    <a href="{{ url('/') }}" style="color: black;">
+					<h4 style="font-family: rockwell;font-weight: 400;" class="mt-1 mb-5"> <span class="dot1"></span> <span class="dot"></span> panelhive </h4></a>
 
 					<a href="{{url('/')}}" style="color: #9C9C9C;font-weight: 100;" class=""><i class="fa fa-angle-left"></i>&nbsp; Back</a>
 

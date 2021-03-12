@@ -28,7 +28,7 @@
         }
     ?>
 
-    <div class="row pt-2 pb-2" style="padding: 0px 55px;">
+    <div class="row pt-2 mb-4" style="padding: 0px 55px;">
         <div class="card mb-0 mr-3 {{$smileyCard1}} h-25" style="">
             <a style="cursor:pointer;" onclick="saveUserSuggestions(this);" data-id="1" data-content-id="{{$section->id}}" discriminator="e" value="{{$checkVal1}}">
             	<div class="card-body pt-0 pb-0 row pl-4 mr-1">
@@ -86,7 +86,7 @@
         }
     ?>
 
-    <div class="row pt-2 pb-2" style="padding: 0px 55px;">
+    <div class="row pt-2 mb-4" style="padding: 0px 55px;">
         <div class="card mb-0 mr-3 {{$smileyCard1}} h-25" style="">
             <a style="cursor:pointer;" onclick="saveUserSuggestions(this);" data-id="1" data-content-id="{{$sectionvideo->id}}" discriminator="v" value="{{$checkVal1}}">
             	<div class="card-body pt-0 pb-0 row pl-4 mr-1">
@@ -144,7 +144,7 @@
         }
     ?>
 
-    <div class="row pt-2 pb-2" style="padding: 0px 55px;">
+    <div class="row pt-2 mb-4" style="padding: 0px 55px;">
         <div class="card mb-0 mr-3 {{$smileyCard1}} h-25" style="">
             <a style="cursor:pointer;" onclick="saveUserSuggestions(this);" data-id="1" data-content-id="{{$sectionpodcast->id}}" discriminator="p" value="{{$checkVal1}}">
             	<div class="card-body pt-0 pb-0 row pl-4 mr-1">

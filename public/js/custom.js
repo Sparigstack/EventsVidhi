@@ -234,19 +234,19 @@ function fbs_click() {
     return false;
 }
 
-function moreCommentShowHide(){
-    var comment = $(".morecmtbtn").val();
-    if(comment == "More Comments"){
-        $(".morecmtbtn").attr("value","Less Comments");
-        $(".commentSection").removeClass("d-none");
-        $(".show_hide").text("Show More");
-        $('.fullContent').addClass('d-none');
-        $('.shortContent').removeClass('d-none');
-    } else {
-        $(".morecmtbtn").attr("value","More Comments");
-        $(".commentSection").addClass("d-none");
-    }
-}
+// function moreCommentShowHide(){
+//     var comment = $(".morecmtbtn").val();
+//     if(comment == "More Comments"){
+//         $(".morecmtbtn").attr("value","Less Comments");
+//         $(".commentSection").removeClass("d-none");
+//         $(".show_hide").text("Show More");
+//         $('.fullContent').addClass('d-none');
+//         $('.shortContent').removeClass('d-none');
+//     } else {
+//         $(".morecmtbtn").attr("value","More Comments");
+//         $(".commentSection").addClass("d-none");
+//     }
+// }
 
 function saveUserSuggestions(element){
     var contentId = $(element).attr("data-content-id");

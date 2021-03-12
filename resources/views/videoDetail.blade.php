@@ -68,8 +68,7 @@
                     <hr class="mt-0">
                     @include('layouts.giveSuggestionView', ['sectionvideo' => $video])
 
-                	<hr>
-                    @include('layouts.commentsView', ['comment' => 'comment'])
+                	<!-- <hr> -->
             	</div>
         	</div>
     	</div>

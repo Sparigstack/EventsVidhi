@@ -57,8 +57,7 @@
                     <hr class="mt-0">
                     @include('layouts.giveSuggestionView', ['sectionpodcast' => $podcast])
 
-                	<hr>
-                	@include('layouts.commentsView', ['comment' => 'comment'])
+                	<!-- <hr> -->
             	</div>
         	</div>
     	</div>

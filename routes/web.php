@@ -138,6 +138,8 @@ Route::get('/{tabId}/{categoryId}/page={pageCount}', 'HomeController@indexPage')
 Route::get('allContent/{tabId}/{categoryId}/{searchName}/page={pageCount}', 'HomeController@allContent');
 
 Route::get('events/{eventid}', 'HomeController@eventDetail');
+Route::post('saveUserComments', 'HomeController@saveUserComments');
+
 Route::get('videos/{videoid}', 'HomeController@videoDetail');
 Route::get('podcasts/{podcastid}', 'HomeController@podcastDetail');
 Route::get('organizer/{orgid}', 'HomeController@organizerDetail');

@@ -961,8 +961,8 @@
             $str = substr(strrchr($link, '/'), 0);
             $redirectLink = str_replace($str, '', $link);
 //echo $redirectLink;
-            if ($dbRecordCount > 32) {
-                $pages = (int) ($dbRecordCount / 32);
+            if ($dbRecordCount > 31) {
+                $pages = (int) ($dbRecordCount / 31);
 
                 $pageNumber = substr(strrchr($link, '='), 1);
                 if (isset($pageNumber) && !is_null($pageNumber)) {

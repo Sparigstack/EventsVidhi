@@ -869,6 +869,15 @@ function ValidateEventForm(element) {
     var cityTimezone = $("#cityTimezone").val();
     
     var idClicked = event.submitter.id;
+
+    if($(".regDiv").find("#regFormList").length == 1){
+        event.preventDefault();
+        $(".addNewRegForm").removeClass("d-none");
+        $("#publishButton").attr("disabled", true);
+        $("#draftButton").attr("disabled", true);
+        return;
+    }
+
     if($(".regDiv").find("#regFormList").length == 0 && $(".IsReg").prop("checked") == true) {
         event.preventDefault();
         alert("For event registration, you need to add form then you can attach form with this event.");

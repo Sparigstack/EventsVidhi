@@ -6,6 +6,7 @@ use App\Jobs\EncryptFile;
 use App\Jobs\MoveFileToS3;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use SoareCostin\FileVault\Facades\FileVault;
 use Artisan;
@@ -27,6 +28,7 @@ use App\RegFormInput;
 use App\EventRegFormMapping;
 use App\EventRegistration;
 use App\EventRegAnswer;
+use App\Comment;
 
 class HomeController extends Controller
 {
@@ -144,28 +146,28 @@ class HomeController extends Controller
         if($tabId == 1 || $tabId == NULL){
             $allData .= "SELECT * FROM ("
                 .$eventQuery." UNION ".$videoQuery." UNION ".$podcastQuery.
-                ") allDataQuery LIMIT 12";
+                ") allDataQuery LIMIT 11";
             $dataCount .= "SELECT * FROM ("
                 .$eventQuery." UNION ".$videoQuery." UNION ".$podcastQuery.
                 ") allDataQuery";
         } else if($tabId == 2){
             $allData .= "SELECT * FROM ("
                 .$eventQuery.
-                ") allDataQuery LIMIT 12";
+                ") allDataQuery LIMIT 11";
             $dataCount .= "SELECT * FROM ("
                 .$eventQuery.
                 ") allDataQuery";
         } else if($tabId == 3){
             $allData .= "SELECT * FROM ("
                 .$videoQuery.
-                ") allDataQuery LIMIT 12";
+                ") allDataQuery LIMIT 11";
             $dataCount .= "SELECT * FROM ("
                 .$videoQuery.
                 ") allDataQuery";
         } else {
             $allData .= "SELECT * FROM ("
                 .$podcastQuery.
-                ") allDataQuery LIMIT 12";
+                ") allDataQuery LIMIT 11";
             $dataCount .= "SELECT * FROM ("
                 .$podcastQuery.
                 ") allDataQuery";
@@ -247,34 +249,34 @@ class HomeController extends Controller
         if ($page == "" || $page == "1") {
             $startingRecord = 0;
         } else {
-            $startingRecord = $page * 32 - 32;
+            $startingRecord = $page * 31 - 31;
         }
 
         if($tabId == 1){
             $allData .= "SELECT * FROM ("
                 .$eventQuery." UNION ".$videoQuery." UNION ".$podcastQuery.
-                ") allDataQuery LIMIT " . $startingRecord . ",32";
+                ") allDataQuery LIMIT " . $startingRecord . ",31";
             $dataCount .= "SELECT * FROM ("
                 .$eventQuery." UNION ".$videoQuery." UNION ".$podcastQuery.
                 ") allDataQuery";
         } else if($tabId == 2){
             $allData .= "SELECT * FROM ("
                 .$eventQuery.
-                ") allDataQuery LIMIT " . $startingRecord . ",32";
+                ") allDataQuery LIMIT " . $startingRecord . ",31";
             $dataCount .= "SELECT * FROM ("
                 .$eventQuery.
                 ") allDataQuery";
         } else if($tabId == 3){
             $allData .= "SELECT * FROM ("
                 .$videoQuery.
-                ") allDataQuery LIMIT " . $startingRecord . ",32";
+                ") allDataQuery LIMIT " . $startingRecord . ",31";
             $dataCount .= "SELECT * FROM ("
                 .$videoQuery.
                 ") allDataQuery";
         } else {
             $allData .= "SELECT * FROM ("
                 .$podcastQuery.
-                ") allDataQuery LIMIT " . $startingRecord . ",32";
+                ") allDataQuery LIMIT " . $startingRecord . ",31";
             $dataCount .= "SELECT * FROM ("
                 .$podcastQuery.
                 ") allDataQuery";
@@ -331,7 +333,17 @@ class HomeController extends Controller
         $regQueFormInputs = "SELECT rfi.* FROM event_reg_form_mappings erfm JOIN  reg_forminputs rfi ON erfm.reg_form_id = rfi.reg_form_id WHERE erfm.event_id =" . $eventid . " ORDER BY rfi.id ASC"; 
         $regQueFormInputResults = DB::select(DB::raw($regQueFormInputs));
 
-        return view('eventDetail', compact('event', 'eventsList', 'countryName', 'eventFollowersList', 'videosList', 'podcastsList', 'ticketsList', 'orgFollowerCountResult', 'speakersList', 'suggestionsList', 'suggestionsListCountResult1', 'suggestionsListCountResult2', 'suggestionsListCountResult3' , 'regQueFormInputResults'));
+        $commentDetail = Comment::where("event_id" , $eventid)->orderBy("id" , "DESC")->get();
+
+        if(Auth::check()){
+            $user = Auth::id();
+        } else {
+            $user = 0;
+        }
+        $getRegisterOrPurchaseEvent = "SELECT e.id FROM events e LEFT JOIN event_registrations er ON e.id = er.event_id LEFT JOIN payment_info pi ON e.id = pi.event_id WHERE (er.user_id=" .$user." AND er.event_id=" .$eventid. ") OR (pi.user_id=" .$user. " AND pi.event_id=" .$eventid. ")";
+        $getRegisterOrPurchaseEventResult = DB::select(DB::raw($getRegisterOrPurchaseEvent));
+
+        return view('eventDetail', compact('event', 'eventsList', 'countryName', 'eventFollowersList', 'videosList', 'podcastsList', 'ticketsList', 'orgFollowerCountResult', 'speakersList', 'suggestionsList', 'suggestionsListCountResult1', 'suggestionsListCountResult2', 'suggestionsListCountResult3' , 'regQueFormInputResults', 'commentDetail', 'getRegisterOrPurchaseEventResult'));
     }
 
     public function videoDetail($videoid)
@@ -485,5 +497,13 @@ class HomeController extends Controller
           $queAnsInput->save();
       }
     //}
+    }
+
+    public function saveUserComments(Request $request){
+        $saveComment = new Comment;
+        $saveComment->event_id = $request->eventID;
+        $saveComment->user_id = $request->loginuserID;
+        $saveComment->comment = $request->commentAnswerDiv;
+        $saveComment->save();
     }
 }

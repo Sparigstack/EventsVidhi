@@ -483,41 +483,17 @@
                                                         </div>
                                                         <br>
 
-                                                        <div class="form-group col-lg-12">
-                                                            <label for="BlankLabel">Is this Event public or Registration is required?</label><br>
-                                                            <div class="icheck-material-primary icheck-inline">
-                                                                <input type="radio" id="inline-radio-primary" class="IsPublic" value="true" onclick="checkPublicOrRegistration(this);" name="IsPublic" <?php if (!empty($event)) {
-                                                                                                                                                if ($event->is_public == 1) {
-                                                                                                                                                    echo "checked";
-                                                                                                                                                }
-                                                                                                                                            } else {
-                                                                                                                                                echo "checked";
-                                                                                                                                            } ?>>
-                                                                <label for="inline-radio-primary">Public Event</label>
-                                                            </div>
-                                                            <div class="icheck-material-primary icheck-inline">
-                                                                <?php 
-                                                                    $regDivDnone = "d-none";
-                                                                    $requiredDropdown = "";
-                                                                    if(isset($eventAttachformValueResults) && count($eventAttachformValueResults) > 0){
-                                                                        $regDivDnone = "";
-                                                                        $requiredDropdown = "required";
-                                                                    }
-                                                                ?>
-                                                                <input type="radio" class="IsReg" id="inline-radio-info" onclick="checkPublicOrRegistration(this);" value="false" name="IsPublic" <?php if (!empty($event)) {
-                                                                                                                                                if ($event->is_public == 0) {
-                                                                                                                                                    echo "checked";
-                                                                                                                                                }
-                                                                                                                                            } ?>>
-                                                                <label for="inline-radio-info"> Registration Required</label>
-                                                            </div>
-                                                        </div>
                                                         <!-- <br> -->
-                                                        <div class="form-group col-lg-12 regDiv {{$regDivDnone}}">
-                                                            <?php if(count($regForms) > 0) { ?>
-                                                            <label> Select Form you want to attach to this event </label>
-                                                            <select class="form-control" name="regFormList" id="regFormList" {{$requiredDropdown}}>
-                                                                <!-- <option value="">  </option> -->
+                                                        <div class="form-group col-lg-12 regDiv">
+                                                            <?php
+                                                            $requiredItem = "required";
+                                                            if(count($regForms) == 0) {
+                                                                $requiredItem = "";
+                                                            }
+                                                            ?>
+                                                            <label> Select Registration Form to attach to this event </label>
+                                                            <select class="form-control" name="regFormList" id="regFormList" {{$requiredItem}}>
+                                                                <option value=""> Select Registration Form </option>
                                                                 <?php 
                                                                     if(isset($eventAttachformValueResults) && count($eventAttachformValueResults) > 0){
                                                                         foreach($regForms as $regForm)
@@ -540,9 +516,11 @@
                                                                 @endforeach
                                                     <?php } ?>
                                                     </select>
-                                                    <?php } else { ?>
-                                                        <p class="text-danger"> For event registration, you need to add form then you can attach form with this event. </p>
-                                                    <?php } ?>
+
+                                                    <div class="addNewRegForm d-none mt-2">
+                                                        <div class="mb-2"><span class="text-danger"> Please add new registration form to attach to this event</span></div>
+                                                        <a href="{{url('org/regForm/new')}}" target="_blank"><u>Add Registration Form</u></a>
+                                                    </div>
 
                                                         </div>
 

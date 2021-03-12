@@ -54,7 +54,8 @@
                 align-items: center;
                 /*align-content: center;*/
                 ">
-                    <h4 style="font-family: rockwell;font-weight: 400;" class="mt-1"> <span class="dot1"></span> <span class="dot"></span> <a href="{{ url('/') }}" style="color: black;"> panelhive </a> </h4>
+                    <a href="{{ url('/') }}" style="color: black;">
+                    <h4 style="font-family: rockwell;font-weight: 400;" class="mt-1"> <span class="dot1"></span> <span class="dot"></span> panelhive </h4></a>
                 </div>
 
                 <div class="col-md-5 col-lg-5 MobileMt searchbardiv mt-1">
