@@ -29,6 +29,7 @@
                 	<?php
                          $AwsUrl = env('AWS_URL');
                          $podcastUrl = "";
+                         if(count($getRegisterOrPurchaseEventResult) > 0) {
                          if (!empty($podcast->url)) {
                             if(substr($podcast->url, 0, 8 ) != "https://"){
                                 $podcastUrl = $AwsUrl . $podcast->url;
@@ -38,7 +39,15 @@
                 			<div class="podcastContainerDiv mt-4" style="position: relative;">
                          		<audio controls  class="w-100"><source src="{{$podcastUrl}}" type="audio/ogg" class=""></audio>
                     		</div>
-                     <?php } ?>
+                     <?php } } else { ?>
+                            <div class="text-center mt-4 clickable" title="Content Locked">
+                            <i class="fa fa-lock" style="font-size: 140px;"></i>
+                            </div>
+                            <div class="ml-5 mr-5">
+                                <p>(Content is locked because this podcast attached to the event, so if you want to show content, you have to <a href="{{url('events/'. $podcast->event_id)}}" target="_blank"><u>purchase ticket</u></a> or <a href="{{url('events/'. $podcast->event_id)}}" target="_blank"><u>register event</u></a>.)</p>
+                            </div>
+                            <hr>
+                        <?php } ?>
                     
 
                 	<div class="podcastContent" style="padding: 0px 45px;">
@@ -136,7 +145,7 @@
                                     }
                                 }
                                 ?>
-                                <a href="{{$videoPodcastUrl}}" target="_blank"><audio controls  class="w-100"><source src="{{$videoPodcastUrl}}" type="audio/ogg" class="col-lg-7 pr-0 pl-0"></audio></a>
+                                <a href="{{url('podcasts/'. $podcastList->id)}}" target="_blank"><audio controls  class="w-100" style="pointer-events: none;"><source src="{{$videoPodcastUrl}}" type="audio/ogg" class="col-lg-7 pr-0 pl-0"></audio></a>
 
                               <div class="col-md-12 pr-0 mt-2 mr-2 pl-0" style="color:#9C9C9C;">Podcast </div>
 

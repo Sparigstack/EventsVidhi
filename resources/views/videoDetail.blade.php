@@ -27,6 +27,7 @@
 			<div class="card w-100" style="border-radius: 6px;">
                 <div class="card-body p-0">
                     <?php
+                        if(count($getRegisterOrPurchaseEventResult) > 0)  {
                          $AwsUrl = env('AWS_URL');
                          $videoUrl = "";
                          if (!empty($video->url)) {
@@ -50,7 +51,15 @@
                                 <div class="videoContainerDiv" style="position: relative;padding-top: 56.25%;">
                                 <iframe style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;border-radius: 6px;" src="{{$url}}" frameborder="0"></iframe> </div>
                      <?php  }
-                }?>
+                } } else { ?>
+                    <div class="text-center mt-4 clickable" title="Content Locked">
+                        <i class="fa fa-lock" style="font-size: 140px;"></i>
+                    </div>
+                    <div class="ml-5 mr-5">
+                        <p>(Content is locked because this video attached to the event, so if you want to show content, you have to <a href="{{url('events/'. $video->event_id)}}" target="_blank"><u>purchase ticket</u></a> or <a href="{{url('events/'. $video->event_id)}}" target="_blank"><u>register event</u></a>.)</p>
+                    </div>
+                    <hr>
+                <?php } ?>
 
                 	<div class="videoContent" style="padding: 0px 45px;">
                 	<h5 class="mt-4"> {{$video->title}} </h5>
@@ -65,7 +74,7 @@
                 	<p class="mt-3">{{$videoDesc}}</p>
                 </div>
 
-                    <hr class="mt-0">
+                    <hr class="">
                     @include('layouts.giveSuggestionView', ['sectionvideo' => $video])
 
                 	<!-- <hr> -->
@@ -117,7 +126,7 @@
                         if($videoList->url_type == 1){
                           	$videoUrl = $AwsUrl . $videoList->url; ?>
                        		<a href="{{url('videos/'. $videoList->id)}}" target="_blank">
-                            <video class="" src="{{$videoUrl}}" width="100%" height="100%" controls="controls" style="border-radius: 6px 6px 0px 0px;"></video></a>
+                            <video class="" src="{{$videoUrl}}" width="100%" height="100%" style="border-radius: 6px 6px 0px 0px;"></video></a>
                         <?php   }
                         else{
                             $videoUrl = $videoList->url; 

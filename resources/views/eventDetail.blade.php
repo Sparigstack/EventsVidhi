@@ -286,7 +286,7 @@ if ($event_date >= $date_now) {
                                         if($videoList->url_type == 1){
                                             $videoUrl = $AwsUrl . $videoList->url;?>
                                             <a href="{{url('videos/'. $videoList->id)}}" target="_blank">
-                                                <video class="" src="{{$videoUrl}}" width="100%" height="100%" controls="controls" style="border-radius: 6px 6px 0px 0px;"></video>
+                                                <video class="" src="{{$videoUrl}}" width="100%" height="100%" style="border-radius: 6px 6px 0px 0px;"></video>
                                             </a>
                                         <?php   }
                                         else{
@@ -356,10 +356,26 @@ if ($event_date >= $date_now) {
                         @endforeach
                         <?php } else { ?>
                             <div class="card col-md-4 pl-2 pr-2" style="border: 1px solid #BBBBBB;border-radius: 6px;">
-                                <div class="card-body clickable text-center" title="Content Hidden">
+                                <div class="card-body clickable text-center" title="Content Locked">
                                     <i class="fa fa-lock" style="font-size: 140px;"></i>
                                 </div>
                             </div>
+                            <?php
+                                $textSetForHiddenContent = "";
+                                //paid
+                                if($event->is_paid == 1 && count($getRegisterOrPurchaseEventResult) == 0){
+                                    $textSetForHiddenContent = "Content is locked because this is paid event, you can view content if you purchase ticket for this event.";
+                                }
+                                //free, register
+                                if($event->is_paid == 0 && count($getRegisterEventResult) == 0){
+                                    $textSetForHiddenContent = "Content is locked because event registration is required, you can view content if you register this event.";
+                                }
+                                //paid, register
+                                if($event->is_paid == 1 && count($getRegisterOrPurchaseEventResult) == 0){
+                                    $textSetForHiddenContent = "Content is locked because this is paid event, you can view content if you purchase ticket or register for this event.";
+                                }
+                            ?>
+                            <div class="col-md-8"><p>({{$textSetForHiddenContent}})</p></div>
                         <?php } ?>
 
                     </div>
@@ -422,7 +438,7 @@ if ($event_date >= $date_now) {
                                                 }
                                             }
                                             ?>
-                                            <a href="{{$videoPodcastUrl}}" target="_blank"><audio controls  class="w-100"><source src="{{$videoPodcastUrl}}" type="audio/ogg" class="col-lg-7 pr-0 pl-0"></audio></a>
+                                            <a href="{{url('podcasts/'. $podcastList->id)}}" target="_blank"><audio controls  class="w-100" style="pointer-events: none;"><source src="{{$videoPodcastUrl}}" type="audio/ogg" class="col-lg-7 pr-0 pl-0"></audio></a>
 
                                                 <div class="col-md-12 pr-0 mt-2 mr-2 pl-0" style="color:#9C9C9C;">Podcast </div>
 
@@ -436,10 +452,26 @@ if ($event_date >= $date_now) {
                         @endforeach
                         <?php } else { ?>
                             <div class="card col-md-4 pl-2 pr-2" style="border: 1px solid #BBBBBB;border-radius: 6px;">
-                                <div class="card-body clickable text-center" title="Content Hidden">
+                                <div class="card-body clickable text-center" title="Content Locked">
                                     <i class="fa fa-lock" style="font-size: 140px;"></i>
                                 </div>
                             </div>
+                            <?php
+                                $textSetForHiddenContent = "";
+                                //paid
+                                if($event->is_paid == 1 && count($getRegisterOrPurchaseEventResult) == 0){
+                                    $textSetForHiddenContent = "Content is locked because this is paid event, you can view content if you purchase ticket for this event.";
+                                }
+                                //free, register
+                                if($event->is_paid == 0 && count($getRegisterEventResult) == 0){
+                                    $textSetForHiddenContent = "Content is locked because event registration is required, you can view content if you register this event.";
+                                }
+                                //paid, register
+                                if($event->is_paid == 1 && count($getRegisterOrPurchaseEventResult) == 0){
+                                    $textSetForHiddenContent = "Content is locked because this is paid event, you can view content if you purchase ticket or register for this event.";
+                                }
+                            ?>
+                            <div class="col-md-8"><p>({{$textSetForHiddenContent}})</p></div>
                         <?php } ?>
 
                     </div>
@@ -584,6 +616,7 @@ if ($event_date >= $date_now) {
                 
      		<h5 class=""> Location </h5>
 
+            @if($event->is_online == '0')
      		<div class="mt-3 mb-4"> 
      			<!--Google map-->
 				<div id="map-container-google-1" class="z-depth-1-half map-container" style="">
@@ -594,6 +627,38 @@ if ($event_date >= $date_now) {
 
 				<p class="mt-2"> {{$fullAddress}}</p>
      		</div>
+            @else 
+                <div class="card mb-3">
+                    @if(Auth::check() && count($getRegisterOrPurchaseEventResult) > 0)
+                        <div class="card-body text-center">
+                            <a href="{{$event->online_event_url}}" target="_blank"><u>Click here to join this event</u></a>
+                        </div>
+                    @else
+                        <div class="card-body clickable text-center p-0" title="Location Locked">
+                            <i class="fa fa-lock" style="font-size: 45px;"></i>
+                        </div>
+                    @endif
+                </div>
+
+                <?php
+                    $textSetForHiddenContent = "";
+                    //paid
+                    if($event->is_paid == 1 && count($getRegisterOrPurchaseEventResult) == 0){
+                        $textSetForHiddenContent = "Location is locked because this is paid event, you can view location if you purchase ticket for this event.";
+                    }
+                    //free, register
+                    if($event->is_paid == 0 && count($getRegisterEventResult) == 0){
+                        $textSetForHiddenContent = "Location is locked because event registration is required, you can view location if you register this event.";
+                    }
+                    //paid, register
+                    if($event->is_paid == 1 && count($getRegisterOrPurchaseEventResult) == 0){
+                        $textSetForHiddenContent = "Location is locked because this is paid event, you can view location if you purchase ticket or register for this event.";
+                    }
+                ?>
+                 @if(Auth::check() == false && count($getRegisterOrPurchaseEventResult) == 0)
+                    <div class=""><p>({{$textSetForHiddenContent}})</p></div>
+                @endif
+            @endif
             <?php } ?>
 
      		<h5 class="mt-3"> Tags </h5>

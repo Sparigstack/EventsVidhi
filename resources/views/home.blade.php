@@ -323,7 +323,7 @@
                                                         $videoUrl = $AwsUrl . $allData->videoUrl; ?>
                                                         <!-- <a href="{{$videoUrl}}" target="_blank"> -->
                                                             <a href="{{url('videos/'. $allData->videoId)}}" target="_blank">
-                                                            <video class="" src="{{$videoUrl}}" width="100%" height="100%" controls="controls" style="border-radius: 6px 6px 0px 0px;"></video>
+                                                            <video class="" src="{{$videoUrl}}" width="100%" height="100%" style="border-radius: 6px 6px 0px 0px;"></video>
                                                         </a>
                                                         <?php   }
                                                         else{
@@ -475,7 +475,7 @@
                                                                 }
                                                             }
                                                             ?>
-                                                            <a href="{{$videoPodcastUrl}}" target="_blank"><audio controls  class="w-100"><source src="{{$videoPodcastUrl}}" type="audio/ogg" class="col-lg-7 pr-0 pl-0"></audio></a>
+                                                            <a href="{{url('podcasts/'. $allData->podcastId)}}" target="_blank"><audio controls  class="w-100" style="pointer-events: none;"><source src="{{$videoPodcastUrl}}" type="audio/ogg" class="col-lg-7 pr-0 pl-0"></audio></a>
 
                                                                 <div class="col-md-12 pr-0 mt-2 mr-2 pl-0" style="color:#9C9C9C;">Podcast </div>
 
@@ -755,7 +755,7 @@
                                                         $videoUrl = $AwsUrl . $allData->videoUrl; ?>
                                                         <!-- <a href="{{$videoUrl}}" target="_blank"> -->
                                                             <a href="{{url('videos/'. $allData->videoId)}}" target="_blank">
-                                                            <video class="" src="{{$videoUrl}}" width="100%" height="100%" controls="controls" style="border-radius: 6px 6px 0px 0px;"></video></a>
+                                                            <video class="" src="{{$videoUrl}}" width="100%" height="100%" style="border-radius: 6px 6px 0px 0px;"></video></a>
                                                         <?php   }
                                                         else{
                                                             $videoUrl = $allData->videoUrl; 
@@ -979,7 +979,7 @@
                                                                 }
                                                             }
                                                             ?>
-                                                            <a href="{{$videoPodcastUrl}}" target="_blank"><audio controls  class="w-100"><source src="{{$videoPodcastUrl}}" type="audio/ogg" class="col-lg-7 pr-0 pl-0"></audio></a>
+                                                            <a href="{{url('podcasts/'. $allData->podcastId)}}" target="_blank"><audio controls  class="w-100" style="pointer-events: none;"><source src="{{$videoPodcastUrl}}" type="audio/ogg" class="col-lg-7 pr-0 pl-0"></audio></a>
 
                                                                 <div class="col-md-12 pr-0 mt-2 mr-2 pl-0" style="color:#9C9C9C;">Podcast </div>
 

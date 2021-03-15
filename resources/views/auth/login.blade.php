@@ -115,7 +115,7 @@ text-align: center;">Welcome back! <br/> Nice to see you again!</div>
                            <button type="submit" class="btn btn-primary btn-block New-Login">Log In</button>
                         </div>
                         <div class="SignUpLink col-md-6">
-                             <p class="text-dark mb-0 ml-4 signUpAnchor" style="color:#1E1E1E; text-decoration:underline;font-weight: bold;"> <a style="color:#1E1E1E;font-weight: bold;" href="{{ url('userRegister') }}">Or Sign Up</a></p>
+                             <p class="text-dark mb-0 ml-4 signUpAnchor" style="color:#1E1E1E; text-decoration:underline;font-weight: bold;"> <a style="color:#1E1E1E;font-weight: bold;" href="{{ url('userRegister') }}">or Sign Up</a></p>
                         </div>
                     </div>
             </form>

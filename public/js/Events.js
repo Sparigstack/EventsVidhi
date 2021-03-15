@@ -870,7 +870,7 @@ function ValidateEventForm(element) {
     
     var idClicked = event.submitter.id;
 
-    if($(".regDiv").find("#regFormList").length == 1){
+    if($(".regDiv").find("#regFormList").length == 1 && $(".regDiv").find("#regFormList").find("option:selected").val() == ""){
         event.preventDefault();
         $(".addNewRegForm").removeClass("d-none");
         $("#publishButton").attr("disabled", true);

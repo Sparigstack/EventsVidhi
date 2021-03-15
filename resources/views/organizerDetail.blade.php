@@ -353,19 +353,19 @@
 
      		@if($organizer->email != '')
      			<div class="row ml-1">
-     				<i aria-hidden="true" class="fa fa-envelope-o" style="color: #9C9C9C;margin-top:4px;"></i><p class="ml-1" style="color:black;">{{$organizer->email}}</p>
+     				<i aria-hidden="true" class="fa fa-envelope-o" style="color: #9C9C9C;margin-top:4px;"></i><a href="mailto:{{$organizer->email}}"><p class="ml-1" style="color:black;">{{$organizer->email}}</p></a>
      			</div>
      		@endif
 
      		@if($organizer->website_url != '')
      			<div class="row ml-1">
-     				<i aria-hidden="true" class="fa fa-globe" style="color: #9C9C9C;margin-top:4px;"></i><p class="ml-1" style="color: black;">{{$organizer->website_url}}</p>
+     				<i aria-hidden="true" class="fa fa-globe" style="color: #9C9C9C;margin-top:4px;"></i><a href="{{$organizer->website_url}}" target="_blank"><p class="ml-1" style="color: black;">{{$organizer->website_url}}</p></a>
      			</div>
      		@endif
 
      		@if($organizer->linkedin_url != '')
      			<div class="row ml-1">
-     				<i aria-hidden="true" class="fa fa-linkedin" style="color: #9C9C9C;margin-top:4px;"></i><p class="ml-1" style="color: black;">{{$organizer->linkedin_url}}</p>
+     				<i aria-hidden="true" class="fa fa-linkedin" style="color: #9C9C9C;margin-top:4px;"></i><a href="{{$organizer->linkedin_url}}" target="_blank"><p class="ml-1" style="color: black;">{{$organizer->linkedin_url}}</p></a>
      			</div>
      		@endif
 

@@ -343,7 +343,10 @@ class HomeController extends Controller
         $getRegisterOrPurchaseEvent = "SELECT e.id FROM events e LEFT JOIN event_registrations er ON e.id = er.event_id LEFT JOIN payment_info pi ON e.id = pi.event_id WHERE (er.user_id=" .$user." AND er.event_id=" .$eventid. ") OR (pi.user_id=" .$user. " AND pi.event_id=" .$eventid. ")";
         $getRegisterOrPurchaseEventResult = DB::select(DB::raw($getRegisterOrPurchaseEvent));
 
-        return view('eventDetail', compact('event', 'eventsList', 'countryName', 'eventFollowersList', 'videosList', 'podcastsList', 'ticketsList', 'orgFollowerCountResult', 'speakersList', 'suggestionsList', 'suggestionsListCountResult1', 'suggestionsListCountResult2', 'suggestionsListCountResult3' , 'regQueFormInputResults', 'commentDetail', 'getRegisterOrPurchaseEventResult'));
+        $getRegisterEvent = "SELECT e.id FROM events e LEFT JOIN event_registrations er ON e.id = er.event_id WHERE er.user_id=" .$user." AND er.event_id=" .$eventid. "";
+        $getRegisterEventResult = DB::select(DB::raw($getRegisterEvent));
+
+        return view('eventDetail', compact('event', 'eventsList', 'countryName', 'eventFollowersList', 'videosList', 'podcastsList', 'ticketsList', 'orgFollowerCountResult', 'speakersList', 'suggestionsList', 'suggestionsListCountResult1', 'suggestionsListCountResult2', 'suggestionsListCountResult3' , 'regQueFormInputResults', 'commentDetail', 'getRegisterOrPurchaseEventResult', 'getRegisterEventResult'));
     }
 
     public function videoDetail($videoid)
@@ -371,7 +374,38 @@ class HomeController extends Controller
         $suggestionsListCount3 = DB::select(DB::raw($suggestionsListCount3));
         $suggestionsListCountResult3 = count($suggestionsListCount3);
 
-        return view('videoDetail', compact('video', 'videosList', 'eventCategoriesResult', 'eventFollowersList', 'orgFollowerCountResult', 'suggestionsList', 'suggestionsListCountResult1', 'suggestionsListCountResult2', 'suggestionsListCountResult3'));
+        // if(Auth::check()){
+        //     $user = Auth::id();
+        // } else {
+        //     $user = 0;
+        // }
+
+        // if($getEventId->event_id != ""){
+        //     $eventId = $getEventId->event_id;
+
+        //     $getRegisterOrPurchaseEvent = "SELECT e.id FROM videos v LEFT JOIN events e ON v.event_id = e.id LEFT JOIN event_registrations er ON e.id = er.event_id LEFT JOIN payment_info pi ON e.id = pi.event_id WHERE (er.user_id=" .$user." AND er.event_id=" .$eventId. ") OR (pi.user_id=" .$user. " AND pi.event_id=" .$eventId. ") AND v.id = " .$videoid;
+        //     $getRegisterOrPurchaseEventResult = DB::select(DB::raw($getRegisterOrPurchaseEvent));
+        // } else {
+        //     $getRegisterOrPurchaseEvent = "SELECT id FROM videos WHERE id=".$videoid;
+        //     $getRegisterOrPurchaseEventResult = DB::select(DB::raw($getRegisterOrPurchaseEvent));
+        // }
+
+        $getEventId = Video::where('id', $videoid)->first();
+        $joinClause = "";
+        $whereClause = "";
+
+        if(Auth::check() == false && $getEventId->event_id != ""){
+            $joinClause = " JOIN events e ON v.event_id = e.id JOIN event_registrations er ON e.id = er.event_id JOIN payment_info pi ON e.id = pi.event_id ";
+            $whereClause = " AND (er.event_id=".$getEventId->event_id." OR pi.event_id=".$getEventId->event_id.")";
+        }
+        if(Auth::check() && $getEventId->event_id != ""){
+            $joinClause = " LEFT JOIN events e ON v.event_id = e.id LEFT JOIN event_registrations er ON e.id = er.event_id LEFT JOIN payment_info pi ON e.id = pi.event_id ";
+            $whereClause = " AND (er.event_id=".$getEventId->event_id." AND er.user_id =" .Auth::id().") OR (pi.event_id=".$getEventId->event_id." AND pi.user_id =" .Auth::id().")";
+        }
+        $getRegisterOrPurchaseEvent = "SELECT v.event_id FROM videos v" .$joinClause." WHERE v.id =" .$videoid. $whereClause ."";
+        $getRegisterOrPurchaseEventResult = DB::select(DB::raw($getRegisterOrPurchaseEvent));
+
+        return view('videoDetail', compact('video', 'videosList', 'eventCategoriesResult', 'eventFollowersList', 'orgFollowerCountResult', 'suggestionsList', 'suggestionsListCountResult1', 'suggestionsListCountResult2', 'suggestionsListCountResult3', 'getRegisterOrPurchaseEventResult'));
     }
 
     public function podcastDetail($podcastid)
@@ -399,7 +433,37 @@ class HomeController extends Controller
         $suggestionsListCount3 = DB::select(DB::raw($suggestionsListCount3));
         $suggestionsListCountResult3 = count($suggestionsListCount3);
 
-        return view('podcastDetail', compact('podcast', 'podcastsList', 'eventCategoriesResult', 'eventFollowersList', 'orgFollowerCountResult', 'suggestionsList', 'suggestionsListCountResult1', 'suggestionsListCountResult2', 'suggestionsListCountResult3'));
+        // if(Auth::check()){
+        //     $user = Auth::id();
+        // } else {
+        //     $user = 0;
+        // }
+        // if($getEventId->event_id != ""){
+        //     $eventId = $getEventId->event_id;
+
+        //     $getRegisterOrPurchaseEvent = "SELECT e.id FROM podcasts p JOIN events e ON p.event_id = e.id LEFT JOIN event_registrations er ON e.id = er.event_id LEFT JOIN payment_info pi ON e.id = pi.event_id WHERE (er.user_id=" .$user." AND er.event_id=" .$getEventId->event_id. ") OR (pi.user_id=" .$user. " AND pi.event_id=" .$getEventId->event_id. ")";
+        // $getRegisterOrPurchaseEventResult = DB::select(DB::raw($getRegisterOrPurchaseEvent));
+        // } else {
+        //     $getRegisterOrPurchaseEvent = "SELECT id FROM podcasts WHERE id=".$podcastid;
+        //     $getRegisterOrPurchaseEventResult = DB::select(DB::raw($getRegisterOrPurchaseEvent));
+        // }
+
+        $getEventId = Podcast::where('id', $podcastid)->first();
+        $joinClause = "";
+        $whereClause = "";
+
+        if(Auth::check() == false && $getEventId->event_id != ""){
+            $joinClause = " JOIN events e ON p.event_id = e.id JOIN event_registrations er ON e.id = er.event_id JOIN payment_info pi ON e.id = pi.event_id ";
+            $whereClause = " AND (er.event_id=".$getEventId->event_id." OR pi.event_id=".$getEventId->event_id.")";
+        }
+        if(Auth::check() && $getEventId->event_id != ""){
+            $joinClause = " LEFT JOIN events e ON p.event_id = e.id LEFT JOIN event_registrations er ON e.id = er.event_id LEFT JOIN payment_info pi ON e.id = pi.event_id ";
+            $whereClause = " AND (er.event_id=".$getEventId->event_id." AND er.user_id =" .Auth::id().") OR (pi.event_id=".$getEventId->event_id." AND pi.user_id =" .Auth::id().")";
+        }
+        $getRegisterOrPurchaseEvent = "SELECT p.event_id FROM podcasts p" .$joinClause." WHERE p.id =" .$podcastid. $whereClause ."";
+        $getRegisterOrPurchaseEventResult = DB::select(DB::raw($getRegisterOrPurchaseEvent));
+
+        return view('podcastDetail', compact('podcast', 'podcastsList', 'eventCategoriesResult', 'eventFollowersList', 'orgFollowerCountResult', 'suggestionsList', 'suggestionsListCountResult1', 'suggestionsListCountResult2', 'suggestionsListCountResult3', 'getRegisterOrPurchaseEventResult'));
     }
 
     public function organizerDetail($orgid)
